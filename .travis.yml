@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "8.0"
+after_script:
+  - npm run-script test
+env:
+  - NODE_ENV="travis"
+notifications:
+  slack: 
+    rooms: 
+      redpelicans:xCuMR4Ld1A0cSDdgpgYtJvrW#schooljs
+      redpelicans:xCuMR4Ld1A0cSDdgpgYtJvrW#ci
