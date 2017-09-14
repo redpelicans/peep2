@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -8,13 +7,13 @@ import styled from 'styled-components';
 import routes, { defaultRoute } from '../../routes';
 import { logout } from '../../actions/login';
 import { Auth } from '../../lib/kontrolo';
-import UserButton from './User';
+import Header from './Header';
 
 const Layout = styled.div`
   display: grid;
   grid-template-areas: "header" "content";
-  grid-template-columns: "200px" "1fr";
-  grid-template-rows: 50px 1fr;
+  grid-template-columns: 100%;
+  grid-template-rows: 61px 1fr;
   grid-auto-flow: column;
   height: 100vh;
 `;
@@ -25,6 +24,7 @@ const Content = styled.div`
   color: #f5f8fa;
 `;
 
+<<<<<<< HEAD
 const headerBtnClass = (icon, user) => classNames(`pt-button pt-minimal pt-icon-${icon}`, { 'pt-disabled': !user });
 const Header = ({ user }) => (
   <nav className="pt-navbar pt-fixed-top pt-dark">
@@ -48,6 +48,16 @@ Header.propTypes = {
   user: PropTypes.object,
 };
 
+const StyledHeader = styled(Header)`
+  grid-area: header;
+  position: absolute;
+  width: 100%;
+  background-color: #394b59;
+  box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), 0 0 0 rgba(16, 22, 26, 0), 0 1px 1px rgba(16, 22, 26, 0.4);
+  color: #f5f8fa;
+  padding: 0 15px;
+`;
+
 
 const App = props => {
   const makeAuthRoute = route => (prop) => {
@@ -62,7 +72,7 @@ const App = props => {
   };
   return (
     <Layout>
-      <Header {...props} />
+      <StyledHeader {...props} />
       <Content>
         <Switch>
           {routes.map((route) => (
@@ -74,7 +84,7 @@ const App = props => {
             />
           ))}
           <Auth redirect>
-            <Route component={defaultRoute().component} />
+            <Route component={defaultRoute.component} />
           </Auth>
         </Switch>
       </Content>

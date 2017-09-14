@@ -29,7 +29,11 @@ const Header = ({ handleTabChange, user, logout, className }) => {
           <span>Peep by redpelicans</span>
         </NavBarLeft>
         <NavBarRight>
+<<<<<<< HEAD
           <Tabs2 id="header "onChange={handleTabChange}>
+=======
+          <Tabs2 id="header" onChange={handleTabChange}>
+>>>>>>> 0eceb5f3f52a0aad79850ece8b885e4d84e122f0
             <Tab2 id="agenda" title={Agenda} />
             <Tab2 id="companies" title={Companies} />
             <Tab2 id="people" title={People} />

@@ -69,7 +69,7 @@ export const auth = {
     const { user, socket } = this;
     this.emit('auth:logout', { user, socket });
     return Promise.resolve();
-  }
+  },
 };
 
 const init = (evtx) => {

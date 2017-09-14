@@ -24,7 +24,7 @@ class App extends React.Component {
     const { user } = this.props;
     const responseGoogle = (res) => {
       if (!res.error) {
-        console.log('Signed in as ', res.getBasicProfile().getEmail());
+        console.log(`Signed in as ${res.getBasicProfile().getEmail()}`);
         loginRequest({ email: res.getBasicProfile().getEmail(), idToken: res.getAuthResponse().id_token });
       }
     };

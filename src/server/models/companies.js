@@ -12,7 +12,7 @@ export class Company {
     return Company.findAll(R.merge(baseQuery, query), ...params);
   }
 
-/* eslint-disable no-use-before-define */
+  /* eslint-disable no-use-before-define */
   static bless(obj) {
     switch (obj.type) {
       case 'client':
@@ -23,7 +23,7 @@ export class Company {
         return mongobless.bless.bind(Company)(obj);
     }
   }
-/* eslint-disable no-use-before-define */
+  /* eslint-disable no-use-before-define */
 
   equals(company) {
     return this._id.equals(company._id);

@@ -8,6 +8,10 @@ const People = () => (
   </div>
 );
 
+
+People.propTypes = {
+};
+
 const actions = { };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
