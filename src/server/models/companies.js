@@ -1,4 +1,4 @@
-import R from 'ramda';
+import { merge } from 'ramda';
 import mongobless from 'mongobless';
 
 @mongobless({ collection: 'companies' })
@@ -9,7 +9,7 @@ export class Company {
 
   static loadAll(query, ...params) {
     const baseQuery = { isDeleted: { $in: [null, false] } };
-    return Company.findAll(R.merge(baseQuery, query), ...params);
+    return Company.findAll(merge(baseQuery, query), ...params);
   }
 
   /* eslint-disable no-use-before-define */

@@ -1,4 +1,7 @@
+/* eslint-disable array-callback-return */
+
 import EventEmitter from 'events';
+import R from 'ramda';
 
 const isFunction = obj => typeof obj === 'function';
 const reduceHooks = (ctx, hooks) => hooks.reduce((acc, hook) => acc.then(hook), Promise.resolve(ctx));
@@ -15,10 +18,10 @@ export class Service extends EventEmitter {
   }
 
   setup(definition) {
-    for (const key of Object.keys(definition)) {
+    R.map(key => {
       const value = definition[key];
       if (isFunction(value)) this.addMethod(key);
-    }
+    }, Object.keys(definition));
   }
 
   getBeforeHooks(key = 'all') {

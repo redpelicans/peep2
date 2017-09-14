@@ -12,4 +12,4 @@ initMongo({ config })
   .then(initSocketIO)
   .then(initEvtx)
   .then(() => loginfo('server started, don\'t sleep !'))
-  .catch(console.error);
+  .catch(console.error); // eslint-disable-line no-console

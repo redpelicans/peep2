@@ -2,7 +2,6 @@
 
 import debug from 'debug';
 import { ObjectId } from 'mongobless';
-import moment from 'moment';
 import uppercamelcase from 'uppercamelcase';
 import R from 'ramda';
 import { Company, Preference, Note } from '../models';

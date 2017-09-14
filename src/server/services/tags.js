@@ -1,5 +1,5 @@
 import debug from 'debug';
-import R from 'ramda';
+import { map, add, toPairs, mergeWith } from 'ramda';
 import { Person, Company } from '../models';
 
 const loginfo = debug('peep:evtx');
@@ -7,13 +7,11 @@ const SERVICE_NAME = 'tags';
 
 const groupByTags = (collection) => {
   const htags = {};
-  for (const obj of collection) {
-    for (const tag of obj.tags || []) {
-      if (!htags[tag]) htags[tag] = 1;
-      else htags[tag] += 1;
-    }
-  }
-  return htags;
+  map(obj => {
+    map(({ tag = [] }) => {
+      htags[tag] = (!htags[tag]) ? 1 : htags[tag] + 1;
+    }, obj.tags);
+  }, collection);
 };
 
 export const tags = {
@@ -21,9 +19,10 @@ export const tags = {
     const loadCompanies = Company.loadAll({ tags: { $exists: true } }, { tags: 1 }).then(groupByTags);
     const loadPeople = Person.loadAll({ tags: { $exists: true } }, { tags: 1 }).then(groupByTags);
     return Promise.all([loadCompanies, loadPeople])
-      .then(([companyTags, personTags]) => R.toPairs(R.mergeWith(R.add, companyTags, personTags)));
+      .then(([companyTags, personTags]) => toPairs(mergeWith(add, companyTags, personTags)));
   },
 };
+
 
 const init = (evtx) => {
   evtx.use(SERVICE_NAME, tags);

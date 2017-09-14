@@ -1,6 +1,7 @@
 import debug from 'debug';
 import R from 'ramda';
 import { ObjectId } from 'mongobless';
+import moment from 'moment';
 import { Note } from '../models';
 import { emitEvent, formatOutput } from './utils';
 
@@ -46,10 +47,9 @@ export const notes = {
     newVersion.authorId = this.user._id;
     newVersion._id = ObjectId(note._id);
     const loadOne = ({ _id: id }) => Note.loadOne(id);
-    const update = nextVersion => (previousVersion) => {
-      nextVersion.updatedAt = new Date();
-      return Note.collection.updateOne({ _id: previousVersion._id }, { $set: nextVersion }).then(() => ({ _id: previousVersion._id }));
-    };
+    const update = nextVersion => (previousVersion) =>
+      Note.collection.updateOne({ _id: previousVersion._id }, { $set: { ...nextVersion, updatedAt: new Date() } })
+        .then(() => ({ _id: previousVersion._id }));
 
     return loadOne(newVersion)
       .then(update(newVersion))
