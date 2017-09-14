@@ -26,7 +26,7 @@ const UserButton = ({ user, logout }) => {
   if (!user) return <button className={btnClass} />;
   const fullName = join(' ', [user.firstName, user.lastName]);
   return (
-    <Popover2 placement="bottom">
+    <Popover2>
       <Button className={btnClass} />
       <Layout>
         <StyledAvatar name={fullName} color={user.avatar.color} />
@@ -34,7 +34,7 @@ const UserButton = ({ user, logout }) => {
         <Menu>
           <MenuDivider />
           <MenuItem
-            iconName="log-out"
+            iconName="key-delete"
             onClick={logout}
             text="Logout"
           />

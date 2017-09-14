@@ -6,9 +6,10 @@ const login = (state = {}, action) => {
   switch (type) {
     case USER_LOGOUT:
       return R.omit(['user', 'token'], state);
-    case USER_LOGGED:
+    case USER_LOGGED: {
       const { payload: { user, token } } = action;
       return { ...state, user, token };
+    }
     default:
       return state;
   }

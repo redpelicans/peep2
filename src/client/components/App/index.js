@@ -24,6 +24,29 @@ const Content = styled.div`
   color: #f5f8fa;
 `;
 
+<<<<<<< HEAD
+const headerBtnClass = (icon, user) => classNames(`pt-button pt-minimal pt-icon-${icon}`, { 'pt-disabled': !user });
+const Header = ({ user }) => (
+  <nav className="pt-navbar pt-fixed-top pt-dark">
+    <div style={{ margin: '0 auto', width: '80%' }}>
+      <div className="pt-navbar-group pt-align-left">
+        <div className="pt-navbar-heading">Peep</div>
+      </div>
+      <div className="pt-navbar-group pt-align-right">
+        <button className={headerBtnClass('home', user)}>Companies</button>
+        <button className={headerBtnClass('document', user)}>People</button>
+        <span className="pt-navbar-divider" />
+        <UserButton user={user} logout={logout} />
+        <button className="pt-button pt-minimal pt-icon-notifications" />
+        <button className="pt-button pt-minimal pt-icon-cog" />
+      </div>
+    </div>
+  </nav>
+);
+
+Header.propTypes = {
+  user: PropTypes.object,
+};
 
 const StyledHeader = styled(Header)`
   grid-area: header;
@@ -37,11 +60,11 @@ const StyledHeader = styled(Header)`
 
 
 const App = props => {
-  const makeAuthRoute = route => (props) => {
+  const makeAuthRoute = route => (prop) => {
     if (route.auth) {
       return (
         <Auth redirect>
-          <route.component {...props} />
+          <route.component {...prop} />
         </Auth>
       );
     }
@@ -52,9 +75,9 @@ const App = props => {
       <StyledHeader {...props} />
       <Content>
         <Switch>
-          {routes.map((route, index) => (
+          {routes.map((route) => (
             <Route
-              key={index}
+              key={route.path}
               path={route.path}
               exact={route.exact}
               render={makeAuthRoute(route)}

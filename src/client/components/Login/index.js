@@ -21,7 +21,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { user, loginRequest } = this.props;
+    const { user } = this.props;
     const responseGoogle = (res) => {
       if (!res.error) {
         console.log(`Signed in as ${res.getBasicProfile().getEmail()}`);
@@ -43,7 +43,6 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  loginRequest: PropTypes.func.isRequired,
   user: PropTypes.object,
   history: PropTypes.object.isRequired,
 };

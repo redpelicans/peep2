@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 const Agenda = () => (
   <div>
-      Hello Agenda!
+    Hello Agenda!
   </div>
 );
 
@@ -13,10 +12,7 @@ const Agenda = () => (
 Agenda.propTypes = {
 };
 
-const mapStateToProps = state => ({
-});
-
 const actions = { };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Agenda);
+export default connect(mapDispatchToProps)(Agenda);
