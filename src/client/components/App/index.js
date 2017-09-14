@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import styled from 'styled-components';
 import routes, { defaultRoute } from '../../routes';
+import UserButton from './User';
 import { logout } from '../../actions/login';
 import { Auth } from '../../lib/kontrolo';
-import Header from './Header';
 
 const Layout = styled.div`
   display: grid;
@@ -24,8 +25,8 @@ const Content = styled.div`
   color: #f5f8fa;
 `;
 
-<<<<<<< HEAD
 const headerBtnClass = (icon, user) => classNames(`pt-button pt-minimal pt-icon-${icon}`, { 'pt-disabled': !user });
+
 const Header = ({ user }) => (
   <nav className="pt-navbar pt-fixed-top pt-dark">
     <div style={{ margin: '0 auto', width: '80%' }}>

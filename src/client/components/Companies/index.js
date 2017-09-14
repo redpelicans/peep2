@@ -12,12 +12,12 @@ const Companies = () => (
 );
 
 
-Companies.propTypes = {
-  companies: PropTypes.array.isRequired,
-  filter: PropTypes.string,
-  preferredFilter: PropTypes.bool,
-  sort: PropTypes.object,
-};
+// Companies.propTypes = {
+//   companies: PropTypes.array.isRequired,
+//   filter: PropTypes.string,
+//   preferredFilter: PropTypes.bool,
+//   sort: PropTypes.object,
+// };
 
 const mapStateToProps = state => ({
   companies: getVisibleCompanies(state),
