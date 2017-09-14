@@ -28,7 +28,7 @@ const init = (ctx) => {
       .then(() => {
         loginfo('Peep models are ready to help you ...');
         return { ...ctx, db: conx };
-      })
+      }),
     );
 };
 

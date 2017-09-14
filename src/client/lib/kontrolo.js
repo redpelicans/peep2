@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 class Kontrolo extends React.Component {
-
   constructor(props) {
     super(props);
-    const { user, isAuthorized, redirect, history } = this.props;
-    this.user = user;
+    const { state, user, isAuthorized, redirect, history } = this.props;
+    this.user = user(state);
     this.redirectTo = redirect;
     this.history = history;
     this.isAuthorized = () => isAuthorized(this.user);
@@ -19,14 +18,13 @@ class Kontrolo extends React.Component {
 
   getChildContext() {
     return {
-      user: this.user,
       isAuthorized: this.isAuthorized,
       redirect: this.redirect,
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.user = nextProps.user;
+  componentWillReceiveProps({ state, user }) {
+    this.user = user(state);
   }
 
   render() {
@@ -36,20 +34,20 @@ class Kontrolo extends React.Component {
 }
 
 Kontrolo.childContextTypes = {
-  user: PropTypes.object,
   isAuthorized: PropTypes.func.isRequired,
   redirect: PropTypes.func,
 };
 
 Kontrolo.propTypes = {
   children: PropTypes.element.isRequired,
-  user: PropTypes.object,
+  state: PropTypes.object.isRequired,
+  user: PropTypes.func,
   isAuthorized: PropTypes.func,
   redirect: PropTypes.string,
   history: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({ user: state.login.user });
+const mapStateToProps = state => ({ state });
 
 export default withRouter(connect(mapStateToProps)(Kontrolo));
 
@@ -70,7 +68,6 @@ export class Auth extends React.Component { // eslint-disable-line react/no-mult
     }
   }
 
-
   render() {
     const { children } = this.props;
     const { isAuthorized } = this.context;
@@ -80,7 +77,6 @@ export class Auth extends React.Component { // eslint-disable-line react/no-mult
 }
 
 Auth.contextTypes = {
-  user: PropTypes.object,
   isAuthorized: PropTypes.func.isRequired,
   redirect: PropTypes.func,
 };

@@ -34,7 +34,7 @@ export const inMaker = (company) => {
 
 export const emitNoteEvent = name => ctx => {
   // Do we have to remove prop note ?
- 
+
   const { output: { note } } = ctx;
   if (note) {
     ctx.evtx.service('notes').emit(name, { ...ctx, message: { broadcastAll: true, replyTo: name }, output: note });

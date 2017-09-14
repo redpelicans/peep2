@@ -26,9 +26,9 @@ export const StyledNavBar = styled.div`
 `;
 
 export const NavBarLeft = ({ children }) =>
-  <StyledNavBarLeft>
+  (<StyledNavBarLeft>
     {children}
-  </StyledNavBarLeft>
+  </StyledNavBarLeft>)
 ;
 
 NavBarLeft.propTypes = {
@@ -36,9 +36,9 @@ NavBarLeft.propTypes = {
 };
 
 export const NavBarRight = ({ children }) =>
-  <StyledNavBarRight>
+  (<StyledNavBarRight>
     {children}
-  </StyledNavBarRight>
+  </StyledNavBarRight>)
 ;
 
 NavBarRight.propTypes = {

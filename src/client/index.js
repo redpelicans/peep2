@@ -1,4 +1,5 @@
 import React from 'react';
+import { path } from 'ramda';
 import { render } from 'react-dom';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -24,7 +25,7 @@ const mountNode = window.document.getElementById('__PEEP__');
 const root = (
   <Provider store={store}>
     <Router history={history}>
-      <Kontrolo user={state => state.login.user} isAuthorized={user => Boolean(user)} redirect="/login">
+      <Kontrolo user={path(['login', 'user'])} isAuthorized={user => Boolean(user)} redirect="/login">
         <App />
       </Kontrolo>
     </Router>

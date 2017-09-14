@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-const People = () => {
-  return (
-    <div>
+const People = () => (
+  <div>
       Hello People!
-    </div>
-  );
-};
+  </div>
+);
 
 
 People.propTypes = {

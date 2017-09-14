@@ -26,9 +26,7 @@ const formatServiceMethod = (ctx) => {
   });
 };
 
-const makeOutput = (payload, type) => {
-  return { payload, type };
-};
+const makeOutput = (payload, type) => ({ payload, type });
 
 const formatResponse = (ctx) => {
   const { output, message: { replyTo } } = ctx;
@@ -80,21 +78,21 @@ class Reactor {
     return (ctx) => {
       const { message: { replyTo } } = ctx;
       if (!replyTo) return;
-      for(const targetUser of this.getConnectedUsers()) {
-        for(const targetSocket of this.getSockets(targetUser)) {
+      for (const targetUser of this.getConnectedUsers()) {
+        for (const targetSocket of this.getSockets(targetUser)) {
           pushEvent(ctx, targetUser, targetSocket);
         }
       }
-    }
+    };
   }
 
   initCompanies() {
     const { evtx } = this;
-    const pushPreferredEvent= ({ socket, user, output: company, message: { replyTo } }, targetUser, targetSocket) => {
+    const pushPreferredEvent = ({ socket, user, output: company, message: { replyTo } }, targetUser, targetSocket) => {
       const action = makeOutput(company, replyTo);
       if (targetSocket === socket) return;
       if (user.equals(targetUser)) return targetSocket.emit('action', action);
-    }
+    };
     const pushEvent = ({ socket, user, output: company, message: { replyTo } }, targetUser, targetSocket) => {
       const action = makeOutput(company, replyTo);
       if (targetSocket === socket) return;
@@ -106,7 +104,7 @@ class Reactor {
           const action = makeOutput(pushedCompany, replyTo);
           targetSocket.emit('action', action);
         });
-    }
+    };
     evtx.service('companies').on('company:added', this.broadcast(pushEvent));
     evtx.service('companies').on('company:updated', this.broadcast(pushEvent));
     evtx.service('companies').on('company:setPreferred', this.broadcast(pushPreferredEvent));
@@ -125,7 +123,7 @@ class Reactor {
           const action = makeOutput(pushedPerson, replyTo);
           targetSocket.emit('action', action);
         });
-    }
+    };
     evtx.service('people').on('person:added', this.broadcast(pushEvent));
     evtx.service('people').on('person:updated', this.broadcast(pushEvent));
   }
@@ -136,7 +134,7 @@ class Reactor {
       const action = makeOutput(note, replyTo);
       if (!broadcastAll && targetSocket === socket) return;
       targetSocket.emit('action', action);
-    }
+    };
     evtx.service('notes').on('note:added', this.broadcast(pushEvent));
     evtx.service('notes').on('note:updated', this.broadcast(pushEvent));
   }
@@ -179,10 +177,8 @@ class Reactor {
       });
     });
   }
-};
-
-const init = (evtx, io) => {
-  return Promise.resolve(new Reactor(evtx, io));
 }
+
+const init = (evtx, io) => Promise.resolve(new Reactor(evtx, io));
 
 export default init;

@@ -7,23 +7,21 @@ import { emitEvent, formatOutput } from './utils';
 const loginfo = debug('peep:evtx');
 const SERVICE_NAME = 'notes';
 
-const outMaker = (note) => {
-  return note;
-};
+const outMaker = (note) => note;
 export const outMakerMany = R.map(outMaker);
 
 const inMaker = (data) => {
   const attrs = ['content', 'entityType', 'assigneesIds', 'notification', 'status'];
   const res = R.pick(attrs, data);
-  if (data.dueDate) res.dueDate = moment(data.dueDate).toDate()
-  if (data.entityId){
-    res.entityId = ObjectId(data.entityId)
-  }else{
-    res.entityId = undefined
-    res.entityType = undefined
+  if (data.dueDate) res.dueDate = moment(data.dueDate).toDate();
+  if (data.entityId) {
+    res.entityId = ObjectId(data.entityId);
+  } else {
+    res.entityId = undefined;
+    res.entityType = undefined;
   }
-  return res
-}
+  return res;
+};
 
 export const notes = {
   load() {

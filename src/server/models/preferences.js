@@ -22,7 +22,7 @@ export default class Preference {
       return Preference.collection.update(
         { personId: user._id, entityId: entity._id },
         { personId: user._id, entityId: entity._id, type },
-        { upsert: true }
+        { upsert: true },
       ).then(() => entity);
     }
     return Preference.collection.deleteMany({ personId: user._id, entityId: entity._id }).then(() => entity);

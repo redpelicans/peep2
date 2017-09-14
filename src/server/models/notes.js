@@ -7,7 +7,7 @@ export default class Note {
     return Note.findOne({ isDeleted: { $ne: true }, _id: id });
   }
 
-  static loadAll(query, ...params){
+  static loadAll(query, ...params) {
     const baseQuery = { isDeleted: { $in: [null, false] } };
     return Note.findAll(R.merge(baseQuery, query), ...params);
   }

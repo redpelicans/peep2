@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-const Agenda = () => {
-  return (
-    <div>
+const Agenda = () => (
+  <div>
       Hello Agenda!
-    </div>
-  );
-};
+  </div>
+);
 
 
 Agenda.propTypes = {

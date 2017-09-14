@@ -118,13 +118,13 @@ export const people = {
     return deleteOne()
       .then(deletePreference)
       .then(deleteNotes)
-      .then(id => ({ _id: id}));
+      .then(id => ({ _id: id }));
   },
 
   checkEmailUniqueness(email) {
     const emailToCheck = email.trim();
     return Person.loadByEmail(emailToCheck, { _id: 1 })
-      .then((person) => ({ email: emailToCheck, ok: !Boolean(person) }));
+      .then((person) => ({ email: emailToCheck, ok: !person }));
   },
 
 };

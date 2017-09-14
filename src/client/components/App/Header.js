@@ -25,19 +25,19 @@ const Header = ({ handleTabChange, user, logout, className }) => {
     <div className={divClass}>
       <NavBar>
         <NavBarLeft>
-          <Logo className="fa fa-paper-plane"/> 
+          <Logo className="fa fa-paper-plane" />
           <span>Peep by redpelicans</span>
         </NavBarLeft>
         <NavBarRight>
-          <Tabs2 id='header' onChange={handleTabChange}>
-            <Tab2 id='agenda' title={Agenda}/>
-            <Tab2 id='companies' title={Companies}/>
-            <Tab2 id='people' title={People}/>
+          <Tabs2 id="header" onChange={handleTabChange}>
+            <Tab2 id="agenda" title={Agenda} />
+            <Tab2 id="companies" title={Companies} />
+            <Tab2 id="people" title={People} />
           </Tabs2>
-          <span className="pt-navbar-divider"></span>
-          <UserButton user={user} logout={logout}/>
-          <button className="pt-button pt-minimal pt-icon-notifications"></button>
-          <button className="pt-button pt-minimal pt-icon-cog"></button>
+          <span className="pt-navbar-divider" />
+          <UserButton user={user} logout={logout} />
+          <button className="pt-button pt-minimal pt-icon-notifications" />
+          <button className="pt-button pt-minimal pt-icon-cog" />
         </NavBarRight>
       </NavBar>
     </div>
@@ -56,5 +56,5 @@ export default withHandlers({
     const { path } = getRoute(id);
     const { history } = props;
     history.push(path);
-  }
+  },
 })(Header);

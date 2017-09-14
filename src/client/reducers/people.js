@@ -8,7 +8,7 @@ import {
   PEOPLE_ADDED,
   PEOPLE_UPDATED,
   PEOPLE_DELETED,
-  } from '../actions/people';
+} from '../actions/people';
 
 const make = (person) => {
   const { firstName, lastName } = person;

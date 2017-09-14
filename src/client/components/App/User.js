@@ -23,19 +23,18 @@ const StyledEmail = styled.div`
 
 const UserButton = ({ user, logout }) => {
   const btnClass = classNames('pt-button pt-minimal pt-icon-user', { 'pt-disabled': !user });
-  if (!user) return <button className={btnClass} />
+  if (!user) return <button className={btnClass} />;
   const fullName = join(' ', [user.firstName, user.lastName]);
   return (
-    <Popover2>
-      <Button className={btnClass}>
-      </Button>
+    <Popover2 placement="bottom">
+      <Button className={btnClass} />
       <Layout>
         <StyledAvatar name={fullName} color={user.avatar.color} />
         <StyledEmail>{user.email}</StyledEmail>
         <Menu>
           <MenuDivider />
           <MenuItem
-            iconName='key-delete'
+            iconName="log-out"
             onClick={logout}
             text="Logout"
           />
