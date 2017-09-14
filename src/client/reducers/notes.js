@@ -4,7 +4,7 @@ import { NOTES_LOADED, FILTER_NOTES_LIST } from '../actions/notes';
 
 const make = (note) => {
   const updatedNote = { ...note, typeName: 'note', createdAt: moment(note.createdAt).format('dddd, MMMM Do YYYY') };
-  updatedNote.updatedAt = note.updatedAt  ? moment(note.updatedAt).format('dddd, MMMM Do YYYY') :  moment(note.createdAt).format('dddd, MMMM Do YYYY');
+  updatedNote.updatedAt = note.updatedAt ? moment(note.updatedAt).format('dddd, MMMM Do YYYY') : moment(note.createdAt).format('dddd, MMMM Do YYYY');
   return updatedNote;
 };
 

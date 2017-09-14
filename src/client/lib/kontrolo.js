@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 class Kontrolo extends React.Component {
-
   constructor(props) {
     super(props);
     const { user, isAuthorized, redirect, history } = this.props;
@@ -88,6 +87,5 @@ Auth.contextTypes = {
 Auth.propTypes = {
   children: PropTypes.element.isRequired,
   redirect: PropTypes.bool,
-  roles: PropTypes.array,
 };
 

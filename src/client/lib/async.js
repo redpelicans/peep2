@@ -1,12 +1,12 @@
 import React from 'react';
 
-const asyncComponent = (getComponent) => {
-  return class AsyncComponent extends React.Component {
+const asyncComponent = (getComponent) => (
+  class AsyncComponent extends React.Component {
     static Component = null;
     state = { Component: AsyncComponent.Component };
 
     componentWillMount() {
-      const { Component } = this.state;
+      // const { Component } = this.state;
       if (!this.state.Component) {
         getComponent().then(Component => {
           AsyncComponent.Component = Component;
@@ -21,6 +21,6 @@ const asyncComponent = (getComponent) => {
       return <Component {...this.props} />;
     }
   }
-};
+);
 
 export default asyncComponent;

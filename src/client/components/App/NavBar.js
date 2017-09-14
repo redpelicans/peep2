@@ -26,9 +26,9 @@ export const StyledNavBar = styled.div`
 `;
 
 export const NavBarLeft = ({ children }) =>
-  <StyledNavBarLeft>
+  (<StyledNavBarLeft>
     {children}
-  </StyledNavBarLeft>
+  </StyledNavBarLeft>)
 ;
 
 NavBarLeft.propTypes = {
@@ -36,16 +36,16 @@ NavBarLeft.propTypes = {
 };
 
 export const NavBarRight = ({ children }) =>
-  <StyledNavBarRight>
+  (<StyledNavBarRight>
     {children}
-  </StyledNavBarRight>
+  </StyledNavBarRight>)
 ;
 
 NavBarRight.propTypes = {
   children: PropTypes.node,
 };
 
-export const NavBar = ({ obj, children }) => {
+export const NavBar = ({ children }) => {
   const left = () => React.Children.toArray(children).find(child => child.type === NavBarLeft);
   const right = () => React.Children.toArray(children).find(child => child.type === NavBarRight);
   return (
@@ -59,6 +59,5 @@ export const NavBar = ({ obj, children }) => {
 };
 
 NavBar.propTypes = {
-  obj: PropTypes.object,
   children: PropTypes.node,
 };

@@ -34,9 +34,9 @@ export const TimeElt = styled.div`
 `;
 
 export const HeaderLeft = ({ children }) =>
-  <HeaderLeftElt>
+  (<HeaderLeftElt>
     {children}
-  </HeaderLeftElt>
+  </HeaderLeftElt>)
 ;
 
 HeaderLeft.propTypes = {
@@ -44,9 +44,9 @@ HeaderLeft.propTypes = {
 };
 
 export const HeaderRight = ({ children }) =>
-  <HeaderRightElt>
+  (<HeaderRightElt>
     {children}
-  </HeaderRightElt>
+  </HeaderRightElt>)
 ;
 
 HeaderRight.propTypes = {

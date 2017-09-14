@@ -11,5 +11,5 @@ const getNotes = state => state.notes.data;
 export const getVisibleNotes = createSelector( // eslint-disable-line
   [getFilter, getNotes],
   (filter = '', notes) =>
-    doFilter(filter, notes)
+    doFilter(filter, notes),
 );
