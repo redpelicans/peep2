@@ -21,7 +21,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { user, loginRequest } = this.props;
+    const { user, loginRequest } = this.props; // eslint-disable-line no-shadow
     const responseGoogle = (res) => {
       if (!res.error) {
         console.log(`Signed in as ${res.getBasicProfile().getEmail()}`);
