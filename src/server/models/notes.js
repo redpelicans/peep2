@@ -12,11 +12,6 @@ export default class Note {
     return Note.findAll(R.merge(baseQuery, query), ...params);
   }
 
-  static loadAll(query, ...params) {
-    const baseQuery = { isDeleted: { $in: [null, false] } };
-    return Note.findAll(R.merge(baseQuery, query), ...params);
-  }
-
   static create(content, user, entity) {
     if (!content) return Promise.resolve({ entity });
     const newNote = {
