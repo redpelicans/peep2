@@ -2,10 +2,16 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Calendar from './Calendar';
+import Day from './Day';
+
 
 const Agenda = () => (
   <div>
-      Hello Agenda!
+    <Calendar
+      dayComponent={Day}
+      onPeriodSelection={console.log}
+    />
   </div>
 );
 
