@@ -78,9 +78,9 @@
   },
   "scripts": {
     "lint": "eslint src --color",
+    "test": "NODE_ENV=test node scripts/test.js --env=jsdom",
     "start": "NODE_ENV=development node scripts/start.js",
     "build": "NODE_ENV=production node scripts/build.js",
-    "test": "NODE_ENV=test node scripts/test.js --env=jsdom",
     "bundle:stats": "NODE_ENV=production webpack -p --config ./config/webpack.config.prod.js --profile --json > stats.json",
     "bundle:analyse": "webpack-bundle-analyzer ./stats.json ./build --report --mode=static",
     "srv:dev": "NODE_ENV=development DEBUG=peep*,evtx* nodemon --watch src/server --watch params --exec 'babel-node src/server'"
@@ -92,6 +92,8 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "chai": "^4.1.2",
+    "enzyme": "^2.9.1",
     "eslint-config-airbnb": "^15.1.0",
     "nodemon": "^1.12.0",
     "should": "^13.0.1",
@@ -110,6 +112,10 @@
     ]
   },
   "jest": {
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "utils"
+    ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}"
     ],

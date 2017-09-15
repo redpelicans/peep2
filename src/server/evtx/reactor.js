@@ -4,15 +4,15 @@ import Person from '../models/people';
 
 const loginfo = debug('peep:reactor');
 
-const getUser = (ctx) => {
+const getUser = ctx => {
   const { user, message: { token } } = ctx;
   if (user) return Promise.resolve(ctx);
   if (!token) return Promise.resolve(ctx);
-  const { secretKey } = ctx.evtx.config;
+  const { secretKey } = ctx.evtx.globals;
   return Person.getFromToken(token, secretKey).then(person => ({ ...ctx, user: person }));
 };
 
-const formatServiceMethod = (ctx) => {
+const formatServiceMethod = ctx => {
   const { service, method, message: { type, payload } } = ctx;
   if (service && method) return Promise.resolve(ctx);
   const [serv, meth] = type.split(':');
@@ -26,7 +26,7 @@ const formatServiceMethod = (ctx) => {
 
 const makeOutput = (payload, type) => ({ payload, type });
 
-const formatResponse = (ctx) => {
+const formatResponse = ctx => {
   const { output, message: { replyTo } } = ctx;
   if (replyTo) {
     return Promise.resolve({
@@ -151,11 +151,11 @@ class Reactor {
 
   initIO() {
     const { evtx, io } = this;
-    io.on('connection', (socket) => {
+    io.on('connection', socket => {
       socket.on('action', (message, cb) => {
         loginfo(`receive ${message.type} action`);
-        const globalCtx = { io, socket };
-        evtx.run(message, globalCtx)
+        const localCtx = { io, socket, test: 'COUCOU' };
+        evtx.run(message, localCtx)
           .then((res) => {
             if (!res) return;
             if (cb) {
@@ -168,7 +168,7 @@ class Reactor {
           })
           .catch((err) => {
             const res = R.is(Error, err) ? { code: 500, message: err.toString() } : { code: err.code, message: err.error };
-            console.error(err.stack || res.message); // eslint-disable-line no-console
+            if (process.env['NODE_ENV'] !== 'test') console.error(err.stack || res.message); // eslint-disable-line no-console
             if (cb) return cb(res);
             socket.emit('action', { type: 'EvtX:Error', ...res });
           });

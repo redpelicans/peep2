@@ -1,8 +1,6 @@
-import should from 'should';
-import mongobless from 'mongobless';
-import config from '../../../../config';
+import config from '../../../../params';
 import { Note } from '..';
-import { connect, close, drop, load } from './utils';
+import { connect, close, drop, load } from '../../utils/tests';
 
 const data = {
   collections:{
@@ -27,12 +25,14 @@ const data = {
   }
 };
 
-describe('Note models', function() {
-  before(() => connect(this));
-  beforeEach(() => drop(this).then(() => load(this, data)));
-  after(close);
+const ctx = {};
+beforeAll(() => connect(config.db).then(db => ctx.db = db));
+afterAll(close);
 
-  it('should find all', (done) => {
+describe('Note models', function() {
+  beforeEach(() => drop(ctx.db).then(() => load(ctx.db, data)));
+
+  it('expect find all', (done) => {
     Note
       .loadAll()
       .then( notes => {
@@ -40,43 +40,43 @@ describe('Note models', function() {
         const res = data.collections.notes
           .filter(note => !note.isDeleted)
           .map(note => note.content).join('');
-        should(contents).equal(res);
+        expect(contents).toEqual(res);
         done();
     })
     .catch(done);
   });
 
-  it('should load all', (done) => {
+  it('expect load all', (done) => {
     Note
       .loadAll({ content: 'content1' })
       .then( notes => {
         const names = notes.map(note => note.content).join('');
-        should(names).equal('content1');
+        expect(names).toEqual('content1');
         done();
     })
     .catch(done);
   });
 
 
-  it('should load one', (done) => {
+  it('expect load one', (done) => {
     const { _id, content } = data.collections.notes[0];
     Note
       .loadOne(_id)
       .then( note => {
-        should(note._id).equal(_id);
-        should(note.content).equal(content);
+        expect(note._id).toEqual(_id);
+        expect(note.content).toEqual(content);
         done();
     })
     .catch(done);
   });
 
  
-  it('should find one', (done) => {
+  it('expect find one', (done) => {
     const content = data.collections.notes[0].content;
     Note
       .findOne({ content })
       .then( note => {
-        should(note.content).equal(content);
+        expect(note.content).toEqual(content);
         done();
     })
     .catch(done);

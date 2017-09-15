@@ -1,5 +1,5 @@
 import debug from 'debug';
-import evtX from '../lib/evtx';
+import evtX from 'evtx';
 import initServices from '../services';
 import initReactor from './reactor';
 

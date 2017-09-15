@@ -1,8 +1,6 @@
-import should from 'should';
-import mongobless from 'mongobless';
-import config from '../../../../config';
+import config from '../../../../params';
 import { Person } from '..';
-import { connect, close, drop, load } from './utils';
+import { connect, close, drop, load } from '../../utils/tests';
 
 const data = {
   collections:{
@@ -32,12 +30,14 @@ const data = {
   }
 };
 
-describe('People models', function() {
-  before(() => connect(this));
-  beforeEach(() => drop(this).then(() => load(this, data)));
-  after(close);
+const ctx = {};
+beforeAll(() => connect(config.db).then(db => ctx.db = db));
+afterAll(close);
 
-  it('should find all', (done) => {
+describe('People models', function() {
+  beforeEach(() => drop(ctx.db).then(() => load(ctx.db, data)));
+
+  it('expect find all', (done) => {
     Person
       .loadAll()
       .then( people => {
@@ -45,50 +45,50 @@ describe('People models', function() {
         const res = data.collections.people
           .filter(person => !person.isDeleted)
           .map(person => person.firstName).join('');
-        should(names).equal(res);
+        expect(names).toEqual(res);
         done();
     })
     .catch(done);
   });
 
-  it('should load all', (done) => {
+  it('expect load all', (done) => {
     Person
       .loadAll({ firstName: 'B' })
       .then( people => {
         const names = people.map(person => person.firstName).join('');
-        should(names).equal('B');
+        expect(names).toEqual('B');
         done();
     })
     .catch(done);
   });
 
 
-  it('should load one', (done) => {
+  it('expect load one', (done) => {
     const { _id, _fullName, roles } = data.collections.people[0];
     Person
       .loadOne(_id)
       .then( person => {
-        should(person._id).equal(_id);
-        should(person.fullName()).equal(_fullName);
-        should(person.isAdmin()).true();
-        should(person.isWorker()).true();
-        should(person.hasSomeRoles(['role1', 'admin', 'toto'])).true();
-        should(person.hasAllRoles(['role1', 'admin'])).true();
-        should(person.hasAllRoles(['role1', 'admin', 'toto'])).false();
-        should(person.hasAllRoles([])).true();
-        should(person.hasSomeRoles()).true();
+        expect(person._id).toEqual(_id);
+        expect(person.fullName()).toEqual(_fullName);
+        expect(person.isAdmin()).true();
+        expect(person.isWorker()).true();
+        expect(person.hasSomeRoles(['role1', 'admin', 'toto'])).true();
+        expect(person.hasAllRoles(['role1', 'admin'])).true();
+        expect(person.hasAllRoles(['role1', 'admin', 'toto'])).false();
+        expect(person.hasAllRoles([])).true();
+        expect(person.hasSomeRoles()).true();
         done();
     })
     .catch(done);
   });
 
  
-  it('should find one', (done) => {
+  it('expect find one', (done) => {
     const firstName = data.collections.people[0].firstName;
     Person
       .findOne({ firstName })
       .then( person => {
-        should(person.firstName).equal(firstName);
+        expect(person.firstName).toEqual(firstName);
         done();
     })
     .catch(done);

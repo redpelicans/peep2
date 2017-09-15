@@ -1,6 +1,6 @@
-import should from 'should';
+import config from '../../../../params';
 import { Client, Company } from '..';
-import { connect, close, drop, load } from './utils';
+import { connect, close, drop, load } from '../../utils/tests';
 
 const data = {
   collections:{
@@ -28,18 +28,20 @@ const data = {
   }
 };
 
+const ctx = {};
+beforeAll(() => connect(config.db).then(db => ctx.db = db));
+afterAll(close);
+
 describe('Companies models', function() {
-  before(() => connect(this));
-  beforeEach(() => drop(this).then(() => load(this, data)));
-  after(close);
+  beforeEach(() => drop(ctx.db).then(() => load(ctx.db, data)));
 
   it('should find all', (done) => {
     Company
       .loadAll()
       .then( objs => {
         const names = objs.map(obj => obj.name).join('');
-        should(names).equal(data.collections.companies.filter(c => !c.isDeleted).map(obj => obj.name).join(''));
-        should(objs[0].is(Client)).true();
+        expect(names).toEqual(data.collections.companies.filter(c => !c.isDeleted).map(obj => obj.name).join(''));
+        expect(objs[0].is(Client)).true();
         done();
     })
     .catch(done);
@@ -50,7 +52,7 @@ describe('Companies models', function() {
       .loadAll({ name: 'name3' })
       .then( objs => {
         const names = objs.map(obj => obj.name).join('');
-        should(names).equal('name3');
+        expect(names).toEqual('name3');
         done();
     })
     .catch(done);
@@ -62,7 +64,7 @@ describe('Companies models', function() {
     Company
       .loadOne(_id)
       .then( obj => {
-        should(obj._id).equal(_id);
+        expect(obj._id).toEqual(_id);
         done();
     })
     .catch(done);
@@ -73,7 +75,7 @@ describe('Companies models', function() {
     Company
       .findOne({ name })
       .then( obj => {
-        should(obj.name).equal(name);
+        expect(obj.name).toEqual(name);
         done();
     })
     .catch(done);
