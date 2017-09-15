@@ -84,6 +84,6 @@ Auth.contextTypes = {
 Auth.propTypes = {
   children: PropTypes.element.isRequired,
   redirect: PropTypes.bool,
-  roles: PropTypes.array,
+  //  roles: PropTypes.array,
 };
 

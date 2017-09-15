@@ -67,7 +67,6 @@ export const checkEmail = email => (dispatch) => {
 
 export const onPreferredClick = person => (dispatch) => {
   const { _id, preferred } = person;
-  console.log('_id: ', _id);
   dispatch({
     type: SET_PREFERRED_PEOPLE,
     replyTo: PEOPLE_UPDATED,

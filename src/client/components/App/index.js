@@ -37,7 +37,7 @@ const StyledHeader = styled(Header)`
 
 
 const App = props => {
-  const makeAuthRoute = route => (props) => {
+  const makeAuthRoute = route => (props) => { // eslint-disable-line no-shadow
     if (route.auth) {
       return (
         <Auth redirect>
@@ -52,9 +52,9 @@ const App = props => {
       <StyledHeader {...props} />
       <Content>
         <Switch>
-          {routes.map((route, index) => (
+          {routes.map((route) => (
             <Route
-              key={index}
+              key={route.path}
               path={route.path}
               exact={route.exact}
               render={makeAuthRoute(route)}
