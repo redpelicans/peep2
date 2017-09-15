@@ -4,7 +4,6 @@ import initServices from '../services';
 import initReactor from './reactor';
 
 const loginfo = debug('peep:evtx');
-const logerror = debug('peep:Error');
 const init = (ctx) => {
   const { io, config } = ctx;
   const evtx = evtX(config).configure(initServices);

@@ -7,12 +7,12 @@ const SERVICE_NAME = 'tags';
 
 const groupByTags = (collection) => {
   const htags = {};
-  for (const obj of collection) {
-    for (const tag of obj.tags || []) {
+  collection.forEach(obj => {
+    (obj.tags || []).forEach(tag => {
       if (!htags[tag]) htags[tag] = 1;
       else htags[tag] += 1;
-    }
-  }
+    });
+  });
   return htags;
 };
 

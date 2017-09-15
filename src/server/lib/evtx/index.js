@@ -15,10 +15,10 @@ export class Service extends EventEmitter {
   }
 
   setup(definition) {
-    for (const key of Object.keys(definition)) {
+    Object.keys(definition).forEach(key => {
       const value = definition[key];
       if (isFunction(value)) this.addMethod(key);
-    }
+    });
   }
 
   getBeforeHooks(key = 'all') {
