@@ -4,31 +4,31 @@ import styled from 'styled-components';
 
 export const HeaderLeftElt = styled.div`
   display: flex;
-  fontSize: 1.5em;
-  alignItems: center;
+  font-size: 1.5em;
+  align-items: center;
   flex: 1;
 `;
 
 export const HeaderRightElt = styled.div`
   display: flex;
-  fontSize: 1.5em;
-  alignItems: center;
-  justifyContent: flex-end;
+  font-size: 1.5em;
+  align-items: center;
+  justify-content: flex-end;
   flex: 1;
 `;
 
 export const HeaderElt = styled.div`
-  paddingTop: 1rem;
+  padding-top: 1rem;
   display: flex;
-  marginBottom: 1em;
-  borderBottom: 1px solid darkgrey;
-  justifyContent: space-between;
-  flexWrap: wrap;
+  margin-bottom: 1em;
+  border-bottom: 1px solid darkgrey;
+  justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 export const TimeElt = styled.div`
-  fontSize: '.7rem';
-  fontStyle: 'italic';
+  font-size: '.7rem';
+  font-style: 'italic';
   display: 'block';
   float: 'right';
 `;
