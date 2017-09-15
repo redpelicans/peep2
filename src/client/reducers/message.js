@@ -1,4 +1,4 @@
-import { ADD_ALERT } from '../actions/message';
+import { ADD_ALERT, SUCCESS, WARNING } from '../actions/message';
 import { COMPANY_ADDED, COMPANY_UPDATED } from '../actions/companies';
 import { PEOPLE_ADDED, PEOPLE_UPDATED } from '../actions/people';
 
@@ -14,7 +14,7 @@ const message = (state = {}, action) => {
       const { name, authorId } = payload;
       return {
         id: state.id + 1,
-        type: 'success',
+        type: SUCCESS,
         icon: 'home',
         message: `Company '${name}' added`,
         authorId,
@@ -24,7 +24,7 @@ const message = (state = {}, action) => {
       const { name, authorId } = payload;
       return {
         id: state.id + 1,
-        type: 'warning',
+        type: WARNING,
         icon: 'home',
         message: `Company '${name}' updated`,
         authorId,
@@ -34,7 +34,7 @@ const message = (state = {}, action) => {
       const { name, authorId } = payload;
       return {
         id: state.id + 1,
-        type: 'success',
+        type: SUCCESS,
         icon: 'team',
         message: `People '${name}' added`,
         authorId,
@@ -44,7 +44,7 @@ const message = (state = {}, action) => {
       const { name, authorId } = payload;
       return {
         id: state.id + 1,
-        type: 'warning',
+        type: WARNING,
         icon: 'team',
         message: `People '${name}' updated`,
         authorId,
