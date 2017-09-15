@@ -62,11 +62,24 @@ class Preview extends Component {
     showActions: false,
   };
 
+  handleMouseEnter = () => {
+    this.setState({ showActions: true });
+  }
+
+  handleMouseLeave = () => {
+    this.setState({ showActions: false });
+  }
+
   render() {
     const { companie: { name, avatar, tags = [] } } = this.props;
     const { showActions } = this.state;
     return (
-      <PreviewContainer className="pt-card pt-elevation-0 pt-interactive">
+      <PreviewContainer
+        className="pt-card pt-elevation-0 pt-interactive"
+        onMouseOver={this.handleMouseEnter}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
         <TitleRow>
           <Avatar
             name={name}

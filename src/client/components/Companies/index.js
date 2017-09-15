@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
 import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
-import { TitleIcon, Header, HeaderLeft, HeaderRight, Title } from '../widgets/Header';
+import { TitleIcon, Header, HeaderLeft, HeaderRight, Title, Search } from '../widgets/Header';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
 
 const Container = styled.div`
@@ -19,22 +19,32 @@ const Container = styled.div`
   border-radius: 3px;
 `;
 
-const Companies = ({ companies, filter, preferredFilter, sort }) => (
-  <Container>
-    {console.log('compagies: ', companies)}
-    {console.log('filter: ', filter)}
-    {console.log('preferredFilter: ', preferredFilter)}
-    {console.log('sort: ', sort)}
-    <Header>
-      <HeaderLeft>
-        <TitleIcon name="home" />
-        <Title title="Companies" />
-      </HeaderLeft>
-      <HeaderRight />
-    </Header>
-    <List companies={companies} filterCompanyList={filterCompanyList} togglePreferred={togglePreferred} />
-  </Container>
-);
+class Companies extends Component {
+  onFilterChange = (e) => {
+    const { filterCompanyList } = this.props; // eslint-disable-line no-shadow
+    filterCompanyList(e.target.value);
+  }
+
+  render() {
+    const { companies, filter, preferredFilter, sort } = this.props;
+    return (
+      <Container>
+        {console.log('preferredFilter: ', preferredFilter)}
+        {console.log('sort: ', sort)}
+        <Header>
+          <HeaderLeft>
+            <TitleIcon name="home" />
+            <Title title="Companies" />
+          </HeaderLeft>
+          <HeaderRight>
+            <Search filter={filter} onChange={this.onFilterChange} style={{ margin: '0 16px' }} />
+          </HeaderRight>
+        </Header>
+        <List companies={companies} filterCompanyList={filterCompanyList} togglePreferred={togglePreferred} />
+      </Container>
+    );
+  }
+}
 
 
 Companies.propTypes = {
@@ -44,7 +54,7 @@ Companies.propTypes = {
   companies: PropTypes.array.isRequired,
   filter: PropTypes.string,
   preferredFilter: PropTypes.bool,
-  // filterCompanyList: PropTypes.func.isRequired,
+  filterCompanyList: PropTypes.func.isRequired,
   // sortCompanyList: PropTypes.func.isRequired,
   // togglePreferred: PropTypes.func.isRequired,
   // togglePreferredFilter: PropTypes.func.isRequired,

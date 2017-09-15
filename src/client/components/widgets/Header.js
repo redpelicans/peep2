@@ -38,6 +38,9 @@ export const TimeElt = styled.div`
   float: 'right';
 `;
 
+const SearchBar = styled.input`
+  margin-right:20px;
+`;
 export const HeaderLeft = ({ children }) =>
   (<HeaderLeftElt>
     {children}
@@ -92,12 +95,20 @@ Header.propTypes = {
   children: PropTypes.node,
 };
 
-export const Search = ({ onChange, filter, style = {} }) => console.log(onChange, filter, style);
+export const Search = ({ onChange, filter }) => (
+  <SearchBar
+    className="pt-input"
+    type="text"
+    placeholder="Enter your filter ..."
+    dir="auto"
+    value={filter}
+    onChange={onChange}
+  />
+);
 
 Search.propTypes = {
   onChange: React.PropTypes.func.isRequired,
   filter: React.PropTypes.string,
-  style: PropTypes.object,
 };
 
 export const Title = ({ title }) => (
