@@ -13,11 +13,10 @@ const Container = styled.div`
   display: grid;
   padding: 20px;
   width:95%;
-  height:auto;
   margin:auto;
-  margin-top:50px;
+  margin-top:25px;
   background-color: #394b59;
-  border-radius: 3px;
+  border-radius: 2px;
 `;
 
 class Companies extends Component {
@@ -27,7 +26,7 @@ class Companies extends Component {
   }
 
   render() {
-    const { companies, filter, sort, sortCompanyList } = this.props; // eslint-disable-line no-shadow
+    const { companies, filter, sort, sortCompanyList, filterCompanyList } = this.props; // eslint-disable-line no-shadow
 
     return (
       <Container>

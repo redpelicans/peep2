@@ -5,7 +5,6 @@ export const HeaderLeftElt = styled.div`
   display: flex;
   font-size: 1.5em;
   align-items: center;
-  margin-left:25px;
   margin-right:25px;
   flex: 1;
 `;
@@ -15,7 +14,6 @@ export const HeaderRightElt = styled.div`
   font-size: 1.5em;
   align-items: center;
   justify-content: flex-end;
-  margin-right:25px;
   margin-left:25px;
   flex: 1;
 `;
@@ -28,6 +26,7 @@ export const HeaderElt = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   border-bottom: 1px solid white;
+  grid-row: 2;
 `;
 
 const SearchBar = styled.div`

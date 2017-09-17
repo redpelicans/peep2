@@ -78,8 +78,9 @@ class Preview extends Component {
   }
 
   render() {
-    const { companie: { name, avatar, tags = [] } } = this.props;
+    const { companie: { name, avatar, tags = [] }, filterCompanyList } = this.props;
     const { showActions } = this.state;
+    const handleClick = tag => filterCompanyList(`#${tag}`);
     return (
       <PreviewContainer
         className="pt-card pt-elevation-0 pt-interactive"
@@ -100,7 +101,7 @@ class Preview extends Component {
         </TitleRow>
         {!isEmpty(tags) &&
           <Tags>
-            {map(tag => (<Tag key={tag}>{tag}</Tag>))(tags)}
+            {map(tag => (<Tag key={tag} onClick={() => handleClick(tag)}>{tag}</Tag>))(tags)}
           </Tags>
         }
       </PreviewContainer>
@@ -110,6 +111,7 @@ class Preview extends Component {
 
 Preview.propTypes = {
   companie: PropTypes.object.isRequired,
+  filterCompanyList: PropTypes.func.isRequired,
 };
 
 export default Preview;

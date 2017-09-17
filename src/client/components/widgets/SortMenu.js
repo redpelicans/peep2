@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const SortIcon = styled.div`
+  cursor: pointer;
+`;
 
 class SortMenu extends Component {
   state = {
@@ -9,7 +14,7 @@ class SortMenu extends Component {
     const { sort } = this.props;
     console.log(sort);
     return (
-      <span
+      <SortIcon
         className="pt-icon-standard pt-icon-double-caret-vertical"
       />
     );
