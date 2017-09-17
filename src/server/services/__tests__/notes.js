@@ -1,12 +1,12 @@
-import should from 'should';
 import R from 'ramda';
 import sinon from 'sinon';
 import { ObjectId } from 'mongobless';
+import params from '../../../../params';
 import { notes } from '../cities';
 import Note from '../../models/notes';
-import evtX from '../../lib/evtx';
+import evtX from 'evtx';
 import initNotes from '../notes';
-import { connect, close, drop } from '../../models/__test__/utils';
+import { connect, close, drop } from '../../utils/tests';
 
 const evtx = evtX().configure(initNotes);
 const service = evtx.service('notes');
@@ -34,13 +34,15 @@ const data = {
   }
 };
 
-describe('Notes service', function() {
-  before(() => connect(this));
-  beforeEach(() => drop(this));
-  after(close);
+let db;
+beforeAll(() => connect(params.db).then(ctx => db = ctx));
+afterAll(close);
 
-  it('should load', (done) => {
-    const noteStub = sinon.stub(Note, 'findAll', () => Promise.resolve(data.collections.notes));
+describe('Notes service', function() {
+  beforeEach(() => drop(db));
+
+  it('expect load', (done) => {
+    const noteStub = sinon.stub(Note, 'findAll').callsFake(() => Promise.resolve(data.collections.notes));
     const end = (...params) => {
       noteStub.restore();
       done(...params);
@@ -48,13 +50,13 @@ describe('Notes service', function() {
     const user = { _id: 0 };
     service.load(null, { user })
       .then(notes => {
-        should(notes.map(n => n.content)).eql(data.collections.notes.map(n => n.content));
+        expect(notes.map(n => n.content)).toEqual(data.collections.notes.map(n => n.content));
         end();
     })
     .catch(end);
   });
 
-  it('should add', (done) => {
+  it('expect add', (done) => {
     const newObj = {
       content: 'content',
       entityType: 'company',
@@ -73,7 +75,7 @@ describe('Notes service', function() {
         notification: true,
         status: 'done',
       };
-      should(R.omit(['_id', 'entityId', 'createdAt', 'constructor'], obj)).eql(res);
+      expect(R.omit(['_id', 'entityId', 'createdAt', 'constructor'], obj)).toEqual(res);
       return obj;
     };
     service.add(newObj, { user })
@@ -82,7 +84,7 @@ describe('Notes service', function() {
       .catch(done);
   });
 
-  it('should update', (done) => {
+  it('expect update', (done) => {
     const newObj = {
       content: 'content',
       entityType: 'company',
@@ -109,8 +111,8 @@ describe('Notes service', function() {
         notification: true,
         status: 'already done',
       };
-      should(R.omit(['_id', 'entityId', 'updatedAt', 'constructor'], obj)).eql(res);
-      should(obj.entityId.toString()).eql(newObj.entityId.toString());
+      expect(R.omit(['_id', 'entityId', 'updatedAt', 'constructor'], obj)).toEqual(res);
+      expect(obj.entityId.toString()).toEqual(newObj.entityId.toString());
       return obj;
     };
 

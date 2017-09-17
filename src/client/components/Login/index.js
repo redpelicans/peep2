@@ -17,7 +17,7 @@ export const Content = styled.div`
 class App extends React.Component {
   componentWillMount() {
     const { user, history } = this.props;
-    if (user) history.replace(defaultRoute().path);
+    if (user) history.replace(defaultRoute.path);
   }
 
   render() {

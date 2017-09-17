@@ -1,4 +1,3 @@
-import should from 'should';
 import sinon from 'sinon';
 import { cities } from '../cities';
 import { Company } from '../../models';
@@ -14,15 +13,15 @@ const data = {
 };
 
 describe('Cities service', function() {
-  it('should load', (done) => {
-    const companyStub = sinon.stub(Company, 'findAll', () => Promise.resolve(data.collections.companies));
+  it('expect load', (done) => {
+    const companyStub = sinon.stub(Company, 'findAll').callsFake(() => Promise.resolve(data.collections.companies));
     const end = (...params) => {
       companyStub.restore();
       done(...params);
     };
     cities.load()
       .then( (c) => {
-        should(c).eql(['C1', 'C2', 'Paris']);
+        expect(c).toEqual(['C1', 'C2', 'Paris']);
         end();
     })
     .catch(end);

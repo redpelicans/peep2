@@ -1,4 +1,3 @@
-import should from 'should';
 import sinon from 'sinon';
 import R from 'ramda';
 import { skills, baseskills } from '../skills';
@@ -16,7 +15,7 @@ const data = {
 
 describe('Skills services', function() {
   it('should load', (done) => {
-    const personStub = sinon.stub(Person, 'findAll', () => Promise.resolve(data.collections.people));
+    const personStub = sinon.stub(Person, 'findAll').callsFake(() => Promise.resolve(data.collections.people));
     const end = (...params) => {
       personStub.restore();
       done(...params);
@@ -24,7 +23,7 @@ describe('Skills services', function() {
     skills.load()
       .then( skills => {
         const res = R.compose(R.sortBy(R.prop(0)), R.uniq, R.concat(baseskills))(['C1', 'C2', 'C3']);
-        should(skills).eql(res);
+        expect(skills).toEqual(res);
         end();
     })
     .catch(end);

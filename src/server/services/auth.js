@@ -42,7 +42,7 @@ const checkGoogleUser = (token, { clientId }) => {
 
 export const auth = {
   checkToken() {
-    const { user, socket, message: { token } } = this;
+    const { user, locals: { socket }, message: { token } } = this;
     if (!token) return Promise.resolve({});
     if (user) {
       this.emit('auth:login', { user, socket });
@@ -53,20 +53,21 @@ export const auth = {
 
   login({ idToken }) {
     if (!idToken) throw new Error('Cannot login without a token');
-    const { secretKey, sessionDuration, google: googleConfig } = this.evtx.config;
+    const { secretKey, sessionDuration, google: googleConfig } = this.globals;
     return checkGoogleUser(idToken, googleConfig)
       .then(loadUser)
       .then((user) => {
         const expires = moment().add(sessionDuration || 8, 'hours').toDate();
         const token = getToken(user, secretKey, expires);
-        const { socket } = this;
+        const { socket } = this.locals;
         this.emit('auth:login', { user, socket });
         return { user, token };
       });
   },
 
   logout() {
-    const { user, socket } = this;
+    const { user } = this;
+    const { socket } = this.locals;
     this.emit('auth:logout', { user, socket });
     return Promise.resolve();
   },
