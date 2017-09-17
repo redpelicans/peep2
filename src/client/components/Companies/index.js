@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
 import { TitleIcon, Header, HeaderLeft, HeaderRight, Title, Search } from '../widgets/Header';
+import SortMenu from '../widgets/SortMenu';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
 
 const Container = styled.div`
@@ -26,18 +27,18 @@ class Companies extends Component {
   }
 
   render() {
-    const { companies, filter, preferredFilter, sort } = this.props;
+    const { companies, filter, sort, sortCompanyList } = this.props; // eslint-disable-line no-shadow
+
     return (
       <Container>
-        {console.log('preferredFilter: ', preferredFilter)}
-        {console.log('sort: ', sort)}
         <Header>
           <HeaderLeft>
-            <TitleIcon name="home" />
+            <TitleIcon name="pt-icon-standard pt-icon-home" />
             <Title title="Companies" />
           </HeaderLeft>
           <HeaderRight>
             <Search filter={filter} onChange={this.onFilterChange} style={{ margin: '0 16px' }} />
+            <SortMenu onClick={sortCompanyList} sort={sort} />
           </HeaderRight>
         </Header>
         <List companies={companies} filterCompanyList={filterCompanyList} togglePreferred={togglePreferred} />
@@ -53,18 +54,14 @@ Companies.propTypes = {
 Companies.propTypes = {
   companies: PropTypes.array.isRequired,
   filter: PropTypes.string,
-  preferredFilter: PropTypes.bool,
   filterCompanyList: PropTypes.func.isRequired,
-  // sortCompanyList: PropTypes.func.isRequired,
-  // togglePreferred: PropTypes.func.isRequired,
-  // togglePreferredFilter: PropTypes.func.isRequired,
+  sortCompanyList: PropTypes.func.isRequired,
   sort: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   companies: getVisibleCompanies(state),
   filter: state.companies.filter,
-  preferredFilter: state.companies.preferredFilter,
   sort: state.companies.sort,
 });
 

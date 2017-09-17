@@ -6,7 +6,7 @@ const ListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
   grid-template-rows: repeat(auto-fill, 100px);
-  grid-gap: 10px;
+  grid-gap: 15px;
 `;
 
 export const List = ({ companies, ...params }) => (

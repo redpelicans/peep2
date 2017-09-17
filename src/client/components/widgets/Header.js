@@ -5,6 +5,8 @@ export const HeaderLeftElt = styled.div`
   display: flex;
   font-size: 1.5em;
   align-items: center;
+  margin-left:25px;
+  margin-right:25px;
   flex: 1;
 `;
 
@@ -13,6 +15,8 @@ export const HeaderRightElt = styled.div`
   font-size: 1.5em;
   align-items: center;
   justify-content: flex-end;
+  margin-right:25px;
+  margin-left:25px;
   flex: 1;
 `;
 
@@ -20,13 +24,15 @@ export const HeaderElt = styled.div`
   padding-top: 1rem;
   display: flex;
   margin-bottom: 1em;
-  padding-bottom: 1em;
+  padding-bottom: 2em;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-color:rgb(41, 55, 66);
-  border-radius: 2px;
+  border-bottom: 1px solid white;
 `;
 
+const SearchBar = styled.div`
+  margin-right:25px;
+`;
 const TitleStyle = styled.div`
   color: white;
 `;
@@ -38,9 +44,6 @@ export const TimeElt = styled.div`
   float: 'right';
 `;
 
-const SearchBar = styled.input`
-  margin-right:20px;
-`;
 export const HeaderLeft = ({ children }) =>
   (<HeaderLeftElt>
     {children}
@@ -97,13 +100,18 @@ Header.propTypes = {
 
 export const Search = ({ onChange, filter }) => (
   <SearchBar
-    className="pt-input"
-    type="text"
-    placeholder="Enter your filter ..."
-    dir="auto"
-    value={filter}
-    onChange={onChange}
-  />
+    className="pt-input-group"
+  >
+    <span className="pt-icon pt-icon-search" />
+    <input
+      className="pt-input"
+      type="search"
+      placeholder="Enter your filter ..."
+      dir="auto"
+      value={filter}
+      onChange={onChange}
+    />
+  </SearchBar>
 );
 
 Search.propTypes = {
@@ -123,10 +131,11 @@ Title.propTypes = {
 
 const IconElt = styled.div`
   margin-right: 10px;
+  margin-left: 10px;
 `;
 
 export const TitleIcon = ({ name }) => (
-  <IconElt type={name} />
+  <IconElt className={name} />
 );
 
 TitleIcon.propTypes = {

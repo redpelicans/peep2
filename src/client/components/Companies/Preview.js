@@ -12,6 +12,13 @@ const PreviewContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: space-between;
+  background-color: #fff;
+  border-bottom: 1px solid #c4c4c4;
+  border-left: 1px solid #d3d3d3;
+  border-right: 1px solid #d3d3d3;
+  border-top: 1px solid #d3d3d3;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.07);
+  border-radius:1px;
 `;
 
 const Title = styled.h3`
