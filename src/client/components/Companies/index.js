@@ -6,8 +6,8 @@ import { bindActionCreators } from 'redux';
 import { isEmpty } from 'ramda';
 import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
-import { TitleIcon, Header, HeaderLeft, HeaderRight, Title, Search } from '../Header';
-import SortMenu from '../widgets/SortMenu';
+import { Header, HeaderLeft, HeaderRight } from '../Header';
+import { Search, SortMenu, TitleIcon, Title } from '../widgets';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
 
 const Container = styled.div`
@@ -51,7 +51,7 @@ class Companies extends Component {
             <Title title="Companies" />
           </HeaderLeft>
           <HeaderRight>
-            <Search filter={filter} onChange={this.onFilterChange} resetValue={() => filterCompanyList('')} style={{ margin: '0 16px' }} />
+            <Search filter={filter} onChange={this.onFilterChange} resetValue={() => filterCompanyList('')} />
             <SortMenu onClick={sortCompanyList} sort={sort} />
           </HeaderRight>
         </Header>
