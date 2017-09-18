@@ -5,7 +5,6 @@ import { memoize, map, times } from 'ramda';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { startOfMonth, endOfMonth, getDay, format, addDays, startOfWeek, startOfDay } from 'date-fns';
-// import { onlyUpdateForKeys } from 'recompose';
 import { dmy } from '../../utils';
 
 const StyledCalendar = styled.div`
@@ -60,17 +59,16 @@ Calendar.propTypes = {
   onPeriodSelection: PropTypes.func.isRequired,
 };
 
+const StyledMonth = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, minmax(200px, 300px));
+  grid-auto-rows: 200px;
+  @media (max-width: 800px) {
+    grid-template-columns: minmax(200px, 1fr);
+  }
+`;
 
 const Month = ({ date, from, to, ...others }) => {
-  const StyledMonth = styled.div`
-    display: grid;
-    grid-template-columns: repeat(7, minmax(200px, 300px));
-    grid-auto-rows: 200px;
-    @media (max-width: 800px) {
-      grid-template-columns: minmax(200px, 1fr);
-    }
-  `;
-
   const betweenDates = (date, first, last) => { // eslint-disable-line no-shadow
     if (first <= last) return date >= first && date <= last;
     return date >= last && date <= first;
@@ -108,22 +106,22 @@ Month.propTypes = {
   to: PropTypes.object,
 };
 
+const StyledContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, minmax(200px, 1fr));
+  justify-items: center;
+  @media (max-width: 800px) {
+    display: none;
+  }
+`;
+
+const StyledWeekDay = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+`;
+
 const WeekDays = () => {
-  const StyledContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(7, minmax(200px, 1fr));
-    justify-items: center;
-    @media (max-width: 800px) {
-      display: none;
-    }
-  `;
-
-  const StyledWeekDay = styled.span`
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 2px;
-  `;
-
   const dayNames = times(i => format(addDays(startOfWeek(new Date()), i), ['ddd']), 7);
   const days = map(day => <StyledWeekDay key={day}>{day}</StyledWeekDay>, dayNames);
 
@@ -133,49 +131,8 @@ const WeekDays = () => {
     </StyledContainer>
   );
 };
-// const Day = ({ date, index, inBound, selected, onMouseEnter, onMouseDown, onMouseUp, dayComponent, ...others }) => {
-//   const StyledDay = styled.div`
-//     overflow: hidden;
-//     border-style: solid;
-//     border-color: #5b6062;
-//     background-color: ${props => props.selected ? '#637D93' : '#434857'};
-//     border-width: ${props => {
-//     const bs = '1px';
-//     if (props.index === 28) return [bs, bs, bs, bs].join(' ');
-//     if (!(props.index % 7)) return [bs, bs, '0px', bs].join(' ');
-//     if (props.index > 28) return [bs, bs, bs, '0px'].join(' ');
-//     return [bs, bs, '0px', '0px'].join(' ');
-//   }};
-//   `;
-//
-//   const handleMouseDown = (e) => {
-//     onMouseDown(date);
-//     e.stopPropagation();
-//   };
-//
-//   const handleMouseUp = (e) => {
-//     onMouseUp(date);
-//     e.stopPropagation();
-//   };
-//
-//   const handleMouseEnter = (e) => {
-//     onMouseEnter(date);
-//     e.stopPropagation();
-//   };
-//
-//   const DayComponent = dayComponent;
-//
-//   return (
-//     <StyledDay selected={selected} index={index} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseEnter={handleMouseEnter}>
-//       <DayHeader date={date} inBound={inBound} />
-//       <DayComponent date={date} {...others} />
-//     </StyledDay>
-//   );
-// };
-//
 
-const Day = ({ date, index, selected, onMouseEnter, onMouseDown, onMouseUp, inBound }) => {
-  const StyledDay = styled.div`
+const StyledDay = styled.div`
     overflow: hidden;
     border-style: solid;
     border-color: #5b6062;
@@ -187,8 +144,9 @@ const Day = ({ date, index, selected, onMouseEnter, onMouseDown, onMouseUp, inBo
     if (props.index > 28) return [bs, bs, bs, '0px'].join(' ');
     return [bs, bs, '0px', '0px'].join(' ');
   }};
-  `;
+`;
 
+const Day = ({ date, index, inBound, selected, onMouseEnter, onMouseDown, onMouseUp, dayComponent, ...others }) => {
   const handleMouseDown = (e) => {
     onMouseDown(date);
     e.stopPropagation();
@@ -204,10 +162,12 @@ const Day = ({ date, index, selected, onMouseEnter, onMouseDown, onMouseUp, inBo
     e.stopPropagation();
   };
 
+  const DayComponent = dayComponent;
 
   return (
     <StyledDay selected={selected} index={index} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseEnter={handleMouseEnter}>
       <DayHeader date={date} inBound={inBound} />
+      <DayComponent date={date} {...others} />
     </StyledDay>
   );
 };
@@ -220,7 +180,15 @@ Day.propTypes = {
   onMouseUp: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func.isRequired,
   inBound: PropTypes.bool.isRequired,
+  dayComponent: PropTypes.func.isRequired,
 };
+
+const StyledDayHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+`;
 
 class DayHeader extends Component {
   shouldComponentUpdate(nextProps) {
@@ -229,13 +197,6 @@ class DayHeader extends Component {
 
   render() {
     const { date, inBound } = this.props;
-    const StyledDayHeader = styled.div`
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-    `;
-
     return (
       <StyledDayHeader>
         <DayOfMonth date={date} inBound={inBound} />
@@ -250,37 +211,34 @@ DayHeader.propTypes = {
   inBound: PropTypes.bool.isRequired,
 };
 
-const DayOfMonth = ({ date, inBound }) => {
-  const StyledDayOfMonth = styled.div`
-    font-size: 0.9em;
-    margin: 5px;
-    font-size: 0.9em;
-    margin: 5px;
-    ${props => !props.inBound && css`color:  grey;`};
-  `;
-  return (
-    <StyledDayOfMonth inBound={inBound}>{format(date, ['D'])}</StyledDayOfMonth>
-  );
-};
+const StyledDayOfMonth = styled.div`
+  font-size: 0.9em;
+  margin: 5px;
+  font-size: 0.9em;
+  margin: 5px;
+  ${props => !props.inBound && css`color:  grey;`};
+`;
+
+const DayOfMonth = ({ date, inBound }) => <StyledDayOfMonth inBound={inBound}>{format(date, ['D'])}</StyledDayOfMonth>;
 
 DayOfMonth.propTypes = {
   date: PropTypes.object.isRequired,
   inBound: PropTypes.bool,
 };
 
-const WeekNumber = ({ date }) => {
-  const StyledWeekNumber = styled.div`
-    font-size: 0.9em;
-    padding: .2rem;
-    margin: 1px;
-    color: #cfd2da;
-    background-color: #0275d8;
-    display: inline-block;
-    text-align: center;
-    vertical-align: baseline;
-    border-radius: .25rem;
-  `;
+const StyledWeekNumber = styled.div`
+  font-size: 0.9em;
+  padding: .2rem;
+  margin: 1px;
+  color: #cfd2da;
+  background-color: #0275d8;
+  display: inline-block;
+  text-align: center;
+  vertical-align: baseline;
+  border-radius: .25rem;
+`;
 
+const WeekNumber = ({ date }) => {
   if (getDay(date) !== 1) return <div />;
   return (
     <StyledWeekNumber>{format(date, ['W'])}</StyledWeekNumber>
