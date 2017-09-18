@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import routes, { defaultRoute } from '../../routes';
 import { logout } from '../../actions/login';
 import { Auth } from '../../lib/kontrolo';
+import Message from '../Message';
 import Header from './Header';
 
 const Layout = styled.div`
@@ -35,7 +36,6 @@ const StyledHeader = styled(Header)`
   padding: 0 15px;
 `;
 
-
 const App = props => {
   const makeAuthRoute = route => (props) => { // eslint-disable-line no-shadow
     if (route.auth) {
@@ -49,6 +49,7 @@ const App = props => {
   };
   return (
     <Layout>
+      <Message message={props.message} />
       <StyledHeader {...props} />
       <Content>
         <Switch>
@@ -71,12 +72,14 @@ const App = props => {
 
 App.propTypes = {
   user: PropTypes.object,
+  message: PropTypes.object,
   history: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   user: state.login.user,
+  message: state.message,
 });
 
 const actions = { logout };
