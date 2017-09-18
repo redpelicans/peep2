@@ -120,6 +120,9 @@ module.exports = {
               
             },
             loader: require.resolve('eslint-loader'),
+            options: {
+              failOnError: false,
+            },
           },
         ],
         include: paths.appSrc,

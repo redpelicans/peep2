@@ -1,10 +1,11 @@
 /* eslint-disable react/no-multi-comp */
 
 import React, { Component } from 'react';
-import { map, times } from 'ramda';
+import { memoize, map, times } from 'ramda';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import moment from 'moment';
+import { startOfMonth, endOfMonth, getDay, format, addDays, startOfWeek, startOfDay } from 'date-fns';
+// import { onlyUpdateForKeys } from 'recompose';
 import { dmy } from '../../utils';
 
 const StyledCalendar = styled.div`
@@ -14,26 +15,27 @@ class Calendar extends Component {
   state = { mouseDown: false }
 
   handleMouseDown = date => {
-    this.setState({ firstSelectedDate: date, lastSelectedDate: date, mouseDown: true });
+    this.setState({ from: date, to: date, mouseDown: true });
   }
 
   handleMouseUp = date => {
-    this.setState({ lastSelectedDate: date, mouseDown: false });
-    const { firstSelectedDate } = this.state;
-    const { onPeriodSelection } = this.props;
-    if (firstSelectedDate <= date) return onPeriodSelection(firstSelectedDate, date);
-    onPeriodSelection(date, firstSelectedDate);
+    this.setState({ to: date, mouseDown: false }, () => {
+      const { from } = this.state;
+      const { onPeriodSelection } = this.props;
+      if (from <= date) return onPeriodSelection(from, date);
+      onPeriodSelection(date, from);
+    });
   }
 
   handleMouseEnter = date => {
-    const { firstSelectedDate, mouseDown } = this.state;
-    if (firstSelectedDate && mouseDown) this.setState({ lastSelectedDate: date });
+    const { from, mouseDown } = this.state;
+    if (from && mouseDown) this.setState({ to: date });
   }
 
   render() {
     const { date, ...others } = this.props;
-    const { firstSelectedDate, lastSelectedDate } = this.state;
-    const currentDate = date ? moment(date) : moment();
+    const { from, to } = this.state;
+    const currentDate = date ? startOfDay(date) : startOfDay(new Date());
 
     return (
       <StyledCalendar>
@@ -41,8 +43,8 @@ class Calendar extends Component {
         <Month
           date={currentDate}
           {...others}
-          firstSelectedDate={firstSelectedDate}
-          lastSelectedDate={lastSelectedDate}
+          from={from}
+          to={to}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onMouseEnter={this.handleMouseEnter}
@@ -59,10 +61,10 @@ Calendar.propTypes = {
 };
 
 
-const Month = ({ date, firstSelectedDate, lastSelectedDate, ...others }) => {
+const Month = ({ date, from, to, ...others }) => {
   const StyledMonth = styled.div`
     display: grid;
-    grid-template-columns: repeat(7, minmax(200px, 1fr));
+    grid-template-columns: repeat(7, minmax(200px, 300px));
     grid-auto-rows: 200px;
     @media (max-width: 800px) {
       grid-template-columns: minmax(200px, 1fr);
@@ -74,36 +76,36 @@ const Month = ({ date, firstSelectedDate, lastSelectedDate, ...others }) => {
     return date >= last && date <= first;
   };
 
-  const days = () => {
-    const first = date.clone().startOf('month');
-    const last = date.clone().endOf('month');
-    const current = first.clone().subtract(first.day() + 1, 'days');
+  const days = memoize(d => {
+    const first = startOfMonth(d);
+    const last = endOfMonth(d);
+    const start = startOfWeek(first);
     const cells = times(id => {
-      current.add(1, 'day');
+      const current = addDays(start, id);
       const key = dmy(current);
       return (<Day
         key={key}
         index={id}
         inBound={current >= first && current <= last}
-        selected={betweenDates(current, firstSelectedDate, lastSelectedDate)}
-        date={current.clone()}
+        selected={betweenDates(current, from, to)}
+        date={current}
         {...others}
       />);
     }, 35);
     return cells;
-  };
+  });
 
   return (
     <StyledMonth>
-      {days()}
+      {days(date)}
     </StyledMonth>
   );
 };
 
 Month.propTypes = {
   date: PropTypes.object.isRequired,
-  firstSelectedDate: PropTypes.object,
-  lastSelectedDate: PropTypes.object,
+  from: PropTypes.object,
+  to: PropTypes.object,
 };
 
 const WeekDays = () => {
@@ -122,7 +124,8 @@ const WeekDays = () => {
     margin-bottom: 2px;
   `;
 
-  const days = map(day => <StyledWeekDay key={day}>{day}</StyledWeekDay>, moment.weekdaysShort());
+  const dayNames = times(i => format(addDays(startOfWeek(new Date()), i), ['ddd']), 7);
+  const days = map(day => <StyledWeekDay key={day}>{day}</StyledWeekDay>, dayNames);
 
   return (
     <StyledContainer>
@@ -130,8 +133,48 @@ const WeekDays = () => {
     </StyledContainer>
   );
 };
+// const Day = ({ date, index, inBound, selected, onMouseEnter, onMouseDown, onMouseUp, dayComponent, ...others }) => {
+//   const StyledDay = styled.div`
+//     overflow: hidden;
+//     border-style: solid;
+//     border-color: #5b6062;
+//     background-color: ${props => props.selected ? '#637D93' : '#434857'};
+//     border-width: ${props => {
+//     const bs = '1px';
+//     if (props.index === 28) return [bs, bs, bs, bs].join(' ');
+//     if (!(props.index % 7)) return [bs, bs, '0px', bs].join(' ');
+//     if (props.index > 28) return [bs, bs, bs, '0px'].join(' ');
+//     return [bs, bs, '0px', '0px'].join(' ');
+//   }};
+//   `;
+//
+//   const handleMouseDown = (e) => {
+//     onMouseDown(date);
+//     e.stopPropagation();
+//   };
+//
+//   const handleMouseUp = (e) => {
+//     onMouseUp(date);
+//     e.stopPropagation();
+//   };
+//
+//   const handleMouseEnter = (e) => {
+//     onMouseEnter(date);
+//     e.stopPropagation();
+//   };
+//
+//   const DayComponent = dayComponent;
+//
+//   return (
+//     <StyledDay selected={selected} index={index} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseEnter={handleMouseEnter}>
+//       <DayHeader date={date} inBound={inBound} />
+//       <DayComponent date={date} {...others} />
+//     </StyledDay>
+//   );
+// };
+//
 
-const Day = ({ date, index, inBound, selected, onMouseEnter, onMouseDown, onMouseUp, dayComponent, style, ...others }) => {
+const Day = ({ date, index, selected, onMouseEnter, onMouseDown, onMouseUp, inBound }) => {
   const StyledDay = styled.div`
     overflow: hidden;
     border-style: solid;
@@ -147,26 +190,24 @@ const Day = ({ date, index, inBound, selected, onMouseEnter, onMouseDown, onMous
   `;
 
   const handleMouseDown = (e) => {
-    e.preventDefault();
     onMouseDown(date);
+    e.stopPropagation();
   };
 
   const handleMouseUp = (e) => {
-    e.preventDefault();
     onMouseUp(date);
+    e.stopPropagation();
   };
 
   const handleMouseEnter = (e) => {
-    e.preventDefault();
     onMouseEnter(date);
+    e.stopPropagation();
   };
 
-  const DayComponent = dayComponent;
 
   return (
     <StyledDay selected={selected} index={index} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseEnter={handleMouseEnter}>
       <DayHeader date={date} inBound={inBound} />
-      <DayComponent date={date} {...others} />
     </StyledDay>
   );
 };
@@ -174,13 +215,11 @@ const Day = ({ date, index, inBound, selected, onMouseEnter, onMouseDown, onMous
 Day.propTypes = {
   date: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  inBound: PropTypes.bool.isRequired,
   selected: PropTypes.bool.isRequired,
   onMouseDown: PropTypes.func.isRequired,
   onMouseUp: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func.isRequired,
-  dayComponent: PropTypes.func.isRequired,
-  style: PropTypes.object,
+  inBound: PropTypes.bool.isRequired,
 };
 
 class DayHeader extends Component {
@@ -220,7 +259,7 @@ const DayOfMonth = ({ date, inBound }) => {
     ${props => !props.inBound && css`color:  grey;`};
   `;
   return (
-    <StyledDayOfMonth inBound={inBound}>{date.format('D')}</StyledDayOfMonth>
+    <StyledDayOfMonth inBound={inBound}>{format(date, ['D'])}</StyledDayOfMonth>
   );
 };
 
@@ -242,9 +281,9 @@ const WeekNumber = ({ date }) => {
     border-radius: .25rem;
   `;
 
-  if (date.day() !== 1) return <div />;
+  if (getDay(date) !== 1) return <div />;
   return (
-    <StyledWeekNumber>{date.format('w')}</StyledWeekNumber>
+    <StyledWeekNumber>{format(date, ['W'])}</StyledWeekNumber>
   );
 };
 

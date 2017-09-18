@@ -1,14 +1,15 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { onlyUpdateForKeys } from 'recompose';
 import Calendar from './Calendar';
 import Day from './Day';
 
+const today = new Date();
 
 const Agenda = () => (
   <div>
     <Calendar
+      date={today}
       dayComponent={Day}
       onPeriodSelection={console.log}
     />
@@ -19,7 +20,4 @@ const Agenda = () => (
 Agenda.propTypes = {
 };
 
-const actions = { };
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-
-export default connect(mapDispatchToProps)(Agenda);
+export default onlyUpdateForKeys(['toto'])(Agenda);
