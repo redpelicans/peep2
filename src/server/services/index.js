@@ -3,6 +3,7 @@ import initPeople from './people';
 import initCompanies from './companies';
 import initTags from './tags';
 import initCities from './cities';
+import initCalendar from './calendar';
 import initCountries from './countries';
 import initSkills from './skills';
 import initNotes from './notes';
@@ -19,6 +20,7 @@ const allServices = [
   initCompanies,
   initPeople,
   initStatus,
+  initCalendar,
 ];
 
 const init = evtx => R.reduce((acc, service) => acc.configure(service), evtx, allServices);

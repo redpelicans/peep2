@@ -2,10 +2,12 @@
 
 import React, { Component } from 'react';
 import { memoize, map, times } from 'ramda';
+import { Colors } from '@blueprintjs/core';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { startOfMonth, endOfMonth, getDay, format, addDays, startOfWeek, startOfDay } from 'date-fns';
-import { dmy } from '../../utils';
+import { isToday, startOfMonth, endOfMonth, getDay, format, addDays, startOfWeek, startOfDay } from 'date-fns';
+import { dmy, getCalendarDay } from '../../utils';
+
 
 const StyledCalendar = styled.div`
 `;
@@ -57,6 +59,7 @@ Calendar.propTypes = {
   date: PropTypes.object,
   dayComponent: PropTypes.func.isRequired,
   onPeriodSelection: PropTypes.func.isRequired,
+  calendar: PropTypes.object,
 };
 
 const StyledMonth = styled.div`
@@ -131,12 +134,13 @@ const WeekDays = () => {
     </StyledContainer>
   );
 };
-
+// eslint-disable-next-line no-shadow, no-nested-ternary, max-len
+const dateBackground = ({ selected, day }) => selected ? '#637D93' : day.isSpareDay || day.isWeekendDay ? '2f4b52' : '#434857';
 const StyledDay = styled.div`
     overflow: hidden;
     border-style: solid;
     border-color: #5b6062;
-    background-color: ${props => props.selected ? '#637D93' : '#434857'};
+    background-color: ${dateBackground};
     border-width: ${props => {
     const bs = '1px';
     if (props.index === 28) return [bs, bs, bs, bs].join(' ');
@@ -146,27 +150,31 @@ const StyledDay = styled.div`
   }};
 `;
 
-const Day = ({ date, index, inBound, selected, onMouseEnter, onMouseDown, onMouseUp, dayComponent, ...others }) => {
+const Day = ({ date, index, inBound, selected, onMouseEnter, onMouseDown, onMouseUp, dayComponent, calendar, ...others }) => {
   const handleMouseDown = (e) => {
     onMouseDown(date);
+    e.preventDefault();
     e.stopPropagation();
   };
 
   const handleMouseUp = (e) => {
     onMouseUp(date);
+    e.preventDefault();
     e.stopPropagation();
   };
 
   const handleMouseEnter = (e) => {
     onMouseEnter(date);
+    e.preventDefault();
     e.stopPropagation();
   };
 
   const DayComponent = dayComponent;
+  const day = getCalendarDay(calendar, date);
 
   return (
-    <StyledDay selected={selected} index={index} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseEnter={handleMouseEnter}>
-      <DayHeader date={date} inBound={inBound} />
+    <StyledDay selected={selected} day={day} index={index} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseEnter={handleMouseEnter}>
+      <DayHeader date={date} inBound={inBound} day={day} />
       <DayComponent date={date} {...others} />
     </StyledDay>
   );
@@ -181,6 +189,27 @@ Day.propTypes = {
   onMouseEnter: PropTypes.func.isRequired,
   inBound: PropTypes.bool.isRequired,
   dayComponent: PropTypes.func.isRequired,
+  calendar: PropTypes.object,
+};
+
+const StyledSpareDay = styled.span`
+  font-size: 0.9em;
+  margin: 5px;
+  font-size: 0.9em;
+  margin: 5px;
+  font-style: italic;
+  text-overflow: ellipsis;
+`;
+
+const SpareDay = ({ day }) => {
+  if (!day.isSpareDay) return null;
+  return (
+    <StyledSpareDay>{day.label}</StyledSpareDay>
+  );
+};
+
+SpareDay.propTypes = {
+  day: PropTypes.object,
 };
 
 const StyledDayHeader = styled.div`
@@ -190,25 +219,19 @@ const StyledDayHeader = styled.div`
   justify-content: space-between;
 `;
 
-class DayHeader extends Component {
-  shouldComponentUpdate(nextProps) {
-    return dmy(nextProps.date) !== dmy(this.props.date) || nextProps.inBound !== this.props.inBound;
-  }
-
-  render() {
-    const { date, inBound } = this.props;
-    return (
-      <StyledDayHeader>
-        <DayOfMonth date={date} inBound={inBound} />
-        <WeekNumber date={date} />
-      </StyledDayHeader>
-    );
-  }
-}
+const DayHeader = ({ date, inBound, day }) => (
+  <StyledDayHeader>
+    <DayOfMonth date={date} inBound={inBound} />
+    <SpareDay day={day} />
+    <Today date={date} />
+    <WeekNumber date={date} />
+  </StyledDayHeader>
+);
 
 DayHeader.propTypes = {
   date: PropTypes.object.isRequired,
   inBound: PropTypes.bool.isRequired,
+  day: PropTypes.object,
 };
 
 const StyledDayOfMonth = styled.div`
@@ -224,6 +247,29 @@ const DayOfMonth = ({ date, inBound }) => <StyledDayOfMonth inBound={inBound}>{f
 DayOfMonth.propTypes = {
   date: PropTypes.object.isRequired,
   inBound: PropTypes.bool,
+};
+
+const StyledToday = styled.div`
+  font-size: 0.9em;
+  padding: .2rem;
+  margin: 1px;
+  color: #cfd2da;
+  background-color: ${Colors.GREEN1};
+  display: inline-block;
+  text-align: center;
+  vertical-align: baseline;
+  border-radius: .25rem;
+`;
+
+const Today = ({ date }) => {
+  if (!isToday(date)) return <div />;
+  return (
+    <StyledToday>today</StyledToday>
+  );
+};
+
+Today.propTypes = {
+  date: PropTypes.object.isRequired,
 };
 
 const StyledWeekNumber = styled.div`

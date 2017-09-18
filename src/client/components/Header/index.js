@@ -31,13 +31,6 @@ export const HeaderElt = styled.div`
   grid-row: 2;
 `;
 
-const SearchBar = styled.div`
-  margin-right:25px;
-`;
-const TitleStyle = styled.div`
-  color: white;
-`;
-
 export const TimeElt = styled.div`
   font-size: '.7rem';
   font-style: 'italic';
@@ -97,50 +90,4 @@ export const Header = ({ obj, children }) => {
 Header.propTypes = {
   obj: PropTypes.object,
   children: PropTypes.node,
-};
-
-export const Search = ({ onChange, filter, resetValue }) => (
-  <SearchBar
-    className="pt-input-group pt-dark"
-  >
-    <span className="pt-icon pt-icon-search" />
-    <input
-      className="pt-input"
-      type="search"
-      placeholder="Enter your filter ..."
-      dir="auto"
-      value={filter}
-      onChange={onChange}
-    />
-    {filter && <span className="pt-icon pt-icon-cross" onClick={resetValue} />}
-  </SearchBar>
-);
-
-Search.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  filter: PropTypes.string,
-  resetValue: PropTypes.func.isRequired,
-};
-
-export const Title = ({ title }) => (
-  <TitleStyle>
-    {title}
-  </TitleStyle>
-);
-
-Title.propTypes = {
-  title: PropTypes.string.isRequired,
-};
-
-const IconElt = styled.div`
-  margin-right: 10px;
-  margin-left: 10px;
-`;
-
-export const TitleIcon = ({ name }) => (
-  <IconElt className={name} />
-);
-
-TitleIcon.propTypes = {
-  name: PropTypes.string.isRequired,
 };

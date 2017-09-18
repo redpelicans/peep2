@@ -6,6 +6,7 @@ import message from './message';
 import notes from './notes';
 import cities from './cities';
 import countries from './countries';
+import calendar from './calendar';
 import login from './login';
 
 export default combineReducers({
@@ -17,4 +18,5 @@ export default combineReducers({
   countries,
   cities,
   login,
+  calendar,
 });
