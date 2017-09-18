@@ -1,16 +1,17 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-import { onlyUpdateForKeys } from 'recompose';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Calendar from './Calendar';
 import Day from './Day';
 
 const today = new Date();
 
-const Agenda = () => (
+const Agenda = ({ calendar }) => (
   <div>
     <Calendar
       date={today}
       dayComponent={Day}
+      calendar={calendar}
       onPeriodSelection={console.log}
     />
   </div>
@@ -18,6 +19,12 @@ const Agenda = () => (
 
 
 Agenda.propTypes = {
+  calendar: PropTypes.object,
 };
 
-export default onlyUpdateForKeys(['toto'])(Agenda);
+const mapStateToProps = state => ({
+  calendar: state.calendar,
+});
+
+
+export default connect(mapStateToProps)(Agenda);
