@@ -1,17 +1,19 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Preview from './Preview';
 
 const ListContainer = styled.div`
   display: grid;
+  position:relative;
   grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
-  grid-auto-rows: 100px;
-  grid-gap: 15px;
+  grid-auto-rows: repeat(auto-fill);
+  grid-gap: 12px;
 `;
 
 export const List = ({ companies, ...params }) => (
   <ListContainer>
-    { companies.map(companie => (
+    {companies.map(companie => (
       <Preview key={companie._id} companie={companie} {...params} />
     ))}
   </ListContainer>
@@ -20,7 +22,6 @@ export const List = ({ companies, ...params }) => (
 List.propTypes = {
   companies: PropTypes.array.isRequired,
   filterCompanyList: PropTypes.func.isRequired,
-  togglePreferred: PropTypes.func.isRequired,
 };
 
 export default List;

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const SortIcon = styled.div`
   cursor: pointer;
+  color:rgb(45,60,70);
 `;
 
 class SortMenu extends Component {

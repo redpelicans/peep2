@@ -6,27 +6,21 @@ import Avatar from '../Avatar';
 
 const PreviewContainer = styled.div`
   display: flex;
-  padding:0;
+  padding:10px;
   padding-left:15px;
   padding-right:15px;
   flex-direction: column;
   justify-content: center;
   align-items: space-between;
-  background-color: #fff;
-  border-bottom: 1px solid #c4c4c4;
-  border-left: 1px solid #d3d3d3;
-  border-right: 1px solid #d3d3d3;
-  border-top: 1px solid #d3d3d3;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.07);
+  border: 1px solid rgba(49,65,77,0.5);
   border-radius:1px;
 `;
 
-const Title = styled.h3`
+export const Title = styled.h3`
   text-transform: capitalize;
   font-size: 1em;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
   margin: 0;
   margin-left: 15px;
   color: rgb(67, 75, 89);
@@ -37,19 +31,22 @@ const TitleRow = styled.div`
   align-items: center;
 `;
 
-const Tags = styled.div`
+export const Tags = styled.div`
   display: flex;
+  width:100%;
+  flex-wrap: wrap;
   margin-top:10px;
 `;
 
-const Tag = styled.div`
+export const Tag = styled.div`
   margin: 3px;
   background-color: #394b59;
   border-radius:3px;
   font-size:0.8em;
-  padding:2px;
-  padding-left:4px;
-  padding-right:4px;
+  padding:4px;
+  padding-left:8px;
+  padding-right:8px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.07);
 `;
 
 const Actions = styled.div`
@@ -59,9 +56,10 @@ const Actions = styled.div`
   color:#394b59;
 `;
 
-const Icons = styled.div`
+export const Icons = styled.div`
   margin-left:5px;
   margin-right:5px;
+  color:rgb(68, 86, 99);
 `;
 
 class Preview extends Component {
@@ -83,7 +81,7 @@ class Preview extends Component {
     const handleClick = tag => filterCompanyList(`#${tag}`);
     return (
       <PreviewContainer
-        className="pt-card pt-elevation-0 pt-interactive"
+        className="pt-card pt-dark pt-elevation-0 pt-interactive"
         onMouseOver={this.handleMouseEnter}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
