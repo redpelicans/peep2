@@ -1,11 +1,11 @@
-import { ADD_ALERT, SUCCESS, WARNING } from '../actions/message';
+import { ALERT, SUCCESS, WARNING } from '../actions/message';
 import { COMPANY_ADDED, COMPANY_UPDATED } from '../actions/companies';
 import { PEOPLE_ADDED, PEOPLE_UPDATED } from '../actions/people';
 
 const message = (state = {}, action) => {
   const { type, payload } = action;
   switch (type) {
-    case ADD_ALERT:
+    case ALERT:
       return {
         id: state.id + 1,
         ...payload,

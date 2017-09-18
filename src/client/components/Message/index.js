@@ -11,17 +11,18 @@ class Message extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { id } = this.props.message;
+    const { id, icon } = this.props.message;
     if (id !== nextProps.message.id) {
       const { message: { type, message, description } } = nextProps;
       const alert = <div><h3>{message}</h3><p>{description}</p></div>;
-      const iconName = this.getIcon(type);
+      const iconName = this.getIcon(type, icon);
       const intent = Intent[type];
       this.toast.show({ iconName, message: alert, intent });
     }
   }
 
-  getIcon = type => {
+  getIcon = (type, icon) => {
+    if (icon) return icon;
     switch (type) {
       case DANGER: return 'pt-icon-error';
       case PRIMARY: return 'pt-icon-help';

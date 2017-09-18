@@ -1,6 +1,6 @@
 import configureStore from 'redux-mock-store';
 import should from 'should';
-import { addAlert, ADD_ALERT, DANGER, PRIMARY, SUCCESS, WARNING } from '../message';
+import { alert, ALERT, DANGER, PRIMARY, SUCCESS, WARNING } from '../message';
 
 const { describe, it } = global;
 
@@ -16,14 +16,14 @@ describe('action message test', () => {
     const message = 'test message';
     const description = 'test description';
 
-    store.dispatch(addAlert({
+    store.dispatch(alert({
       type,
       message,
       description,
     }));
 
     const actions = store.getActions();
-    const expectedPayload = { type: ADD_ALERT, payload: { type, message, description } };
+    const expectedPayload = { type: ALERT, payload: { type, message, description } };
     should(actions).eql([expectedPayload]);
   });
   it('should dispatch warning message', () => {
@@ -34,14 +34,14 @@ describe('action message test', () => {
     const message = 'test message';
     const description = 'test description';
 
-    store.dispatch(addAlert({
+    store.dispatch(alert({
       type,
       message,
       description,
     }));
 
     const actions = store.getActions();
-    const expectedPayload = { type: ADD_ALERT, payload: { type, message, description } };
+    const expectedPayload = { type: ALERT, payload: { type, message, description } };
     should(actions).eql([expectedPayload]);
   });
   it('should dispatch danger message', () => {
@@ -52,14 +52,14 @@ describe('action message test', () => {
     const message = 'test message';
     const description = 'test description';
 
-    store.dispatch(addAlert({
+    store.dispatch(alert({
       type,
       message,
       description,
     }));
 
     const actions = store.getActions();
-    const expectedPayload = { type: ADD_ALERT, payload: { type, message, description } };
+    const expectedPayload = { type: ALERT, payload: { type, message, description } };
     should(actions).eql([expectedPayload]);
   });
   it('should dispatch informative message', () => {
@@ -70,14 +70,14 @@ describe('action message test', () => {
     const message = 'test message';
     const description = 'test description';
 
-    store.dispatch(addAlert({
+    store.dispatch(alert({
       type,
       message,
       description,
     }));
 
     const actions = store.getActions();
-    const expectedPayload = { type: ADD_ALERT, payload: { type, message, description } };
+    const expectedPayload = { type: ALERT, payload: { type, message, description } };
     should(actions).eql([expectedPayload]);
   });
 });
