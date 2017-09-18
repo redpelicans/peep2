@@ -16,12 +16,11 @@ const PreviewContainer = styled.div`
   border-radius:1px;
 `;
 
-const Title = styled.h3`
+export const Title = styled.h3`
   text-transform: capitalize;
   font-size: 1em;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
   margin: 0;
   margin-left: 15px;
   color: rgb(67, 75, 89);
@@ -32,14 +31,14 @@ const TitleRow = styled.div`
   align-items: center;
 `;
 
-const Tags = styled.div`
+export const Tags = styled.div`
   display: flex;
   width:100%;
   flex-wrap: wrap;
   margin-top:10px;
 `;
 
-const Tag = styled.div`
+export const Tag = styled.div`
   margin: 3px;
   background-color: #394b59;
   border-radius:3px;
@@ -57,7 +56,7 @@ const Actions = styled.div`
   color:#394b59;
 `;
 
-const Icons = styled.div`
+export const Icons = styled.div`
   margin-left:5px;
   margin-right:5px;
   color:rgb(68, 86, 99);

@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
+import { isEmpty } from 'ramda';
 import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
-import { TitleIcon, Header, HeaderLeft, HeaderRight, Title, Search } from '../widgets/Header';
+import { TitleIcon, Header, HeaderLeft, HeaderRight, Title, Search } from '../Header';
 import SortMenu from '../widgets/SortMenu';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
 
 const Container = styled.div`
+  display:flex;
+  flex-direction:column;
+  position:relative;
   padding: 20px;
   width:95%;
   margin:auto;
@@ -17,6 +21,17 @@ const Container = styled.div`
   margin-bottom:25px;
   background-color: #394b59;
   border-radius: 2px;
+`;
+
+export const EmptySearch = styled.span`
+  display:flex;
+  flex-direction:column;
+  justify-content: space-around;
+  align-items: center;
+  position:relative;
+  margin:auto;
+  min-width:100%;
+  height:70px;
 `;
 
 class Companies extends Component {
@@ -40,6 +55,11 @@ class Companies extends Component {
             <SortMenu onClick={sortCompanyList} sort={sort} />
           </HeaderRight>
         </Header>
+        {isEmpty(companies) &&
+        <EmptySearch>
+          <span className="pt-icon-large pt-icon-geosearch" />
+          No result...
+        </EmptySearch>}
         <List companies={companies} filterCompanyList={filterCompanyList} togglePreferred={togglePreferred} />
       </Container>
     );
