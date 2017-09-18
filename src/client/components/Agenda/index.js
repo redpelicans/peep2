@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft } from '../Header';
 import { Container, Title, TitleIcon } from '../widgets';
-import Calendar from './Calendar';
+import { getWorkers } from '../../selectors/people';
+import Calendar from './WorkersCalendar';
 import Day from './Day';
 
 const today = new Date();
 
-const Agenda = ({ calendar }) => (
+const Agenda = ({ calendar, workers }) => (
   <Container>
     <Header>
       <HeaderLeft>
@@ -21,6 +22,7 @@ const Agenda = ({ calendar }) => (
       dayComponent={Day}
       calendar={calendar}
       onPeriodSelection={console.log}
+      workers={workers}
     />
   </Container>
 );
@@ -28,10 +30,12 @@ const Agenda = ({ calendar }) => (
 
 Agenda.propTypes = {
   calendar: PropTypes.object,
+  workers: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
   calendar: state.calendar,
+  workers: getWorkers(state),
 });
 
 

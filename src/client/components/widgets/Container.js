@@ -6,6 +6,7 @@ const Container = styled.div`
   position:relative;
   padding: 20px;
   width:95%;
+  height: 100vh;
   margin:auto;
   margin-top:25px;
   margin-bottom:25px;

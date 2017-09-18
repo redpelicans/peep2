@@ -13,6 +13,10 @@ export const CHECK_EMAIL = 'EvtX:Server:people:checkEmailUniqueness';
 export const TOGGLE_PREFERRED_FILTER = 'toggle:preferred:people';
 export const FILTER_PEOPLE_LIST = 'filter:people:list';
 
+export const TYPES = {
+  WORKER: 'worker',
+};
+
 export const loadPeople = () => (dispatch, getState) => {
   const { people } = getState();
   if (R.isEmpty(people.data)) {
