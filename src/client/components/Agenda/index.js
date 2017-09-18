@@ -1,25 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TitleIcon, Header, HeaderLeft, Title } from '../Header';
+import { Header, HeaderLeft } from '../Header';
+import { Container, Title, TitleIcon } from '../widgets';
 import Calendar from './Calendar';
 import Day from './Day';
 
 const today = new Date();
-
-const Container = styled.div`
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  padding: 20px;
-  width:95%;
-  margin:auto;
-  margin-top:25px;
-  margin-bottom:25px;
-  background-color: #394b59;
-  border-radius: 2px;
-`;
 
 const Agenda = ({ calendar }) => (
   <Container>
