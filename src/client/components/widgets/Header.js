@@ -4,7 +4,8 @@ import styled from 'styled-components';
 export const HeaderLeftElt = styled.div`
   display: flex;
   font-size: 1.5em;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-end;
   margin-right:25px;
   flex: 1;
 `;
@@ -25,7 +26,7 @@ export const HeaderElt = styled.div`
   padding-bottom: 2em;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-bottom: 1px solid white;
+  border-bottom: 1.5px solid rgb(49,65,77);
   grid-row: 2;
 `;
 
@@ -97,9 +98,9 @@ Header.propTypes = {
   children: PropTypes.node,
 };
 
-export const Search = ({ onChange, filter }) => (
+export const Search = ({ onChange, filter, resetValue }) => (
   <SearchBar
-    className="pt-input-group"
+    className="pt-input-group pt-dark"
   >
     <span className="pt-icon pt-icon-search" />
     <input
@@ -110,12 +111,14 @@ export const Search = ({ onChange, filter }) => (
       value={filter}
       onChange={onChange}
     />
+    {filter && <span className="pt-icon pt-icon-cross" onClick={resetValue} />}
   </SearchBar>
 );
 
 Search.propTypes = {
-  onChange: React.PropTypes.func.isRequired,
-  filter: React.PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  filter: PropTypes.string,
+  resetValue: PropTypes.func.isRequired,
 };
 
 export const Title = ({ title }) => (

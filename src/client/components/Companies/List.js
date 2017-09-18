@@ -5,8 +5,8 @@ import Preview from './Preview';
 const ListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
-  grid-auto-rows: 100px;
-  grid-gap: 15px;
+  grid-auto-rows: repeat(auto-fill);
+  grid-gap: 12px;
 `;
 
 export const List = ({ companies, ...params }) => (

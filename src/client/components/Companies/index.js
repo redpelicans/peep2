@@ -10,11 +10,11 @@ import SortMenu from '../widgets/SortMenu';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
 
 const Container = styled.div`
-  display: grid;
   padding: 20px;
   width:95%;
   margin:auto;
   margin-top:25px;
+  margin-bottom:25px;
   background-color: #394b59;
   border-radius: 2px;
 `;
@@ -36,7 +36,7 @@ class Companies extends Component {
             <Title title="Companies" />
           </HeaderLeft>
           <HeaderRight>
-            <Search filter={filter} onChange={this.onFilterChange} style={{ margin: '0 16px' }} />
+            <Search filter={filter} onChange={this.onFilterChange} resetValue={() => filterCompanyList('')} style={{ margin: '0 16px' }} />
             <SortMenu onClick={sortCompanyList} sort={sort} />
           </HeaderRight>
         </Header>
