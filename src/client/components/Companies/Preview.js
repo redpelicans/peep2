@@ -81,7 +81,7 @@ class Preview extends Component {
     const handleClick = tag => filterCompanyList(`#${tag}`);
     return (
       <PreviewContainer
-        className="pt-card pt-dark pt-elevation-0 pt-interactive"
+        className="pt-card pt-elevation-0 pt-interactive"
         onMouseOver={this.handleMouseEnter}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}

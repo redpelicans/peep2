@@ -4,6 +4,7 @@ import Companies from './components/Companies';
 import People from './components/People';
 import Agenda from './components/Agenda';
 import Notes from './components/Notes';
+import AddCompany from './components/Companies/Add';
 
 const routes = {
   home: {
@@ -16,6 +17,13 @@ const routes = {
     path: '/companies',
     menuOrder: 1,
     component: Companies,
+    default: true,
+    exact: true,
+    auth: true,
+  },
+  addCompagny: {
+    path: '/companies/add',
+    component: AddCompany,
     default: true,
     exact: true,
     auth: true,

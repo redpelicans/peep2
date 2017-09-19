@@ -7,7 +7,7 @@ const SearchBar = styled.div`
 `;
 
 const Search = ({ onChange, filter, resetValue, classname }) => {
-  const searchCls = classNames('pt-input-group pt-dark', classname);
+  const searchCls = classNames('pt-input-group', classname);
   return (
     <SearchBar className={searchCls}>
       <span className="pt-icon pt-icon-search" />

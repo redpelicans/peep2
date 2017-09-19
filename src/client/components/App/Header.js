@@ -17,7 +17,6 @@ const Logo = styled.i`
 
 const headerBtnClass = (icon, user) => classNames(`pt-button pt-minimal pt-icon-${icon}`, { 'pt-disabled': !user });
 const Header = ({ handleTabChange, user, logout, className, history }) => {
-  const divClass = classNames('pt-dark', className);
   const Companies = <span className={headerBtnClass('home', user)}>Companies</span>;
   const People = <span className={headerBtnClass('people', user)}>People</span>;
   const Agenda = <span className={headerBtnClass('calendar', user)}>Agenda</span>;
@@ -25,7 +24,7 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
   const selectedRoute = getRouteByPath(history.location.pathname) || defaultRoute;
   const selectedTab = selectedRoute.name;
   return (
-    <div className={divClass}>
+    <div className={className}>
       <NavBar>
         <NavBarLeft>
           <Logo className="fa fa-paper-plane" />

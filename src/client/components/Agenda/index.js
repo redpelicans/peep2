@@ -1,51 +1,62 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { TitleIcon, Header, HeaderLeft, Title } from '../Header';
-import Calendar from './Calendar';
+import { compose, withStateHandlers } from 'recompose';
+import { subMonths, addMonths, format } from 'date-fns';
+import { Header, HeaderLeft, HeaderRight } from '../Header';
+import { Container, Title, TitleIcon, TitleButton } from '../widgets';
+import { getSortedWorkers } from '../../selectors/people';
+import Calendar from './WorkersCalendar';
 import Day from './Day';
 
-const today = new Date();
-
-const Container = styled.div`
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  padding: 20px;
-  width:95%;
-  margin:auto;
-  margin-top:25px;
-  margin-bottom:25px;
-  background-color: #394b59;
-  border-radius: 2px;
-`;
-
-const Agenda = ({ calendar }) => (
+const Agenda = ({ date, calendar, workers, goPreviousMonth, goNextMonth, goToday }) => (
   <Container>
     <Header>
       <HeaderLeft>
-        <TitleIcon name="pt-icon-standard pt-icon-home" />
-        <Title title="Agenda" />
+        <TitleIcon name="pt-icon-standard pt-icon-calendar" />
+        <Title title={format(date, 'MMMM YYYY')} />
       </HeaderLeft>
+      <HeaderRight>
+        <TitleButton iconName="arrow-left" onClick={goPreviousMonth} />
+        <TitleButton iconName="stop" onClick={goToday} />
+        <TitleButton iconName="arrow-right" onClick={goNextMonth} />
+      </HeaderRight>
     </Header>
     <Calendar
-      date={today}
+      date={date}
       dayComponent={Day}
       calendar={calendar}
       onPeriodSelection={console.log}
+      workers={workers}
     />
   </Container>
 );
 
 
 Agenda.propTypes = {
+  date: PropTypes.object.isRequired,
   calendar: PropTypes.object,
+  workers: PropTypes.array,
+  goPreviousMonth: PropTypes.func.isRequired,
+  goNextMonth: PropTypes.func.isRequired,
+  goToday: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   calendar: state.calendar,
+  workers: getSortedWorkers('firstName')(state),
 });
 
+const enhance = compose(
+  withStateHandlers(
+    { date: new Date() },
+    {
+      goPreviousMonth: ({ date }) => () => ({ date: subMonths(date, 1) }),
+      goNextMonth: ({ date }) => () => ({ date: addMonths(date, 1) }),
+      goToday: () => () => ({ date: new Date() }),
+    },
+  ),
+  connect(mapStateToProps),
+);
 
-export default connect(mapStateToProps)(Agenda);
+export default enhance(Agenda);
