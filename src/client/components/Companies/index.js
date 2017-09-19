@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { isEmpty } from 'ramda';
 import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
+import AddButton from './AddButton';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Container, Search, SortMenu, TitleIcon, Title } from '../widgets';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
@@ -48,6 +49,7 @@ class Companies extends Component {
           No result...
         </EmptySearch>}
         <List companies={companies} filterCompanyList={filterCompanyList} togglePreferred={togglePreferred} />
+        <AddButton to="/companies/add" />
       </Container>
     );
   }
