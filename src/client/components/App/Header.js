@@ -21,6 +21,7 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
   const Companies = <span className={headerBtnClass('home', user)}>Companies</span>;
   const People = <span className={headerBtnClass('people', user)}>People</span>;
   const Agenda = <span className={headerBtnClass('calendar', user)}>Agenda</span>;
+  const Notes = <span className={headerBtnClass('document', user)}>Notes</span>;
   const selectedRoute = getRouteByPath(history.location.pathname) || defaultRoute;
   const selectedTab = selectedRoute.name;
   return (
@@ -35,6 +36,7 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
             <Tab2 id="agenda" title={Agenda} />
             <Tab2 id="companies" title={Companies} />
             <Tab2 id="people" title={People} />
+            <Tab2 id="notes" title={Notes} />
           </Tabs2>
           <span className="pt-navbar-divider" />
           <UserButton user={user} logout={logout} />

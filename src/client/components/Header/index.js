@@ -1,8 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-export const HeaderLeftElt = styled.div`
+export const HeaderLeft = styled.div`
   display: flex;
   font-size: 1.5em;
   justify-content: flex-start;
@@ -11,8 +9,7 @@ export const HeaderLeftElt = styled.div`
   flex: 1;
 `;
 
-export const HeaderRightElt = styled.div`
-  display: flex;
+export const HeaderRight = styled.div`
   font-size: 1.5em;
   align-items: center;
   justify-content: flex-end;
@@ -20,7 +17,7 @@ export const HeaderRightElt = styled.div`
   flex: 1;
 `;
 
-export const HeaderElt = styled.div`
+export const Header = styled.div`
   padding-top: 1rem;
   display: flex;
   margin-bottom: 1em;
@@ -37,57 +34,3 @@ export const TimeElt = styled.div`
   display: 'block';
   float: 'right';
 `;
-
-export const HeaderLeft = ({ children }) =>
-  (<HeaderLeftElt>
-    {children}
-  </HeaderLeftElt>)
-;
-
-HeaderLeft.propTypes = {
-  children: PropTypes.node,
-};
-
-export const HeaderRight = ({ children }) =>
-  (<HeaderRightElt>
-    {children}
-  </HeaderRightElt>)
-;
-
-HeaderRight.propTypes = {
-  children: PropTypes.node,
-};
-
-export const Header = ({ obj, children }) => {
-  const left = () => React.Children.toArray(children).find(child => child.type === HeaderLeft);
-  const right = () => React.Children.toArray(children).find(child => child.type === HeaderRight);
-  const timeLabels = (o) => {
-    if (!o || !o.createdAt) return <span />;
-    const res = [`Created ${o.createdAt.fromNow()}`];
-    if (o.updatedAt) res.push(`Updated ${o.updatedAt.fromNow()}`);
-    return <span>{res.join(' - ')}</span>;
-  };
-
-  const time = () => {
-    if (!obj) return '';
-    return (
-      <TimeElt>
-        {timeLabels(obj)}
-      </TimeElt>
-    );
-  };
-  return (
-    <div>
-      <HeaderElt>
-        {left()}
-        {right()}
-      </HeaderElt>
-      {time()}
-    </div>
-  );
-};
-
-Header.propTypes = {
-  obj: PropTypes.object,
-  children: PropTypes.node,
-};

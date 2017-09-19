@@ -27,7 +27,7 @@ const Search = ({ onChange, filter, resetValue, classname }) => {
 Search.propTypes = {
   onChange: PropTypes.func.isRequired,
   filter: PropTypes.string,
-  resetValue: PropTypes.func.isRequired,
+  resetValue: PropTypes.func,
   classname: PropTypes.string,
 };
 
