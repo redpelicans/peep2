@@ -4,12 +4,10 @@ const Container = styled.div`
   display:flex;
   flex-direction:column;
   position:relative;
+  min-width:300px;
   padding: 20px;
-  width:95%;
-  height: 100vh;
-  margin:auto;
-  margin-top:25px;
-  margin-bottom:25px;
+  margin:25px;
+  margin-right:100px;
   background-color: #394b59;
   border-radius: 2px;
 `;

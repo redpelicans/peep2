@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
 import { Select } from '@blueprintjs/labs';
+import { compose, join, map, take, split } from 'ramda';
 import { connect } from 'react-redux';
 
 const Container = styled.div`
@@ -36,10 +37,14 @@ const ButtonElt = styled(Button)`
 `;
 
 const FakeAvatar = styled.div`
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  font-size:2em;
   min-width:50px;
   min-height:50px;
-  background-color:rgb(45,45,45);
   border-radius:100px;
+  background-color: ${props => props.color};
 `;
 
 const TitleRow = styled.div`
@@ -69,29 +74,45 @@ const ColorOption = styled.div`
 
 const InputRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  width:100%;
 `;
 
 const InputElt = styled.div`
   display: flex;
   flex-direction:column;
+  flex:1;
+  margin-top:25px;
+  padding-right:10px;
 `;
 
 const InputField = styled.input`
   margin-top:25px;
-  margin-right:25px;
+  margin-right:20px;
 `;
+
+const initials = compose(join(''), map(take(1)), take(3), split(' '));
 
 class AddCompanie extends Component {
   state = {
-    color: 'rgb(25,25,25)',
+    name: '',
+    selectedColor: 'rgb(55,55,55)',
   }
+
+  handleNameChange = (e) => {
+    this.setState({ name: e.target.value });
+  }
+
   render() {
-    const { color } = this.state;
+    const { color, name, selectedColor } = this.state;
+    console.log('name: ', name);
     return (
       <Container>
         <Header>
           <TitleRow>
-            <FakeAvatar />
+            <FakeAvatar color={selectedColor}>
+              { initials(name) }
+            </FakeAvatar>
             <Title>New Companie</Title>
           </TitleRow>
           <Buttons>
@@ -112,12 +133,34 @@ class AddCompanie extends Component {
           </Select>
           <InputRow>
             <InputElt>
-              <p>Name:</p>
-              <InputField className="pt-input" type="text" placeholder="Name" dir="auto" />
+              <p>Name :</p>
+              <InputField className="pt-input" onChange={this.handleNameChange}type="text" dir="auto" />
             </InputElt>
             <InputElt>
-              <p>Website:</p>
-              <InputElt className="pt-input" type="text" placeholder="Website" dir="auto" />
+              <p>Website :</p>
+              <InputField className="pt-input" type="text" dir="auto" />
+            </InputElt>
+          </InputRow>
+          <InputRow>
+            <InputElt>
+              <p>City :</p>
+              <InputField className="pt-input" type="text" dir="auto" />
+            </InputElt>
+            <InputElt>
+              <p>Country :</p>
+              <InputField className="pt-input" type="text" dir="auto" />
+            </InputElt>
+          </InputRow>
+          <InputRow>
+            <InputElt>
+              <p>Tags :</p>
+              <InputField className="pt-input" type="text" dir="auto" />
+            </InputElt>
+          </InputRow>
+          <InputRow>
+            <InputElt>
+              <p>Note :</p>
+              <InputField className="pt-input" type="text" dir="auto" />
             </InputElt>
           </InputRow>
         </Form>
