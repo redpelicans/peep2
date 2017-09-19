@@ -74,9 +74,9 @@ const InputElt = styled.div`
 const Error = styled.span`
   display:flex;
   justify-content: space-between;
-  width:100px;
+  width:85px;
+  margin-left:10px;
   color:${Colors.RED3};
-  margin-top:10px;
 `;
 
 const InputField = styled.input`
@@ -96,6 +96,7 @@ const InputField = styled.input`
 `;
 
 const InputText = styled.label`
+  display: flex;
   margin:0;
 `;
 
@@ -122,13 +123,13 @@ const renderField = ({
   (<InputElt>
     <InputText>
       {label}
-    </InputText>
-    <InputField {...input} type={type} />
-    {touched &&
+      {touched &&
       ((error &&
         <Error className="pt-icon-standard pt-icon-warning-sign">
           {error}
         </Error>))}
+    </InputText>
+    <InputField {...input} type={type} />
   </InputElt>);
 
 renderField.propTypes = {
