@@ -2,34 +2,40 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
-import { Button, Colors } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
 import { compose } from 'ramda';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { AvatarSelector } from '../widgets';
+import { AvatarSelector, textArea, renderField, renderSelect } from '../widgets';
 
 const Container = styled.div`
   display:flex;
+  align-items: center;
   flex-direction:column;
   position:relative;
   min-width:300px;
   padding: 20px;
   margin:25px;
+  padding-bottom:50px;
   background-color: #394b59;
   border-radius: 2px;
 `;
 
 const Header = styled.div`
   display: flex;
+  padding-top:25px;
   flex-wrap:wrap;
   justify-content: space-between;
   align-items: center;
-  width:100%;
+  width:90%;
 `;
 
 const Buttons = styled.div`
   display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex:1;
 `;
 
 const ButtonElt = styled(Button)`
@@ -54,50 +60,14 @@ const Form = styled.form`
   display:flex;
   flex-direction:column;
   margin-top:25px;
-  width:100%;
+  width:90%;
 `;
 
 const InputRow = styled.div`
   display: flex;
   flex-wrap: wrap;
+  margin-top:10px;
   width:100%;
-`;
-
-const InputElt = styled.div`
-  display: flex;
-  flex-direction:column;
-  flex:1;
-  margin-top:15px;
-  padding-right:10px;
-`;
-
-const Error = styled.span`
-  display:flex;
-  justify-content: space-between;
-  width:85px;
-  margin-left:10px;
-  color:${Colors.RED3};
-`;
-
-const InputField = styled.input`
-  margin-top:20px;
-  margin-right:20px;
-  box-shadow: 0 0 0 0 rgba(19, 124, 189, 0),
-  0 0 0 0 rgba(19, 124, 189, 0),
-  0 0 0 0 rgba(19, 124, 189, 0),
-  inset 0 0 0 1px rgba(16, 22, 26, 0.3),
-  inset 0 1px 1px rgba(16, 22, 26, 0.4);
-  background: rgba(16, 22, 26, 0.3);
-  color: #f5f8fa;
-  border:0;
-  height:25px;
-  border-radius:2px;
-  padding:7px;
-`;
-
-const InputText = styled.label`
-  display: flex;
-  margin:0;
 `;
 
 const validate = values => {
@@ -114,37 +84,12 @@ const validate = values => {
   return errors;
 };
 
-const renderField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error },
-}) =>
-  (<InputElt>
-    <InputText>
-      {label}
-      {touched &&
-      ((error &&
-        <Error className="pt-icon-standard pt-icon-warning-sign">
-          {error}
-        </Error>))}
-    </InputText>
-    <InputField {...input} type={type} />
-  </InputElt>);
-
-renderField.propTypes = {
-  input: PropTypes.node,
-  label: PropTypes.string,
-  type: PropTypes.string,
-  meta: PropTypes.object,
-};
-
 class AddCompanie extends Component {
   state = {
     color: '',
   }
   handleSubmit = (e) => {
-    console.log('ca submit: ', e);
+    console.log('submit: ', e);
   }
 
   handleChangeColor = color => {
@@ -169,18 +114,23 @@ class AddCompanie extends Component {
         </Header>
         <Form id="companie" onSubmit={handleSubmit(this.handleSubmit)}>
           <InputRow>
-            <Field name="Name" component={renderField} type="text" label="Name :" />
-            <Field name="Website" component={renderField} type="text" label="Website :" />
+            <Field name="Type" component={renderField} type="text" label="Type :" className="pt-input pt-dark" />
+            <Field name="Name" component={renderField} type="text" label="Name :" className="pt-input pt-dark" />
+            <Field name="Website" component={renderField} type="text" label="Website :" className="pt-input pt-dark" />
           </InputRow>
           <InputRow>
-            <Field name="City" component={renderField} type="text" label="City :" />
-            <Field name="Country" component={renderField} type="text" label="Country :" />
+            <Field name="Street" component={renderField} type="text" label="Street :" className="pt-input pt-dark" />
+            <Field name="Zip Code" component={renderField} type="text" label="Zip Code :" className="pt-input pt-dark" />
           </InputRow>
           <InputRow>
-            <Field name="Tags" component={renderField} type="text" label="Tags :" />
+            <Field name="City" component={renderSelect} label="City :" className="pt-input pt-dark" />
+            <Field name="Country" component={renderField} type="text" label="Country :" className="pt-input pt-dark" />
           </InputRow>
           <InputRow>
-            <Field name="Note" component={renderField} type="text" label="Note :" />
+            <Field name="Tags" component={renderField} type="text" label="Tags :" className="pt-input pt-dark" />
+          </InputRow>
+          <InputRow>
+            <Field name="Note" component={textArea} label="Note :" />
           </InputRow>
         </Form>
       </Container>
