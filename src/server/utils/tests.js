@@ -1,7 +1,7 @@
 import mongobless from 'mongobless';
 
 export const connect = db => {
-  const opt = process.env['NODE_ENV'] === 'travis' ? {host: 'localhost', port: 27017, database: 'tests'} : db;
+  const opt = process.env.NODE_ENV === 'travis' ? { host: 'localhost', port: 27017, database: 'tests' } : db;
   return mongobless.connect(opt);
 };
 
@@ -12,5 +12,4 @@ export const load = (db, data) => {
   const loads = names.map(name => db.collection(name).insert(data.collections[name]));
   return Promise.all(loads);
 };
-
 

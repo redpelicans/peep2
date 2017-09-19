@@ -11,17 +11,17 @@ const evtx = evtX().configure(initCompanies).configure(initNotes);
 const service = evtx.service('companies');
 
 const data = {
-  collections:{
+  collections: {
     preferences: [
       {
-        personId : 0,
-        entityId : 2,
-        type : "company",
+        personId: 0,
+        entityId: 2,
+        type: 'company',
       },
       {
-        personId : 0,
-        entityId : 3,
-        type : "company",
+        personId: 0,
+        entityId: 3,
+        type: 'company',
       },
     ],
     companies: [
@@ -36,16 +36,16 @@ const data = {
       {
         _id: 3,
         _isPreferred: true,
-      }
-    ]
-  }
+      },
+    ],
+  },
 };
 
 let db;
 beforeAll(() => connect(params.db).then(ctx => db = ctx));
 afterAll(close);
 
-describe('Companies service', function() {
+describe('Companies service', () => {
   beforeEach(() => drop(db));
 
   it('expect load', (done) => {
@@ -57,11 +57,11 @@ describe('Companies service', function() {
       done(...params);
     };
     company.load.bind({ user: { _id: 0 } })()
-      .then( companies => {
+      .then(companies => {
         companies.forEach(p => expect(p.preferred === p._isPreferred));
         end();
-    })
-    .catch(end);
+      })
+      .catch(end);
   });
 
   it('expect delete', (done) => {
@@ -71,31 +71,25 @@ describe('Companies service', function() {
       note: 'note1',
     };
     const user = { _id: 0 };
-    const checkCompany = (id) => {
-      return Company.findOne({ _id: id }).then((company) => {
-        expect(company.isDeleted).true();
-        return company._id;
-      });
-    };
-    const checkPreferrence = (id) => {
-      return Preference.loadAll('company', user).then((preferences) => {
-        expect(preferences.length).eql(0);
-        return id;
-      })
-    };
-    const checkNote = (id) => {
-      return Note.loadAllForEntity({ _id: id }).then((notes) => {
-        expect(notes.length).eql(0);
-        return id;
-      })
-    };
+    const checkCompany = (id) => Company.findOne({ _id: id }).then((company) => {
+      expect(company.isDeleted).true();
+      return company._id;
+    });
+    const checkPreferrence = (id) => Preference.loadAll('company', user).then((preferences) => {
+      expect(preferences.length).eql(0);
+      return id;
+    });
+    const checkNote = (id) => Note.loadAllForEntity({ _id: id }).then((notes) => {
+      expect(notes.length).eql(0);
+      return id;
+    });
 
     service.add(company, { user })
       .then(({ _id }) => service.del(_id, { user }))
       .then(checkCompany)
       .then(checkPreferrence)
       .then(checkNote)
-      .then(() =>  done())
+      .then(() => done())
       .catch(done);
   });
 
@@ -108,14 +102,14 @@ describe('Companies service', function() {
         expect(preferences[0].personId).eql(user._id);
         expect(preferences[0].entityId).eql(company._id);
         return company;
-      })
+      });
     };
     const checkIsNotPreferred = (company) => {
       expect(company.preferred).false();
       return Preference.loadAll('company', user).then((preferences) => {
         expect(preferences.length).eql(0);
         return company;
-      })
+      });
     };
 
     service.add(newCompany, { user })
@@ -153,26 +147,22 @@ describe('Companies service', function() {
         type: 'client',
         address: { street: 'street', city: 'city' },
         avatar: { color: 'color' },
-        tags: [ 'Tag1', 'Tag2' ],
+        tags: ['Tag1', 'Tag2'],
         preferred: true,
       };
       expect(R.omit(['_id', 'createdAt', 'constructor', 'note'], company)).eql(res);
       return company;
     };
-    const checkNote = (company) => {
-      return Note.loadAllForEntity(company).then((notes) => {
-        expect(notes[0].entityId).eql(company._id);
-        expect(notes[0].content).eql(newCompany.note);
-        return company;
-      })
-    };
-    const checkPreferrence = (company) => {
-      return Preference.loadAll('company', user).then((preferences) => {
-        expect(preferences[0].personId).eql(user._id);
-        expect(preferences[0].entityId).eql(company._id);
-        return company;
-      })
-    };
+    const checkNote = (company) => Note.loadAllForEntity(company).then((notes) => {
+      expect(notes[0].entityId).eql(company._id);
+      expect(notes[0].content).eql(newCompany.note);
+      return company;
+    });
+    const checkPreferrence = (company) => Preference.loadAll('company', user).then((preferences) => {
+      expect(preferences[0].personId).eql(user._id);
+      expect(preferences[0].entityId).eql(company._id);
+      return company;
+    });
     service.add(newCompany, { user })
       .then(checkCompany)
       .then(checkNote)
@@ -186,7 +176,7 @@ describe('Companies service', function() {
       name: 'C1',
       type: 'client',
       address: { street: 'street', city: 'city' },
-      avatar: { color: 'color', },
+      avatar: { color: 'color' },
       tags: ['TAG1', 'TAG1', 'TAG2'],
       note: 'note',
       preferred: true,
@@ -206,18 +196,16 @@ describe('Companies service', function() {
         type: 'tenant',
         address: { street: 'street2', city: 'city2' },
         tags: ['Tag1', 'Tag3'],
-        avatar: { color: 'color', },
+        avatar: { color: 'color' },
         preferred: false,
       };
       expect(R.omit(['_id', 'note', 'updatedAt', 'createdAt', 'constructor'], company)).eql(res);
       return company;
     };
-    const checkPreferrence = (company) => {
-      return Preference.loadAll('company', user).then((preferences) => {
-        expect(preferences.length).eql(0);
-        return company;
-      })
-    };
+    const checkPreferrence = (company) => Preference.loadAll('company', user).then((preferences) => {
+      expect(preferences.length).eql(0);
+      return company;
+    });
 
     service
       .add(newCompany, { user })
@@ -227,5 +215,4 @@ describe('Companies service', function() {
       .then(() => done())
       .catch(done);
   });
-
 });

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
- import styled from 'styled-components';
+import styled from 'styled-components';
 import Preview from './Preview';
-import MasonryLayout from 'react-masonry-layout';
+import MasonryLayout from '../widgets/MasonryLayout';
 
 const StyledContainer = styled.div`
   display: flex;

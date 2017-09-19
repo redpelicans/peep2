@@ -1,23 +1,21 @@
 import socketIOClient from 'socket.io-client';
 import initHttp from '../http';
 import initSocketIO from '../socketio';
-import initEvtx from '../evtx'
+import initEvtx from '../evtx';
 import initMongo from '../mongo';
 import config from '../../../params';
 
 let peep;
 
-beforeAll(() => {
-  return initMongo({ config })
-    .then(initHttp)
-    .then(initSocketIO)
-    .then(initEvtx)
-    .then(ctx => peep = ctx);
-  }
+beforeAll(() => initMongo({ config })
+  .then(initHttp)
+  .then(initSocketIO)
+  .then(initEvtx)
+  .then(ctx => peep = ctx),
 );
 
-describe('Main', function() {
-  it('expect ping', function(done) {
+describe('Main', () => {
+  it('expect ping', (done) => {
     const data = 'coucou';
     const message = {
       type: 'status:ping',
@@ -33,7 +31,7 @@ describe('Main', function() {
     io.emit('action', message);
   });
 
-  it('expect not ping', function(done) {
+  it('expect not ping', (done) => {
     const data = 'coucou';
     const message = {
       type: 'status:notping',
@@ -50,7 +48,7 @@ describe('Main', function() {
   });
 
 
-  it('expect ping with callback', function(done) {
+  it('expect ping with callback', (done) => {
     const data = 'coucou';
     const message = {
       type: 'status:ping',
@@ -63,7 +61,7 @@ describe('Main', function() {
     });
   });
 
-  it('expect not ping with callback', function(done) {
+  it('expect not ping with callback', (done) => {
     const data = 'coucou';
     const message = {
       type: 'status:notping',
@@ -75,5 +73,4 @@ describe('Main', function() {
       done();
     });
   });
-
 });

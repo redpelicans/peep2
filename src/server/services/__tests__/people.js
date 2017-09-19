@@ -9,17 +9,17 @@ import { connect, close, drop } from '../../utils/tests';
 const evtx = evtX().configure(initPeople);
 const service = evtx.service('people');
 const data = {
-  collections:{
+  collections: {
     preferences: [
       {
-        personId : 0,
-        entityId : 2,
-        type : "person",
+        personId: 0,
+        entityId: 2,
+        type: 'person',
       },
       {
-        personId : 0,
-        entityId : 3,
-        type : "person",
+        personId: 0,
+        entityId: 3,
+        type: 'person',
       },
     ],
     people: [
@@ -37,16 +37,16 @@ const data = {
         _id: 3,
         tags: ['B', 'C'],
         _isPreferred: true,
-      }
-    ]
-  }
+      },
+    ],
+  },
 };
 
 let db;
 beforeAll(() => connect(params.db).then(ctx => db = ctx));
 afterAll(close);
 
-describe('People service', function() {
+describe('People service', () => {
   beforeEach(() => drop(db));
   it('expect load', (done) => {
     const personStub = sinon.stub(Person, 'loadAll').callsFake(() => Promise.resolve(data.collections.people));
@@ -57,11 +57,11 @@ describe('People service', function() {
       done(...params);
     };
     people.load.bind({ user: { _id: 0 } })()
-      .then( people => {
+      .then(people => {
         people.forEach(p => expect(p.preferred === p._isPreferred));
         end();
-    })
-    .catch(end);
+      })
+      .catch(end);
   });
 
   it('expect check email correctness', (done) => {
@@ -104,27 +104,23 @@ describe('People service', function() {
         type: 'worker',
         avatar: { color: 'color' },
         roles: ['Admin', 'Other'],
-        tags: [ 'Tag1', 'Tag2' ],
+        tags: ['Tag1', 'Tag2'],
         isNew: true,
         preferred: true,
       };
       expect(R.omit(['_id', 'companyId', 'createdAt', 'constructor'], person)).toEqual(res);
       return person;
     };
-    const checkNote = (person) => {
-      return Note.loadAllForEntity(person).then((notes) => {
-        expect(notes[0].entityId).toEqual(person._id);
-        expect(notes[0].content).toEqual(newPerson.note);
-        return person;
-      })
-    };
-    const checkPreferrence = (person) => {
-      return Preference.loadAll('person', user).then((preferences) => {
-        expect(preferences[0].personId).toEqual(user._id);
-        expect(preferences[0].entityId).toEqual(person._id);
-        return person;
-      })
-    };
+    const checkNote = (person) => Note.loadAllForEntity(person).then((notes) => {
+      expect(notes[0].entityId).toEqual(person._id);
+      expect(notes[0].content).toEqual(newPerson.note);
+      return person;
+    });
+    const checkPreferrence = (person) => Preference.loadAll('person', user).then((preferences) => {
+      expect(preferences[0].personId).toEqual(user._id);
+      expect(preferences[0].entityId).toEqual(person._id);
+      return person;
+    });
 
     service.add(newPerson, { user })
       .then(checkPerson)
@@ -143,14 +139,14 @@ describe('People service', function() {
         expect(preferences[0].personId).toEqual(user._id);
         expect(preferences[0].entityId).toEqual(person._id);
         return person;
-      })
+      });
     };
     const checkIsNotPreferred = (person) => {
       expect(person.preferred).toBeFalse();
       return Preference.loadAll('person', user).then((preferences) => {
         expect(preferences.length).toEqual(0);
         return person;
-      })
+      });
     };
 
     service.add(newPerson, { user })
@@ -181,7 +177,7 @@ describe('People service', function() {
       companyId: 1,
       avatar: { color: 'color2' },
       roles: ['Admin', 'Other', 'test'],
-      tags: [ 'Tag1', 'Tag2', 'test' ],
+      tags: ['Tag1', 'Tag2', 'test'],
       preferred: false,
     };
 
@@ -194,19 +190,17 @@ describe('People service', function() {
         type: 'worker',
         avatar: { color: 'color2' },
         roles: ['Admin', 'Other', 'Test'],
-        tags: [ 'Tag1', 'Tag2', 'Test' ],
+        tags: ['Tag1', 'Tag2', 'Test'],
         isUpdated: true,
         preferred: false,
       };
       expect(R.omit(['_id', 'companyId', 'updatedAt', 'createdAt', 'constructor'], obj)).toEqual(res);
       return obj;
     };
-    const checkPreferrence = (obj) => {
-      return Preference.loadAll('person', user).then((preferences) => {
-        expect(preferences.length).toEqual(0);
-        return obj;
-      })
-    };
+    const checkPreferrence = (obj) => Preference.loadAll('person', user).then((preferences) => {
+      expect(preferences.length).toEqual(0);
+      return obj;
+    });
 
     service
       .add(newObj, { user })
@@ -233,7 +227,7 @@ describe('People service', function() {
         lastName: 'L1',
         name: 'F1 L1',
         type: 'worker',
-        tags: [ 'Tag11', 'Tag2', 'Tag3' ],
+        tags: ['Tag11', 'Tag2', 'Tag3'],
         isUpdated: true,
         preferred: false,
       };
@@ -264,32 +258,25 @@ describe('People service', function() {
     };
 
     const user = { _id: 0 };
-    const checkObj = (id) => {
-      return Person.findOne({ _id: id }).then((p) => {
-        expect(p.isDeleted).toBeTrue();
-        return p._id;
-      });
-    };
-    const checkPreferrence = (id) => {
-      return Preference.loadAll('person', user).then((preferences) => {
-        expect(preferences.length).toEqual(0);
-        return id;
-      })
-    };
-    const checkNote = (id) => {
-      return Note.loadAllForEntity({ _id: id }).then((notes) => {
-        expect(notes.length).toEqual(0);
-        return id;
-      })
-    };
+    const checkObj = (id) => Person.findOne({ _id: id }).then((p) => {
+      expect(p.isDeleted).toBeTrue();
+      return p._id;
+    });
+    const checkPreferrence = (id) => Preference.loadAll('person', user).then((preferences) => {
+      expect(preferences.length).toEqual(0);
+      return id;
+    });
+    const checkNote = (id) => Note.loadAllForEntity({ _id: id }).then((notes) => {
+      expect(notes.length).toEqual(0);
+      return id;
+    });
 
     service.add(newObj, { user })
       .then(({ _id }) => service.del(_id, { user }))
       .then(checkObj)
       .then(checkPreferrence)
       .then(checkNote)
-      .then(() =>  done())
+      .then(() => done())
       .catch(done);
   });
-
 });
