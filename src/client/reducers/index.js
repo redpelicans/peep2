@@ -8,6 +8,7 @@ import cities from './cities';
 import countries from './countries';
 import calendar from './calendar';
 import login from './login';
+import intl from './intl';
 
 export default combineReducers({
   tags,
@@ -19,4 +20,5 @@ export default combineReducers({
   cities,
   login,
   calendar,
+  intl,
 });

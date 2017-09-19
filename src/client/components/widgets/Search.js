@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import classNames from 'classnames';
+import { intlShape, injectIntl } from 'react-intl';
 
 const SearchBar = styled.div`
 `;
 
-const Search = ({ onChange, filter, resetValue, classname }) => {
+const Search = ({ onChange, filter, resetValue, classname, intl }) => {
   const searchCls = classNames('pt-input-group', classname);
   return (
     <SearchBar className={searchCls}>
@@ -14,7 +15,12 @@ const Search = ({ onChange, filter, resetValue, classname }) => {
       <input
         className="pt-input"
         type="search"
-        placeholder="Enter your filter ..."
+        placeholder={
+          intl.formatMessage({
+            id: 'widget.search.placeholder',
+            defaultMessage: 'Search',
+          })
+        }
         dir="auto"
         value={filter}
         onChange={onChange}
@@ -29,6 +35,7 @@ Search.propTypes = {
   filter: PropTypes.string,
   resetValue: PropTypes.func,
   classname: PropTypes.string,
+  intl: intlShape.isRequired,
 };
 
-export default Search;
+export default injectIntl(Search);

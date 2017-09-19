@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import classNames from 'classnames';
 import { Button, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
 import { Popover2 } from '@blueprintjs/labs';
+import { FormattedMessage } from 'react-intl';
 import Avatar from '../Avatar';
 
 const Layout = styled.div`
@@ -36,7 +37,7 @@ const UserButton = ({ user, logout }) => {
           <MenuItem
             iconName="log-out"
             onClick={logout}
-            text="Logout"
+            text={<FormattedMessage id={'header.logout'} defaultMessage={'Logout'} />}
           />
         </Menu>
       </Layout>

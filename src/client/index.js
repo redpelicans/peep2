@@ -4,14 +4,31 @@ import { render } from 'react-dom';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import socketIO from 'socket.io-client';
+import { addLocaleData } from 'react-intl';
+import fr from 'react-intl/locale-data/fr';
+import en from 'react-intl/locale-data/en';
 import configureStore from './store/configureStore';
 import history from './history';
 import App from './components/App';
 import Kontrolo from './lib/kontrolo';
+import { loadLocale } from './actions/intl';
+import ConnectedIntlProvider from './components/ConnectedIntlProvider';
+
 import { checkToken, userLogged } from './actions/login';
+import messages from './messages.json';
+
+addLocaleData([...fr, ...en]);
+
+const { navigator: { language } } = global;
 
 const token = localStorage.getItem('peepToken');
 const initialState = {
+  intl: {
+    defaultLang: 'en',
+    currentLang: language,
+    availableLangs: ['en', 'fr'],
+    messages,
+  },
   login: { token },
 };
 
@@ -22,13 +39,17 @@ io.on('error', err => console.log(`socket.io error: ${err}`)); // eslint-disable
 const store = configureStore(initialState, io);
 const mountNode = window.document.getElementById('__PEEP__');
 
+store.dispatch(loadLocale());
+
 const root = (
   <Provider store={store}>
-    <Router history={history}>
-      <Kontrolo user={path(['login', 'user'])} isAuthorized={user => Boolean(user)} redirect="/login">
-        <App />
-      </Kontrolo>
-    </Router>
+    <ConnectedIntlProvider>
+      <Router history={history}>
+        <Kontrolo user={path(['login', 'user'])} isAuthorized={user => Boolean(user)} redirect="/login">
+          <App />
+        </Kontrolo>
+      </Router>
+    </ConnectedIntlProvider>
   </Provider>
 );
 
