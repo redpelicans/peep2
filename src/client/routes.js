@@ -3,6 +3,7 @@ import Login from './components/Login';
 import Companies from './components/Companies';
 import People from './components/People';
 import Agenda from './components/Agenda';
+import Notes from './components/Notes';
 import AddCompany from './components/Companies/Add';
 
 const routes = {
@@ -40,6 +41,13 @@ const routes = {
     menuOrder: 0,
     auth: true,
     component: Agenda,
+  },
+  notes: {
+    path: '/notes',
+    exact: true,
+    menuOrder: 3,
+    auth: true,
+    component: Notes,
   },
   login: {
     path: '/login',

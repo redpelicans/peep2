@@ -7,8 +7,8 @@ const StyledIcon = styled.div`
   margin-left: 10px;
 `;
 
-export const TitleIcon = ({ name }) => (
-  <StyledIcon className={name} />
+export const TitleIcon = ({ name, ...props }) => (
+  <StyledIcon className={name} {...props} />
 );
 
 TitleIcon.propTypes = {

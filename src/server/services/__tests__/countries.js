@@ -3,16 +3,16 @@ import { countries } from '../countries';
 import { Company } from '../../models';
 
 const data = {
-  collections:{
+  collections: {
     companies: [
       { address: { country: 'C1' } },
       { address: { country: 'C2' } },
       { address: { country: 'France' } },
     ],
-  }
+  },
 };
 
-describe('Countries service', function() {
+describe('Countries service', () => {
   it('expect load', (done) => {
     const companyStub = sinon.stub(Company, 'findAll').callsFake(() => Promise.resolve(data.collections.companies));
     const end = (...params) => {
@@ -20,13 +20,11 @@ describe('Countries service', function() {
       done(...params);
     };
     countries.load()
-      .then( countries => {
+      .then(countries => {
         expect(countries).toEqual(['C1', 'C2', 'France']);
         end();
-    })
-    .catch(end);
+      })
+      .catch(end);
   });
-
 });
-
 

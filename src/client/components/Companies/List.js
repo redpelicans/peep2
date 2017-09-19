@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isEmpty } from 'ramda';
 import Preview from './Preview';
+import MasonryLayout from '../widgets/MasonryLayout';
 
-const ListContainer = styled.div`
-  display: grid;
-  position:relative;
-  grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
-  grid-auto-rows: repeat(auto-fill);
-  grid-gap: 12px;
+const StyledContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 export const EmptySearch = styled.span`
@@ -25,17 +23,30 @@ export const EmptySearch = styled.span`
   grid-column-end: end;
 `;
 
+const sizes = [
+  { columns: 1, gutter: 10 },
+  { mq: '800px', columns: 2, gutter: 10 },
+  { mq: '1100px', columns: 3, gutter: 10 },
+  { mq: '1400px', columns: 4, gutter: 10 },
+  { mq: '1700px', columns: 5, gutter: 10 },
+];
+
 export const List = ({ companies, ...params }) => (
-  <ListContainer>
-    {isEmpty(companies) &&
-      <EmptySearch>
-        <span className="pt-icon-large pt-icon-geosearch" />
-        No result...
-      </EmptySearch>}
-    {companies.map(companie => (
-      <Preview key={companie._id} companie={companie} {...params} />
-    ))}
-  </ListContainer>
+  <StyledContainer>
+    <MasonryLayout
+      id="companies"
+      sizes={sizes}
+    >
+      {isEmpty(companies) &&
+        <EmptySearch>
+          <span className="pt-icon-large pt-icon-geosearch" />
+          No result...
+        </EmptySearch>}
+      {companies.map(companie => (
+        <Preview key={companie._id} companie={companie} {...params} />
+      ))}
+    </MasonryLayout>
+  </StyledContainer>
 );
 
 List.propTypes = {

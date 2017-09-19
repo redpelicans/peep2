@@ -51,7 +51,7 @@ const App = props => {
     return (<route.component {...props} />);
   };
   return (
-    <Layout>
+    <Layout className="pt-dark">
       <Message message={props.message} />
       <StyledHeader {...props} />
       <Content>

@@ -11,7 +11,7 @@ import { connect, close, drop } from '../../utils/tests';
 const evtx = evtX().configure(initNotes);
 const service = evtx.service('notes');
 const data = {
-  collections:{
+  collections: {
     notes: [
       {
         _id: 1,
@@ -31,14 +31,14 @@ const data = {
         isDeleted: true,
       },
     ],
-  }
+  },
 };
 
 let db;
 beforeAll(() => connect(params.db).then(ctx => db = ctx));
 afterAll(close);
 
-describe('Notes service', function() {
+describe('Notes service', () => {
   beforeEach(() => drop(db));
 
   it('expect load', (done) => {
@@ -52,8 +52,8 @@ describe('Notes service', function() {
       .then(notes => {
         expect(notes.map(n => n.content)).toEqual(data.collections.notes.map(n => n.content));
         end();
-    })
-    .catch(end);
+      })
+      .catch(end);
   });
 
   it('expect add', (done) => {
@@ -124,5 +124,4 @@ describe('Notes service', function() {
       .catch(done);
   });
 });
-
 
