@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
-import { Button } from '@blueprintjs/core';
+import { Button, Colors } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
-import { compose, join, map, take, split } from 'ramda';
+// import { compose, join, map, take, split } from 'ramda';
+import { compose } from 'ramda';
 import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 import { randomColor } from '../../utils/colors';
 
 const Container = styled.div`
@@ -59,7 +62,7 @@ const Title = styled.h3`
   margin-left:25px;
 `;
 
-const Form = styled.div`
+const Form = styled.form`
   display:flex;
   flex-direction:column;
   margin-top:25px;
@@ -85,6 +88,14 @@ const InputElt = styled.div`
   padding-right:10px;
 `;
 
+const Error = styled.span`
+  display:flex;
+  justify-content: space-between;
+  width:100px;
+  color:${Colors.RED3};
+  margin-top:10px;
+`;
+
 const InputField = styled.input`
   margin-top:20px;
   margin-right:20px;
@@ -95,43 +106,85 @@ const InputField = styled.input`
   inset 0 1px 1px rgba(16, 22, 26, 0.4);
   background: rgba(16, 22, 26, 0.3);
   color: #f5f8fa;
+  border:0;
+  height:25px;
+  border-radius:2px;
+  padding:7px;
 `;
 
-const InputText = styled.p`
+const InputText = styled.label`
   margin:0;
 `;
 
-const initials = compose(join(''), map(take(1)), take(3), split(' '));
+// const initials = compose(join(''), map(take(1)), take(3), split(' '));
+
+const validate = values => {
+  const errors = {};
+  if (!values.Name) {
+    errors.Name = 'Required';
+  } if (!values.Website) {
+    errors.Website = 'Required';
+  } if (!values.City) {
+    errors.City = 'Required';
+  } if (!values.Country) {
+    errors.Country = 'Required';
+  }
+  return errors;
+};
+
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error },
+}) =>
+  (<InputElt>
+    <InputText>
+      {label}
+    </InputText>
+    <InputField {...input} type={type} />
+    {touched &&
+      ((error &&
+        <Error className="pt-icon-standard pt-icon-warning-sign">
+          {error}
+        </Error>))}
+  </InputElt>);
+
+renderField.propTypes = {
+  input: PropTypes.node,
+  label: PropTypes.string,
+  type: PropTypes.string,
+  meta: PropTypes.object,
+};
 
 class AddCompanie extends Component {
   state = {
-    name: '',
     selectedColor: randomColor(),
   }
-
-  handleNameChange = (e) => {
-    this.setState({ name: e.target.value });
+  handleSubmit = (e) => {
+    console.log('ca submit: ', e);
   }
-
   render() {
-    const { name, selectedColor } = this.state;
+    const { selectedColor } = this.state;
+    const { handleSubmit, submitting } = this.props;
+    console.log('props: ', this.props);
     return (
       <Container>
         <Header>
           <TitleRow>
             <FakeAvatar color={selectedColor}>
-              { initials(name) }
+              {}
             </FakeAvatar>
             <Title>New Companie</Title>
           </TitleRow>
           <Buttons>
-            <ButtonElt className="pt-intent-success">Create</ButtonElt>
+            <ButtonElt form="companie" type="submit" disabled={submitting} className="pt-intent-success">Create</ButtonElt>
             <Link to="/companies">
               <ButtonElt className="pt-intent-warning">Cancel</ButtonElt>
             </Link>
           </Buttons>
         </Header>
-        <Form>
+        <Form id="companie" onSubmit={handleSubmit(this.handleSubmit)}>
           <ColorSelector className="pt-select">
             <select>
               <option selected>Choose a color...</option>
@@ -142,42 +195,30 @@ class AddCompanie extends Component {
             </select>
           </ColorSelector>
           <InputRow>
-            <InputElt>
-              <InputText>Name :</InputText>
-              <InputField className="pt-input" onChange={this.handleNameChange}type="text" dir="auto" />
-            </InputElt>
-            <InputElt>
-              <InputText>Website :</InputText>
-              <InputField className="pt-input" type="text" dir="auto" />
-            </InputElt>
+            <Field name="Name" component={renderField} type="text" label="Name :" />
+            <Field name="Website" component={renderField} type="text" label="Website :" />
           </InputRow>
           <InputRow>
-            <InputElt>
-              <InputText>City :</InputText>
-              <InputField className="pt-input" type="text" dir="auto" />
-            </InputElt>
-            <InputElt>
-              <InputText>Country :</InputText>
-              <InputField className="pt-input" type="text" dir="auto" />
-            </InputElt>
+            <Field name="City" component={renderField} type="text" label="City :" />
+            <Field name="Country" component={renderField} type="text" label="Country :" />
           </InputRow>
           <InputRow>
-            <InputElt>
-              <InputText>Tags :</InputText>
-              <InputField className="pt-input" type="text" dir="auto" />
-            </InputElt>
+            <Field name="Tags" component={renderField} type="text" label="Tags :" />
           </InputRow>
           <InputRow>
-            <InputElt>
-              <InputText>Note :</InputText>
-              <InputField className="pt-input" type="text" dir="auto" />
-            </InputElt>
+            <Field name="Note" component={renderField} type="text" label="Note :" />
           </InputRow>
         </Form>
       </Container>
     );
   }
 }
+
+AddCompanie.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool,
+};
+
 
 const mapStateToProps = state => ({
   countries: state.countries.data,
@@ -186,4 +227,7 @@ const mapStateToProps = state => ({
 const actions = {};
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCompanie);
+export default compose(reduxForm({
+  form: 'companie',
+  validate,
+}), connect(mapStateToProps, mapDispatchToProps))(AddCompanie);
