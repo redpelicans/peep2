@@ -4,11 +4,10 @@ import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
 import { Button, Colors } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
-// import { compose, join, map, take, split } from 'ramda';
 import { compose } from 'ramda';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { randomColor } from '../../utils/colors';
+import { AvatarSelector } from '../widgets';
 
 const Container = styled.div`
   display:flex;
@@ -39,17 +38,6 @@ const ButtonElt = styled(Button)`
   margin-right:15px;
 `;
 
-const FakeAvatar = styled.div`
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  font-size:2em;
-  min-width:50px;
-  min-height:50px;
-  border-radius:100px;
-  background-color: ${props => props.color};
-`;
-
 const TitleRow = styled.div`
   display:flex;
   justify-content: center;
@@ -67,11 +55,6 @@ const Form = styled.form`
   flex-direction:column;
   margin-top:25px;
   width:100%;
-`;
-
-const ColorSelector = styled.div`
-  margin-bottom:15px;
-  margin-top:15px;
 `;
 
 const InputRow = styled.div`
@@ -116,8 +99,6 @@ const InputText = styled.label`
   margin:0;
 `;
 
-// const initials = compose(join(''), map(take(1)), take(3), split(' '));
-
 const validate = values => {
   const errors = {};
   if (!values.Name) {
@@ -159,41 +140,33 @@ renderField.propTypes = {
 
 class AddCompanie extends Component {
   state = {
-    selectedColor: randomColor(),
+    color: '',
   }
   handleSubmit = (e) => {
     console.log('ca submit: ', e);
   }
+
+  handleChangeColor = color => {
+    this.setState({ color });
+  }
+
   render() {
-    const { selectedColor } = this.state;
-    const { handleSubmit, submitting } = this.props;
-    console.log('props: ', this.props);
+    const { handleSubmit, valid, companieForm: { values = {} } } = this.props;
     return (
       <Container>
         <Header>
           <TitleRow>
-            <FakeAvatar color={selectedColor}>
-              {}
-            </FakeAvatar>
+            <AvatarSelector handleChangeColor={this.handleChangeColor} name={values.Name} />
             <Title>New Companie</Title>
           </TitleRow>
           <Buttons>
-            <ButtonElt form="companie" type="submit" disabled={submitting} className="pt-intent-success">Create</ButtonElt>
+            <ButtonElt form="companie" type="submit" disabled={!valid} className="pt-intent-success">Create</ButtonElt>
             <Link to="/companies">
               <ButtonElt className="pt-intent-warning">Cancel</ButtonElt>
             </Link>
           </Buttons>
         </Header>
         <Form id="companie" onSubmit={handleSubmit(this.handleSubmit)}>
-          <ColorSelector className="pt-select">
-            <select>
-              <option selected>Choose a color...</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-              <option value="4">Four</option>
-            </select>
-          </ColorSelector>
           <InputRow>
             <Field name="Name" component={renderField} type="text" label="Name :" />
             <Field name="Website" component={renderField} type="text" label="Website :" />
@@ -216,12 +189,14 @@ class AddCompanie extends Component {
 
 AddCompanie.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool,
+  companieForm: PropTypes.object,
+  valid: PropTypes.bool,
 };
 
 
 const mapStateToProps = state => ({
   countries: state.countries.data,
+  companieForm: state.form.companie,
 });
 
 const actions = {};
