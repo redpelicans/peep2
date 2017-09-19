@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 const SortIcon = styled.div`
   cursor: pointer;
+  margin-left:10px;
+  margin-right:10px;
   color:rgb(45,60,70);
 `;
 

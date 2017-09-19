@@ -41,6 +41,7 @@ class Companies extends Component {
           <HeaderRight>
             <Search filter={filter} onChange={this.onFilterChange} resetValue={() => filterCompanyList('')} />
             <SortMenu onClick={sortCompanyList} sort={sort} />
+            <AddButton to="/companies/add" />
           </HeaderRight>
         </Header>
         {isEmpty(companies) &&
@@ -49,7 +50,6 @@ class Companies extends Component {
           No result...
         </EmptySearch>}
         <List companies={companies} filterCompanyList={filterCompanyList} togglePreferred={togglePreferred} />
-        <AddButton to="/companies/add" />
       </Container>
     );
   }

@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
 import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
-import { Select } from '@blueprintjs/labs';
 import { compose, join, map, take, split } from 'ramda';
 import { connect } from 'react-redux';
+import { randomColor } from '../../utils/colors';
 
 const Container = styled.div`
   display:flex;
@@ -66,10 +66,9 @@ const Form = styled.div`
   width:100%;
 `;
 
-const ColorOption = styled.div`
-  width:100%;
-  height:30px;
-  background-color:red;
+const ColorSelector = styled.div`
+  margin-bottom:15px;
+  margin-top:15px;
 `;
 
 const InputRow = styled.div`
@@ -82,13 +81,24 @@ const InputElt = styled.div`
   display: flex;
   flex-direction:column;
   flex:1;
-  margin-top:25px;
+  margin-top:15px;
   padding-right:10px;
 `;
 
 const InputField = styled.input`
-  margin-top:25px;
+  margin-top:20px;
   margin-right:20px;
+  box-shadow: 0 0 0 0 rgba(19, 124, 189, 0),
+  0 0 0 0 rgba(19, 124, 189, 0),
+  0 0 0 0 rgba(19, 124, 189, 0),
+  inset 0 0 0 1px rgba(16, 22, 26, 0.3),
+  inset 0 1px 1px rgba(16, 22, 26, 0.4);
+  background: rgba(16, 22, 26, 0.3);
+  color: #f5f8fa;
+`;
+
+const InputText = styled.p`
+  margin:0;
 `;
 
 const initials = compose(join(''), map(take(1)), take(3), split(' '));
@@ -96,7 +106,7 @@ const initials = compose(join(''), map(take(1)), take(3), split(' '));
 class AddCompanie extends Component {
   state = {
     name: '',
-    selectedColor: 'rgb(55,55,55)',
+    selectedColor: randomColor(),
   }
 
   handleNameChange = (e) => {
@@ -104,8 +114,7 @@ class AddCompanie extends Component {
   }
 
   render() {
-    const { color, name, selectedColor } = this.state;
-    console.log('name: ', name);
+    const { name, selectedColor } = this.state;
     return (
       <Container>
         <Header>
@@ -123,43 +132,44 @@ class AddCompanie extends Component {
           </Buttons>
         </Header>
         <Form>
-          <Select
-            items={[]}
-            filterable={false}
-            itemRenderer={<ColorOption />}
-            onItemSelect={() => console.log(color)}
-          >
-            <Button text={'Choose a color'} rightIconName="pt-icon-chevron-down" />
-          </Select>
+          <ColorSelector className="pt-select">
+            <select>
+              <option selected>Choose a color...</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+              <option value="4">Four</option>
+            </select>
+          </ColorSelector>
           <InputRow>
             <InputElt>
-              <p>Name :</p>
+              <InputText>Name :</InputText>
               <InputField className="pt-input" onChange={this.handleNameChange}type="text" dir="auto" />
             </InputElt>
             <InputElt>
-              <p>Website :</p>
+              <InputText>Website :</InputText>
               <InputField className="pt-input" type="text" dir="auto" />
             </InputElt>
           </InputRow>
           <InputRow>
             <InputElt>
-              <p>City :</p>
+              <InputText>City :</InputText>
               <InputField className="pt-input" type="text" dir="auto" />
             </InputElt>
             <InputElt>
-              <p>Country :</p>
-              <InputField className="pt-input" type="text" dir="auto" />
-            </InputElt>
-          </InputRow>
-          <InputRow>
-            <InputElt>
-              <p>Tags :</p>
+              <InputText>Country :</InputText>
               <InputField className="pt-input" type="text" dir="auto" />
             </InputElt>
           </InputRow>
           <InputRow>
             <InputElt>
-              <p>Note :</p>
+              <InputText>Tags :</InputText>
+              <InputField className="pt-input" type="text" dir="auto" />
+            </InputElt>
+          </InputRow>
+          <InputRow>
+            <InputElt>
+              <InputText>Note :</InputText>
               <InputField className="pt-input" type="text" dir="auto" />
             </InputElt>
           </InputRow>
