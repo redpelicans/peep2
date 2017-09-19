@@ -6,7 +6,7 @@ export const HeaderLeftElt = styled.div`
   display: flex;
   font-size: 1.5em;
   justify-content: flex-start;
-  align-items: flex-end;
+  align-items: center;
   margin-right:25px;
   flex: 1;
 `;
