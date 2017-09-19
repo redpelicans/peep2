@@ -1,5 +1,7 @@
-import R from 'ramda';
+/* eslint-disable no-shadow */
+import { sortBy, prop, match, concat, compose, map, split, allPass, values, filter } from 'ramda';
 import { createSelector } from 'reselect';
+import { isWorker } from '../utils/people';
 
 const getFilter = state => state.people.filter;
 const getPreferredFilter = state => state.people.preferredFilter;
@@ -7,21 +9,21 @@ const getPeople = state => state.people.data;
 const getCompanies = state => state.companies.data;
 const getCompanyId = (state, props) => props.match.params.id;
 
-const doSort = R.sortBy(R.prop('name'));
+const doSort = sortBy(prop('name'));
 const regexp = filter => new RegExp(filter, 'i');
-const getTagsPredicate = filter => ({ tags = [] }) => R.match(regexp(filter.slice(1)), tags.join(' ')).length;
+const getTagsPredicate = filter => ({ tags = [] }) => match(regexp(filter.slice(1)), tags.join(' ')).length;
 const getNamePredicate = filter => ({ name, companyName }) => {
-  const matchName = R.match(regexp(filter), name);
-  const matchCompanyName = (companyName && companyName.length > 0) ? R.match(regexp(filter), companyName) : [];
-  return R.concat(matchName, matchCompanyName).length;
+  const matchName = match(regexp(filter), name);
+  const matchCompanyName = (companyName && companyName.length > 0) ? match(regexp(filter), companyName) : [];
+  return concat(matchName, matchCompanyName).length;
 };
 const getPreferredPredicate = filter => ({ preferred }) => !filter || !!preferred === !!filter;
 const getPredicate = filter => filter[0] === '#' ? getTagsPredicate(filter) : getNamePredicate(filter);
-const getPredicates = filter => R.compose(R.map(getPredicate), R.split(' '))(filter);
-const doFilter = (filter, preferredFilter) => R.filter(R.allPass([getPreferredPredicate(preferredFilter), ...getPredicates(filter)]));
-const filterAndSort = (filter, preferredFilter, people) => R.compose(doSort, doFilter(filter, preferredFilter), R.values)(people);
-const getCompanyName = companies => R.prop(['companyId', 'name'])(companies);
-const peopleWithCompanyName = companies => R.map(person => ({ ...person, companyName: getCompanyName(companies, person) }));
+const getPredicates = filter => compose(map(getPredicate), split(' '))(filter);
+const doFilter = (filter, preferredFilter) => filter(allPass([getPreferredPredicate(preferredFilter), ...getPredicates(filter)]));
+const filterAndSort = (filter, preferredFilter, people) => compose(doSort, doFilter(filter, preferredFilter), values)(people);
+const getCompanyName = companies => prop(['companyId', 'name'])(companies);
+const peopleWithCompanyName = companies => map(person => ({ ...person, companyName: getCompanyName(companies, person) }));
 
 export const getVisiblePeople = createSelector(
   [getFilter, getPreferredFilter, getPeople, getCompanies],
@@ -30,5 +32,10 @@ export const getVisiblePeople = createSelector(
 
 export const getPeopleFromCompany = createSelector(
   [getPeople, getCompanyId],
-  (people, companyId) => R.compose(R.values, R.filter(person => person.companyId === companyId))(people),
+  (people, companyId) => compose(values, filter(person => person.companyId === companyId))(people),
+);
+
+export const getWorkers = createSelector(
+  [getPeople],
+  people => compose(filter(isWorker), values)(people),
 );

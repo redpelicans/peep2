@@ -8,20 +8,8 @@ import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
 import AddButton from './AddButton';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Search, SortMenu, TitleIcon, Title } from '../widgets';
+import { Container, Search, SortMenu, TitleIcon, Title } from '../widgets';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
-
-const Container = styled.div`
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  min-width:300px;
-  padding: 20px;
-  margin:25px;
-  margin-right:100px;
-  background-color: #394b59;
-  border-radius: 2px;
-`;
 
 export const EmptySearch = styled.span`
   display:flex;
