@@ -1,26 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
-import { isEmpty } from 'ramda';
 import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
 import AddButton from './AddButton';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Container, Search, SortMenu, TitleIcon, Title } from '../widgets';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
-
-export const EmptySearch = styled.span`
-  display:flex;
-  flex-direction:column;
-  justify-content: space-around;
-  align-items: center;
-  position:relative;
-  margin:auto;
-  min-width:100%;
-  height:70px;
-`;
 
 class Companies extends Component {
   onFilterChange = (e) => {
@@ -44,11 +31,6 @@ class Companies extends Component {
             <AddButton to="/companies/add" />
           </HeaderRight>
         </Header>
-        {isEmpty(companies) &&
-        <EmptySearch>
-          <span className="pt-icon-large pt-icon-geosearch" />
-          No result...
-        </EmptySearch>}
         <List companies={companies} filterCompanyList={filterCompanyList} togglePreferred={togglePreferred} />
       </Container>
     );
