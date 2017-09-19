@@ -35,6 +35,20 @@ const ColorSelectorElt = styled.div`
   width:400px;
 `;
 
+const Icon = styled.span`
+  position:absolute;
+  text-align:center;
+  right:0;
+  top:0;
+  min-width: 45px;
+  max-width: 45px;
+  min-height: 45px;
+  max-height: 45px;
+  padding-top:13px;
+  border-radius: 50%;
+  background-color:rgba(25,25,25, 0.2);
+`;
+
 const initials = compose(join(''), map(take(1)), take(3), split(' '));
 
 
@@ -58,7 +72,11 @@ class AvatarSelector extends Component {
     const { name = '', handleChangeColor } = this.props;
     const ColorSelector = () => (
       <ColorSelectorElt>
-        {colors.map(color => <ColorCase key={color} onClick={() => (this.setState({ selectedColor: color }, handleChangeColor(color)))} color={color} />)}
+        {colors.map(color => (<ColorCase
+          key={color}
+          onClick={() => (this.setState({ selectedColor: color }, handleChangeColor(color)))}
+          color={color}
+        />))}
       </ColorSelectorElt>
     );
     return (
@@ -71,7 +89,7 @@ class AvatarSelector extends Component {
             onMouseEnter={this.handleMouseEnter}
             onMouseLeave={this.handleMouseLeave}
           >
-            {showIcon && <span className="pt-icon-standard pt-icon-edit" />}
+            {showIcon && <Icon className="pt-icon-standard pt-icon-edit" />}
             { initials(name) }
           </Circle>
         }
