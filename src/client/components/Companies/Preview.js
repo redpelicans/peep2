@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Avatar from '../Avatar';
 
 const PreviewContainer = styled.div`
+  width: 300px;
   display: flex;
   padding:10px;
   padding-left:15px;
