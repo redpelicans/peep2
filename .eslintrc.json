@@ -1,14 +1,14 @@
 {
   "env": {
+    "es6": true,
     "browser": true,
     "node": true
   },
   "parser": "babel-eslint",
-  "extends": "airbnb",
+  "extends": ["prettier", "prettier/react", "prettier/standard"],
+  "plugins": ["prettier"],
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/forbid-prop-types": [0, { "forbid": ['any', 'array', 'object'] }],
-    "max-len": [1, {"code": 150}],
+    "react/forbid-prop-types": [0, { "forbid": ["any", "array", "object"] }],
     "no-underscore-dangle": [0],
     "new-cap": [0],
     "react/require-default-props": [0],
@@ -19,6 +19,6 @@
     "import/no-named-as-default": [0],
     "jsx-a11y/no-static-element-interactions": [0],
     "jsx-a11y/href-no-hash": "off",
-    "react/prefer-stateless-function": "off",
+    "react/prefer-stateless-function": "off"
   }
 }
