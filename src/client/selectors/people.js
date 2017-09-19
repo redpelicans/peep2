@@ -39,3 +39,9 @@ export const getWorkers = createSelector(
   [getPeople],
   people => compose(filter(isWorker), values)(people),
 );
+
+
+export const getSortedWorkers = attr => createSelector(
+  [getWorkers],
+  people => sortBy(prop(attr), people),
+);
