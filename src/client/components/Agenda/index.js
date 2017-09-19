@@ -17,9 +17,9 @@ const Agenda = ({ date, calendar, workers, goPreviousMonth, goNextMonth, goToday
         <Title title={format(date, 'MMMM YYYY')} />
       </HeaderLeft>
       <HeaderRight>
-        <TitleButton name="pt-icon-standard pt-icon-arrow-left" onClick={goPreviousMonth} />
-        <TitleButton name="pt-icon-standard pt-icon-stop" onClick={goToday} />
-        <TitleButton name="pt-icon-standard pt-icon-arrow-right" onClick={goNextMonth} />
+        <TitleButton iconName="arrow-left" onClick={goPreviousMonth} />
+        <TitleButton iconName="stop" onClick={goToday} />
+        <TitleButton iconName="arrow-right" onClick={goNextMonth} />
       </HeaderRight>
     </Header>
     <Calendar
