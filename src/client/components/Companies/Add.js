@@ -7,8 +7,10 @@ import { Link } from 'react-router-dom';
 import { compose, map } from 'ramda';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import fields from './forms/companies';
-import { AvatarSelector, textArea, renderField, renderSelect } from '../widgets';
+import getCities from '../../selectors/cities';
+import getCountries from '../../selectors/countries';
+import fields from './forms';
+import { AvatarSelector, TextInput, TextAreaInput, SelectInput } from '../widgets';
 
 const Container = styled.div`
   display:flex;
@@ -49,6 +51,7 @@ const TitleRow = styled.div`
   display:flex;
   justify-content: center;
   align-items: center;
+  margin-bottom:25px;
 `;
 
 const Title = styled.h3`
@@ -73,34 +76,33 @@ const InputRow = styled.div`
 
 const validate = values => {
   const errors = {};
-  if (!values.Name) {
-    errors.Name = 'Required';
-  } if (!values.Website) {
-    errors.Website = 'Required';
-  } if (!values.Country) {
-    errors.Country = 'Required';
-  }
-  if (!values.City) {
-    errors.City = 'Required';
-  } if (!values.Country) {
-    errors.Country = 'Required';
-  }
+  map(field => {
+    if (field.required === true && !values[field.label]) {
+      errors[field.label] = 'Required';
+    }
+  }, fields);
   return errors;
 };
 
 const getInputComponent = type => {
-  if (type === 'text') {
-    return renderField;
-  } else if (type === 'select') {
-    return renderSelect;
+  if (type === 'input') {
+    return TextInput;
   } else if (type === 'textarea') {
-    return textArea;
+    return TextAreaInput;
+  } else if (type === 'select') {
+    return SelectInput;
   }
 };
 
-const getFields = () => map((field) => (
-  <InputRow>
-    <Field name={field.key} component={getInputComponent(field.type)} label={`${field.label} :`} className="pt-input pt-dark" />
+const getFields = (cities, countries) => map((field) => (
+  <InputRow key={field.key}>
+    <Field
+      component={getInputComponent(field.type)}
+      name={field.key}
+      field={field}
+      cities={cities}
+      countries={countries}
+    />
   </InputRow>
 ), fields);
 
@@ -117,7 +119,7 @@ class AddCompanie extends Component {
   }
 
   render() {
-    const { handleSubmit, valid, companieForm: { values = {} } } = this.props;
+    const { handleSubmit, valid, cities, countries, companieForm: { values = {} } } = this.props;
     return (
       <Container>
         <Header>
@@ -133,7 +135,7 @@ class AddCompanie extends Component {
           </Buttons>
         </Header>
         <Form id="companie" onSubmit={handleSubmit(this.handleSubmit)}>
-          {getFields()}
+          {getFields(cities, countries)}
         </Form>
       </Container>
     );
@@ -143,12 +145,15 @@ class AddCompanie extends Component {
 AddCompanie.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   companieForm: PropTypes.object,
+  countries: PropTypes.array,
+  cities: PropTypes.array,
   valid: PropTypes.bool,
 };
 
 
 const mapStateToProps = state => ({
-  countries: state.countries.data,
+  countries: getCountries(state),
+  cities: getCities(state),
   companieForm: state.form.companie,
 });
 

@@ -52,7 +52,7 @@ const Icon = styled.span`
   max-width: 45px;
   min-height: 45px;
   max-height: 45px;
-  padding-top:14px;
+  padding-top:15px;
   border-radius: 50%;
   background-color:rgba(25,25,25, 0.2);
 `;

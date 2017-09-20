@@ -27,14 +27,6 @@ const InputField = styled.input`
   padding:7px;
 `;
 
-const InputSelect = styled.select`
-  margin-top:20px;
-  border:0;
-  height:25px;
-  border-radius:2px;
-  padding:7px;
-`;
-
 const InputText = styled.label`
   display: flex;
   margin:0;
@@ -44,40 +36,51 @@ const TextAreaElt = styled.textarea`
   margin-top:20px;
 `;
 
-export const renderField = ({
+const SelectElt = styled.div`
+  margin-top:20px;
+`;
+
+const SelectInputElt = styled.select`
+  width:100%;
+`;
+
+const RequiredStar = styled.span`
+  color:${Colors.RED3};
+  margin-left:5px;
+`;
+
+export const TextInput = ({
+  field: { label, type, required },
   input,
-  label,
-  type,
   meta: { touched, error },
-  className,
 }) =>
   (<InputElt>
     <InputText>
       {label}
+      {required && <RequiredStar>*</RequiredStar>}
       {touched &&
       ((error &&
         <Error className="pt-icon-standard pt-icon-warning-sign">
           {error}
         </Error>))}
     </InputText>
-    <InputField {...input} type={type} className={className} />
+    <InputField {...input} type={type} className="pt-input" />
   </InputElt>);
 
-renderField.propTypes = {
+TextInput.propTypes = {
+  field: PropTypes.object,
   input: PropTypes.node,
-  label: PropTypes.string,
-  type: PropTypes.string,
   meta: PropTypes.object,
-  className: PropTypes.string,
 };
 
-export const textArea = ({
-  label,
+export const TextAreaInput = ({
+  field: { label, required },
   meta: { touched, error },
 }) => (
   <InputElt>
     <InputText>
       {label}
+      {required && <RequiredStar>*</RequiredStar>}
       {touched &&
       ((error &&
         <Error className="pt-icon-standard pt-icon-warning-sign">
@@ -88,32 +91,42 @@ export const textArea = ({
   </InputElt>
 );
 
-textArea.propTypes = {
-  label: PropTypes.string,
+TextAreaInput.propTypes = {
+  field: PropTypes.object,
   meta: PropTypes.object,
 };
 
-export const renderSelect = ({
+export const SelectInput = ({
+  field,
   input,
-  label,
   meta: { touched, error },
-  className,
+  cities,
+  countries,
 }) =>
   (<InputElt>
     <InputText>
-      {label}
+      {field.label}
+      {field.required && <RequiredStar>*</RequiredStar>}
       {touched &&
       ((error &&
         <Error className="pt-icon-standard pt-icon-warning-sign">
           {error}
         </Error>))}
     </InputText>
-    <InputSelect {...input} className={className} />
+    <SelectElt className="pt-select">
+      <SelectInputElt {...input} >
+        <option selected>Choose an item...</option>
+        {field.label === 'Types' && field.domainValues.map(type => (<option key={type} value={type}>{type}</option>))}
+        {field.label === 'City' && cities.map(city => (<option key={city} value={city}>{city}</option>))}
+        {field.label === 'Country' && countries.map(country => (<option key={country} value={country}>{country}</option>))}
+      </SelectInputElt>
+    </SelectElt>
   </InputElt>);
 
-renderSelect.propTypes = {
+SelectInput.propTypes = {
+  field: PropTypes.object,
   input: PropTypes.node,
-  label: PropTypes.string,
   meta: PropTypes.object,
-  className: PropTypes.string,
+  countries: PropTypes.array,
+  cities: PropTypes.array,
 };
