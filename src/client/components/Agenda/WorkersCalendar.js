@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 import { Colors } from "@blueprintjs/core";
 import { Tooltip2 } from "@blueprintjs/labs";
 import { shouldUpdate, compose, withHandlers } from "recompose";
-import { path, times, map } from "ramda";
+import { path, times, map, isEmpty } from "ramda";
 import {
   isToday,
   format,
@@ -122,22 +122,37 @@ WorkerHeader.propTypes = {
   worker: PropTypes.object.isRequired
 };
 
-const StyledSpareDay = styled.div`background-color: ${spareDayBackground};`;
+const StyledDay = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: ${({ isWorkingDay }) =>
+    isWorkingDay ? workingDayBackground : spareDayBackground};
+  display: grid;
+  grid-auto-flow: columns;
+  grid-template-rows: 50%;
+  grid-template-areas: "AM" "PM";
+`;
 
-const SpareDay = shouldUpdate(() => false)(({ onMouseUp }) => {
+const StyledSpareDay = styled(StyledDay)`
+  background-color: ${spareDayBackground};
+`;
+
+const SpareDay = shouldUpdate(() => false)(({ events, selectPeriod }) => {
   const handleMouseUp = e => {
-    onMouseUp();
+    selectPeriod();
     e.preventDefault();
     e.stopPropagation();
   };
-  return <StyledSpareDay onMouseUp={handleMouseUp} />;
+  const dayEvents = events && map(e => <Event key={e._id} event={e} />, events);
+  return <StyledSpareDay onMouseUp={handleMouseUp}>{dayEvents}</StyledSpareDay>;
 });
 
 SpareDay.propTypes = {
-  onMouseUp: PropTypes.func.isRequired
+  events: PropTypes.array,
+  selectPeriod: PropTypes.func.isRequired
 };
 
-const StyledWorkingDay = styled.div`
+const StyledWorkingDay = styled(StyledDay)`
   background-color: ${({ selected }) =>
     selected ? Colors.GREEN5 : workingDayBackground};
 `;
@@ -145,18 +160,18 @@ const StyledWorkingDay = styled.div`
 const enhanceWorkingDay = compose(
   shouldUpdate((props, nextProps) => nextProps.selected !== props.selected),
   withHandlers({
-    handleMouseDown: ({ onMouseDown, worker, date }) => e => {
-      onMouseDown(worker, date);
+    handleMouseDown: ({ startPeriod, worker, date }) => e => {
+      startPeriod(worker, date);
       e.preventDefault();
       e.stopPropagation();
     },
-    handleMouseUp: ({ onMouseUp }) => e => {
-      onMouseUp();
+    handleMouseUp: ({ selectPeriod }) => e => {
+      selectPeriod();
       e.preventDefault();
       e.stopPropagation();
     },
-    handleMouseEnter: ({ onMouseEnter, worker, date }) => e => {
-      onMouseEnter(worker, date);
+    handleMouseEnter: ({ extendPeriod, worker, date }) => e => {
+      extendPeriod(worker, date);
       e.preventDefault();
       e.stopPropagation();
     }
@@ -168,6 +183,7 @@ const WorkingDay = enhanceWorkingDay(
     date,
     worker,
     selected,
+    events,
     readOnly,
     handleMouseEnter,
     handleMouseUp,
@@ -180,12 +196,16 @@ const WorkingDay = enhanceWorkingDay(
         onMouseEnter: handleMouseEnter
       }) ||
       {};
+    const dayEvents =
+      events && map(e => <Event key={e._id} event={e} />, events);
     return (
       <StyledWorkingDay
         selected={selected}
         onMouseUp={handleMouseUp}
         {...props}
-      />
+      >
+        {dayEvents}
+      </StyledWorkingDay>
     );
   }
 );
@@ -193,11 +213,12 @@ const WorkingDay = enhanceWorkingDay(
 WorkingDay.propTypes = {
   date: PropTypes.object.isRequired,
   worker: PropTypes.object.isRequired,
+  events: PropTypes.array,
   selected: PropTypes.bool,
   readOnly: PropTypes.bool,
-  onMouseDown: PropTypes.func.isRequired,
-  onMouseUp: PropTypes.func.isRequired,
-  onMouseEnter: PropTypes.func.isRequired
+  startPeriod: PropTypes.func.isRequired,
+  selectPeriod: PropTypes.func.isRequired,
+  extendPeriod: PropTypes.func.isRequired
 };
 
 const betweenDates = (date, first, last) => {
@@ -220,59 +241,22 @@ Event.propTypes = {
   event: PropTypes.object.isRequired
 };
 
-const StyledEventDay = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: ${({ isWorkingDay }) =>
-    isWorkingDay ? workingDayBackground : spareDayBackground};
-  display: grid;
-  grid-auto-flow: columns;
-  grid-template-rows: 50%;
-  grid-template-areas: "AM" "PM";
-`;
-
-const EventDay = ({ events, onMouseUp, isWorkingDay }) => {
-  const dayEvents = map(e => <Event key={e._id} event={e} />, events);
-
-  return (
-    <StyledEventDay
-      isWorkingDay={isWorkingDay}
-      events={events}
-      onMouseUp={onMouseUp}
-    >
-      {dayEvents}
-    </StyledEventDay>
-  );
-};
-
-EventDay.propTypes = {
-  events: PropTypes.array.isRequired,
-  onMouseUp: PropTypes.func.isRequired,
-  isWorkingDay: PropTypes.bool.isRequired
-};
-
 const Day = ({ calendar, currentWorker, user, events, from, to, ...props }) => {
-  const { date, worker, onMouseUp } = props;
+  const { date, worker, selectPeriod } = props;
   const selected =
     betweenDates(date, from, to) && isEqual(currentWorker, worker);
   const isAWorkingDay = isWorkingDay(calendar, date);
-  if (events)
-    return (
-      <EventDay
-        isWorkingDay={isAWorkingDay}
-        events={events}
-        onMouseUp={onMouseUp}
-      />
-    );
   if (isAWorkingDay) {
     const newProps =
       isAdmin(user) || isEqual(user, worker)
-        ? { selected, ...props }
-        : { selected, readOnly: true, ...props };
+        ? { selected, events, ...props }
+        : { selected, events, readOnly: true, ...props };
     return <WorkingDay {...newProps} />;
   }
   const spareDay = getCalendarDay(calendar, date);
-  return <SpareDay day={spareDay} onMouseUp={onMouseUp} />;
+  return (
+    <SpareDay day={spareDay} selectPeriod={selectPeriod} events={events} />
+  );
 };
 
 Day.propTypes = {
@@ -284,21 +268,25 @@ Day.propTypes = {
   from: PropTypes.object,
   to: PropTypes.object,
   currentWorker: PropTypes.object,
-  onMouseUp: PropTypes.func.isRequired
+  selectPeriod: PropTypes.func.isRequired
 };
 
 const getWorkerDateEvents = (worker, date, events) =>
   path([worker._id, dmy(date)], events);
 
 class Calendar extends Component {
-  state = { mouseDown: false };
+  state = { selecting: false };
 
-  handleMouseDown = (worker, date) => {
-    this.setState({ worker, from: date, to: date, mouseDown: true });
+  resetPeriod = () => {
+    this.setState({ from: undefined, to: undefined, worker: undefined });
   };
 
-  handleMouseUp = () => {
-    this.setState({ mouseDown: false }, () => {
+  startPeriod = (worker, date) => {
+    this.setState({ worker, from: date, to: date, selecting: true });
+  };
+
+  selectPeriod = () => {
+    this.setState({ selecting: false }, () => {
       const { worker, from, to } = this.state;
       const { onPeriodSelection } = this.props;
       if (!from) return;
@@ -307,9 +295,9 @@ class Calendar extends Component {
     });
   };
 
-  handleMouseEnter = (worker, date) => {
-    const { from, mouseDown } = this.state;
-    if (from && mouseDown) this.setState({ to: date });
+  extendPeriod = (worker, date) => {
+    const { from, selecting } = this.state;
+    if (from && selecting) this.setState({ to: date });
   };
 
   render() {
@@ -339,9 +327,9 @@ class Calendar extends Component {
             currentWorker={currentWorker}
             events={getWorkerDateEvents(worker, d, events)}
             to={to}
-            onMouseDown={this.handleMouseDown}
-            onMouseUp={this.handleMouseUp}
-            onMouseEnter={this.handleMouseEnter}
+            startPeriod={this.startPeriod}
+            selectPeriod={this.selectPeriod}
+            extendPeriod={this.extendPeriod}
           />
         ),
         days
@@ -350,7 +338,7 @@ class Calendar extends Component {
     }, workers);
 
     return (
-      <StyledCalendar days={days} onMouseLeave={this.handleMouseUp}>
+      <StyledCalendar days={days} onMouseLeave={this.resetPeriod}>
         {daysRow}
         {workersMonth}
       </StyledCalendar>
