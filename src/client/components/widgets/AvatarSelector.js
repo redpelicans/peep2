@@ -28,10 +28,18 @@ const ColorCase = styled.div`
   background-color: ${props => props.color};
   width:30px;
   height:30px;
+  transition: all 0.3s ease;
+  cursor:pointer;
+  &:hover {
+    height:25px;
+  }
 `;
 
 const ColorSelectorElt = styled.div`
   display:flex;
+  justify-content: center;
+  align-items: center;
+  padding:10px;
   width:400px;
 `;
 

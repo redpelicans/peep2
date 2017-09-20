@@ -76,7 +76,10 @@ const validate = values => {
     errors.Name = 'Required';
   } if (!values.Website) {
     errors.Website = 'Required';
-  } if (!values.City) {
+  } if (!values.Country) {
+    errors.Country = 'Required';
+  }
+  if (!values.City) {
     errors.City = 'Required';
   } if (!values.Country) {
     errors.Country = 'Required';
