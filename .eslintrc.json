@@ -5,7 +5,7 @@
     "node": true
   },
   "parser": "babel-eslint",
-  "extends": ["prettier", "prettier/react", "prettier/standard"],
+  "extends": ["prettier/react", "prettier/standard"],
   "plugins": ["prettier"],
   "rules": {
     "react/forbid-prop-types": [0, { "forbid": ["any", "array", "object"] }],
