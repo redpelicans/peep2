@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import tags from './tags';
 import companies from './companies';
 import people from './people';
@@ -10,6 +11,7 @@ import calendar from './calendar';
 import login from './login';
 
 export default combineReducers({
+  form: formReducer,
   tags,
   companies,
   people,
