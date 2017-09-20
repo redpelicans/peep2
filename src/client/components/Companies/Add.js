@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
 import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import fields from './forms/companies';
 import { AvatarSelector, textArea, renderField, renderSelect } from '../widgets';
 
 const Container = styled.div`
@@ -87,6 +88,22 @@ const validate = values => {
   return errors;
 };
 
+const getInputComponent = type => {
+  if (type === 'text') {
+    return renderField;
+  } else if (type === 'select') {
+    return renderSelect;
+  } else if (type === 'textarea') {
+    return textArea;
+  }
+};
+
+const getFields = () => map((field) => (
+  <InputRow>
+    <Field name={field.key} component={getInputComponent(field.type)} label={`${field.label} :`} className="pt-input pt-dark" />
+  </InputRow>
+), fields);
+
 class AddCompanie extends Component {
   state = {
     color: '',
@@ -116,25 +133,7 @@ class AddCompanie extends Component {
           </Buttons>
         </Header>
         <Form id="companie" onSubmit={handleSubmit(this.handleSubmit)}>
-          <InputRow>
-            <Field name="Type" component={renderField} type="text" label="Type :" className="pt-input pt-dark" />
-            <Field name="Name" component={renderField} type="text" label="Name :" className="pt-input pt-dark" />
-            <Field name="Website" component={renderField} type="text" label="Website :" className="pt-input pt-dark" />
-          </InputRow>
-          <InputRow>
-            <Field name="Street" component={renderField} type="text" label="Street :" className="pt-input pt-dark" />
-            <Field name="Zip Code" component={renderField} type="text" label="Zip Code :" className="pt-input pt-dark" />
-          </InputRow>
-          <InputRow>
-            <Field name="City" component={renderSelect} label="City :" className="pt-input pt-dark" />
-            <Field name="Country" component={renderField} type="text" label="Country :" className="pt-input pt-dark" />
-          </InputRow>
-          <InputRow>
-            <Field name="Tags" component={renderField} type="text" label="Tags :" className="pt-input pt-dark" />
-          </InputRow>
-          <InputRow>
-            <Field name="Note" component={textArea} label="Note :" />
-          </InputRow>
+          {getFields()}
         </Form>
       </Container>
     );
