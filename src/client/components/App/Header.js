@@ -1,14 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { withHandlers } from 'recompose';
-import styled from 'styled-components';
-import { Tabs2, Tab2 } from '@blueprintjs/core';
-import { FormattedMessage } from 'react-intl';
-import { getRoute, getRouteByPath, defaultRoute } from '../../routes';
-import UserButton from './User';
-import { NavBar, NavBarLeft, NavBarRight } from './NavBar';
-import LanguageSelector from '../LanguageSelector';
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { withHandlers } from "recompose";
+import styled from "styled-components";
+import { Tabs2, Tab2 } from "@blueprintjs/core";
+import { getRoute, getRouteByPath, defaultRoute } from "../../routes";
+import UserButton from "./User";
+import { NavBar, NavBarLeft, NavBarRight } from "./NavBar";
 
 const Logo = styled.i`
   color: #cd4436;
@@ -17,24 +15,33 @@ const Logo = styled.i`
   font-size: 1.2em;
 `;
 
-const headerBtnClass = (icon, user) => classNames(`pt-button pt-minimal pt-icon-${icon}`, { 'pt-disabled': !user });
-const formattedPeople = <FormattedMessage id={'header.people'} defaultMessage={'People'} />;
-const Header = ({ handleTabChange, user, logout, className, history, langs, locale, setLocale }) => {
-  const Companies = <span className={headerBtnClass('home', user)}>Companies</span>;
-  const People = <span className={headerBtnClass('people', user)}>{formattedPeople}</span>;
-  const Agenda = <span className={headerBtnClass('calendar', user)}>Agenda</span>;
-  const Notes = <span className={headerBtnClass('document', user)}>Notes</span>;
-  const selectedRoute = getRouteByPath(history.location.pathname) || defaultRoute;
+const headerBtnClass = (icon, user) =>
+  classNames(`pt-button pt-minimal pt-icon-${icon}`, { "pt-disabled": !user });
+const Header = ({ handleTabChange, user, logout, className, history }) => {
+  const Companies = (
+    <span className={headerBtnClass("home", user)}>Companies</span>
+  );
+  const People = <span className={headerBtnClass("people", user)}>People</span>;
+  const Agenda = (
+    <span className={headerBtnClass("calendar", user)}>Agenda</span>
+  );
+  const Notes = <span className={headerBtnClass("document", user)}>Notes</span>;
+  const selectedRoute =
+    getRouteByPath(history.location.pathname) || defaultRoute;
   const selectedTab = selectedRoute.name;
   return (
     <div className={className}>
       <NavBar>
         <NavBarLeft>
           <Logo className="fa fa-paper-plane" />
-          <FormattedMessage id="header.title" defaultMessage="Peer by redpelicans" />
+          Peep by redpelicans
         </NavBarLeft>
         <NavBarRight>
-          <Tabs2 id="header" onChange={handleTabChange} selectedTabId={selectedTab}>
+          <Tabs2
+            id="header"
+            onChange={handleTabChange}
+            selectedTabId={selectedTab}
+          >
             <Tab2 id="agenda" title={Agenda} />
             <Tab2 id="companies" title={Companies} />
             <Tab2 id="people" title={People} />
@@ -43,8 +50,7 @@ const Header = ({ handleTabChange, user, logout, className, history, langs, loca
           <span className="pt-navbar-divider" />
           <UserButton user={user} logout={logout} />
           <button className="pt-button pt-minimal pt-icon-notifications" />
-          <LanguageSelector langs={langs} locale={locale} setLocale={setLocale} />
-          {/* <button className="pt-button pt-minimal pt-icon-cog" /> */}
+          <button className="pt-button pt-minimal pt-icon-cog" />
         </NavBarRight>
       </NavBar>
     </div>
@@ -56,10 +62,7 @@ Header.propTypes = {
   logout: PropTypes.func.isRequired,
   handleTabChange: PropTypes.func.isRequired,
   className: PropTypes.string,
-  history: PropTypes.object.isRequired,
-  langs: PropTypes.array.isRequired,
-  locale: PropTypes.string,
-  setLocale: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default withHandlers({
@@ -67,5 +70,5 @@ export default withHandlers({
     const { path } = getRoute(id);
     const { history } = props;
     history.push(path);
-  },
+  }
 })(Header);

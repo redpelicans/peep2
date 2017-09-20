@@ -1,117 +1,127 @@
-import R from 'ramda';
-import sinon from 'sinon';
-import { ObjectId } from 'mongobless';
-import params from '../../../../params';
-import { notes } from '../cities';
-import Note from '../../models/notes';
-import evtX from 'evtx';
-import initNotes from '../notes';
-import { connect, close, drop } from '../../utils/tests';
+import R from "ramda";
+import sinon from "sinon";
+import { ObjectId } from "mongobless";
+import params from "../../../../params";
+import { notes } from "../cities";
+import Note from "../../models/notes";
+import evtX from "evtx";
+import initNotes from "../notes";
+import { connect, close, drop } from "../../utils/tests";
 
 const evtx = evtX().configure(initNotes);
-const service = evtx.service('notes');
+const service = evtx.service("notes");
 const data = {
-  collections:{
+  collections: {
     notes: [
       {
         _id: 1,
-        content: 'content1',
-        entityType: 'company',
+        content: "content1",
+        entityType: "company"
       },
       {
         _id: 2,
-        content: 'content2',
-        entityType: 'company',
-        assigneesIds: [0],
+        content: "content2",
+        entityType: "company",
+        assigneesIds: [0]
       },
       {
         _id: 3,
-        content: 'content3',
-        entityType: 'company',
-        isDeleted: true,
-      },
-    ],
+        content: "content3",
+        entityType: "company",
+        isDeleted: true
+      }
+    ]
   }
 };
 
 let db;
-beforeAll(() => connect(params.db).then(ctx => db = ctx));
+beforeAll(() => connect(params.db).then(ctx => (db = ctx)));
 afterAll(close);
 
-describe('Notes service', function() {
+describe("Notes service", () => {
   beforeEach(() => drop(db));
 
-  it('expect load', (done) => {
-    const noteStub = sinon.stub(Note, 'findAll').callsFake(() => Promise.resolve(data.collections.notes));
+  it("expect load", done => {
+    const noteStub = sinon
+      .stub(Note, "findAll")
+      .callsFake(() => Promise.resolve(data.collections.notes));
     const end = (...params) => {
       noteStub.restore();
       done(...params);
     };
     const user = { _id: 0 };
-    service.load(null, { user })
+    service
+      .load(null, { user })
       .then(notes => {
-        expect(notes.map(n => n.content)).toEqual(data.collections.notes.map(n => n.content));
+        expect(notes.map(n => n.content)).toEqual(
+          data.collections.notes.map(n => n.content)
+        );
         end();
-    })
-    .catch(end);
+      })
+      .catch(end);
   });
 
-  it('expect add', (done) => {
+  it("expect add", done => {
     const newObj = {
-      content: 'content',
-      entityType: 'company',
+      content: "content",
+      entityType: "company",
       entityId: ObjectId(),
       assigneesIds: [1, 2],
       notification: true,
-      status: 'done',
+      status: "done"
     };
     const user = { _id: 0 };
-    const checkObj = (obj) => {
+    const checkObj = obj => {
       const res = {
-        content: 'content',
+        content: "content",
         authorId: user._id,
-        entityType: 'company',
+        entityType: "company",
         assigneesIds: [1, 2],
         notification: true,
-        status: 'done',
+        status: "done"
       };
-      expect(R.omit(['_id', 'entityId', 'createdAt', 'constructor'], obj)).toEqual(res);
+      expect(
+        R.omit(["_id", "entityId", "createdAt", "constructor"], obj)
+      ).toEqual(res);
       return obj;
     };
-    service.add(newObj, { user })
+    service
+      .add(newObj, { user })
       .then(checkObj)
       .then(() => done())
       .catch(done);
   });
 
-  it('expect update', (done) => {
+  it("expect update", done => {
     const newObj = {
-      content: 'content',
-      entityType: 'company',
+      content: "content",
+      entityType: "company",
       entityId: ObjectId(),
       assigneesIds: [1, 2],
       notification: true,
-      status: 'done',
+      status: "done"
     };
     const updates = {
-      content: 'content2',
+      content: "content2",
       entityId: newObj.entityId,
-      entityType: 'company',
+      entityType: "company",
       assigneesIds: [1, 2, 3],
-      status: 'already done',
+      status: "already done"
     };
 
     const user = { _id: 0 };
-    const checkObj = (obj) => {
+    const checkObj = obj => {
       const res = {
         authorId: user._id,
-        content: 'content2',
-        entityType: 'company',
+        content: "content2",
+        entityType: "company",
         assigneesIds: [1, 2, 3],
         notification: true,
-        status: 'already done',
+        status: "already done"
       };
-      expect(R.omit(['_id', 'entityId', 'updatedAt', 'constructor'], obj)).toEqual(res);
+      expect(
+        R.omit(["_id", "entityId", "updatedAt", "constructor"], obj)
+      ).toEqual(res);
       expect(obj.entityId.toString()).toEqual(newObj.entityId.toString());
       return obj;
     };
@@ -124,5 +134,3 @@ describe('Notes service', function() {
       .catch(done);
   });
 });
-
-
