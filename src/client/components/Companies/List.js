@@ -33,17 +33,18 @@ const sizes = [
 
 export const List = ({ companies, ...params }) => (
   <StyledContainer>
-    <MasonryLayout id="companies" sizes={sizes}>
-      {isEmpty(companies) && (
-        <EmptySearch>
-          <span className="pt-icon-large pt-icon-geosearch" />
-          No result...
-        </EmptySearch>
-      )}
-      {companies.map(company => (
-        <Preview key={company._id} company={company} {...params} />
-      ))}
-    </MasonryLayout>
+    {isEmpty(companies) ? (
+      <EmptySearch>
+        <span className="pt-icon-large pt-icon-geosearch" />
+        No result...
+      </EmptySearch>
+    ) : (
+      <MasonryLayout id="companies" sizes={sizes}>
+        {companies.map(company => (
+          <Preview key={company._id} company={company} {...params} />
+        ))}
+      </MasonryLayout>
+    )}
   </StyledContainer>
 );
 
