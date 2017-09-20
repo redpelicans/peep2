@@ -34,7 +34,7 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
       <NavBar>
         <NavBarLeft>
           <Logo className="fa fa-paper-plane" />
-          Peep by redpelicans
+          <span>Peep by redpelicans</span>
         </NavBarLeft>
         <NavBarRight>
           <Tabs2

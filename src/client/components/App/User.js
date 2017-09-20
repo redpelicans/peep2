@@ -31,7 +31,7 @@ const UserButton = ({ user, logout }) => {
         <StyledEmail>{user.email}</StyledEmail>
         <Menu>
           <MenuDivider />
-          <MenuItem iconName="log-out" onClick={logout} text="logout" />
+          <MenuItem iconName="log-out" onClick={logout} text="Logout" />
         </Menu>
       </Layout>
     </Popover2>

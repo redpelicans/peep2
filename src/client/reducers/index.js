@@ -9,7 +9,6 @@ import cities from "./cities";
 import countries from "./countries";
 import calendar from "./calendar";
 import login from "./login";
-import intl from "./intl";
 
 export default combineReducers({
   form: formReducer,
@@ -21,6 +20,5 @@ export default combineReducers({
   countries,
   cities,
   login,
-  calendar,
-  intl
+  calendar
 });
