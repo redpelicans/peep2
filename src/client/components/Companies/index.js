@@ -5,10 +5,12 @@ import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
 import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
-import AddButton from './AddButton';
+import styled from 'styled-components';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Container, Search, SortMenu, Title, Spacer } from '../widgets';
+import { Container, Search, SortMenu, Title, Spacer, LinkButton } from '../widgets';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
+
+const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
 const Companies = ({ companies, filter, sort, sortCompanyList, filterCompanyList, handleFilterChange }) => (
   <Container>
@@ -21,7 +23,7 @@ const Companies = ({ companies, filter, sort, sortCompanyList, filterCompanyList
       <HeaderRight>
         <Search filter={filter} onChange={handleFilterChange} resetValue={() => filterCompanyList('')} />
         <SortMenu onClick={sortCompanyList} sort={sort} />
-        <AddButton to="/companies/add" />
+        <StyledLinkButton to="/companies/add" iconName="plus" />
       </HeaderRight>
     </Header>
     <List companies={companies} filterCompanyList={filterCompanyList} togglePreferred={togglePreferred} />

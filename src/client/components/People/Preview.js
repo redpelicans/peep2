@@ -1,11 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { isEmpty, map } from "ramda";
-import styled from "styled-components";
-import { withStateHandlers } from "recompose";
-import { LinkButton } from "../widgets";
-import Avatar from "../Avatar";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { isEmpty, map } from 'ramda';
+import styled from 'styled-components';
+import { withStateHandlers } from 'recompose';
+import { LinkButton } from '../widgets';
+import Avatar from '../Avatar';
 
 const PreviewContainer = styled.div`
   width: 300px;
@@ -48,8 +48,11 @@ export const Tag = styled.div`
 
 const Actions = styled.div`
   display: flex;
-  justify-content: flex-end;
+  right: 0;
+  top: 0;
   flex: 1;
+  z-index: 5;
+  position: absolute;
   color: #394b59;
 `;
 
@@ -81,8 +84,6 @@ export const CompanyLink = styled(Link)`
   font-size: 0.8rem;
 `;
 
-const EditIcon = styled(Link)``;
-
 const Preview = ({
   handleMouseEnter,
   handleMouseLeave,
@@ -90,7 +91,7 @@ const Preview = ({
   person: { _id, name, avatar, tags = [] },
   company = {},
   onTagClick,
-  handleDeletePeople
+  handleDeletePeople,
 }) => {
   const handleClick = tag => onTagClick(`#${tag}`);
   return (
@@ -104,21 +105,12 @@ const Preview = ({
         <Avatar name={name} color={avatar.color} />
         <StyledInfos>
           <NameLink to={`/people/${_id}`}>{name}</NameLink>
-          <CompanyLink to={`/company/${company._id}`}>
-            {company.name}
-          </CompanyLink>
+          <CompanyLink to={`/company/${company._id}`}>{company.name}</CompanyLink>
         </StyledInfos>
         {showActions && (
           <Actions>
-            <StyledLinkButton
-              to={`/people/edit/${_id}`}
-              className="pt-small pt-button"
-              iconName="pt-icon-edit"
-            />
-            <Icons
-              className="pt-icon-standard pt-icon-trash"
-              onClick={() => handleDeletePeople(_id)}
-            />
+            <StyledLinkButton to={`/people/edit/${_id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
+            <Icons className="pt-icon-standard pt-icon-trash" onClick={() => handleDeletePeople(_id)} />
           </Actions>
         )}
       </TitleRow>
@@ -142,18 +134,19 @@ Preview.propTypes = {
   person: PropTypes.object.isRequired,
   company: PropTypes.object,
   onTagClick: PropTypes.func.isRequired,
-  deletePeople: PropTypes.func.isRequired
+  deletePeople: PropTypes.func.isRequired,
+  handleDeletePeople: PropTypes.func.isRequired,
 };
 
 const enhance = withStateHandlers(
   {
-    showActions: false
+    showActions: false,
   },
   {
-    handleMouseLeave: state => () => ({ showActions: false }),
-    handleMouseEnter: state => () => ({ showActions: true }),
-    handleDeletePeople: ({ deletePeople, _id }) => () => deletePeople(_id)
-  }
+    handleMouseLeave: () => () => ({ showActions: false }),
+    handleMouseEnter: () => () => ({ showActions: true }),
+    handleDeletePeople: ({ deletePeople, _id }) => () => deletePeople(_id),
+  },
 );
 
 export default enhance(Preview);

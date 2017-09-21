@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { isEmpty, map } from "ramda";
-import { withStateHandlers } from "recompose";
-import styled from "styled-components";
-import { LinkButton } from "../widgets";
-import Avatar from "../Avatar";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { isEmpty, map } from 'ramda';
+import { withStateHandlers } from 'recompose';
+import styled from 'styled-components';
+import { LinkButton } from '../widgets';
+import Avatar from '../Avatar';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
@@ -56,8 +56,11 @@ export const Tag = styled.div`
 
 const Actions = styled.div`
   display: flex;
-  justify-content: flex-end;
+  right: 0;
+  top: 0;
   flex: 1;
+  z-index: 5;
+  position: absolute;
   color: #394b59;
 `;
 
@@ -67,13 +70,7 @@ export const Icons = styled.div`
   color: rgb(68, 86, 99);
 `;
 
-const Preview = ({
-  handleMouseEnter,
-  handleMouseLeave,
-  showActions,
-  company: { _id, name, avatar, tags = [] },
-  filterCompanyList
-}) => {
+const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, company: { _id, name, avatar, tags = [] }, filterCompanyList }) => {
   const handleClick = tag => filterCompanyList(`#${tag}`);
   return (
     <PreviewContainer
@@ -87,11 +84,7 @@ const Preview = ({
         <Title>{name}</Title>
         {showActions && (
           <Actions>
-            <StyledLinkButton
-              to={`/company/edit/${_id}`}
-              className="pt-small pt-button"
-              iconName="pt-icon-edit"
-            />
+            <StyledLinkButton to={`/company/edit/${_id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
             <Icons className="pt-icon-standard pt-icon-trash" />
           </Actions>
         )}
@@ -114,17 +107,17 @@ Preview.propTypes = {
   handleMouseLeave: PropTypes.func.isRequired,
   showActions: PropTypes.bool.isRequired,
   company: PropTypes.object.isRequired,
-  filterCompanyList: PropTypes.func.isRequired
+  filterCompanyList: PropTypes.func.isRequired,
 };
 
 const enhance = withStateHandlers(
   {
-    showActions: false
+    showActions: false,
   },
   {
-    handleMouseLeave: state => () => ({ showActions: false }),
-    handleMouseEnter: state => () => ({ showActions: true })
-  }
+    handleMouseLeave: () => () => ({ showActions: false }),
+    handleMouseEnter: () => () => ({ showActions: true }),
+  },
 );
 
 export default enhance(Preview);

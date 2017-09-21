@@ -1,12 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { isEmpty, map } from "ramda";
-import styled from "styled-components";
-import { withStateHandlers } from "recompose";
-import Avatar from "../Avatar";
-import Footer from "./Footer";
-import { MarkdownConvertor } from "../widgets/Markdown";
-import { LinkButton } from "../widgets";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { withStateHandlers } from 'recompose';
+import Footer from './Footer';
+import { MarkdownConvertor } from '../widgets/Markdown';
+import { LinkButton } from '../widgets';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
@@ -35,8 +33,11 @@ const PreviewContainer = styled.div`
 
 const Actions = styled.div`
   display: flex;
-  justify-content: flex-end;
+  right: 0;
+  top: 0;
   flex: 1;
+  z-index: 5;
+  position: absolute;
   color: #394b59;
 `;
 
@@ -54,14 +55,13 @@ export const CardContent = ({ note, person, entity }) => (
   </div>
 );
 
-const Preview = ({
-  handleMouseEnter,
-  handleMouseLeave,
-  showActions,
-  note,
-  people,
-  entity
-}) => (
+CardContent.propTypes = {
+  note: PropTypes.object.isRequired,
+  person: PropTypes.object,
+  entity: PropTypes.object,
+};
+
+const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, note, people, entity }) => (
   <PreviewContainer
     className="pt-card pt-elevation-0 pt-interactive"
     onMouseOver={handleMouseEnter}
@@ -70,11 +70,7 @@ const Preview = ({
   >
     {showActions && (
       <Actions>
-        <StyledLinkButton
-          to={`/note/edit/${note._id}`}
-          className="pt-small pt-button"
-          iconName="pt-icon-edit"
-        />
+        <StyledLinkButton to={`/note/edit/${note._id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
         <Icons className="pt-icon-standard pt-icon-trash" />
       </Actions>
     )}
@@ -82,14 +78,23 @@ const Preview = ({
   </PreviewContainer>
 );
 
+Preview.propTypes = {
+  note: PropTypes.object,
+  people: PropTypes.object,
+  entity: PropTypes.object,
+  showActions: PropTypes.bool.isRequired,
+  handleMouseEnter: PropTypes.func.isRequired,
+  handleMouseLeave: PropTypes.func.isRequired,
+};
+
 const enhance = withStateHandlers(
   {
-    showActions: false
+    showActions: false,
   },
   {
-    handleMouseLeave: state => () => ({ showActions: false }),
-    handleMouseEnter: state => () => ({ showActions: true })
-  }
+    handleMouseLeave: () => () => ({ showActions: false }),
+    handleMouseEnter: () => () => ({ showActions: true }),
+  },
 );
 
 export default enhance(Preview);

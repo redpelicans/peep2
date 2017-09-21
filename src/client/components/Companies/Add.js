@@ -1,18 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import { bindActionCreators } from "redux";
-import { Button } from "@blueprintjs/core";
-import { Link } from "react-router-dom";
-import { compose } from "ramda";
-import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import {
-  AvatarSelector,
-  textArea,
-  renderField,
-  renderSelect
-} from "../widgets";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { bindActionCreators } from 'redux';
+import { Button } from '@blueprintjs/core';
+import { Link } from 'react-router-dom';
+import { compose } from 'ramda';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
+import { AvatarSelector, textArea, renderField, renderSelect } from '../widgets';
 
 const Container = styled.div`
   display: flex;
@@ -78,26 +73,26 @@ const InputRow = styled.div`
 const validate = values => {
   const errors = {};
   if (!values.Name) {
-    errors.Name = "Required";
+    errors.Name = 'Required';
   }
   if (!values.Website) {
-    errors.Website = "Required";
+    errors.Website = 'Required';
   }
   if (!values.City) {
-    errors.City = "Required";
+    errors.City = 'Required';
   }
   if (!values.Country) {
-    errors.Country = "Required";
+    errors.Country = 'Required';
   }
   return errors;
 };
 
 class AddCompanie extends Component {
   state = {
-    color: ""
+    color: '',
   };
   handleSubmit = e => {
-    console.log("submit: ", e);
+    console.log('submit: ', e); // eslint-disable-line no-console
   };
 
   handleChangeColor = color => {
@@ -110,19 +105,11 @@ class AddCompanie extends Component {
       <Container>
         <Header>
           <TitleRow>
-            <AvatarSelector
-              handleChangeColor={this.handleChangeColor}
-              name={values.Name}
-            />
+            <AvatarSelector handleChangeColor={this.handleChangeColor} name={values.Name} />
             <Title>New Companie</Title>
           </TitleRow>
           <Buttons>
-            <ButtonElt
-              form="companie"
-              type="submit"
-              disabled={!valid}
-              className="pt-intent-success"
-            >
+            <ButtonElt form="companie" type="submit" disabled={!valid} className="pt-intent-success">
               Create
             </ButtonElt>
             <Link to="/companies">
@@ -132,67 +119,20 @@ class AddCompanie extends Component {
         </Header>
         <Form id="companie" onSubmit={handleSubmit(this.handleSubmit)}>
           <InputRow>
-            <Field
-              name="Type"
-              component={renderField}
-              type="text"
-              label="Type :"
-              className="pt-input pt-dark"
-            />
-            <Field
-              name="Name"
-              component={renderField}
-              type="text"
-              label="Name :"
-              className="pt-input pt-dark"
-            />
-            <Field
-              name="Website"
-              component={renderField}
-              type="text"
-              label="Website :"
-              className="pt-input pt-dark"
-            />
+            <Field name="Type" component={renderField} type="text" label="Type :" className="pt-input pt-dark" />
+            <Field name="Name" component={renderField} type="text" label="Name :" className="pt-input pt-dark" />
+            <Field name="Website" component={renderField} type="text" label="Website :" className="pt-input pt-dark" />
           </InputRow>
           <InputRow>
-            <Field
-              name="Street"
-              component={renderField}
-              type="text"
-              label="Street :"
-              className="pt-input pt-dark"
-            />
-            <Field
-              name="Zip Code"
-              component={renderField}
-              type="text"
-              label="Zip Code :"
-              className="pt-input pt-dark"
-            />
+            <Field name="Street" component={renderField} type="text" label="Street :" className="pt-input pt-dark" />
+            <Field name="Zip Code" component={renderField} type="text" label="Zip Code :" className="pt-input pt-dark" />
           </InputRow>
           <InputRow>
-            <Field
-              name="City"
-              component={renderSelect}
-              label="City :"
-              className="pt-input pt-dark"
-            />
-            <Field
-              name="Country"
-              component={renderField}
-              type="text"
-              label="Country :"
-              className="pt-input pt-dark"
-            />
+            <Field name="City" component={renderSelect} label="City :" className="pt-input pt-dark" />
+            <Field name="Country" component={renderField} type="text" label="Country :" className="pt-input pt-dark" />
           </InputRow>
           <InputRow>
-            <Field
-              name="Tags"
-              component={renderField}
-              type="text"
-              label="Tags :"
-              className="pt-input pt-dark"
-            />
+            <Field name="Tags" component={renderField} type="text" label="Tags :" className="pt-input pt-dark" />
           </InputRow>
           <InputRow>
             <Field name="Note" component={textArea} label="Note :" />
@@ -206,12 +146,12 @@ class AddCompanie extends Component {
 AddCompanie.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   companieForm: PropTypes.object,
-  valid: PropTypes.bool
+  valid: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
   countries: state.countries.data,
-  companieForm: state.form.companie
+  companieForm: state.form.companie,
 });
 
 const actions = {};
@@ -219,8 +159,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default compose(
   reduxForm({
-    form: "companie",
-    validate
+    form: 'companie',
+    validate,
   }),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
 )(AddCompanie);
