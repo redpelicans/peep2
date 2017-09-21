@@ -81,6 +81,7 @@ class AvatarSelector extends Component {
     const ColorSelector = () => (
       <ColorSelectorElt>
         {colors.map(color => (<ColorCase
+          className="pt-popover-dismiss"
           key={color}
           onClick={() => (this.setState({ selectedColor: color }, handleChangeColor(color)))}
           color={color}
