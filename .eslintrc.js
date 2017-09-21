@@ -15,5 +15,8 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['prettier', 'react', 'import'],
-  rules: {},
+  rules: {
+    'no-console': 'warn',
+    'react/display-name': 'off',
+  },
 };

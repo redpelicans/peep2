@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Colors } from '@blueprintjs/core';
 import { Tooltip2 } from '@blueprintjs/labs';
-import { shouldUpdate, compose, withHandlers } from 'recompose';
-import { path, times, map, isEmpty } from 'ramda';
+import { onlyUpdateForKeys, shouldUpdate, compose, withHandlers } from 'recompose';
+import { path, times, map } from 'ramda';
 import { isToday, format, getDate, startOfMonth, startOfDay, endOfMonth, eachDay } from 'date-fns';
 import { dmy, getWorkingDaysInMonth, isWorkingDay, getCalendarDay } from '../../utils';
 import Avatar, { SMALL } from '../Avatar';
@@ -110,7 +110,7 @@ const StyledDay = styled.div`
 
 const StyledSpareDay = styled(StyledDay)`background-color: ${spareDayBackground};`;
 
-const SpareDay = shouldUpdate(() => false)(({ events, selectPeriod }) => {
+const SpareDay = onlyUpdateForKeys(['events'])(({ events, selectPeriod }) => {
   const handleMouseUp = e => {
     selectPeriod();
     e.preventDefault();
@@ -128,7 +128,7 @@ SpareDay.propTypes = {
 const StyledWorkingDay = styled(StyledDay)`background-color: ${({ selected }) => (selected ? Colors.GREEN5 : workingDayBackground)};`;
 
 const enhanceWorkingDay = compose(
-  shouldUpdate((props, nextProps) => nextProps.selected !== props.selected),
+  onlyUpdateForKeys(['selected', 'events']),
   withHandlers({
     handleMouseDown: ({ startPeriod, worker, date }) => e => {
       startPeriod(worker, date);
@@ -148,7 +148,7 @@ const enhanceWorkingDay = compose(
   }),
 );
 
-const WorkingDay = enhanceWorkingDay(({ date, worker, selected, events, readOnly, handleMouseEnter, handleMouseUp, handleMouseDown }) => {
+const WorkingDay = enhanceWorkingDay(({ selected, events, readOnly, handleMouseEnter, handleMouseUp, handleMouseDown }) => {
   const props =
     (!readOnly && {
       onMouseUp: handleMouseUp,
@@ -165,8 +165,6 @@ const WorkingDay = enhanceWorkingDay(({ date, worker, selected, events, readOnly
 });
 
 WorkingDay.propTypes = {
-  date: PropTypes.object.isRequired,
-  worker: PropTypes.object.isRequired,
   events: PropTypes.array,
   selected: PropTypes.bool,
   readOnly: PropTypes.bool,
