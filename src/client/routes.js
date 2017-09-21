@@ -5,6 +5,7 @@ import People from './components/People';
 import Agenda from './components/Agenda';
 import Notes from './components/Notes';
 import AddCompany from './components/Companies/Add';
+import AddAgenda from './components/Agenda/Add';
 
 const routes = {
   home: {
@@ -15,7 +16,6 @@ const routes = {
   },
   companies: {
     path: '/companies',
-    menuOrder: 1,
     component: Companies,
     default: true,
     exact: true,
@@ -31,21 +31,24 @@ const routes = {
   people: {
     path: '/people',
     exact: true,
-    menuOrder: 2,
     auth: true,
     component: People,
   },
   agenda: {
     path: '/agenda',
     exact: true,
-    menuOrder: 0,
     auth: true,
     component: Agenda,
+  },
+  addAgenda: {
+    path: '/agenda/add',
+    exact: true,
+    auth: true,
+    component: AddAgenda,
   },
   notes: {
     path: '/notes',
     exact: true,
-    menuOrder: 3,
     auth: true,
     component: Notes,
   },
