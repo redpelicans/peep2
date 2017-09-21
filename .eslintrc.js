@@ -1,9 +1,12 @@
 module.exports = {
   env: {
     browser: true,
+    jest: true,
+    node: true,
     es6: true,
   },
   extends: ['eslint:recommended', 'plugin:react/recommended'],
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: {
       experimentalObjectRestSpread: true,
@@ -12,10 +15,5 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['prettier', 'react', 'import'],
-  rules: {
-    indent: ['error', 4],
-    'linebreak-style': ['error', 'unix'],
-    quotes: ['error', 'single'],
-    semi: ['error', 'always'],
-  },
+  rules: {},
 };
