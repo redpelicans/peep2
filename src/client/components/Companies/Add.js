@@ -4,10 +4,13 @@ import styled from 'styled-components';
 import { bindActionCreators } from 'redux';
 import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { AvatarSelector, textArea, renderField, renderSelect } from '../widgets';
+import getCities from '../../selectors/cities';
+import getCountries from '../../selectors/countries';
+import fields from './forms';
+import { AvatarSelector, TextInput, TextAreaInput, SelectInput } from '../widgets';
 
 const Container = styled.div`
   display:flex;
@@ -48,6 +51,7 @@ const TitleRow = styled.div`
   display:flex;
   justify-content: center;
   align-items: center;
+  margin-bottom:25px;
 `;
 
 const Title = styled.h3`
@@ -72,17 +76,35 @@ const InputRow = styled.div`
 
 const validate = values => {
   const errors = {};
-  if (!values.Name) {
-    errors.Name = 'Required';
-  } if (!values.Website) {
-    errors.Website = 'Required';
-  } if (!values.City) {
-    errors.City = 'Required';
-  } if (!values.Country) {
-    errors.Country = 'Required';
-  }
+  map(field => {
+    if (field.required === true && !values[field.label]) {
+      errors[field.label] = 'Required';
+    }
+  }, fields);
   return errors;
 };
+
+const getInputComponent = type => {
+  if (type === 'input') {
+    return TextInput;
+  } else if (type === 'textarea') {
+    return TextAreaInput;
+  } else if (type === 'select') {
+    return SelectInput;
+  }
+};
+
+const getFields = (cities, countries) => map((field) => (
+  <InputRow key={field.key}>
+    <Field
+      component={getInputComponent(field.type)}
+      name={field.key}
+      field={field}
+      cities={cities}
+      countries={countries}
+    />
+  </InputRow>
+), fields);
 
 class AddCompanie extends Component {
   state = {
@@ -97,7 +119,7 @@ class AddCompanie extends Component {
   }
 
   render() {
-    const { handleSubmit, valid, companieForm: { values = {} } } = this.props;
+    const { handleSubmit, valid, cities, countries, companieForm: { values = {} } } = this.props;
     return (
       <Container>
         <Header>
@@ -113,25 +135,7 @@ class AddCompanie extends Component {
           </Buttons>
         </Header>
         <Form id="companie" onSubmit={handleSubmit(this.handleSubmit)}>
-          <InputRow>
-            <Field name="Type" component={renderField} type="text" label="Type :" className="pt-input pt-dark" />
-            <Field name="Name" component={renderField} type="text" label="Name :" className="pt-input pt-dark" />
-            <Field name="Website" component={renderField} type="text" label="Website :" className="pt-input pt-dark" />
-          </InputRow>
-          <InputRow>
-            <Field name="Street" component={renderField} type="text" label="Street :" className="pt-input pt-dark" />
-            <Field name="Zip Code" component={renderField} type="text" label="Zip Code :" className="pt-input pt-dark" />
-          </InputRow>
-          <InputRow>
-            <Field name="City" component={renderSelect} label="City :" className="pt-input pt-dark" />
-            <Field name="Country" component={renderField} type="text" label="Country :" className="pt-input pt-dark" />
-          </InputRow>
-          <InputRow>
-            <Field name="Tags" component={renderField} type="text" label="Tags :" className="pt-input pt-dark" />
-          </InputRow>
-          <InputRow>
-            <Field name="Note" component={textArea} label="Note :" />
-          </InputRow>
+          {getFields(cities, countries)}
         </Form>
       </Container>
     );
@@ -141,12 +145,15 @@ class AddCompanie extends Component {
 AddCompanie.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   companieForm: PropTypes.object,
+  countries: PropTypes.array,
+  cities: PropTypes.array,
   valid: PropTypes.bool,
 };
 
 
 const mapStateToProps = state => ({
-  countries: state.countries.data,
+  countries: getCountries(state),
+  cities: getCities(state),
   companieForm: state.form.companie,
 });
 

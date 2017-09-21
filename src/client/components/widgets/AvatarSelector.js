@@ -28,10 +28,18 @@ const ColorCase = styled.div`
   background-color: ${props => props.color};
   width:30px;
   height:30px;
+  transition: all 0.3s ease;
+  cursor:pointer;
+  &:hover {
+    height:25px;
+  }
 `;
 
 const ColorSelectorElt = styled.div`
   display:flex;
+  justify-content: center;
+  align-items: center;
+  padding:10px;
   width:400px;
 `;
 
@@ -44,7 +52,7 @@ const Icon = styled.span`
   max-width: 45px;
   min-height: 45px;
   max-height: 45px;
-  padding-top:14px;
+  padding-top:15px;
   border-radius: 50%;
   background-color:rgba(25,25,25, 0.2);
 `;
@@ -73,6 +81,7 @@ class AvatarSelector extends Component {
     const ColorSelector = () => (
       <ColorSelectorElt>
         {colors.map(color => (<ColorCase
+          className="pt-popover-dismiss"
           key={color}
           onClick={() => (this.setState({ selectedColor: color }, handleChangeColor(color)))}
           color={color}
