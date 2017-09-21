@@ -64,7 +64,7 @@ DayHeader.propTypes = {
 
 const MonthHeader = shouldUpdate(() => false)(({ date, calendar }) => {
   const nbWorkingDays = getWorkingDaysInMonth(calendar, date).length;
-  const TooltipContent = <StyledTooltip>{`${nbWorkingDays} total working days for ${format(date, 'MMMM')}`}</StyledTooltip>;
+  const TooltipContent = <StyledTooltip>{`total of ${nbWorkingDays} working days for ${format(date, 'MMMM')}`}</StyledTooltip>;
 
   return (
     <div>

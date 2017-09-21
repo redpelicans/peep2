@@ -1,12 +1,12 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { compose } from 'ramda';
-import { lifecycle } from 'recompose';
-// import styled from 'styled-components';
+import { withHandlers, lifecycle } from 'recompose';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
-import { reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { Container, Title, Spacer } from '../widgets';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
@@ -15,7 +15,17 @@ const validate = () => {
   return {};
 };
 
-const Add = () => {
+const Form = styled.form`
+  margin-top: 25px;
+  width: 100%;
+  display: grid;
+  flex-direction: column;
+  grid-template-areas: 'values type' 'toto';
+`;
+
+const StyledField = styled(Field)`grid-area: ${({ name }) => name};`;
+
+const Add = ({ valid, cancel, handleSubmit, addEvent, reset }) => {
   return (
     <Container>
       <Header>
@@ -25,23 +35,38 @@ const Add = () => {
           <Title>New Event</Title>
         </HeaderLeft>
         <HeaderRight>
-          <Button form="addEvent" type="submit" className="pt-intent-success pt-large">
-            {' '}
-            Create{' '}
+          <Button form="addEvent" type="submit" disabled={!valid} className="pt-intent-success pt-large">
+            Create
           </Button>
           <Spacer />
-          <Button type="submit" className="pt-intent-warning pt-large">
+          <Button className="pt-intent-warning pt-large" onClick={cancel}>
             Cancel
+          </Button>
+          <Spacer />
+          <Button className="pt-intent-danger pt-large" onClick={reset}>
+            Reset
           </Button>
         </HeaderRight>
       </Header>
+      <Form id="addEvent" onSubmit={handleSubmit(addEvent)}>
+        <StyledField name="value" component="input" type="text" className="pt-input" />
+        <StyledField name="type" component="input" type="text" className="pt-input" />
+        <StyledField name="toto" component="input" type="text" className="pt-input" />
+      </Form>
     </Container>
   );
 };
 
-Add.propTypes = {};
+Add.propTypes = {
+  cancel: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+  companieForm: PropTypes.object,
+  addEvent: PropTypes.func.isRequired,
+  valid: PropTypes.bool,
+};
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({});
 
 const actions = {};
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -55,9 +80,12 @@ const componentLifecycle = {
 
 export default compose(
   lifecycle(componentLifecycle),
+  withHandlers({
+    cancel: ({ history }) => () => history.goBack(),
+    addEvent: () => values => console.log(values),
+  }),
   reduxForm({
     form: 'addEvent',
-    validate,
   }),
   connect(mapStateToProps, mapDispatchToProps),
 )(Add);
