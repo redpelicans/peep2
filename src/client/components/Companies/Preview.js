@@ -1,9 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { isEmpty, map } from "ramda";
-import { compose, withHandlers, withStateHandlers } from "recompose";
+import { withStateHandlers } from "recompose";
 import styled from "styled-components";
+import { LinkButton } from "../widgets";
 import Avatar from "../Avatar";
+
+const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
 const PreviewContainer = styled.div`
   width: 300px;
@@ -68,7 +71,7 @@ const Preview = ({
   handleMouseEnter,
   handleMouseLeave,
   showActions,
-  company: { name, avatar, tags = [] },
+  company: { _id, name, avatar, tags = [] },
   filterCompanyList
 }) => {
   const handleClick = tag => filterCompanyList(`#${tag}`);
@@ -84,7 +87,11 @@ const Preview = ({
         <Title>{name}</Title>
         {showActions && (
           <Actions>
-            <Icons className="pt-icon-standard pt-icon-edit" />
+            <StyledLinkButton
+              to={`/company/edit/${_id}`}
+              className="pt-small pt-button"
+              iconName="pt-icon-edit"
+            />
             <Icons className="pt-icon-standard pt-icon-trash" />
           </Actions>
         )}

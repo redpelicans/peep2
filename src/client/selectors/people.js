@@ -16,8 +16,8 @@ import { isWorker } from "../utils/people";
 
 export const getFilter = state => state.people.filter || "";
 export const getSort = state => state.people.sort;
+export const getPeople = state => state.people.data;
 const getPreferredFilter = state => state.people.preferredFilter;
-const getPeople = state => state.people.data;
 const getCompanies = state => state.companies.data;
 const getCompanyId = (state, props) => props.match.params.id;
 

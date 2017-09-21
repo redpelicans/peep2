@@ -3,13 +3,23 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { compose, withHandlers } from "recompose";
+import styled from "styled-components";
 import { getVisiblePeople, getFilter } from "../../selectors/people";
 import { getCompanies } from "../../selectors/companies";
 import { List } from "./List";
 import AddButton from "./AddButton";
 import { Header, HeaderLeft, HeaderRight } from "../Header";
-import { Container, Search, SortMenu, TitleIcon, Title } from "../widgets";
+import {
+  Container,
+  Search,
+  SortMenu,
+  TitleIcon,
+  Title,
+  LinkButton
+} from "../widgets";
 import { onTagClick, deletePeople } from "../../actions/people";
+
+const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
 const People = ({
   people,
@@ -31,7 +41,7 @@ const People = ({
           onChange={onFilterChange}
           resetValue={() => onTagClick("")}
         />
-        <AddButton to="/people/add" />
+        <StyledLinkButton to="/people/add" iconName="plus" />
       </HeaderRight>
     </Header>
     <List

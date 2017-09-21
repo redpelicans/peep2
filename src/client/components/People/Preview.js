@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { isEmpty, map } from "ramda";
 import styled from "styled-components";
 import { withStateHandlers } from "recompose";
+import { LinkButton } from "../widgets";
 import Avatar from "../Avatar";
 
 const PreviewContainer = styled.div`
@@ -18,6 +19,8 @@ const PreviewContainer = styled.div`
   border: 1px solid rgba(49, 65, 77, 0.5);
   border-radius: 1px;
 `;
+
+const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
 const TitleRow = styled.div`
   display: flex;
@@ -107,9 +110,10 @@ const Preview = ({
         </StyledInfos>
         {showActions && (
           <Actions>
-            <EditIcon
+            <StyledLinkButton
               to={`/people/edit/${_id}`}
-              className="pt-icon-standard pt-icon-edit"
+              className="pt-small pt-button"
+              iconName="pt-icon-edit"
             />
             <Icons
               className="pt-icon-standard pt-icon-trash"
