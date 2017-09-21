@@ -1,12 +1,4 @@
 const fields = {
-  zipcode: {
-    key: 'Zipcode',
-    label: 'Zip Code',
-    type: 'input',
-    row: 2,
-    column: 2,
-    required: true,
-  },
   types: {
     key: 'Types',
     label: 'Types',
@@ -38,6 +30,14 @@ const fields = {
     type: 'input',
     row: 2,
     column: 1,
+    required: true,
+  },
+  zipcode: {
+    key: 'Zipcode',
+    label: 'Zip Code',
+    type: 'input',
+    row: 2,
+    column: 2,
     required: true,
   },
   city: {
