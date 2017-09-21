@@ -6,14 +6,14 @@ import { getVisibleCompanies } from '../../selectors/companies';
 import { List } from './List';
 import AddButton from './AddButton';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Container, Search, SortMenu, TitleIcon, Title } from '../widgets';
+import { Container, Search, SortMenu, Title, Spacer } from '../widgets';
 import { togglePreferredFilter, togglePreferred, filterCompanyList, sortCompanyList } from '../../actions/companies';
 
 class Companies extends Component {
-  onFilterChange = (e) => {
+  onFilterChange = e => {
     const { filterCompanyList } = this.props; // eslint-disable-line no-shadow
     filterCompanyList(e.target.value);
-  }
+  };
 
   render() {
     const { companies, filter, sort, sortCompanyList, filterCompanyList } = this.props; // eslint-disable-line no-shadow
@@ -22,7 +22,8 @@ class Companies extends Component {
       <Container>
         <Header>
           <HeaderLeft>
-            <TitleIcon name="pt-icon-standard pt-icon-home" />
+            <div className="pt-icon-standard pt-icon-home" />
+            <Spacer />
             <Title title="Companies" />
           </HeaderLeft>
           <HeaderRight>
@@ -37,9 +38,7 @@ class Companies extends Component {
   }
 }
 
-
-Companies.propTypes = {
-};
+Companies.propTypes = {};
 
 Companies.propTypes = {
   companies: PropTypes.array.isRequired,

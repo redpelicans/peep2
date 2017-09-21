@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { withHandlers } from 'recompose';
 import styled from 'styled-components';
 import { Tabs2, Tab2 } from '@blueprintjs/core';
-import { getRoute, getRouteByPath, defaultRoute } from '../../routes';
+import { getRouteByName, getRouteByPath, defaultRoute } from '../../routes';
 import UserButton from './User';
 import { NavBar, NavBarLeft, NavBarRight } from './NavBar';
 
@@ -57,7 +57,7 @@ Header.propTypes = {
 
 export default withHandlers({
   handleTabChange: props => id => {
-    const { path } = getRoute(id);
+    const { path } = getRouteByName(id);
     const { history } = props;
     history.push(path);
   },

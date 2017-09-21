@@ -40,8 +40,8 @@ const routes = {
     auth: true,
     component: Agenda,
   },
-  addAgenda: {
-    path: '/agenda/add',
+  addAgendaEvent: {
+    path: '/agenda/addevent',
     exact: true,
     auth: true,
     component: AddAgenda,
@@ -61,6 +61,7 @@ const routes = {
 
 const exportedRoutes = compose(reduce((acc, [name, r]) => [...acc, { ...r, name }], []), toPairs)(routes);
 export const defaultRoute = find(prop('default'), exportedRoutes);
-export const getRoute = name => routes[name];
+export const getRouteByName = name => routes[name];
 export const getRouteByPath = path => find(r => r.path === path, exportedRoutes);
+export const getPathByName = name => prop('path', getRouteByName(name));
 export default exportedRoutes;

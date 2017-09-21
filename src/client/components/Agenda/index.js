@@ -5,8 +5,10 @@ import { bindActionCreators } from 'redux';
 import { compose, lifecycle, withHandlers } from 'recompose';
 import styled from 'styled-components';
 import { subMonths, addMonths, format } from 'date-fns';
+import { Button } from '@blueprintjs/core';
+import { getPathByName } from '../../routes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Container, Title, TitleIcon, TitleButton } from '../widgets';
+import { Container, Title, Spacer } from '../widgets';
 import { getSortedWorkers } from '../../selectors/people';
 import { getEventsByWorkerDate } from '../../selectors/events';
 import { changeDate } from '../../actions/agenda';
@@ -19,20 +21,23 @@ import Day from './Day';
 
 const StyledContainer = styled(Container)`min-width: 1200px;`;
 
-const Agenda = ({ user, date, events, calendar, workers, goPreviousMonth, goNextMonth, goToday }) => (
+const Agenda = ({ user, date, events, calendar, workers, goPreviousMonth, goNextMonth, goToday, addEvent }) => (
   <StyledContainer>
     <Header>
       <HeaderLeft>
-        <TitleIcon name="pt-icon-standard pt-icon-calendar" />
+        <div className="pt-icon-standard pt-icon-calendar" />
+        <Spacer />
         <Title title={format(date, 'MMMM YYYY')} />
       </HeaderLeft>
       <HeaderRight>
-        <TitleButton iconName="arrow-left" onClick={goPreviousMonth} />
-        <TitleButton iconName="stop" onClick={goToday} />
-        <TitleButton iconName="arrow-right" onClick={goNextMonth} />
+        <Button iconName="arrow-left" onClick={goPreviousMonth} />
+        <Spacer />
+        <Button iconName="stop" onClick={goToday} />
+        <Spacer />
+        <Button iconName="arrow-right" onClick={goNextMonth} />
       </HeaderRight>
     </Header>
-    <Calendar date={date} events={events} dayComponent={Day} calendar={calendar} onPeriodSelection={console.log} workers={workers} user={user} />
+    <Calendar date={date} events={events} dayComponent={Day} calendar={calendar} onPeriodSelection={addEvent} workers={workers} user={user} />
   </StyledContainer>
 );
 
@@ -44,6 +49,7 @@ Agenda.propTypes = {
   goPreviousMonth: PropTypes.func.isRequired,
   goNextMonth: PropTypes.func.isRequired,
   goToday: PropTypes.func.isRequired,
+  addEvent: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 
@@ -69,6 +75,7 @@ const enhance = compose(
     goPreviousMonth: ({ date, changeDate }) => () => changeDate(subMonths(date, 1)),
     goNextMonth: ({ date, changeDate }) => () => changeDate(addMonths(date, 1)),
     goToday: ({ changeDate }) => () => changeDate(new Date()),
+    addEvent: ({ history }) => (worker, from, to) => history.push(getPathByName('addAgendaEvent'), { workerId: worker._id, from, to }),
   }),
 );
 
