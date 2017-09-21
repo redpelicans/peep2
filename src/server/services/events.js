@@ -1,18 +1,17 @@
 /* eslint-disable no-shadow, no-param-reassign */
 
-import debug from "debug";
-import { ObjectId } from "mongobless";
-import R from "ramda";
-import { Event } from "../models";
-import { emitEvent, checkUser, formatOutput } from "./utils";
+import debug from 'debug';
+import R from 'ramda';
+import { Event } from '../models';
+import { checkUser, formatOutput } from './utils';
 
-const loginfo = debug("peep:evtx");
-const SERVICE_NAME = "events";
+const loginfo = debug('peep:evtx');
+const SERVICE_NAME = 'events';
 
 export const event = {
   load() {
     return Event.loadAll();
-  }
+  },
 };
 
 export const outMaker = event => event;
@@ -24,10 +23,10 @@ const init = evtx => {
     .service(SERVICE_NAME)
     .before({ all: [checkUser()] })
     .after({
-      load: [formatOutput(outMakerMany)]
+      load: [formatOutput(outMakerMany)],
     });
 
-  loginfo("events service registered");
+  loginfo('events service registered');
 };
 
 export default init;

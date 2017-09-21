@@ -43,12 +43,12 @@ const data = {
 };
 
 let db;
-beforeAll(() => connect(params.db).then(ctx => db = ctx));
+beforeAll(() => connect(params.db).then(ctx => (db = ctx)));
 afterAll(close);
 
 describe('People service', () => {
   beforeEach(() => drop(db));
-  it('expect load', (done) => {
+  it('expect load', done => {
     const personStub = sinon.stub(Person, 'loadAll').callsFake(() => Promise.resolve(data.collections.people));
     const preferenceStub = sinon.stub(Preference, 'findAll').callsFake(() => Promise.resolve(data.collections.preferences));
     const end = (...params) => {
@@ -64,12 +64,13 @@ describe('People service', () => {
       .catch(end);
   });
 
-  it('expect check email correctness', (done) => {
+  it('expect check email correctness', done => {
     const p1 = { email: 'toto.titi@redpelicans.com' };
     const p2 = { email: 'titi.toto@redpelicans.com' };
     const user = { _id: 0 };
 
-    service.add(p1, { user })
+    service
+      .add(p1, { user })
       .then(() => service.add(p2, { user }))
       .then(() => service.checkEmailUniqueness(p1.email))
       .then(({ ok }) => expect(ok).toBeFalse())
@@ -79,7 +80,7 @@ describe('People service', () => {
       .catch(done);
   });
 
-  it('expect add', (done) => {
+  it('expect add', done => {
     const newPerson = {
       firstName: 'F1',
       lastName: 'L1',
@@ -96,7 +97,7 @@ describe('People service', () => {
       preferred: true,
     };
     const user = { _id: 0 };
-    const checkPerson = (person) => {
+    const checkPerson = person => {
       const res = {
         firstName: 'F1',
         lastName: 'L1',
@@ -111,18 +112,21 @@ describe('People service', () => {
       expect(R.omit(['_id', 'companyId', 'createdAt', 'constructor'], person)).toEqual(res);
       return person;
     };
-    const checkNote = (person) => Note.loadAllForEntity(person).then((notes) => {
-      expect(notes[0].entityId).toEqual(person._id);
-      expect(notes[0].content).toEqual(newPerson.note);
-      return person;
-    });
-    const checkPreferrence = (person) => Preference.loadAll('person', user).then((preferences) => {
-      expect(preferences[0].personId).toEqual(user._id);
-      expect(preferences[0].entityId).toEqual(person._id);
-      return person;
-    });
+    const checkNote = person =>
+      Note.loadAllForEntity(person).then(notes => {
+        expect(notes[0].entityId).toEqual(person._id);
+        expect(notes[0].content).toEqual(newPerson.note);
+        return person;
+      });
+    const checkPreferrence = person =>
+      Preference.loadAll('person', user).then(preferences => {
+        expect(preferences[0].personId).toEqual(user._id);
+        expect(preferences[0].entityId).toEqual(person._id);
+        return person;
+      });
 
-    service.add(newPerson, { user })
+    service
+      .add(newPerson, { user })
       .then(checkPerson)
       .then(checkNote)
       .then(checkPreferrence)
@@ -130,26 +134,27 @@ describe('People service', () => {
       .catch(done);
   });
 
-  it('expect toggle preferred', (done) => {
+  it('expect toggle preferred', done => {
     const newPerson = { firstName: 'C1' };
     const user = { _id: 0 };
-    const checkIsPreferred = (person) => {
+    const checkIsPreferred = person => {
       expect(person.preferred).toBeTrue();
-      return Preference.loadAll('person', user).then((preferences) => {
+      return Preference.loadAll('person', user).then(preferences => {
         expect(preferences[0].personId).toEqual(user._id);
         expect(preferences[0].entityId).toEqual(person._id);
         return person;
       });
     };
-    const checkIsNotPreferred = (person) => {
+    const checkIsNotPreferred = person => {
       expect(person.preferred).toBeFalse();
-      return Preference.loadAll('person', user).then((preferences) => {
+      return Preference.loadAll('person', user).then(preferences => {
         expect(preferences.length).toEqual(0);
         return person;
       });
     };
 
-    service.add(newPerson, { user })
+    service
+      .add(newPerson, { user })
       .then(person => service.setPreferred({ _id: person._id, preferred: true }, { user }))
       .then(checkIsPreferred)
       .then(person => service.setPreferred({ _id: person._id, preferred: false }, { user }))
@@ -158,7 +163,7 @@ describe('People service', () => {
       .catch(done);
   });
 
-  it('expect update', (done) => {
+  it('expect update', done => {
     const newObj = {
       firstName: 'F1',
       lastName: 'L1',
@@ -182,7 +187,7 @@ describe('People service', () => {
     };
 
     const user = { _id: 0 };
-    const checkObj = (obj) => {
+    const checkObj = obj => {
       const res = {
         firstName: 'F2',
         lastName: 'L1',
@@ -197,10 +202,11 @@ describe('People service', () => {
       expect(R.omit(['_id', 'companyId', 'updatedAt', 'createdAt', 'constructor'], obj)).toEqual(res);
       return obj;
     };
-    const checkPreferrence = (obj) => Preference.loadAll('person', user).then((preferences) => {
-      expect(preferences.length).toEqual(0);
-      return obj;
-    });
+    const checkPreferrence = obj =>
+      Preference.loadAll('person', user).then(preferences => {
+        expect(preferences.length).toEqual(0);
+        return obj;
+      });
 
     service
       .add(newObj, { user })
@@ -211,17 +217,16 @@ describe('People service', () => {
       .catch(done);
   });
 
-  it('expect update tags', (done) => {
+  it('expect update tags', done => {
     const newObj = {
       firstName: 'F1',
       lastName: 'L1',
       type: 'worker',
       tags: ['tag1', 'tag2'],
-      type: 'worker',
     };
 
     const user = { _id: 0 };
-    const checkObj = (obj) => {
+    const checkObj = obj => {
       const res = {
         firstName: 'F1',
         lastName: 'L1',
@@ -243,8 +248,7 @@ describe('People service', () => {
       .catch(done);
   });
 
-
-  it('expect delete', (done) => {
+  it('expect delete', done => {
     const newObj = {
       firstName: 'F1',
       lastName: 'L1',
@@ -258,20 +262,24 @@ describe('People service', () => {
     };
 
     const user = { _id: 0 };
-    const checkObj = (id) => Person.findOne({ _id: id }).then((p) => {
-      expect(p.isDeleted).toBeTrue();
-      return p._id;
-    });
-    const checkPreferrence = (id) => Preference.loadAll('person', user).then((preferences) => {
-      expect(preferences.length).toEqual(0);
-      return id;
-    });
-    const checkNote = (id) => Note.loadAllForEntity({ _id: id }).then((notes) => {
-      expect(notes.length).toEqual(0);
-      return id;
-    });
+    const checkObj = id =>
+      Person.findOne({ _id: id }).then(p => {
+        expect(p.isDeleted).toBeTrue();
+        return p._id;
+      });
+    const checkPreferrence = id =>
+      Preference.loadAll('person', user).then(preferences => {
+        expect(preferences.length).toEqual(0);
+        return id;
+      });
+    const checkNote = id =>
+      Note.loadAllForEntity({ _id: id }).then(notes => {
+        expect(notes.length).toEqual(0);
+        return id;
+      });
 
-    service.add(newObj, { user })
+    service
+      .add(newObj, { user })
       .then(({ _id }) => service.del(_id, { user }))
       .then(checkObj)
       .then(checkPreferrence)

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { isEmpty } from 'ramda';
+import { withHandlers } from 'recompose';
 import Preview from './Preview';
 import { EmptySearch } from '../widgets';
 import MasonryLayout from '../widgets/MasonryLayout';
@@ -19,24 +20,33 @@ const sizes = [
   { mq: '1700px', columns: 5, gutter: 10 },
 ];
 
-export const List = ({ companies, ...params }) => (
+export const List = ({ notes, people, findEntity }) => (
   <StyledContainer>
-    {isEmpty(companies) ? (
+    {isEmpty(notes) ? (
       <EmptySearch>
         <span className="pt-icon-large pt-icon-geosearch" />
         No result...
       </EmptySearch>
     ) : (
-      <MasonryLayout id="companies" sizes={sizes}>
-        {companies.map(company => <Preview key={company._id} company={company} {...params} />)}
+      <MasonryLayout id="notes" sizes={sizes}>
+        {notes.map(note => <Preview key={note._id} note={note} people={people} entity={findEntity(note.entityType, note.entityId)} />)}
       </MasonryLayout>
     )}
   </StyledContainer>
 );
 
 List.propTypes = {
-  companies: PropTypes.array.isRequired,
-  filterCompanyList: PropTypes.func.isRequired,
+  notes: PropTypes.array.isRequired,
+  people: PropTypes.object.isRequired,
+  companies: PropTypes.object.isRequired,
+  findEntity: PropTypes.func.isRequired,
 };
 
-export default List;
+const enhance = withHandlers({
+  findEntity: ({ companies, people }) => (entityType, entityId) => {
+    const entity = entityType === 'person' ? people[entityId] : companies[entityId];
+    return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
+  },
+});
+
+export default enhance(List);

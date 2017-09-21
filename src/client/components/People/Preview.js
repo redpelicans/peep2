@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { isEmpty, map } from 'ramda';
-import { withStateHandlers } from 'recompose';
 import styled from 'styled-components';
+import { withStateHandlers } from 'recompose';
 import { LinkButton } from '../widgets';
 import Avatar from '../Avatar';
-
-const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
 const PreviewContainer = styled.div`
   width: 300px;
@@ -21,19 +20,12 @@ const PreviewContainer = styled.div`
   border-radius: 1px;
 `;
 
-export const Title = styled.h3`
-  text-transform: capitalize;
-  font-size: 1em;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin: 0;
-  margin-left: 15px;
-  color: rgb(67, 75, 89);
-`;
+const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
 const TitleRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const Tags = styled.div`
@@ -64,14 +56,44 @@ const Actions = styled.div`
   color: #394b59;
 `;
 
+const StyledInfos = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+`;
+
 export const Icons = styled.div`
   margin-left: 5px;
   margin-right: 5px;
   color: rgb(68, 86, 99);
 `;
 
-const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, company: { _id, name, avatar, tags = [] }, filterCompanyList }) => {
-  const handleClick = tag => filterCompanyList(`#${tag}`);
+export const NameLink = styled(Link)`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+  font-weight: bold;
+`;
+
+export const CompanyLink = styled(Link)`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-transform: capitalize;
+  font-size: 0.8rem;
+`;
+
+const Preview = ({
+  handleMouseEnter,
+  handleMouseLeave,
+  showActions,
+  person: { _id, name, avatar, tags = [] },
+  company = {},
+  onTagClick,
+  handleDeletePeople,
+}) => {
+  const handleClick = tag => onTagClick(`#${tag}`);
   return (
     <PreviewContainer
       className="pt-card pt-elevation-0 pt-interactive"
@@ -81,11 +103,14 @@ const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, company: { _
     >
       <TitleRow>
         <Avatar name={name} color={avatar.color} />
-        <Title>{name}</Title>
+        <StyledInfos>
+          <NameLink to={`/people/${_id}`}>{name}</NameLink>
+          <CompanyLink to={`/company/${company._id}`}>{company.name}</CompanyLink>
+        </StyledInfos>
         {showActions && (
           <Actions>
-            <StyledLinkButton to={`/company/edit/${_id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
-            <Icons className="pt-icon-standard pt-icon-trash" />
+            <StyledLinkButton to={`/people/edit/${_id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
+            <Icons className="pt-icon-standard pt-icon-trash" onClick={() => handleDeletePeople(_id)} />
           </Actions>
         )}
       </TitleRow>
@@ -106,8 +131,11 @@ Preview.propTypes = {
   handleMouseEnter: PropTypes.func.isRequired,
   handleMouseLeave: PropTypes.func.isRequired,
   showActions: PropTypes.bool.isRequired,
-  company: PropTypes.object.isRequired,
-  filterCompanyList: PropTypes.func.isRequired,
+  person: PropTypes.object.isRequired,
+  company: PropTypes.object,
+  onTagClick: PropTypes.func.isRequired,
+  deletePeople: PropTypes.func.isRequired,
+  handleDeletePeople: PropTypes.func.isRequired,
 };
 
 const enhance = withStateHandlers(
@@ -117,6 +145,7 @@ const enhance = withStateHandlers(
   {
     handleMouseLeave: () => () => ({ showActions: false }),
     handleMouseEnter: () => () => ({ showActions: true }),
+    handleDeletePeople: ({ deletePeople, _id }) => () => deletePeople(_id),
   },
 );
 

@@ -7,15 +7,16 @@ import config from '../../../params';
 
 let peep;
 
-beforeAll(() => initMongo({ config })
-  .then(initHttp)
-  .then(initSocketIO)
-  .then(initEvtx)
-  .then(ctx => peep = ctx),
+beforeAll(() =>
+  initMongo({ config })
+    .then(initHttp)
+    .then(initSocketIO)
+    .then(initEvtx)
+    .then(ctx => (peep = ctx)),
 );
 
 describe('Main', () => {
-  it('expect ping', (done) => {
+  it('expect ping', done => {
     const data = 'coucou';
     const message = {
       type: 'status:ping',
@@ -23,15 +24,13 @@ describe('Main', () => {
       replyTo: 'pong',
     };
     const io = socketIOClient.connect(peep.http.url);
-    io.on('action', (message) => {
-      expect(message.type).toEqual('pong'),
-      expect(message.payload.data).toEqual(data),
-      done();
+    io.on('action', message => {
+      expect(message.type).toEqual('pong'), expect(message.payload.data).toEqual(data), done();
     });
     io.emit('action', message);
   });
 
-  it('expect not ping', (done) => {
+  it('expect not ping', done => {
     const data = 'coucou';
     const message = {
       type: 'status:notping',
@@ -39,16 +38,13 @@ describe('Main', () => {
       replyTo: 'pong',
     };
     const io = socketIOClient.connect(peep.http.url);
-    io.on('action', (message) => {
-      expect(message.type).toEqual('EvtX:Error'),
-      expect(message.error).not.toBeNull(),
-      done();
+    io.on('action', message => {
+      expect(message.type).toEqual('EvtX:Error'), expect(message.error).not.toBeNull(), done();
     });
     io.emit('action', message);
   });
 
-
-  it('expect ping with callback', (done) => {
+  it('expect ping with callback', done => {
     const data = 'coucou';
     const message = {
       type: 'status:ping',
@@ -56,12 +52,11 @@ describe('Main', () => {
     };
     const io = socketIOClient.connect(peep.http.url);
     io.emit('action', message, (err, res) => {
-      expect(res.data).toEqual(data),
-      done();
+      expect(res.data).toEqual(data), done();
     });
   });
 
-  it('expect not ping with callback', (done) => {
+  it('expect not ping with callback', done => {
     const data = 'coucou';
     const message = {
       type: 'status:notping',
@@ -69,8 +64,8 @@ describe('Main', () => {
     };
     const io = socketIOClient.connect(peep.http.url);
     io.emit('action', message, (err, res) => {
-      expect(err).not.toBeNull(),
-      done();
+      // eslint-disable-line no-unused-vars
+      expect(err).not.toBeNull(), done();
     });
   });
 });

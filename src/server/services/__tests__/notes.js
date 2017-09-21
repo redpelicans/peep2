@@ -2,7 +2,6 @@ import R from 'ramda';
 import sinon from 'sinon';
 import { ObjectId } from 'mongobless';
 import params from '../../../../params';
-import { notes } from '../cities';
 import Note from '../../models/notes';
 import evtX from 'evtx';
 import initNotes from '../notes';
@@ -35,20 +34,21 @@ const data = {
 };
 
 let db;
-beforeAll(() => connect(params.db).then(ctx => db = ctx));
+beforeAll(() => connect(params.db).then(ctx => (db = ctx)));
 afterAll(close);
 
 describe('Notes service', () => {
   beforeEach(() => drop(db));
 
-  it('expect load', (done) => {
+  it('expect load', done => {
     const noteStub = sinon.stub(Note, 'findAll').callsFake(() => Promise.resolve(data.collections.notes));
     const end = (...params) => {
       noteStub.restore();
       done(...params);
     };
     const user = { _id: 0 };
-    service.load(null, { user })
+    service
+      .load(null, { user })
       .then(notes => {
         expect(notes.map(n => n.content)).toEqual(data.collections.notes.map(n => n.content));
         end();
@@ -56,7 +56,7 @@ describe('Notes service', () => {
       .catch(end);
   });
 
-  it('expect add', (done) => {
+  it('expect add', done => {
     const newObj = {
       content: 'content',
       entityType: 'company',
@@ -66,7 +66,7 @@ describe('Notes service', () => {
       status: 'done',
     };
     const user = { _id: 0 };
-    const checkObj = (obj) => {
+    const checkObj = obj => {
       const res = {
         content: 'content',
         authorId: user._id,
@@ -78,13 +78,14 @@ describe('Notes service', () => {
       expect(R.omit(['_id', 'entityId', 'createdAt', 'constructor'], obj)).toEqual(res);
       return obj;
     };
-    service.add(newObj, { user })
+    service
+      .add(newObj, { user })
       .then(checkObj)
       .then(() => done())
       .catch(done);
   });
 
-  it('expect update', (done) => {
+  it('expect update', done => {
     const newObj = {
       content: 'content',
       entityType: 'company',
@@ -102,7 +103,7 @@ describe('Notes service', () => {
     };
 
     const user = { _id: 0 };
-    const checkObj = (obj) => {
+    const checkObj = obj => {
       const res = {
         authorId: user._id,
         content: 'content2',
@@ -124,4 +125,3 @@ describe('Notes service', () => {
       .catch(done);
   });
 });
-
