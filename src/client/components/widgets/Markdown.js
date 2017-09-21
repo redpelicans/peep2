@@ -8,7 +8,8 @@ import { themeColors } from '../../utils/colors';
 const convertor = new Remarkable('full');
 
 const StyledMarkdown = styled.div`
-  ol, ul {
+  ol,
+  ul {
     list-style: circle;
     margin-left: 16px;
   }
@@ -20,7 +21,7 @@ const StyledMarkdown = styled.div`
     color: ${themeColors.error};
     padding: 4px;
     border-radius: 4px;
-    background: ${themeColors.secondary}
+    background: ${themeColors.secondary};
   }
 `;
 
@@ -31,7 +32,7 @@ export const MarkdownConvertor = ({ children }) => (
 );
 
 MarkdownConvertor.propTypes = {
-  children: React.PropTypes.string,
+  children: PropTypes.string,
 };
 
 export const MarkdownSwitch = ({ onChange }) => (
@@ -42,7 +43,7 @@ export const MarkdownSwitch = ({ onChange }) => (
 );
 
 MarkdownSwitch.propTypes = {
-  onChange: React.PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export class MarkdownTextarea extends React.Component {
@@ -54,20 +55,20 @@ export class MarkdownTextarea extends React.Component {
   }
 
   getWriter = () => {
-    const { showMarkdown, value, ...props } = this.props;
+    const { props } = this;
     const localValue = this.state.value;
     return <Input {...props} type="textarea" value={localValue} onChange={this.handleChange} />;
-  }
+  };
 
   getReader = () => {
     const { value } = this.state;
     return <MarkdownConvertor>{value}</MarkdownConvertor>;
-  }
+  };
 
   getWidget = () => {
     const { showMarkdown } = this.state;
     return showMarkdown ? this.getReader() : this.getWriter();
-  }
+  };
 
   handleChange = event => {
     const { onChange } = this.props;
@@ -75,7 +76,7 @@ export class MarkdownTextarea extends React.Component {
     this.setState({ value });
     event.preventDefault();
     if (onChange) onChange(event);
-  }
+  };
 
   handleMarkdownSwitch = () => this.setState({ showMarkdown: !this.state.showMarkdown });
 
