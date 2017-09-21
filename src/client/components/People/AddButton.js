@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const FixedAddButtonElt = styled.div`
+const StyledFixedAddButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,14 +12,14 @@ const FixedAddButtonElt = styled.div`
   background-color: #394b59;
 `;
 
-const LinkElt = styled(Link)`color: white;`;
+const StyledLink = styled(Link)`color: white;`;
 
 const AddButton = ({ to }) => (
-  <LinkElt to={to}>
-    <FixedAddButtonElt>
+  <StyledLink to={to}>
+    <StyledFixedAddButton>
       <span className="pt-icon-large pt-icon-plus" />
-    </FixedAddButtonElt>
-  </LinkElt>
+    </StyledFixedAddButton>
+  </StyledLink>
 );
 
 AddButton.propTypes = {

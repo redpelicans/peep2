@@ -1,11 +1,11 @@
-import React from 'react';
-import { join } from 'ramda';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import classNames from 'classnames';
-import { Button, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
-import { Popover2 } from '@blueprintjs/labs';
-import Avatar from '../Avatar';
+import React from "react";
+import { join } from "ramda";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import classNames from "classnames";
+import { Button, Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
+import { Popover2 } from "@blueprintjs/labs";
+import Avatar from "../Avatar";
 
 const Layout = styled.div`
   display: grid;
@@ -13,18 +13,16 @@ const Layout = styled.div`
   justify-items: center;
 `;
 
-const StyledAvatar = styled(Avatar)`
-  margin: 10px;
-`;
+const StyledAvatar = styled(Avatar)`margin: 10px;`;
 
-const StyledEmail = styled.div`
-  font-size: 0.8em;
-`;
+const StyledEmail = styled.div`font-size: 0.8em;`;
 
 const UserButton = ({ user, logout }) => {
-  const btnClass = classNames('pt-button pt-minimal pt-icon-user', { 'pt-disabled': !user });
+  const btnClass = classNames("pt-button pt-minimal pt-icon-user", {
+    "pt-disabled": !user
+  });
   if (!user) return <button className={btnClass} />;
-  const fullName = join(' ', [user.firstName, user.lastName]);
+  const fullName = join(" ", [user.firstName, user.lastName]);
   return (
     <Popover2 placement="bottom">
       <Button className={btnClass} />
@@ -33,11 +31,7 @@ const UserButton = ({ user, logout }) => {
         <StyledEmail>{user.email}</StyledEmail>
         <Menu>
           <MenuDivider />
-          <MenuItem
-            iconName="log-out"
-            onClick={logout}
-            text="Logout"
-          />
+          <MenuItem iconName="log-out" onClick={logout} text="Logout" />
         </Menu>
       </Layout>
     </Popover2>
@@ -46,7 +40,7 @@ const UserButton = ({ user, logout }) => {
 
 UserButton.propTypes = {
   user: PropTypes.object,
-  logout: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired
 };
 
 export default UserButton;

@@ -1,5 +1,5 @@
-import R from 'ramda';
-import moment from 'moment';
+import { compose, fromPairs, map, omit } from "ramda";
+import moment from "moment";
 import {
   PEOPLE_LOADED,
   FILTER_PEOPLE_LIST,
@@ -7,19 +7,24 @@ import {
   ADD_PEOPLE,
   PEOPLE_ADDED,
   PEOPLE_UPDATED,
-  PEOPLE_DELETED,
-} from '../actions/people';
+  PEOPLE_DELETED
+} from "../actions/people";
 
-const make = (person) => {
+const make = person => {
   const { firstName, lastName } = person;
-  const updatedPerson = { ...person, name: `${firstName} ${lastName}`, typeName: 'person', createdAt: moment(person.createdAt) };
+  const updatedPerson = {
+    ...person,
+    name: `${firstName} ${lastName}`,
+    typeName: "person",
+    createdAt: moment(person.createdAt)
+  };
   if (person.updatedAt) updatedPerson.updatedAt = moment(person.updatedAt);
   return updatedPerson;
 };
 
-const makeAll = R.compose(R.fromPairs, R.map(o => [o._id, make(o)]));
+const makeAll = compose(fromPairs, map(o => [o._id, make(o)]));
 
-const people = (state = { data: { } }, action) => {
+const people = (state = { data: {} }, action) => {
   switch (action.type) {
     case TOGGLE_PREFERRED_FILTER:
       return { ...state, preferredFilter: !state.preferredFilter };
@@ -35,19 +40,19 @@ const people = (state = { data: { } }, action) => {
         pending_action: false,
         data: {
           ...state.data,
-          [action.payload._id]: make(action.payload),
-        },
+          [action.payload._id]: make(action.payload)
+        }
       };
     case PEOPLE_UPDATED:
       return {
         ...state,
         data: {
           ...state.data,
-          [action.payload._id]: make(action.payload),
-        },
+          [action.payload._id]: make(action.payload)
+        }
       };
     case PEOPLE_DELETED:
-      return { data: R.omit([action.payload._id])(state.data) };
+      return { data: omit([action.payload._id])(state.data) };
     default:
       return state;
   }

@@ -31,26 +31,32 @@ const sizes = [
   { mq: "1700px", columns: 5, gutter: 10 }
 ];
 
-export const List = ({ companies, ...params }) => (
+export const List = ({ people, companies, ...params }) => (
   <StyledContainer>
-    {isEmpty(companies) ? (
-      <EmptySearch>
-        <span className="pt-icon-large pt-icon-geosearch" />
-        No result...
-      </EmptySearch>
-    ) : (
-      <MasonryLayout id="companies" sizes={sizes}>
-        {companies.map(company => (
-          <Preview key={company._id} company={company} {...params} />
-        ))}
-      </MasonryLayout>
-    )}
+    <MasonryLayout id="people" sizes={sizes}>
+      {isEmpty(people) && (
+        <EmptySearch>
+          <span className="pt-icon-large pt-icon-geosearch" />
+          No result...
+        </EmptySearch>
+      )}
+      {people.map(person => (
+        <Preview
+          key={person._id}
+          person={person}
+          company={companies[person.companyId]}
+          {...params}
+        />
+      ))}
+    </MasonryLayout>
   </StyledContainer>
 );
 
 List.propTypes = {
-  companies: PropTypes.array.isRequired,
-  filterCompanyList: PropTypes.func.isRequired
+  people: PropTypes.array.isRequired,
+  companies: PropTypes.object.isRequired,
+  onTagClick: PropTypes.func.isRequired,
+  deletePeople: PropTypes.func.isRequired
 };
 
 export default List;

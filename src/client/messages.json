@@ -1,0 +1,16 @@
+{
+  "fr": {
+    "header.people": "Personnes",
+    "header.logout": "Déconnexion",
+    "header.title": "Peep par redpelicans",
+    "companies.emptysearch": "Pas de résultats",
+    "widget.search.placeholder": "Entrez votre filtre ..."
+  },
+  "en": {
+    "header.people": "People",
+    "header.logout": "Logout",
+    "header.title": "Peep by redpelicans",
+    "companies.emptysearch": "No results",
+    "widget.search.placeholder": "Enter your filter ..."
+  }
+}

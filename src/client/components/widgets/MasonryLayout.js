@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Bricks from 'bricks.js';
+import React from "react";
+import PropTypes from "prop-types";
+import Bricks from "bricks.js";
 
 class MasonryLayout extends React.Component {
   static propTypes = {
@@ -9,25 +9,25 @@ class MasonryLayout extends React.Component {
     sizes: PropTypes.array,
     style: PropTypes.object,
     className: PropTypes.string,
-    children: PropTypes.arrayOf(PropTypes.element).isRequired,
-  }
+    children: PropTypes.arrayOf(PropTypes.element).isRequired
+  };
 
   static defaultProps = {
-    packed: 'data-packed',
+    packed: "data-packed",
     sizes: [
       { columns: 2, gutter: 20 },
-      { mq: '768px', columns: 3, gutter: 20 },
-      { mq: '1024px', columns: 6, gutter: 20 },
+      { mq: "768px", columns: 3, gutter: 20 },
+      { mq: "1024px", columns: 6, gutter: 20 }
     ],
     style: {},
-    className: '',
-  }
+    className: ""
+  };
 
   componentDidMount() {
     const instance = Bricks({
       container: `#${this.props.id}`,
       packed: this.props.packed,
-      sizes: this.props.sizes,
+      sizes: this.props.sizes
     });
 
     instance.resize(true);
@@ -41,7 +41,9 @@ class MasonryLayout extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.children.length === 0 && this.props.children.length === 0) { return; }
+    if (prevProps.children.length === 0 && this.props.children.length === 0) {
+      return;
+    }
 
     const { brick } = this;
 
@@ -63,11 +65,7 @@ class MasonryLayout extends React.Component {
   render() {
     const { id, className, style, children } = this.props;
     return (
-      <div
-        id={id}
-        className={className}
-        style={style}
-      >
+      <div id={id} className={className} style={style}>
         {children}
       </div>
     );
