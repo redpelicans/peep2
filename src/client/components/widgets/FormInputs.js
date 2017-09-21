@@ -64,28 +64,28 @@ TextAreaInput.propTypes = {
   field: PropTypes.object,
 };
 
-export const SelectInput = ({ field, input, cities, countries }) => (
+export const SelectInput = ({ field: { label, required, domainValues }, input, cities, countries }) => (
   <InputElt>
     <InputText>
-      {field.label}
-      {field.required && <RequiredStar>*</RequiredStar>}
+      {label}
+      {required && <RequiredStar>*</RequiredStar>}
     </InputText>
     <SelectElt className="pt-select">
       <SelectInputElt {...input}>
         <option>Choose an item...</option>
-        {field.label === 'Types' &&
-          field.domainValues.map(type => (
+        {label === 'Types' &&
+          domainValues.map(type => (
             <option key={type} value={type}>
               {type}
             </option>
           ))}
-        {field.label === 'City' &&
+        {label === 'City' &&
           cities.map(city => (
             <option key={city} value={city}>
               {city}
             </option>
           ))}
-        {field.label === 'Country' &&
+        {label === 'Country' &&
           countries.map(country => (
             <option key={country} value={country}>
               {country}

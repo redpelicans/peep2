@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { withState, withHandlers } from 'recompose';
@@ -11,8 +12,9 @@ import { Header, HeaderLeft, HeaderRight } from '../Header';
 import getCities from '../../selectors/cities';
 import getCountries from '../../selectors/countries';
 import fields from './forms';
-import { Spacer, InputRow, TextInput, TextAreaInput, SelectInput, Title, Form, Container, AvatarSelector } from '../widgets';
+import { Spacer, TextInput, TextAreaInput, SelectInput, Title, Form, Container, AvatarSelector } from '../widgets';
 
+const FieldStyled = styled.div`grid-area: ${props => props.name};`;
 const validate = values => {
   const errors = {};
   map(field => {
@@ -36,9 +38,9 @@ const getInputComponent = type => {
 const getFields = (cities, countries) =>
   map(
     field => (
-      <InputRow key={field.key}>
+      <FieldStyled key={field.key} name={field.key}>
         <Field component={getInputComponent(field.type)} name={field.key} field={field} cities={cities} countries={countries} />
-      </InputRow>
+      </FieldStyled>
     ),
     fields,
   );
