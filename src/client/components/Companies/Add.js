@@ -12,7 +12,7 @@ import { Header, HeaderLeft, HeaderRight } from '../Header';
 import getCities from '../../selectors/cities';
 import getCountries from '../../selectors/countries';
 import fields from './forms';
-import { Spacer, TextInput, TextAreaInput, SelectInput, Title, Form, Container, AvatarSelector } from '../widgets';
+import { Spacer, TextInput, TextAreaInput, SelectInput, Title, CompagnyForm, Container, AvatarSelector } from '../widgets';
 
 const FieldStyled = styled.div`grid-area: ${props => props.name};`;
 const validate = values => {
@@ -65,7 +65,7 @@ const AddCompany = ({ changeColor, valid, cities, countries, companyForm: { valu
         <Spacer size={25} />
       </HeaderRight>
     </Header>
-    <Form id="companie">{getFields(cities, countries)}</Form>
+    <CompagnyForm id="companie">{getFields(cities, countries)}</CompagnyForm>
   </Container>
 );
 
@@ -80,7 +80,7 @@ AddCompany.propTypes = {
 const mapStateToProps = state => ({
   countries: getCountries(state),
   cities: getCities(state),
-  companyForm: state.form.companie,
+  companyForm: state.form.addCompany,
 });
 
 const actions = {};
@@ -90,7 +90,7 @@ const enhance = compose(
   withState('color', 'changeColor', ''),
   withHandlers({ changeColorHandler: ({ changeColor }) => () => changeColor(color => color) }),
   reduxForm({
-    form: 'companie',
+    form: 'addCompany',
     validate,
   }),
   connect(mapStateToProps, mapDispatchToProps),
