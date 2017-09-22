@@ -11,13 +11,6 @@ import { getSortedWorkers } from '../selectors/people';
 import { fullName } from '../utils/people';
 import '@blueprintjs/datetime/dist/blueprint-datetime.css';
 
-export const SchemaField = ({ field, values, ...props }) => <field.component field={field} value={values[field.name]} {...props} />;
-
-SchemaField.propTypes = {
-  field: PropTypes.object.isRequired,
-  values: PropTypes.object.isRequired,
-};
-
 const StyledField = styled.div`
   display: grid;
   grid-template-rows: auto;
@@ -25,29 +18,23 @@ const StyledField = styled.div`
   grid-auto-flow: row;
 `;
 
-export const InputTextField = ({ field, className, value = '', setFieldValue, setFieldTouched }) => {
+export const InputTextField = ({ field, value = '', onChange }) => {
   const { label, placeholder } = field;
-  const handleChange = e => {
-    setFieldTouched(field.name, e.target.value !== value);
-    setFieldValue(field.name, e.target.value);
-  };
   return (
-    <StyledField className={className}>
+    <StyledField>
       <label className="pt-label">
         {label}
         <span className="pt-text-muted">(*)</span>
       </label>
-      <input name={field.name} className="pt-input pt-fill" placeholder={placeholder} value={value} onChange={handleChange} dir="auto" type="text" />
+      <input name={field.name} className="pt-input pt-fill" placeholder={placeholder} value={value} onChange={onChange} dir="auto" type="text" />
     </StyledField>
   );
 };
 
 InputTextField.propTypes = {
   field: PropTypes.object.isRequired,
-  className: PropTypes.string,
   value: PropTypes.string,
-  setFieldValue: PropTypes.func.isRequired,
-  setFieldTouched: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 const StyledInputIcon = styled(Icon)`margin-right: 4px;`;
@@ -85,12 +72,8 @@ const mapStateToProps = state => ({
 
 const enhance = compose(connect(mapStateToProps));
 
-export const WorkerSelectField = enhance(({ field, value = '', setFieldValue, setFieldTouched, className, workers }) => {
+export const WorkerSelectField = enhance(({ field, value = '', onChange, className, workers }) => {
   const { label, placeholder } = field;
-  const handleChange = e => {
-    setFieldTouched(field.name, e.target.value !== value);
-    setFieldValue(field.name, e.target.value);
-  };
 
   return (
     <StyledField className={className}>
@@ -98,7 +81,7 @@ export const WorkerSelectField = enhance(({ field, value = '', setFieldValue, se
         {label}
         <span className="pt-text-muted">(*)</span>
         <div className="pt-select">
-          <select value={value} name={field.name} onChange={handleChange}>
+          <select value={value} name={field.name} onChange={onChange}>
             <option selected>Choose a worker...</option>
             {map(
               worker => (

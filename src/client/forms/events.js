@@ -1,5 +1,6 @@
 import { map, compose, reduce, toPairs } from 'ramda';
 import { DateField, InputTextField, WorkerSelectField } from '../fields';
+import { getOneField, getAllFields } from './utils';
 
 const fields = {
   startDate: {
@@ -36,5 +37,5 @@ const fields = {
   },
 };
 
-export const getField = name => ({ name, ...fields[name] });
-export default compose(reduce((acc, [name, field]) => [...acc, { ...field, name }], []), toPairs)(fields);
+export const getField = getOneField(fields);
+export default getAllFields(fields);

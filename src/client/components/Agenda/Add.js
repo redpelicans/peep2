@@ -8,10 +8,10 @@ import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { Formik } from 'formik';
 import { Container, Title, Spacer } from '../widgets';
-import fields from '../../forms/events';
-import { SchemaField, InputTextField } from '../../fields';
+import { getField } from '../../forms/events';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
+import { DateField, InputTextField, WorkerSelectField } from '../../fields';
 
 const Form = styled.form`
   margin-top: 25px;
@@ -27,7 +27,7 @@ const Form = styled.form`
   }
 `;
 
-const FormField = styled(SchemaField)`grid-area: ${({ field }) => field.name};`;
+const FormField = styled.div`grid-area: ${({ name }) => name};`;
 
 const Add = ({ history, cancel, addEvent }) => {
   const { location: { state } } = history;
@@ -42,7 +42,7 @@ const Add = ({ history, cancel, addEvent }) => {
     <Formik
       initialValues={initialValues}
       onSubmit={addEvent}
-      render={({ values, errors, touched, handleSubmit, handleReset, setFieldValue, setFieldTouched, isSubmitting, dirty }) => {
+      render={({ values, errors, touched, handleChange, handleSubmit, handleReset, setFieldValue, setFieldTouched, isSubmitting, dirty }) => {
         return (
           <Container>
             <Header>
@@ -64,10 +64,23 @@ const Add = ({ history, cancel, addEvent }) => {
               </HeaderRight>
             </Header>
             <Form id="addEvent" onSubmit={handleSubmit}>
-              {map(
-                field => <FormField key={field.name} field={field} setFieldTouched={setFieldTouched} setFieldValue={setFieldValue} values={values} />,
-                fields,
-              )}
+              <FormField name="startDate">
+                <DateField
+                  field={getField('startDate')}
+                  value={values['startDate']}
+                  setFieldTouched={setFieldTouched}
+                  setFieldValue={setFieldValue}
+                />
+              </FormField>
+              <FormField name="endDate">
+                <DateField field={getField('endDate')} value={values['endDate']} setFieldTouched={setFieldTouched} setFieldValue={setFieldValue} />
+              </FormField>
+              <FormField name="worker">
+                <WorkerSelectField field={getField('worker')} value={values['worker']} onChange={handleChange} />
+              </FormField>
+              <FormField name="unit">
+                <InputTextField field={getField('unit')} value={values['unit']} onChange={handleChange} />
+              </FormField>
             </Form>
           </Container>
         );
