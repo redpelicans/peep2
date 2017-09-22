@@ -3,13 +3,39 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { DateInput } from '@blueprintjs/datetime';
-import { Icon } from '@blueprintjs/core';
-import { compose } from 'recompose';
+import { Icon, Colors } from '@blueprintjs/core';
 import { isEqual } from 'date-fns';
-import { map } from 'ramda';
+import { compose, map, toPairs, omit } from 'ramda';
 import { getSortedWorkers } from '../selectors/people';
 import { fullName } from '../utils/people';
+import { withWorkers } from '../hoc';
 import '@blueprintjs/datetime/dist/blueprint-datetime.css';
+
+export const FormField = ({ field, values, className, ...props }) => {
+  const newProps =
+    'domainValues' in field
+      ? { ...props, domainValues: field.domainValues }
+      : props;
+  return (
+    <div className={className}>
+      <field.component
+        name={field.name}
+        label={'label' in props ? props.label : field.label}
+        value={'value' in props ? props.value : values[field.name]}
+        required={!!field.required}
+        {...newProps}
+      />
+    </div>
+  );
+};
+
+FormField.propTypes = {
+  field: PropTypes.object.isRequired,
+  value: PropTypes.node,
+  values: PropTypes.object,
+  label: PropTypes.string,
+  className: PropTypes.string,
+};
 
 const StyledField = styled.div`
   display: grid;
@@ -18,91 +44,171 @@ const StyledField = styled.div`
   grid-auto-flow: row;
 `;
 
-export const InputTextField = ({ field, value = '', onChange }) => {
-  const { label, placeholder } = field;
+const StyledRequiredTag = styled.span`
+  margin-left: 5px;
+  color: ${Colors.RED1};
+`;
+
+const RequiredTag = ({ required }) => {
+  if (!required) return null;
+  return <StyledRequiredTag>*</StyledRequiredTag>;
+};
+
+RequiredTag.propTypes = {
+  required: PropTypes.bool.isRequired,
+};
+
+export const InputField = ({
+  name,
+  label,
+  required,
+  value,
+  setFieldTouched,
+  setFieldValue,
+  ...props
+}) => {
+  const handleChange = e => {
+    const newValue = e.target.value;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
+  };
+
   return (
     <StyledField>
       <label className="pt-label">
         {label}
-        <span className="pt-text-muted">(*)</span>
+        <RequiredTag required={required} />
       </label>
-      <input name={field.name} className="pt-input pt-fill" placeholder={placeholder} value={value} onChange={onChange} dir="auto" type="text" />
+      <input
+        name={name}
+        className="pt-input pt-fill"
+        value={value}
+        onChange={handleChange}
+        dir="auto"
+        {...props}
+      />
     </StyledField>
   );
 };
 
-InputTextField.propTypes = {
-  field: PropTypes.object.isRequired,
-  value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
+InputField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  required: PropTypes.bool.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
 };
 
 const StyledInputIcon = styled(Icon)`margin-right: 4px;`;
 
-export const DateField = ({ field, className, value, setFieldValue, setFieldTouched }) => {
-  const { label, placeholder } = field;
+export const DateField = ({
+  name,
+  label,
+  required,
+  value,
+  setFieldValue,
+  setFieldTouched,
+  ...props
+}) => {
   const icon = <StyledInputIcon iconName="calendar" />;
   const handleChange = newValue => {
-    setFieldTouched(field.name, !isEqual(newValue, value));
-    setFieldValue(field.name, newValue);
+    setFieldTouched(name, !isEqual(newValue, value));
+    setFieldValue(name, newValue);
   };
 
   return (
-    <StyledField className={className}>
+    <StyledField>
       <label className="pt-label">
         {label}
-        <span className="pt-text-muted">(*)</span>
+        <RequiredTag required={required} />
       </label>
-      <DateInput rightElement={icon} className="pt-datepicker pt-fill" name={field.name} value={value} onChange={handleChange} />
+      <DateInput
+        rightElement={icon}
+        className="pt-datepicker pt-fill"
+        name={name}
+        value={value}
+        onChange={handleChange}
+        {...props}
+      />
     </StyledField>
   );
 };
 
 DateField.propTypes = {
-  field: PropTypes.object.isRequired,
-  className: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  required: PropTypes.bool.isRequired,
   value: PropTypes.object,
-  setFieldValue: PropTypes.func.isRequired,
-  setFieldTouched: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
 };
 
-const mapStateToProps = state => ({
-  workers: getSortedWorkers('firstName')(state),
-});
-
-const enhance = compose(connect(mapStateToProps));
-
-export const WorkerSelectField = enhance(({ field, value = '', onChange, className, workers }) => {
-  const { label, placeholder } = field;
+export const SelectField = ({
+  name,
+  label,
+  required,
+  value,
+  setFieldTouched,
+  setFieldValue,
+  domainValues,
+}) => {
+  const handleChange = e => {
+    const newValue = e.target.value;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
+  };
 
   return (
-    <StyledField className={className}>
+    <StyledField>
       <label className="pt-label">
         {label}
-        <span className="pt-text-muted">(*)</span>
+        <RequiredTag required={required} />
         <div className="pt-select">
-          <select value={value} name={field.name} onChange={onChange}>
-            <option selected>Choose a worker...</option>
+          <select value={value} name={name} onChange={handleChange}>
             {map(
-              worker => (
-                <option key={worker._id} value={worker._id}>
-                  {fullName(worker)}
+              dm => (
+                <option key={dm.id} value={dm.id}>
+                  {dm.value}
                 </option>
               ),
-              workers,
+              domainValues,
             )}
           </select>
         </div>
       </label>
     </StyledField>
   );
-});
-
-WorkerSelectField.propTypes = {
-  field: PropTypes.object.isRequired,
-  className: PropTypes.string,
-  workers: PropTypes.array,
-  value: PropTypes.string,
-  setFieldValue: PropTypes.func.isRequired,
-  setFieldTouched: PropTypes.func.isRequired,
 };
+
+SelectField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  required: PropTypes.bool.isRequired,
+  domainValues: PropTypes.array,
+  value: PropTypes.string,
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+};
+
+const propTransformer = (src, target, fn) => Component => {
+  const Transformer = props => {
+    const newProps = { ...omit([src], props), [target]: fn(props[src]) };
+    return <Component {...newProps} />;
+  };
+
+  Transformer.propTypes = {
+    workers: PropTypes.array.isRequired,
+  };
+
+  return Transformer;
+};
+
+export const WorkerSelectField = compose(
+  withWorkers,
+  propTransformer(
+    'workers',
+    'domainValues',
+    map(worker => ({ id: worker._id, value: fullName(worker) })),
+  ),
+)(SelectField);

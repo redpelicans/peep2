@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose, map } from 'ramda';
+import { compose } from 'ramda';
+import { differenceInDays } from 'date-fns';
 import { withHandlers, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -8,10 +9,14 @@ import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { Formik } from 'formik';
 import { Container, Title, Spacer } from '../widgets';
-import { getField } from '../../forms/events';
+import {
+  defaultValues,
+  getField,
+  getValidationSchema,
+} from '../../forms/events';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
-import { DateField, InputTextField, WorkerSelectField } from '../../fields';
+import { FormField } from '../../fields';
 
 const Form = styled.form`
   margin-top: 25px;
@@ -19,30 +24,48 @@ const Form = styled.form`
   display: grid;
   grid-template-rows: auto;
   grid-gap: 20px;
-  grid-template-areas: 'startDate' 'endDate' 'unit' 'value' 'type' 'worker' 'status' 'description';
+  grid-template-areas: 'startDate' 'endDate' 'unit' 'value' 'type' 'worker'
+    'status' 'description';
   @media (min-width: 900px) {
     grid-template-columns: repeat(6, minmax(100px, 1fr));
-    grid-template-areas: 'startDate startDate endDate endDate unit value' 'type type worker worker worker status'
+    grid-template-areas: 'startDate startDate endDate endDate value unit'
+      'type type worker worker worker status'
       'description description description description description description';
   }
 `;
 
-const FormField = styled.div`grid-area: ${({ name }) => name};`;
+const StyledFormField = styled(FormField)`
+  grid-area: ${({ field }) => field.name};
+`;
 
 const Add = ({ history, cancel, addEvent }) => {
   const { location: { state } } = history;
   const initialValues = {
+    ...defaultValues,
     startDate: state.from,
     endDate: state.to,
     worker: state.workerId,
-    status: 'COUOCU',
-    unit: 'Day',
+    value: differenceInDays(state.to, state.from) + 1,
   };
   return (
     <Formik
       initialValues={initialValues}
+      validationSchema={getValidationSchema()}
       onSubmit={addEvent}
-      render={({ values, errors, touched, handleChange, handleSubmit, handleReset, setFieldValue, setFieldTouched, isSubmitting, dirty }) => {
+      render={({
+        values,
+        isValid,
+        errors,
+        touched,
+        handleSubmit,
+        handleReset,
+        setFieldValue,
+        setFieldTouched,
+        isSubmitting,
+        dirty,
+      }) => {
+        const [startDate, endDate] = [values['startDate'], values['endDate']];
+        console.log(isValid);
         return (
           <Container>
             <Header>
@@ -52,35 +75,75 @@ const Add = ({ history, cancel, addEvent }) => {
                 <Title>New Event</Title>
               </HeaderLeft>
               <HeaderRight>
-                <Button form="addEvent" type="submit" disabled={isSubmitting} className="pt-intent-success pt-large">
+                <Button
+                  form="addEvent"
+                  type="submit"
+                  disabled={isSubmitting || !isValid}
+                  className="pt-intent-success pt-large"
+                >
                   Create
                 </Button>
                 <Spacer />
                 <Button className="pt-intent-warning pt-large">Cancel</Button>
                 <Spacer />
-                <Button className="pt-intent-danger pt-large" onClick={handleReset} disabled={!dirty || isSubmitting}>
+                <Button
+                  className="pt-intent-danger pt-large"
+                  onClick={handleReset}
+                  disabled={!dirty || isSubmitting}
+                >
                   Reset
                 </Button>
               </HeaderRight>
             </Header>
             <Form id="addEvent" onSubmit={handleSubmit}>
-              <FormField name="startDate">
-                <DateField
-                  field={getField('startDate')}
-                  value={values['startDate']}
-                  setFieldTouched={setFieldTouched}
-                  setFieldValue={setFieldValue}
-                />
-              </FormField>
-              <FormField name="endDate">
-                <DateField field={getField('endDate')} value={values['endDate']} setFieldTouched={setFieldTouched} setFieldValue={setFieldValue} />
-              </FormField>
-              <FormField name="worker">
-                <WorkerSelectField field={getField('worker')} value={values['worker']} onChange={handleChange} />
-              </FormField>
-              <FormField name="unit">
-                <InputTextField field={getField('unit')} value={values['unit']} onChange={handleChange} />
-              </FormField>
+              <StyledFormField
+                field={getField('startDate')}
+                values={values}
+                setFieldTouched={setFieldTouched}
+                setFieldValue={setFieldValue}
+              />
+              <StyledFormField
+                field={getField('endDate')}
+                values={values}
+                setFieldTouched={setFieldTouched}
+                setFieldValue={setFieldValue}
+              />
+              <StyledFormField
+                field={getField('worker')}
+                values={values}
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
+              />
+
+              <StyledFormField
+                field={getField('value')}
+                value={differenceInDays(endDate, startDate) + 1}
+                disabled={true}
+                type="number"
+              />
+
+              <StyledFormField
+                field={getField('unit')}
+                values={values}
+                disabled={true}
+                type="text"
+              />
+
+              <StyledFormField
+                field={getField('type')}
+                values={values}
+                type="text"
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
+              />
+
+              <StyledFormField
+                field={getField('status')}
+                values={values}
+                type="text"
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
+              />
             </Form>
           </Container>
         );

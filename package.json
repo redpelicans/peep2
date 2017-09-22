@@ -74,19 +74,24 @@
     "uppercamelcase": "^3.0.0",
     "url-loader": "0.5.9",
     "uuid": "^3.1.0",
-    "webpack-manifest-plugin": "1.2.1"
+    "webpack-manifest-plugin": "1.2.1",
+    "yup": "^0.22.0"
   },
   "scripts": {
     "precommit": "lint-staged",
-    "eslint-check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
+    "eslint-check":
+      "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "lint": "eslint src --color",
     "wtest": "NODE_ENV=test node scripts/test.js --env=jsdom",
     "test": "NODE_ENV=test jest",
     "start": "NODE_ENV=development node scripts/start.js",
     "build": "NODE_ENV=production node scripts/build.js",
-    "bundle:stats": "NODE_ENV=production webpack -p --config ./config/webpack.config.prod.js --profile --json > stats.json",
-    "bundle:analyse": "webpack-bundle-analyzer ./stats.json ./build --report --mode=static",
-    "srv:dev": "NODE_ENV=development DEBUG=peep*,evtx* nodemon --watch src/server --watch params --exec 'babel-node src/server'"
+    "bundle:stats":
+      "NODE_ENV=production webpack -p --config ./config/webpack.config.prod.js --profile --json > stats.json",
+    "bundle:analyse":
+      "webpack-bundle-analyzer ./stats.json ./build --report --mode=static",
+    "srv:dev":
+      "NODE_ENV=development DEBUG=peep*,evtx* nodemon --watch src/server --watch params --exec 'babel-node src/server'"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -129,7 +134,10 @@
     "testPathIgnorePatterns": ["utils"],
     "collectCoverageFrom": ["src/**/*.{js,jsx}"],
     "setupFiles": ["<rootDir>/config/polyfills.js"],
-    "testMatch": ["<rootDir>/src/**/__tests__/**/*.js?(x)", "<rootDir>/src/**/?(*.)(spec|test).js?(x)"],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.js?(x)",
+      "<rootDir>/src/**/?(*.)(spec|test).js?(x)"
+    ],
     "testEnvironment": "node",
     "testURL": "http://localhost",
     "transform": {
