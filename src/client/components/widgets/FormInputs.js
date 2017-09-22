@@ -5,115 +5,100 @@ import { Colors } from '@blueprintjs/core';
 
 const InputElt = styled.div`
   display: flex;
-  flex-direction:column;
-  flex:1;
-  margin-top:15px;
-  padding-right:10px;
-`;
-
-const Error = styled.span`
-  display:flex;
-  justify-content: space-between;
-  width:85px;
-  margin-left:10px;
-  color:${Colors.RED3};
+  flex-direction: column;
+  flex: 1;
+  margin-top: 15px;
+  padding-right: 10px;
 `;
 
 const InputField = styled.input`
-  margin-top:20px;
-  border:0;
-  height:25px;
-  border-radius:2px;
-  padding:7px;
-`;
-
-const InputSelect = styled.select`
-  margin-top:20px;
-  border:0;
-  height:25px;
-  border-radius:2px;
-  padding:7px;
+  margin-top: 20px;
+  border: 0;
+  height: 25px;
+  border-radius: 2px;
+  padding: 7px;
 `;
 
 const InputText = styled.label`
   display: flex;
-  margin:0;
+  margin: 0;
 `;
 
-const TextAreaElt = styled.textarea`
-  margin-top:20px;
+const TextAreaElt = styled.textarea`margin-top: 20px;`;
+
+const SelectElt = styled.div`margin-top: 20px;`;
+
+const SelectInputElt = styled.select`width: 100%;`;
+
+const RequiredStar = styled.span`
+  color: ${Colors.RED3};
+  margin-left: 5px;
 `;
 
-export const renderField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error },
-  className,
-}) =>
-  (<InputElt>
-    <InputText>
-      {label}
-      {touched &&
-      ((error &&
-        <Error className="pt-icon-standard pt-icon-warning-sign">
-          {error}
-        </Error>))}
-    </InputText>
-    <InputField {...input} type={type} className={className} />
-  </InputElt>);
-
-renderField.propTypes = {
-  input: PropTypes.node,
-  label: PropTypes.string,
-  type: PropTypes.string,
-  meta: PropTypes.object,
-  className: PropTypes.string,
-};
-
-export const textArea = ({
-  label,
-  meta: { touched, error },
-}) => (
+export const TextInput = ({ field: { label, type, required }, input }) => (
   <InputElt>
     <InputText>
       {label}
-      {touched &&
-      ((error &&
-        <Error className="pt-icon-standard pt-icon-warning-sign">
-          {error}
-        </Error>))}
+      {required && <RequiredStar>*</RequiredStar>}
+    </InputText>
+    <InputField {...input} type={type} className="pt-input" />
+  </InputElt>
+);
+
+TextInput.propTypes = {
+  field: PropTypes.object,
+  input: PropTypes.node,
+};
+
+export const TextAreaInput = ({ field: { label, required } }) => (
+  <InputElt>
+    <InputText>
+      {label}
+      {required && <RequiredStar>*</RequiredStar>}
     </InputText>
     <TextAreaElt className="pt-input" dir="auto" />
   </InputElt>
 );
 
-textArea.propTypes = {
-  label: PropTypes.string,
-  meta: PropTypes.object,
+TextAreaInput.propTypes = {
+  field: PropTypes.object,
 };
 
-export const renderSelect = ({
-  input,
-  label,
-  meta: { touched, error },
-  className,
-}) =>
-  (<InputElt>
+export const SelectInput = ({ field: { label, required, domainValues }, input, cities, countries }) => (
+  <InputElt>
     <InputText>
       {label}
-      {touched &&
-      ((error &&
-        <Error className="pt-icon-standard pt-icon-warning-sign">
-          {error}
-        </Error>))}
+      {required && <RequiredStar>*</RequiredStar>}
     </InputText>
-    <InputSelect {...input} className={className} />
-  </InputElt>);
+    <SelectElt className="pt-select">
+      <SelectInputElt {...input}>
+        <option>Choose an item...</option>
+        {label === 'Types' &&
+          domainValues.map(type => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        {label === 'City' &&
+          cities.map(city => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        {label === 'Country' &&
+          countries.map(country => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+      </SelectInputElt>
+    </SelectElt>
+  </InputElt>
+);
 
-renderSelect.propTypes = {
+SelectInput.propTypes = {
+  field: PropTypes.object,
   input: PropTypes.node,
-  label: PropTypes.string,
-  meta: PropTypes.object,
-  className: PropTypes.string,
+  countries: PropTypes.array,
+  cities: PropTypes.array,
 };

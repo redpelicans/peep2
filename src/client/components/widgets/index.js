@@ -2,10 +2,26 @@ import Search from './Search';
 import SortMenu from './SortMenu';
 import Title from './Title';
 import Container from './Container';
+import TitleButton from './TitleButton';
 import AvatarSelector from './AvatarSelector';
-import Spacer from './Spacer';
 import EmptySearch from './EmptySearch';
+import Spacer from './Spacer';
 import LinkButton from './LinkButton';
-import { textArea, renderField, renderSelect } from './FormInputs';
+import { CompagnyForm } from './Form';
+import { TextInput, TextAreaInput, SelectInput } from './FormInputs';
 
-export { EmptySearch, LinkButton, Spacer, Search, SortMenu, Title, Container, AvatarSelector, textArea, renderField, renderSelect };
+export {
+  EmptySearch,
+  LinkButton,
+  TitleButton,
+  CompagnyForm,
+  Spacer,
+  Search,
+  SortMenu,
+  Title,
+  Container,
+  AvatarSelector,
+  TextInput,
+  TextAreaInput,
+  SelectInput,
+};
