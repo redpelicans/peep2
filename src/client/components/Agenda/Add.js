@@ -43,7 +43,6 @@ const Add = ({ history, cancel, addEvent }) => {
       initialValues={initialValues}
       onSubmit={addEvent}
       render={({ values, errors, touched, handleSubmit, handleReset, setFieldValue, setFieldTouched, isSubmitting, dirty }) => {
-        console.log(dirty);
         return (
           <Container>
             <Header>
@@ -66,7 +65,7 @@ const Add = ({ history, cancel, addEvent }) => {
             </Header>
             <Form id="addEvent" onSubmit={handleSubmit}>
               {map(
-                field => <FormField key={field.name} field={field} setFieldTouched={setFieldTouched} onChange={setFieldValue} values={values} />,
+                field => <FormField key={field.name} field={field} setFieldTouched={setFieldTouched} setFieldValue={setFieldValue} values={values} />,
                 fields,
               )}
             </Form>

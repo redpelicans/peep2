@@ -25,9 +25,12 @@ const StyledField = styled.div`
   grid-auto-flow: row;
 `;
 
-export const InputTextField = ({ field, className, value = '', onChange }) => {
+export const InputTextField = ({ field, className, value = '', setFieldValue, setFieldTouched }) => {
   const { label, placeholder } = field;
-  const handleChange = e => onChange(field.name, e.target.value);
+  const handleChange = e => {
+    setFieldTouched(field.name, e.target.value !== value);
+    setFieldValue(field.name, e.target.value);
+  };
   return (
     <StyledField className={className}>
       <label className="pt-label">
@@ -43,17 +46,18 @@ InputTextField.propTypes = {
   field: PropTypes.object.isRequired,
   className: PropTypes.string,
   value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+  setFieldTouched: PropTypes.func.isRequired,
 };
 
 const StyledInputIcon = styled(Icon)`margin-right: 4px;`;
 
-export const DateField = ({ field, className, value, onChange, setFieldTouched }) => {
+export const DateField = ({ field, className, value, setFieldValue, setFieldTouched }) => {
   const { label, placeholder } = field;
   const icon = <StyledInputIcon iconName="calendar" />;
   const handleChange = newValue => {
     setFieldTouched(field.name, !isEqual(newValue, value));
-    onChange(field.name, newValue);
+    setFieldValue(field.name, newValue);
   };
 
   return (
@@ -71,7 +75,7 @@ DateField.propTypes = {
   field: PropTypes.object.isRequired,
   className: PropTypes.string,
   value: PropTypes.object,
-  onChange: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
 };
 
@@ -81,9 +85,13 @@ const mapStateToProps = state => ({
 
 const enhance = compose(connect(mapStateToProps));
 
-export const WorkerSelectField = enhance(({ field, value = '', onChange, className, workers }) => {
+export const WorkerSelectField = enhance(({ field, value = '', setFieldValue, setFieldTouched, className, workers }) => {
   const { label, placeholder } = field;
-  const handleChange = e => onChange(field.name, e.target.value);
+  const handleChange = e => {
+    setFieldTouched(field.name, e.target.value !== value);
+    setFieldValue(field.name, e.target.value);
+  };
+
   return (
     <StyledField className={className}>
       <label className="pt-label">
@@ -112,5 +120,6 @@ WorkerSelectField.propTypes = {
   className: PropTypes.string,
   workers: PropTypes.array,
   value: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+  setFieldTouched: PropTypes.func.isRequired,
 };
