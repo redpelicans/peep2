@@ -45,7 +45,7 @@ const getFields = (cities, countries) =>
     fields,
   );
 
-const AddCompanie = ({ changeColor, valid, cities, countries, companieForm: { values = {} } }) => (
+const AddCompany = ({ changeColor, valid, cities, countries, companyForm: { values = {} } }) => (
   <Container>
     <Header>
       <HeaderLeft>
@@ -69,18 +69,18 @@ const AddCompanie = ({ changeColor, valid, cities, countries, companieForm: { va
   </Container>
 );
 
-AddCompanie.propTypes = {
+AddCompany.propTypes = {
   changeColor: PropTypes.func.isRequired,
   valid: PropTypes.bool,
   cities: PropTypes.array,
   countries: PropTypes.array,
-  companieForm: PropTypes.object,
+  companyForm: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   countries: getCountries(state),
   cities: getCities(state),
-  companieForm: state.form.companie,
+  companyForm: state.form.companie,
 });
 
 const actions = {};
@@ -96,4 +96,4 @@ const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
 );
 
-export default enhance(AddCompanie);
+export default enhance(AddCompany);
