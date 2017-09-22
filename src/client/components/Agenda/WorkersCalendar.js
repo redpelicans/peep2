@@ -103,7 +103,7 @@ const StyledDay = styled.div`
   height: 100%;
   background-color: ${({ isWorkingDay }) => (isWorkingDay ? workingDayBackground : spareDayBackground)};
   display: grid;
-  grid-auto-flow: columns;
+  grid-auto-flow: column;
   grid-template-rows: 50%;
   grid-template-areas: 'AM' 'PM';
 `;

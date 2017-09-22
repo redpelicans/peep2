@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
 import { withHandlers, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -8,6 +8,8 @@ import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 import { Container, Title, Spacer } from '../widgets';
+import fields from '../../forms/events';
+import { SchemaField, InputTextField } from '../../fields';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
 
@@ -19,11 +21,17 @@ const Form = styled.form`
   margin-top: 25px;
   width: 100%;
   display: grid;
-  flex-direction: column;
-  grid-template-areas: 'values type' 'toto';
+  grid-template-rows: auto;
+  grid-gap: 20px;
+  grid-template-areas: 'startDate' 'endDate' 'unit' 'value' 'type' 'worker' 'status' 'description';
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(6, minmax(100px, 1fr));
+    grid-template-areas: 'startDate startDate endDate endDate unit value' 'type type worker worker worker status'
+      'description description description description description description';
+  }
 `;
 
-const StyledField = styled(Field)`grid-area: ${({ name }) => name};`;
+const FormField = styled(SchemaField)`grid-area: ${({ field }) => field.name};`;
 
 const Add = ({ valid, cancel, handleSubmit, addEvent, reset }) => {
   return (
@@ -49,9 +57,7 @@ const Add = ({ valid, cancel, handleSubmit, addEvent, reset }) => {
         </HeaderRight>
       </Header>
       <Form id="addEvent" onSubmit={handleSubmit(addEvent)}>
-        <StyledField name="value" component="input" type="text" className="pt-input" />
-        <StyledField name="type" component="input" type="text" className="pt-input" />
-        <StyledField name="toto" component="input" type="text" className="pt-input" />
+        {map(field => <FormField field={field} />, fields)}
       </Form>
     </Container>
   );
