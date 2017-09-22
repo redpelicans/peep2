@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Popover } from '@blueprintjs/core';
+import { Popover, Position } from '@blueprintjs/core';
 import { compose, join, map, take, split } from 'ramda';
 import colors, { randomColor } from '../../utils/colors';
 
@@ -39,8 +39,7 @@ const ColorSelectorElt = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
-  width: 400px;
+  max-width: 400px;
 `;
 
 const Icon = styled.span`
@@ -92,6 +91,8 @@ class AvatarSelector extends Component {
     return (
       <Popover
         content={<ColorSelector />}
+        position={Position.BOTTOM_LEFT}
+        popoverClassName="pt-popover-content-sizing"
         target={
           <Circle color={selectedColor} onMouseOver={this.handleMouseEnter} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
             {showIcon && <Icon className="pt-icon-standard pt-icon-edit" />}
