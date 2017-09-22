@@ -1,14 +1,14 @@
 import { map, compose, reduce, toPairs } from 'ramda';
-import { InputTextField, WorkerSelectField } from '../fields';
+import { DateField, InputTextField, WorkerSelectField } from '../fields';
 
 const fields = {
   startDate: {
     label: 'Start Date',
-    component: InputTextField,
+    component: DateField,
   },
   endDate: {
     label: 'End Date',
-    component: InputTextField,
+    component: DateField,
   },
   unit: {
     label: 'Unit',

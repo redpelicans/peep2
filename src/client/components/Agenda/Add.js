@@ -6,16 +6,12 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
-import { Field, reduxForm } from 'redux-form';
+import { Formik } from 'formik';
 import { Container, Title, Spacer } from '../widgets';
 import fields from '../../forms/events';
 import { SchemaField, InputTextField } from '../../fields';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
-
-const validate = () => {
-  return {};
-};
 
 const Form = styled.form`
   margin-top: 25px;
@@ -33,43 +29,53 @@ const Form = styled.form`
 
 const FormField = styled(SchemaField)`grid-area: ${({ field }) => field.name};`;
 
-const Add = ({ valid, cancel, handleSubmit, addEvent, reset }) => {
+const Add = ({ history, cancel, addEvent }) => {
+  const { location: { state } } = history;
+  const initialValues = {
+    startDate: state.from,
+    endDate: state.to,
+    worker: state.workerId,
+    status: 'COUOCU',
+    unit: 'Day',
+  };
   return (
-    <Container>
-      <Header>
-        <HeaderLeft>
-          <div className="pt-icon-standard pt-icon-calendar" />
-          <Spacer />
-          <Title>New Event</Title>
-        </HeaderLeft>
-        <HeaderRight>
-          <Button form="addEvent" type="submit" disabled={!valid} className="pt-intent-success pt-large">
-            Create
-          </Button>
-          <Spacer />
-          <Button className="pt-intent-warning pt-large" onClick={cancel}>
-            Cancel
-          </Button>
-          <Spacer />
-          <Button className="pt-intent-danger pt-large" onClick={reset}>
-            Reset
-          </Button>
-        </HeaderRight>
-      </Header>
-      <Form id="addEvent" onSubmit={handleSubmit(addEvent)}>
-        {map(field => <FormField field={field} />, fields)}
-      </Form>
-    </Container>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={addEvent}
+      render={({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => {
+        console.log(values);
+        return (
+          <Container>
+            <Header>
+              <HeaderLeft>
+                <div className="pt-icon-standard pt-icon-calendar" />
+                <Spacer />
+                <Title>New Event</Title>
+              </HeaderLeft>
+              <HeaderRight>
+                <Button form="addEvent" type="submit" disabled={isSubmitting} className="pt-intent-success pt-large">
+                  Create
+                </Button>
+                <Spacer />
+                <Button className="pt-intent-warning pt-large">Cancel</Button>
+                <Spacer />
+                <Button className="pt-intent-danger pt-large">Reset</Button>
+              </HeaderRight>
+            </Header>
+            <Form id="addEvent" onSubmit={handleSubmit}>
+              {map(field => <FormField key={field.name} field={field} onChange={handleChange} values={values} />, fields)}
+            </Form>
+          </Container>
+        );
+      }}
+    />
   );
 };
 
 Add.propTypes = {
   cancel: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  companieForm: PropTypes.object,
   addEvent: PropTypes.func.isRequired,
-  valid: PropTypes.bool,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({});
@@ -89,9 +95,6 @@ export default compose(
   withHandlers({
     cancel: ({ history }) => () => history.goBack(),
     addEvent: () => values => console.log(values),
-  }),
-  reduxForm({
-    form: 'addEvent',
   }),
   connect(mapStateToProps, mapDispatchToProps),
 )(Add);
