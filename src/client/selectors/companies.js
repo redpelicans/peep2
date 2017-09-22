@@ -24,8 +24,8 @@ const isUpdated = company => company.updatedAt && moment.duration(moment() - com
 const putStatus = companies => R.mapObjIndexed(company => ({ ...company, isNew: isNew(company), isUpdated: isUpdated(company) }))(companies);
 
 /* input selectors */
-const getFilter = state => state.companies.filter;
-const getSort = state => state.companies.sort;
+export const getFilter = state => state.companies.filter;
+export const getSort = state => state.companies.sort;
 const getPreferredFilter = state => state.companies.preferredFilter;
 export const getCompanies = state => state.companies.data;
 

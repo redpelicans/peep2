@@ -90,7 +90,7 @@ const StyledAvatar = styled(Avatar)``;
 
 const WorkerHeader = shouldUpdate(() => false)(({ worker }) => (
   <StyledWorkerHeader>
-    <StyledAvatar name={fullName(worker)} showTooltip color={worker.avatar.color} size={SMALL} />
+    <StyledAvatar name={fullName(worker)} to={`/person/${worker._id}`} showTooltip color={worker.avatar.color} size={SMALL} />
   </StyledWorkerHeader>
 ));
 
