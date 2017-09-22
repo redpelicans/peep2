@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { DateInput } from '@blueprintjs/datetime';
+import { Icon } from '@blueprintjs/core';
 import { compose } from 'recompose';
+import { isEqual } from 'date-fns';
 import { map } from 'ramda';
 import { getSortedWorkers } from '../selectors/people';
 import { fullName } from '../utils/people';
+import '@blueprintjs/datetime/dist/blueprint-datetime.css';
 
 export const SchemaField = ({ field, values, ...props }) => <field.component field={field} value={values[field.name]} {...props} />;
 
@@ -14,16 +18,24 @@ SchemaField.propTypes = {
   values: PropTypes.object.isRequired,
 };
 
+const StyledField = styled.div`
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto;
+  grid-auto-flow: row;
+`;
+
 export const InputTextField = ({ field, className, value = '', onChange }) => {
   const { label, placeholder } = field;
+  const handleChange = e => onChange(field.name, e.target.value);
   return (
-    <div className={className}>
+    <StyledField className={className}>
       <label className="pt-label">
         {label}
         <span className="pt-text-muted">(*)</span>
-        <input name={field.name} className="pt-input pt-fill" placeholder={placeholder} value={value} onChange={onChange} dir="auto" type="text" />
       </label>
-    </div>
+      <input name={field.name} className="pt-input pt-fill" placeholder={placeholder} value={value} onChange={handleChange} dir="auto" type="text" />
+    </StyledField>
   );
 };
 
@@ -34,24 +46,33 @@ InputTextField.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export const DateField = ({ field, className, value = '', onChange }) => {
+const StyledInputIcon = styled(Icon)`margin-right: 4px;`;
+
+export const DateField = ({ field, className, value, onChange, setFieldTouched }) => {
   const { label, placeholder } = field;
+  const icon = <StyledInputIcon iconName="calendar" />;
+  const handleChange = newValue => {
+    setFieldTouched(field.name, !isEqual(newValue, value));
+    onChange(field.name, newValue);
+  };
+
   return (
-    <div className={className}>
+    <StyledField className={className}>
       <label className="pt-label">
         {label}
         <span className="pt-text-muted">(*)</span>
-        <DateInput className="pt-datepicker" name={field.name} value={value} onChange={onChange} />
       </label>
-    </div>
+      <DateInput rightElement={icon} className="pt-datepicker pt-fill" name={field.name} value={value} onChange={handleChange} />
+    </StyledField>
   );
 };
 
 DateField.propTypes = {
   field: PropTypes.object.isRequired,
   className: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.object,
   onChange: PropTypes.func.isRequired,
+  setFieldTouched: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -62,13 +83,14 @@ const enhance = compose(connect(mapStateToProps));
 
 export const WorkerSelectField = enhance(({ field, value = '', onChange, className, workers }) => {
   const { label, placeholder } = field;
+  const handleChange = e => onChange(field.name, e.target.value);
   return (
-    <div className={className}>
+    <StyledField className={className}>
       <label className="pt-label">
         {label}
         <span className="pt-text-muted">(*)</span>
         <div className="pt-select">
-          <select value={value} name={field.name} onChange={onChange}>
+          <select value={value} name={field.name} onChange={handleChange}>
             <option selected>Choose a worker...</option>
             {map(
               worker => (
@@ -81,7 +103,7 @@ export const WorkerSelectField = enhance(({ field, value = '', onChange, classNa
           </select>
         </div>
       </label>
-    </div>
+    </StyledField>
   );
 });
 

@@ -42,8 +42,8 @@ const Add = ({ history, cancel, addEvent }) => {
     <Formik
       initialValues={initialValues}
       onSubmit={addEvent}
-      render={({ values, errors, touched, handleChange, handleSubmit, isSubmitting }) => {
-        console.log(values);
+      render={({ values, errors, touched, handleSubmit, handleReset, setFieldValue, setFieldTouched, isSubmitting, dirty }) => {
+        console.log(dirty);
         return (
           <Container>
             <Header>
@@ -59,11 +59,16 @@ const Add = ({ history, cancel, addEvent }) => {
                 <Spacer />
                 <Button className="pt-intent-warning pt-large">Cancel</Button>
                 <Spacer />
-                <Button className="pt-intent-danger pt-large">Reset</Button>
+                <Button className="pt-intent-danger pt-large" onClick={handleReset} disabled={!dirty || isSubmitting}>
+                  Reset
+                </Button>
               </HeaderRight>
             </Header>
             <Form id="addEvent" onSubmit={handleSubmit}>
-              {map(field => <FormField key={field.name} field={field} onChange={handleChange} values={values} />, fields)}
+              {map(
+                field => <FormField key={field.name} field={field} setFieldTouched={setFieldTouched} onChange={setFieldValue} values={values} />,
+                fields,
+              )}
             </Form>
           </Container>
         );
