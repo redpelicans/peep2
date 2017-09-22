@@ -2,57 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
 import { filterNotesList } from '../../actions/notes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Title, Search, TitleIcon } from '../widgets';
-import Note from './Note';
-import { getVisibleNotes } from '../../selectors/notes';
+import { Container, Title, Search, Spacer, LinkButton } from '../widgets';
+import List from './List';
+import { getPeople } from '../../selectors/people';
+import { getCompanies } from '../../selectors/companies';
+import { getFilter, getVisibleNotes } from '../../selectors/notes';
 
-export const StyledNotesWrapper = styled.div`
-  margin: 1.5em 0;
-  padding: 0;
-  column-gap: 1.5em;
-  columns: 350px;
-  justify-content: center;
-`;
+const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
-export class Notes extends React.Component {
-  onFilterChange = (e) => {
-    const { filterNotesList } = this.props; // eslint-disable-line no-shadow
-    filterNotesList(e.target.value);
-  }
-
-  findEntity(entityType, entityId) {
-    const { companies, people } = this.props;
-    const entity = entityType === 'person' ? people[entityId] : companies[entityId];
-    return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
-  }
-
-  render() {
-    const { notes, people, companies, filter = '' } = this.props;
-    if (!notes || !people || !companies) return null;
-    return (
-      <div>
-        <Header>
-          <HeaderLeft>
-            <TitleIcon name="pushpin-o" />
-            <Title title="Notes" />
-          </HeaderLeft>
-          <HeaderRight>
-            <Search filter={filter} onChange={this.onFilterChange} />
-          </HeaderRight>
-        </Header>
-        <StyledNotesWrapper >
-          {
-            notes.map(note =>
-              <Note key={note._id} note={note} people={people} entity={this.findEntity(note.entityType, note.entityId)} />)
-          }
-        </StyledNotesWrapper>
-      </div>
-    );
-  }
-}
+const Notes = ({ filterNotesList, handleFilterChange, notes, companies, people, filter = '' }) => {
+  if (!notes || !people || !companies) return null;
+  return (
+    <Container>
+      <Header>
+        <HeaderLeft>
+          <div className="pt-icon-standard pt-icon-home" />
+          <Spacer />
+          <Title title="Notes" />
+        </HeaderLeft>
+        <HeaderRight>
+          <Search filter={filter} onChange={handleFilterChange} resetValue={() => filterNotesList('')} />
+          <StyledLinkButton to="/notes/add" iconName="plus" />
+        </HeaderRight>
+      </Header>
+      <List notes={notes} companies={companies} people={people} />
+    </Container>
+  );
+};
 
 Notes.propTypes = {
   notes: PropTypes.array.isRequired,
@@ -60,17 +40,25 @@ Notes.propTypes = {
   companies: PropTypes.object.isRequired,
   people: PropTypes.object.isRequired,
   filterNotesList: PropTypes.func.isRequired,
+  handleFilterChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   notes: getVisibleNotes(state),
-  people: state.people.data,
-  companies: state.companies.data,
-  filter: state.notes.filter,
+  people: getPeople(state),
+  companies: getCompanies(state),
+  filter: getFilter(state),
 });
 
 const actions = { filterNotesList };
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Notes);
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    handleFilterChange: ({ filterNotesList }) => event => filterNotesList(event.target.value),
+  }),
+);
+
+export default enhance(Notes);
