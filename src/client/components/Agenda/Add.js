@@ -51,6 +51,8 @@ const Add = ({ history, cancel, addEvent }) => {
     <Formik
       initialValues={initialValues}
       validationSchema={getValidationSchema()}
+      isInitialValid={({ validationSchema, initialValues }) =>
+        validationSchema.isValid(initialValues)}
       onSubmit={addEvent}
       render={({
         values,
@@ -66,6 +68,7 @@ const Add = ({ history, cancel, addEvent }) => {
       }) => {
         const [startDate, endDate] = [values['startDate'], values['endDate']];
         console.log(isValid);
+        console.log(errors);
         return (
           <Container>
             <Header>
@@ -99,12 +102,14 @@ const Add = ({ history, cancel, addEvent }) => {
               <StyledFormField
                 field={getField('startDate')}
                 values={values}
+                errors={errors}
                 setFieldTouched={setFieldTouched}
                 setFieldValue={setFieldValue}
               />
               <StyledFormField
                 field={getField('endDate')}
                 values={values}
+                errors={errors}
                 setFieldTouched={setFieldTouched}
                 setFieldValue={setFieldValue}
               />
@@ -118,6 +123,7 @@ const Add = ({ history, cancel, addEvent }) => {
               <StyledFormField
                 field={getField('value')}
                 value={differenceInDays(endDate, startDate) + 1}
+                errors={errors}
                 disabled={true}
                 type="number"
               />
@@ -125,6 +131,7 @@ const Add = ({ history, cancel, addEvent }) => {
               <StyledFormField
                 field={getField('unit')}
                 values={values}
+                errors={errors}
                 disabled={true}
                 type="text"
               />
@@ -132,6 +139,7 @@ const Add = ({ history, cancel, addEvent }) => {
               <StyledFormField
                 field={getField('type')}
                 values={values}
+                errors={errors}
                 type="text"
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
@@ -140,6 +148,16 @@ const Add = ({ history, cancel, addEvent }) => {
               <StyledFormField
                 field={getField('status')}
                 values={values}
+                errors={errors}
+                type="text"
+                setFieldValue={setFieldValue}
+                setFieldTouched={setFieldTouched}
+              />
+
+              <StyledFormField
+                field={getField('description')}
+                values={values}
+                errors={errors}
                 type="text"
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}

@@ -63,6 +63,7 @@ const fields = {
   description: {
     label: 'Description',
     component: InputField,
+    validate: Yup.string().oneOf(['A', 'B']),
   },
 };
 

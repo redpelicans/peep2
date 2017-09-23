@@ -16,7 +16,7 @@ const makeValidationRule = field => {
 
 export const getOneValidationSchema = compose(
   reduce((acc, [name, field]) => ({ ...acc, [name]: field.validate }), {}),
-  filter(([name, field]) => field.validate), // eslint-disble-line no-unused-vars
+  filter(([name, field]) => field.validate), // eslint-disable-line no-unused-vars
   toPairs,
   map(field => ({ ...field, validate: makeValidationRule(field) })),
 );
@@ -30,12 +30,13 @@ export const getOneValidationSchema = compose(
 //   }
 // };
 
-const getDomainValue = (domainValues, valueId) =>
-  domainValues &&
-  valueId &&
-  reduce((acc, { id, value }) => ({ ...acc, [id]: value }), {}, domainValues)[
-    valueId
-  ];
+// const getDomainValue = (domainValues, valueId) =>
+//   domainValues &&
+//   valueId &&
+//   reduce((acc, { id, value }) => ({ ...acc, [id]: value }), {}, domainValues)[
+//     valueId
+//   ];
+
 export const getOneField = fields => name => ({ name, ...fields[name] });
 export const getAllFields = compose(
   reduce((acc, [name, field]) => [...acc, { ...field, name }], []),

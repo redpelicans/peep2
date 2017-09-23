@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
 import { DateInput } from '@blueprintjs/datetime';
 import { Icon, Colors } from '@blueprintjs/core';
 import { isEqual } from 'date-fns';
-import { compose, map, toPairs, omit } from 'ramda';
-import { getSortedWorkers } from '../selectors/people';
+import { compose, map, omit } from 'ramda';
 import { fullName } from '../utils/people';
 import { withWorkers } from '../hoc';
 import '@blueprintjs/datetime/dist/blueprint-datetime.css';
 
-export const FormField = ({ field, values, className, ...props }) => {
+export const FormField = ({ field, values, errors, className, ...props }) => {
   const newProps =
     'domainValues' in field
       ? { ...props, domainValues: field.domainValues }
@@ -22,6 +20,7 @@ export const FormField = ({ field, values, className, ...props }) => {
         name={field.name}
         label={'label' in props ? props.label : field.label}
         value={'value' in props ? props.value : values[field.name]}
+        error={errors && errors[field.name]}
         required={!!field.required}
         {...newProps}
       />
@@ -33,11 +32,12 @@ FormField.propTypes = {
   field: PropTypes.object.isRequired,
   value: PropTypes.node,
   values: PropTypes.object,
+  errors: PropTypes.object,
   label: PropTypes.string,
   className: PropTypes.string,
 };
 
-const StyledField = styled.div`
+const StyledFormField = styled.div`
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: auto;
@@ -46,7 +46,7 @@ const StyledField = styled.div`
 
 const StyledRequiredTag = styled.span`
   margin-left: 5px;
-  color: ${Colors.RED1};
+  color: ${Colors.RED5};
 `;
 
 const RequiredTag = ({ required }) => {
@@ -58,11 +58,37 @@ RequiredTag.propTypes = {
   required: PropTypes.bool.isRequired,
 };
 
+const Error = styled.span`
+  font-size: 0.9em;
+  font-style: italic;
+  color: ${Colors.RED5};
+  margin-top: 5px;
+`;
+
+const Field = ({ label, error, required, children }) => (
+  <StyledFormField>
+    <label className="pt-label">
+      {label}
+      <RequiredTag required={required} />
+    </label>
+    {children}
+    <Error>{error && `Error: ${error}`}</Error>
+  </StyledFormField>
+);
+
+Field.propTypes = {
+  children: PropTypes.func.element,
+  label: PropTypes.string,
+  error: PropTypes.string,
+  required: PropTypes.bool.isRequired,
+};
+
 export const InputField = ({
   name,
   label,
+  error,
   required,
-  value,
+  value = '',
   setFieldTouched,
   setFieldValue,
   ...props
@@ -74,11 +100,7 @@ export const InputField = ({
   };
 
   return (
-    <StyledField>
-      <label className="pt-label">
-        {label}
-        <RequiredTag required={required} />
-      </label>
+    <Field label={label} error={error} required={required}>
       <input
         name={name}
         className="pt-input pt-fill"
@@ -87,13 +109,14 @@ export const InputField = ({
         dir="auto"
         {...props}
       />
-    </StyledField>
+    </Field>
   );
 };
 
 InputField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
+  error: PropTypes.string,
   required: PropTypes.bool.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setFieldValue: PropTypes.func,
@@ -118,11 +141,7 @@ export const DateField = ({
   };
 
   return (
-    <StyledField>
-      <label className="pt-label">
-        {label}
-        <RequiredTag required={required} />
-      </label>
+    <Field label={label} required={required}>
       <DateInput
         rightElement={icon}
         className="pt-datepicker pt-fill"
@@ -131,13 +150,14 @@ export const DateField = ({
         onChange={handleChange}
         {...props}
       />
-    </StyledField>
+    </Field>
   );
 };
 
 DateField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
+  error: PropTypes.string,
   required: PropTypes.bool.isRequired,
   value: PropTypes.object,
   setFieldValue: PropTypes.func,
@@ -160,30 +180,27 @@ export const SelectField = ({
   };
 
   return (
-    <StyledField>
-      <label className="pt-label">
-        {label}
-        <RequiredTag required={required} />
-        <div className="pt-select">
-          <select value={value} name={name} onChange={handleChange}>
-            {map(
-              dm => (
-                <option key={dm.id} value={dm.id}>
-                  {dm.value}
-                </option>
-              ),
-              domainValues,
-            )}
-          </select>
-        </div>
-      </label>
-    </StyledField>
+    <Field label={label} required={required}>
+      <div className="pt-select">
+        <select value={value} name={name} onChange={handleChange}>
+          {map(
+            dm => (
+              <option key={dm.id} value={dm.id}>
+                {dm.value}
+              </option>
+            ),
+            domainValues,
+          )}
+        </select>
+      </div>
+    </Field>
   );
 };
 
 SelectField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
+  error: PropTypes.string,
   required: PropTypes.bool.isRequired,
   domainValues: PropTypes.array,
   value: PropTypes.string,
