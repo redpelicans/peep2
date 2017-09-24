@@ -76,7 +76,12 @@ export const CitySelect = ({ field: { label, required }, cities, input }) => {
         {label}
         {required && <RequiredStar>*</RequiredStar>}
       </InputText>
-      <SelectStyled {...input} name="city" onBlur={() => input.onBlur(input.value)} options={getOptions(cities)} />
+      <SelectStyled
+        {...input}
+        name="city"
+        onBlur={() => input.onBlur(input.value)}
+        options={getOptions(cities)}
+      />
     </InputElt>
   );
 };
@@ -87,7 +92,11 @@ CitySelect.propTypes = {
   input: PropTypes.node,
 };
 
-export const CountrySelect = ({ field: { label, required }, countries, input }) => {
+export const CountrySelect = ({
+  field: { label, required },
+  countries,
+  input,
+}) => {
   const getOptions = map(country => ({ value: country, label: country }));
   return (
     <InputElt>
@@ -95,7 +104,12 @@ export const CountrySelect = ({ field: { label, required }, countries, input }) 
         {label}
         {required && <RequiredStar>*</RequiredStar>}
       </InputText>
-      <SelectStyled {...input} name="city" onBlur={() => input.onBlur(input.value)} options={getOptions(countries)} />
+      <SelectStyled
+        {...input}
+        name="city"
+        onBlur={() => input.onBlur(input.value)}
+        options={getOptions(countries)}
+      />
     </InputElt>
   );
 };
@@ -106,7 +120,10 @@ CountrySelect.propTypes = {
   input: PropTypes.node,
 };
 
-export const TypeSelect = ({ field: { label, required, domainValues }, input }) => {
+export const TypeSelect = ({
+  field: { label, required, domainValues },
+  input,
+}) => {
   const getOptions = map(type => ({ value: type, label: type }));
   return (
     <InputElt>
@@ -114,7 +131,12 @@ export const TypeSelect = ({ field: { label, required, domainValues }, input }) 
         {label}
         {required && <RequiredStar>*</RequiredStar>}
       </InputText>
-      <SelectStyled {...input} name="Types" onBlur={() => input.onBlur(input.value)} options={getOptions(domainValues)} />
+      <SelectStyled
+        {...input}
+        name="Types"
+        onBlur={() => input.onBlur(input.value)}
+        options={getOptions(domainValues)}
+      />
     </InputElt>
   );
 };
@@ -123,4 +145,48 @@ TypeSelect.propTypes = {
   field: PropTypes.object,
   domainValues: PropTypes.array.isRequired,
   input: PropTypes.node,
+};
+
+export const SelectInput = ({
+  field: { label, required, domainValues },
+  input,
+  cities,
+  countries,
+}) => (
+  <InputElt>
+    <InputText>
+      {label}
+      {required && <RequiredStar>*</RequiredStar>}
+    </InputText>
+    <SelectElt className="pt-select">
+      <SelectInputElt {...input}>
+        <option>Choose an item...</option>
+        {label === 'Types' &&
+          domainValues.map(type => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        {label === 'City' &&
+          cities.map(city => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        {label === 'Country' &&
+          countries.map(country => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+      </SelectInputElt>
+    </SelectElt>
+  </InputElt>
+);
+
+SelectInput.propTypes = {
+  field: PropTypes.object,
+  input: PropTypes.node,
+  countries: PropTypes.array,
+  cities: PropTypes.array,
 };
