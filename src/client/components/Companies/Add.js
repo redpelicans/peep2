@@ -25,21 +25,11 @@ const validate = values => {
   return errors;
 };
 
-const getInputComponent = type => {
-  if (type === 'input') {
-    return TextInput;
-  } else if (type === 'textarea') {
-    return TextAreaInput;
-  } else if (type === 'select') {
-    return SelectInput;
-  }
-};
-
 const getFields = (cities, countries) =>
   map(
     field => (
       <FieldStyled key={field.key} name={field.key}>
-        <Field component={getInputComponent(field.type)} name={field.key} field={field} cities={cities} countries={countries} />
+        <Field component={field.component} name={field.key} field={field} cities={cities} countries={countries} />
       </FieldStyled>
     ),
     fields,
