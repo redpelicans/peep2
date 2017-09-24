@@ -1,4 +1,10 @@
-import { TypeSelect, TextInput, SelectInput, TextAreaInput, CitySelect, CountrySelect } from '../../widgets';
+import {
+  TypeSelect,
+  TextInput,
+  TextAreaInput,
+  CitySelect,
+  CountrySelect,
+} from '../../widgets';
 
 const fields = {
   types: {

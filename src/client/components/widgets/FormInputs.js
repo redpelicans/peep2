@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Select from 'react-select';
@@ -17,7 +17,7 @@ const InputElt = styled.div`
 const InputField = styled.input`
   margin-top: 20px;
   border: 0;
-  height: 25px;
+  height: 35px;
   border-radius: 2px;
   padding: 7px;
 `;
@@ -34,159 +34,131 @@ const RequiredStar = styled.span`
   margin-left: 5px;
 `;
 
-const SelectStyled = styled(Select.Creatable)`margin-top: 25px;`;
+const SelectStyled = styled(Select.Creatable)`
+  margin-top: 20px;
+  &.Select--multi {
+    .Select-value {
+      border: 1px solid red;
+      display: inline-flex;
+      align-items: center;
+    }
+  }
 
-export const TextInput = ({ field: { label, required }, input }) => (
+  & .Select-placeholder {
+    font-size: smaller;
+    color: ${Colors.WHITE};
+    background-color: ${Colors.DARK_GRAY4};
+    border: none;
+  }
+`;
+
+export const TextInput = ({
+  field: { label, required },
+  value,
+  handleChange,
+}) => (
   <InputElt>
     <InputText>
-      {label}
+      {label}:
       {required && <RequiredStar>*</RequiredStar>}
     </InputText>
-    <InputField {...input} type="text" className="pt-input" />
+    <InputField
+      onChange={handleChange}
+      type="text"
+      name={label}
+      className="pt-input"
+      value={value}
+    />
   </InputElt>
 );
 
 TextInput.propTypes = {
-  field: PropTypes.object,
-  input: PropTypes.node,
+  field: PropTypes.object.isRequired,
+  value: PropTypes.string,
+  handleChange: PropTypes.func.isRequired,
 };
 
-export const TextAreaInput = ({ field: { label, required }, input }) => (
+export const TextAreaInput = ({
+  field: { label, required },
+  value,
+  handleChange,
+}) => (
   <InputElt>
     <InputText>
-      {label}
+      {label}:
       {required && <RequiredStar>*</RequiredStar>}
     </InputText>
-    <TextAreaElt {...input} className="pt-input" dir="auto" />
+    <TextAreaElt
+      onChange={handleChange}
+      name={label}
+      className="pt-input"
+      dir="auto"
+      value={value}
+    />
   </InputElt>
 );
 
 TextAreaInput.propTypes = {
-  field: PropTypes.object,
-  input: PropTypes.node,
+  field: PropTypes.object.isRequired,
+  value: PropTypes.string,
+  handleChange: PropTypes.func.isRequired,
 };
 
-export const CitySelect = ({ field: { label, required }, cities, input }) => {
+export const CitySelect = ({ field: { label, required }, cities, value }) => {
   const getOptions = map(city => ({ value: city, label: city }));
 
   return (
     <InputElt>
-      {console.log(cities)}
+      {console.log('cityvalue: ', value)}
       <InputText>
-        {label}
+        {label}:
         {required && <RequiredStar>*</RequiredStar>}
       </InputText>
-      <SelectStyled
-        {...input}
-        name="city"
-        onBlur={() => input.onBlur(input.value)}
-        options={getOptions(cities)}
-      />
+      <SelectStyled name={label} value={value} options={getOptions(cities)} />
     </InputElt>
   );
 };
 
 CitySelect.propTypes = {
-  field: PropTypes.object,
+  field: PropTypes.object.isRequired,
   cities: PropTypes.array.isRequired,
-  input: PropTypes.node,
+  value: PropTypes.string,
 };
 
-export const CountrySelect = ({
-  field: { label, required },
-  countries,
-  input,
-}) => {
+export const CountrySelect = ({ field: { label, required }, countries }) => {
   const getOptions = map(country => ({ value: country, label: country }));
   return (
     <InputElt>
       <InputText>
-        {label}
+        {label}:
         {required && <RequiredStar>*</RequiredStar>}
       </InputText>
-      <SelectStyled
-        {...input}
-        name="city"
-        onBlur={() => input.onBlur(input.value)}
-        options={getOptions(countries)}
-      />
+      <SelectStyled name="city" options={getOptions(countries)} />
     </InputElt>
   );
 };
 
 CountrySelect.propTypes = {
-  field: PropTypes.object,
+  field: PropTypes.object.isRequired,
   countries: PropTypes.array.isRequired,
-  input: PropTypes.node,
 };
 
 export const TypeSelect = ({
-  field: { label, required, domainValues },
-  input,
+  field: { label, required, domainValues = [] },
 }) => {
   const getOptions = map(type => ({ value: type, label: type }));
   return (
     <InputElt>
       <InputText>
-        {label}
+        {label}:
         {required && <RequiredStar>*</RequiredStar>}
       </InputText>
-      <SelectStyled
-        {...input}
-        name="Types"
-        onBlur={() => input.onBlur(input.value)}
-        options={getOptions(domainValues)}
-      />
+      <SelectStyled name="Types" options={getOptions(domainValues)} />
     </InputElt>
   );
 };
 
 TypeSelect.propTypes = {
-  field: PropTypes.object,
-  domainValues: PropTypes.array.isRequired,
-  input: PropTypes.node,
-};
-
-export const SelectInput = ({
-  field: { label, required, domainValues },
-  input,
-  cities,
-  countries,
-}) => (
-  <InputElt>
-    <InputText>
-      {label}
-      {required && <RequiredStar>*</RequiredStar>}
-    </InputText>
-    <SelectElt className="pt-select">
-      <SelectInputElt {...input}>
-        <option>Choose an item...</option>
-        {label === 'Types' &&
-          domainValues.map(type => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        {label === 'City' &&
-          cities.map(city => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        {label === 'Country' &&
-          countries.map(country => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-      </SelectInputElt>
-    </SelectElt>
-  </InputElt>
-);
-
-SelectInput.propTypes = {
-  field: PropTypes.object,
-  input: PropTypes.node,
-  countries: PropTypes.array,
-  cities: PropTypes.array,
+  field: PropTypes.object.isRequired,
+  domainValues: PropTypes.array,
 };

@@ -7,57 +7,101 @@ import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
 import { compose, map } from 'ramda';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
+import { Formik } from 'formik';
 import getCities from '../../selectors/cities';
 import getCountries from '../../selectors/countries';
 import fields from './forms';
-import { Spacer, TextInput, TextAreaInput, SelectInput, Title, CompagnyForm, Container, AvatarSelector } from '../widgets';
+import {
+  Spacer,
+  Title,
+  CompagnyForm,
+  Container,
+  AvatarSelector,
+} from '../widgets';
 
-const FieldStyled = styled.div`grid-area: ${props => props.name};`;
-const validate = values => {
-  const errors = {};
-  map(field => {
-    if (field.required === true && !values[field.label]) {
-      errors[field.label] = 'Required';
-    }
-  }, fields);
-  return errors;
-};
+const StyledFormField = styled.div`grid-area: ${props => props.name};`;
 
-const getFields = (cities, countries) =>
+const getFields = (cities, countries, values, errors, handleChange) =>
   map(
     field => (
-      <FieldStyled key={field.key} name={field.key}>
-        <Field component={field.component} name={field.key} field={field} cities={cities} countries={countries} />
-      </FieldStyled>
+      <StyledFormField key={field.key} name={field.key}>
+        <field.component
+          handleChange={handleChange}
+          field={field}
+          cities={cities}
+          value={values[field.label]}
+          countries={countries}
+        />
+      </StyledFormField>
     ),
     fields,
   );
 
-const AddCompany = ({ changeColor, valid, cities, countries, companyForm: { values = {} } }) => (
-  <Container>
-    <Header>
-      <HeaderLeft>
-        <Spacer size={20} />
-        <AvatarSelector name={values.Name ? values.Name : ''} handleChangeColor={changeColor} />
-        <Spacer />
-        <Title title="New Companie" />
-      </HeaderLeft>
-      <HeaderRight>
-        <Button form="companie" type="submit" disabled={!valid} className="pt-intent-success">
-          Create
-        </Button>
-        <Spacer />
-        <Link to="/companies">
-          <Button className="pt-intent-warning">Cancel</Button>
-        </Link>
-        <Spacer size={25} />
-      </HeaderRight>
-    </Header>
-    <CompagnyForm id="companie">{getFields(cities, countries)}</CompagnyForm>
-  </Container>
-);
+const AddCompany = ({ changeColor, valid, cities, countries }) => {
+  const initialValues = {
+    Types: '',
+    Name: '',
+    Website: '',
+    Street: '',
+    ZipCode: '',
+    City: 'Paris',
+    Country: '',
+    Tags: '',
+    Notes: '',
+  };
+  return (
+    <Formik
+      initialValues={initialValues}
+      validate={values => {
+        let errors = {};
+        if (!values.Types) {
+          errors.Types = 'Required';
+        }
+        return errors;
+      }}
+      onSubmit={() => console.log('submit')}
+      render={({
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+      }) => (
+        <Container>
+          <Header>
+            {console.log('values: ', values)}
+            <HeaderLeft>
+              <Spacer size={20} />
+              <AvatarSelector handleChangeColor={changeColor} />
+              <Spacer />
+              <Title title="New Companie" />
+            </HeaderLeft>
+            <HeaderRight>
+              <Button
+                form="addCompany"
+                type="submit"
+                disabled={!errors}
+                className="pt-intent-success pt-large"
+              >
+                Create
+              </Button>
+              <Spacer />
+              <Link to="/companies">
+                <Button className="pt-intent-warning pt-large">Cancel</Button>
+              </Link>
+              <Spacer size={25} />
+            </HeaderRight>
+          </Header>
+          <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
+            {getFields(cities, countries, values, errors, handleChange)}
+          </CompagnyForm>
+        </Container>
+      )}
+    />
+  );
+};
 
 AddCompany.propTypes = {
   changeColor: PropTypes.func.isRequired,
@@ -78,10 +122,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
   withState('color', 'changeColor', ''),
-  withHandlers({ changeColorHandler: ({ changeColor }) => () => changeColor(color => color) }),
-  reduxForm({
-    form: 'addCompany',
-    validate,
+  withHandlers({
+    changeColorHandler: ({ changeColor }) => () => changeColor(color => color),
   }),
   connect(mapStateToProps, mapDispatchToProps),
 );
