@@ -4,6 +4,7 @@ import { Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
 import { NameLink } from '../widgets';
 import Avatar from '../Avatar';
+import { getPathByName } from '../../routes';
 
 const StyledFooter = styled.div`
   display: flex;
@@ -35,11 +36,11 @@ const Footer = ({ note, person, entity }) => {
   if (!person || !entity || !note) return null;
   return (
     <StyledFooter>
-      {entity.avatar && <Avatar name={entity.name} to={`/${entity.typeName}/${entity._id}`} {...entity.avatar} />}
+      {entity.avatar && <Avatar name={entity.name} to={getPathByName(entity.typeName, entity._id)} {...entity.avatar} />}
       <StyledMain>
         <StyledName>
           <Icon iconName={entityIcon[note.entityType]} style={{ marginRight: '4px' }} />
-          {entity.typeName ? <NameLink to={`/${entity.typeName}/${entity._id}`}>{entity.name}</NameLink> : entity.name}
+          {entity.typeName ? <NameLink to={getPathByName(entity.typeName, entity._id)}>{entity.name}</NameLink> : entity.name}
         </StyledName>
         <span>{note.createdAt}</span>
       </StyledMain>
@@ -47,7 +48,7 @@ const Footer = ({ note, person, entity }) => {
         <Avatar
           name={person.name}
           {...person.avatar}
-          to={`/person/${person._id}`}
+          to={getPathByName('person', person._id)}
           style={{
             minWidth: '30px',
             width: '30px',

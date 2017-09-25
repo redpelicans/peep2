@@ -6,6 +6,9 @@ import Agenda from './components/Agenda';
 import Notes from './components/Notes';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
+import PersonView from './components/PersonView';
+import CompanyView from './components/CompanyView';
+import Edit from './components/Edit';
 
 const routes = {
   home: {
@@ -21,6 +24,20 @@ const routes = {
     exact: true,
     auth: true,
   },
+  company: {
+    path: '/company',
+    component: CompanyView,
+    default: true,
+    exact: false,
+    auth: true,
+  },
+  editCompany: {
+    path: '/edit/company',
+    component: Edit, // TO BE CHANGED
+    default: true,
+    exact: false,
+    auth: true,
+  },
   addCompagny: {
     path: '/companies/add',
     component: AddCompany,
@@ -33,6 +50,20 @@ const routes = {
     exact: true,
     auth: true,
     component: People,
+  },
+  person: {
+    path: '/person/:id',
+    component: PersonView,
+    default: true,
+    exact: false,
+    auth: true,
+  },
+  editPerson: {
+    path: '/edit/person',
+    component: Edit, // TO BE CHANGED
+    default: true,
+    exact: false,
+    auth: true,
   },
   agenda: {
     path: '/agenda',
@@ -52,6 +83,11 @@ const routes = {
     auth: true,
     component: Notes,
   },
+  editNote: {
+    path: 'edit/note',
+    exact: false,
+    auth: true,
+  },
   login: {
     path: '/login',
     exact: true,
@@ -63,5 +99,5 @@ const exportedRoutes = compose(reduce((acc, [name, r]) => [...acc, { ...r, name 
 export const defaultRoute = find(prop('default'), exportedRoutes);
 export const getRouteByName = name => routes[name];
 export const getRouteByPath = path => find(r => r.path === path, exportedRoutes);
-export const getPathByName = name => prop('path', getRouteByName(name));
+export const getPathByName = (name, id) => `${prop('path', getRouteByName(name)).replace(':id', id)}`;
 export default exportedRoutes;

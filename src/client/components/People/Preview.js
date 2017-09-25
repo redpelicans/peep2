@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { withStateHandlers } from 'recompose';
 import { LinkButton, PreviewContainer, Tag, Tags, NameLink, CompanyLink, Actions } from '../widgets';
 import Avatar from '../Avatar';
+import { getPathByName } from '../../routes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
@@ -43,14 +44,14 @@ const Preview = ({
       onMouseLeave={handleMouseLeave}
     >
       <TitleRow>
-        <Avatar name={name} color={avatar.color} to={`/person/${_id}`} />
+        <Avatar name={name} color={avatar.color} to={getPathByName('person', _id)} />
         <StyledInfos>
-          <NameLink to={`/person/${_id}`}>{name}</NameLink>
-          <CompanyLink to={`/company/${company._id}`}>{company.name}</CompanyLink>
+          <NameLink to={getPathByName('person', _id)}>{name}</NameLink>
+          <CompanyLink to={getPathByName('company', company._id)}>{company.name}</CompanyLink>
         </StyledInfos>
         {showActions && (
           <Actions>
-            <StyledLinkButton to={`/person/edit/${_id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
+            <StyledLinkButton to={getPathByName('editPerson', _id)} className="pt-small pt-button" iconName="pt-icon-edit" />
             <Icons className="pt-icon-standard pt-icon-trash" onClick={() => handleDeletePeople(_id)} />
           </Actions>
         )}

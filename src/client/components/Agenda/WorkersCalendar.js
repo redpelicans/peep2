@@ -12,6 +12,7 @@ import { dmy, getWorkingDaysInMonth, isWorkingDay, getCalendarDay } from '../../
 import Avatar, { SMALL } from '../Avatar';
 import { fullName, isAdmin, isEqual } from '../../utils/people';
 import { isVacation } from '../../utils/events';
+import { getPathByName } from '../../routes';
 
 const vacationDayBackground = `repeating-linear-gradient(45deg, ${Colors.GREEN1}, ${Colors.GREEN1} 7%, ${Colors.GREEN3} 7%, ${Colors.GREEN3} 14%)`;
 const sickLeaveDayBackground = `repeating-linear-gradient(45deg, ${Colors.RED1}, ${Colors.RED1} 7%, ${Colors.RED3} 7%, ${Colors.RED3} 14%)`;
@@ -90,7 +91,7 @@ const StyledAvatar = styled(Avatar)``;
 
 const WorkerHeader = shouldUpdate(() => false)(({ worker }) => (
   <StyledWorkerHeader>
-    <StyledAvatar name={fullName(worker)} to={`/person/${worker._id}`} showTooltip color={worker.avatar.color} size={SMALL} />
+    <StyledAvatar name={fullName(worker)} to={getPathByName('person', worker._id)} showTooltip color={worker.avatar.color} size={SMALL} />
   </StyledWorkerHeader>
 ));
 

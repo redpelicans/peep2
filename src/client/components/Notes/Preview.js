@@ -5,6 +5,7 @@ import { withStateHandlers } from 'recompose';
 import Footer from './Footer';
 import { MarkdownConvertor } from '../widgets/Markdown';
 import { LinkButton, PreviewContainer, Actions } from '../widgets';
+import { getPathByName } from '../../routes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
@@ -47,7 +48,7 @@ const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, note, people
   >
     {showActions && (
       <Actions>
-        <StyledLinkButton to={`/note/edit/${note._id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
+        <StyledLinkButton to={getPathByName('editNote', note._id)} className="pt-small pt-button" iconName="pt-icon-edit" />
         <Icons className="pt-icon-standard pt-icon-trash" />
       </Actions>
     )}

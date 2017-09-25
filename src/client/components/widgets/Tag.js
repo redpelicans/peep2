@@ -1,9 +1,10 @@
 import styled from 'styled-components';
+import { Colors } from '@blueprintjs/core';
 
 export const Tag = styled.div`
   cursor: pointer;
   margin: 3px;
-  background-color: #394b59;
+  background-color: ${Colors.DARK_GRAY5};
   border-radius: 3px;
   font-size: 0.8em;
   padding: 4px;

@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Colors } from '@blueprintjs/core';
 import { LinkButton, PreviewContainer, Tag, Tags, NameLink, Actions } from '../widgets';
 import Avatar from '../Avatar';
+import { getPathByName } from '../../routes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
@@ -41,13 +42,13 @@ export const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, compa
       onMouseLeave={handleMouseLeave}
     >
       <TitleRow>
-        <Avatar name={name} color={avatar.color} to={`/company/${_id}`} />
+        <Avatar name={name} color={avatar.color} to={getPathByName('company', _id)} />
         <Title>
-          <NameLink to={`/company/${_id}`}>{name}</NameLink>
+          <NameLink to={getPathByName('company', _id)}>{name}</NameLink>
         </Title>
         {showActions && (
           <Actions>
-            <StyledLinkButton to={`/company/edit/${_id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
+            <StyledLinkButton to={getPathByName('editCompany', _id)} className="pt-small pt-button" iconName="pt-icon-edit" />
             <Icons className="pt-icon-standard pt-icon-trash" />
           </Actions>
         )}
