@@ -11,7 +11,7 @@ import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import getCities from '../../selectors/cities';
 import getCountries from '../../selectors/countries';
-import fields from './forms';
+import fields from '../../forms/companies';
 import { getTags } from '../../selectors/tags';
 import {
   Spacer,

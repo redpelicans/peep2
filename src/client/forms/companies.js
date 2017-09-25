@@ -1,3 +1,5 @@
+import { compose, reduce, toPairs } from 'ramda';
+
 import {
   TypeSelect,
   TextInput,
@@ -5,7 +7,7 @@ import {
   CitySelect,
   CountrySelect,
   TagsSelect,
-} from '../../widgets';
+} from '../components/widgets';
 
 const fields = {
   types: {
@@ -65,4 +67,8 @@ const fields = {
   },
 };
 
-export default fields;
+const exportedFields = compose(
+  reduce((acc, [name, r]) => [...acc, { ...r, name }], []),
+  toPairs,
+)(fields);
+export default exportedFields;
