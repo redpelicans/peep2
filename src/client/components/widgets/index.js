@@ -14,9 +14,11 @@ import {
   TextAreaInput,
   CitySelect,
   CountrySelect,
+  TagsSelect,
 } from './FormInputs';
 
 export {
+  TagsSelect,
   EmptySearch,
   LinkButton,
   TitleButton,

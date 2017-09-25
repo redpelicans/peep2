@@ -5,13 +5,14 @@ import { bindActionCreators } from 'redux';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
-import { compose, map } from 'ramda';
+import { compose, map, isEmpty } from 'ramda';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import getCities from '../../selectors/cities';
 import getCountries from '../../selectors/countries';
 import fields from './forms';
+import { getTags } from '../../selectors/tags';
 import {
   Spacer,
   Title,
@@ -22,7 +23,17 @@ import {
 
 const StyledFormField = styled.div`grid-area: ${props => props.name};`;
 
-const getFields = (cities, countries, values, errors, handleChange) =>
+const getFields = (
+  cities,
+  countries,
+  tags,
+  values,
+  errors,
+  handleChange,
+  touched,
+  isSubmitting,
+  setFieldValue,
+) =>
   map(
     field => (
       <StyledFormField key={field.key} name={field.key}>
@@ -32,24 +43,18 @@ const getFields = (cities, countries, values, errors, handleChange) =>
           cities={cities}
           value={values[field.label]}
           countries={countries}
+          toucher={touched}
+          isSubmitting={isSubmitting}
+          setFieldValue={setFieldValue}
+          tags={tags}
         />
       </StyledFormField>
     ),
     fields,
   );
 
-const AddCompany = ({ changeColor, valid, cities, countries }) => {
-  const initialValues = {
-    Types: '',
-    Name: '',
-    Website: '',
-    Street: '',
-    ZipCode: '',
-    City: 'Paris',
-    Country: '',
-    Tags: '',
-    Notes: '',
-  };
+const AddCompany = ({ changeColor, cities, countries, tags }) => {
+  const initialValues = {};
   return (
     <Formik
       initialValues={initialValues}
@@ -57,24 +62,39 @@ const AddCompany = ({ changeColor, valid, cities, countries }) => {
         let errors = {};
         if (!values.Types) {
           errors.Types = 'Required';
+        } else if (!values.Name) {
+          errors.Name = 'Required';
+        } else if (!values.Website) {
+          errors.Website = 'Required';
+        } else if (!values.ZipCode) {
+          errors.ZipCode = 'Required';
+        } else if (!values.Street) {
+          errors.Street = 'Required';
+        } else if (!values.Country) {
+          errors.Country = 'Required';
+        } else if (!values.City) {
+          errors.City = 'Required';
         }
         return errors;
       }}
-      onSubmit={() => console.log('submit')}
+      onSubmit={values => console.log('submit!, values:', values)}
       render={({
         values,
         errors,
         touched,
         handleChange,
         handleSubmit,
+        setFieldValue,
         isSubmitting,
       }) => (
         <Container>
           <Header>
-            {console.log('values: ', values)}
             <HeaderLeft>
-              <Spacer size={20} />
-              <AvatarSelector handleChangeColor={changeColor} />
+              <Spacer size={15} />
+              <AvatarSelector
+                name={values.Name}
+                handleChangeColor={changeColor}
+              />
               <Spacer />
               <Title title="New Companie" />
             </HeaderLeft>
@@ -82,7 +102,7 @@ const AddCompany = ({ changeColor, valid, cities, countries }) => {
               <Button
                 form="addCompany"
                 type="submit"
-                disabled={!errors}
+                disabled={!isEmpty(errors) || isEmpty(values)}
                 className="pt-intent-success pt-large"
               >
                 Create
@@ -91,11 +111,21 @@ const AddCompany = ({ changeColor, valid, cities, countries }) => {
               <Link to="/companies">
                 <Button className="pt-intent-warning pt-large">Cancel</Button>
               </Link>
-              <Spacer size={25} />
+              <Spacer size={20} />
             </HeaderRight>
           </Header>
           <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
-            {getFields(cities, countries, values, errors, handleChange)}
+            {getFields(
+              cities,
+              countries,
+              tags,
+              values,
+              errors,
+              handleChange,
+              touched,
+              isSubmitting,
+              setFieldValue,
+            )}
           </CompagnyForm>
         </Container>
       )}
@@ -107,14 +137,14 @@ AddCompany.propTypes = {
   changeColor: PropTypes.func.isRequired,
   valid: PropTypes.bool,
   cities: PropTypes.array,
+  tags: PropTypes.array,
   countries: PropTypes.array,
-  companyForm: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   countries: getCountries(state),
   cities: getCities(state),
-  companyForm: state.form.addCompany,
+  tags: getTags(state),
 });
 
 const actions = {};

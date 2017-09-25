@@ -4,6 +4,7 @@ import {
   TextAreaInput,
   CitySelect,
   CountrySelect,
+  TagsSelect,
 } from '../../widgets';
 
 const fields = {
@@ -34,7 +35,7 @@ const fields = {
   },
   zipcode: {
     key: 'Zipcode',
-    label: 'Zip Code',
+    label: 'ZipCode',
     required: true,
     component: TextInput,
   },
@@ -54,7 +55,7 @@ const fields = {
     key: 'Tags',
     label: 'Tags',
     required: false,
-    component: TextInput,
+    component: TagsSelect,
   },
   notes: {
     key: 'Notes',
