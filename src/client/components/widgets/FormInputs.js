@@ -53,14 +53,29 @@ const SelectStyled = styled(Select.Creatable)`
     background-color: ${Colors.DARK_GRAY4};
     color: ${Colors.WHITE};
   }
+  & .is-open > .Select-value {
+    background-color: red !important;
+  }
+  & .Select-clear-zone:hover {
+    color: ${Colors.RED3};
+  }
   & .Select-value-label {
     color: white !important;
+  }
+  & .Select-menu-outer {
+    border: 0;
+    background-color: ${Colors.DARK_GRAY5};
+  }
+  & .Select-option {
+    box-sizing: none;
+    background-color: ${Colors.DARK_GRAY4};
+    color: ${Colors.LIGHT_GRAY4};
   }
   & .Select-placeholder {
     font-size: smaller;
     color: ${Colors.WHITE};
     background-color: ${Colors.DARK_GRAY4};
-    border: none;
+    border: 0;
   }
 `;
 
