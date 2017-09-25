@@ -11,7 +11,7 @@ import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import getCities from '../../selectors/cities';
 import getCountries from '../../selectors/countries';
-import fields from '../../forms/companies';
+import fields, { defaultValues } from '../../forms/companies';
 import { getTags } from '../../selectors/tags';
 import {
   Spacer,
@@ -54,7 +54,9 @@ const getFields = (
   );
 
 const AddCompany = ({ changeColor, cities, countries, tags }) => {
-  const initialValues = {};
+  const initialValues = {
+    ...defaultValues,
+  };
   return (
     <Formik
       initialValues={initialValues}

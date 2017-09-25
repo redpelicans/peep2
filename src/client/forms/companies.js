@@ -1,5 +1,5 @@
 import { compose, reduce, toPairs } from 'ramda';
-
+import { getDefaultValues } from './utils';
 import {
   TypeSelect,
   TextInput,
@@ -67,8 +67,9 @@ const fields = {
   },
 };
 
-const exportedFields = compose(
+export const defaultValues = getDefaultValues(fields);
+
+export const exportedFields = compose(
   reduce((acc, [name, r]) => [...acc, { ...r, name }], []),
   toPairs,
 )(fields);
-export default exportedFields;
