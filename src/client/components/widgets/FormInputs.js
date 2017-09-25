@@ -109,7 +109,6 @@ export const CitySelect = ({ field: { label, required }, cities, value }) => {
 
   return (
     <InputElt>
-      {console.log('cityvalue: ', value)}
       <InputText>
         {label}:
         {required && <RequiredStar>*</RequiredStar>}

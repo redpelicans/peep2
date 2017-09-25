@@ -34,31 +34,32 @@ const Footer = ({ note, person, entity }) => {
   if (!person || !entity || !note) return null;
   return (
     <StyledFooter>
-      <StyledFooter>
-        { entity.avatar &&
-          <Avatar
-            name={entity.name}
-            {...entity.avatar}
-            style={{ marginRight: '10px' }}
-            showTooltip
-          /> }
-        <StyledMain>
-          <StyledName>
-            <Icon iconName={entityIcon[note.entityType]} style={{ marginRight: '4px' }} />
-            {entity.name}
-          </StyledName>
-          <span>
-            {note.createdAt}
-          </span>
-        </StyledMain>
-      </StyledFooter>
-      { person.avatar &&
+      {entity.avatar && (
+        <Avatar name={entity.name} {...entity.avatar} showTooltip />
+      )}
+      <StyledMain>
+        <StyledName>
+          <Icon
+            iconName={entityIcon[note.entityType]}
+            style={{ marginRight: '4px' }}
+          />
+          {entity.name}
+        </StyledName>
+        <span>{note.createdAt}</span>
+      </StyledMain>
+      {person.avatar && (
         <Avatar
           name={person.name}
           {...person.avatar}
-          style={{ minWidth: '30px', width: '30px', height: '30px', fontSize: '.8rem' }}
+          style={{
+            minWidth: '30px',
+            width: '30px',
+            height: '30px',
+            fontSize: '.8rem',
+          }}
           showTooltip
-        /> }
+        />
+      )}
     </StyledFooter>
   );
 };
