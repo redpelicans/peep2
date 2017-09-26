@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { withStateHandlers } from 'recompose';
 import Footer from './Footer';
 import { MarkdownConvertor } from '../widgets/Markdown';
-import { LinkButton } from '../widgets';
+import { LinkButton, PreviewContainer, Actions } from '../widgets';
+import { getPathByName } from '../../routes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
@@ -16,29 +17,6 @@ export const StyledNoteWrap = styled.div`
 export const StyledFooterLine = styled.hr`
   margin-top: 10px;
   margin-bottom: 10px;
-`;
-
-const PreviewContainer = styled.div`
-  width: 300px;
-  display: flex;
-  padding: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: space-between;
-  border: 1px solid rgba(49, 65, 77, 0.5);
-  border-radius: 1px;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  right: 0;
-  top: 0;
-  flex: 1;
-  z-index: 5;
-  position: absolute;
-  color: #394b59;
 `;
 
 export const Icons = styled.div`
@@ -70,7 +48,7 @@ const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, note, people
   >
     {showActions && (
       <Actions>
-        <StyledLinkButton to={`/note/edit/${note._id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
+        <StyledLinkButton to={getPathByName('editNote', note._id)} className="pt-small pt-button" iconName="pt-icon-edit" />
         <Icons className="pt-icon-standard pt-icon-trash" />
       </Actions>
     )}
