@@ -31,7 +31,7 @@ const ViewFieldString = ({ name, label, value }) => (
 ViewFieldString.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.strin,
+  value: PropTypes.string,
 };
 
 export default ViewFieldString;
