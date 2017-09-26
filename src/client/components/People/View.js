@@ -98,7 +98,6 @@ const PersonInfos = ({ person = {} }) => {
       </StyledGrid>
       <label>Phones:</label>
       <ArrayBlock>
-        {/* <MasonryLayout id="phones" sizes={sizes}> */}
         {phones.length > 0 && (
           <MasonryLayout id="phones" sizes={sizes}>
             {map(
@@ -114,7 +113,6 @@ const PersonInfos = ({ person = {} }) => {
             )}
           </MasonryLayout>
         )}
-        {/* </MasonryLayout> */}
       </ArrayBlock>
     </StyledWrapper>
   );

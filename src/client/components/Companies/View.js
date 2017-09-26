@@ -63,7 +63,6 @@ const StyledLink = styled.a`
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 
 const CompanyInfos = ({ company = {}, people }) => {
@@ -89,7 +88,6 @@ const CompanyInfos = ({ company = {}, people }) => {
       </StyledGrid>
       <label>Contacts:</label>
       <ArrayBlock>
-        {/* <MasonryLayout id="people" sizes={sizes}> */}
         {people.length > 0 && (
           <MasonryLayout id="people" sizes={sizes}>
             {map(
@@ -106,7 +104,6 @@ const CompanyInfos = ({ company = {}, people }) => {
             )}
           </MasonryLayout>
         )}
-        {/* </MasonryLayout> */}
       </ArrayBlock>
     </StyledWrapper>
   );
