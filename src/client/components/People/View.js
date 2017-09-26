@@ -18,7 +18,7 @@ const StyledBlock = styled.div`
   background-color: ${Colors.DARK_GRAY3};
   border-radius: 3px;
   width: 100%;
-  height: 40%;
+  height: 30%;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
 `;
 
@@ -41,6 +41,7 @@ const StyledGrid = styled.div`
 
 const PersonInfos = ({ person = {} }) => {
   const { prefix, firstName, lastName, company, type, jobType, email, phones = [], tags = [] } = person;
+  console.log(person);
   return (
     <StyledGrid>
       <FieldStyled name="prefix">

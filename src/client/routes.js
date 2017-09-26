@@ -6,8 +6,8 @@ import Agenda from './components/Agenda';
 import Notes from './components/Notes';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
-import PersonView from './components/PersonView';
-import CompanyView from './components/CompanyView';
+import PersonView from './components/People/View';
+import CompanyView from './components/Companies/View';
 import Edit from './components/Edit';
 
 const routes = {
@@ -25,7 +25,7 @@ const routes = {
     auth: true,
   },
   company: {
-    path: '/company',
+    path: '/company/:id',
     component: CompanyView,
     default: true,
     exact: false,
