@@ -76,6 +76,8 @@ Field.propTypes = {
   required: PropTypes.bool,
 };
 
+const InputStyled = styled.input`height: 36px;`;
+
 export const InputField = ({
   name,
   label,
@@ -94,7 +96,7 @@ export const InputField = ({
 
   return (
     <Field label={label} error={error} required={required}>
-      <input
+      <InputStyled
         name={name}
         className="pt-input pt-fill"
         value={value}
