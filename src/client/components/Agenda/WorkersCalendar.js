@@ -29,7 +29,7 @@ import {
 } from '../../utils';
 import Avatar, { SMALL } from '../Avatar';
 import { fullName, isAdmin, isEqual } from '../../utils/people';
-import { isVacation } from '../../utils/events';
+import { getUnitEvents, isVacation } from '../../utils/events';
 
 const vacationDayBackground = `repeating-linear-gradient(45deg, ${Colors.GREEN1}, ${Colors.GREEN1} 7%, ${Colors.GREEN3} 7%, ${Colors.GREEN3} 14%)`;
 const sickLeaveDayBackground = `repeating-linear-gradient(45deg, ${Colors.RED1}, ${Colors.RED1} 7%, ${Colors.RED3} 7%, ${Colors.RED3} 14%)`;
@@ -145,17 +145,18 @@ const StyledSpareDay = styled(StyledDay)`
 
 const SpareDay = onlyUpdateForKeys(['events'])(({ events, selectPeriod }) => {
   const handleMouseUp = e => {
-    selectPeriod();
+    selectPeriod && selectPeriod();
     e.preventDefault();
     e.stopPropagation();
   };
-  const dayEvents = events && map(e => <Event key={e._id} event={e} />, events);
+  const dayEvents =
+    events && map(e => <Event key={e._id} event={e} />, getUnitEvents(events));
   return <StyledSpareDay onMouseUp={handleMouseUp}>{dayEvents}</StyledSpareDay>;
 });
 
 SpareDay.propTypes = {
   events: PropTypes.array,
-  selectPeriod: PropTypes.func.isRequired,
+  selectPeriod: PropTypes.func,
 };
 
 const StyledWorkingDay = styled(StyledDay)`
@@ -167,17 +168,17 @@ const enhanceWorkingDay = compose(
   onlyUpdateForKeys(['selected', 'events']),
   withHandlers({
     handleMouseDown: ({ startPeriod, worker, date }) => e => {
-      startPeriod(worker, date);
+      startPeriod && startPeriod(worker, date);
       e.preventDefault();
       e.stopPropagation();
     },
     handleMouseUp: ({ selectPeriod }) => e => {
-      selectPeriod();
+      selectPeriod && selectPeriod();
       e.preventDefault();
       e.stopPropagation();
     },
     handleMouseEnter: ({ extendPeriod, worker, date }) => e => {
-      extendPeriod(worker, date);
+      extendPeriod && extendPeriod(worker, date);
       e.preventDefault();
       e.stopPropagation();
     },
@@ -201,7 +202,8 @@ const WorkingDay = enhanceWorkingDay(
       }) ||
       {};
     const dayEvents =
-      events && map(e => <Event key={e._id} event={e} />, events);
+      events &&
+      map(e => <Event key={e._id} event={e} />, getUnitEvents(events));
     return (
       <StyledWorkingDay
         selected={selected}
@@ -218,9 +220,9 @@ WorkingDay.propTypes = {
   events: PropTypes.array,
   selected: PropTypes.bool,
   readOnly: PropTypes.bool,
-  startPeriod: PropTypes.func.isRequired,
-  selectPeriod: PropTypes.func.isRequired,
-  extendPeriod: PropTypes.func.isRequired,
+  startPeriod: PropTypes.func,
+  selectPeriod: PropTypes.func,
+  extendPeriod: PropTypes.func,
 };
 
 const betweenDates = (date, first, last) => {
@@ -250,7 +252,7 @@ const Day = ({ calendar, currentWorker, user, events, from, to, ...props }) => {
   const isAWorkingDay = isWorkingDay(calendar, date);
   if (isAWorkingDay) {
     const newProps =
-      isAdmin(user) || isEqual(user, worker)
+      user && (isAdmin(user) || isEqual(user, worker))
         ? { selected, events, ...props }
         : { selected, events, readOnly: true, ...props };
     return <WorkingDay {...newProps} />;
@@ -265,18 +267,19 @@ Day.propTypes = {
   date: PropTypes.object.isRequired,
   worker: PropTypes.object.isRequired,
   events: PropTypes.array,
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   calendar: PropTypes.object,
   from: PropTypes.object,
   to: PropTypes.object,
   currentWorker: PropTypes.object,
-  selectPeriod: PropTypes.func.isRequired,
+  selectPeriod: PropTypes.func,
 };
 
 const getWorkerDateEvents = (worker, date, events) =>
   path([worker._id, dmy(date)], events);
+const getDateEvents = (date, events) => path([dmy(date)], events);
 
-class Calendar extends Component {
+class WorkersCalendar extends Component {
   state = { selecting: false };
 
   resetPeriod = () => {
@@ -348,7 +351,7 @@ class Calendar extends Component {
   }
 }
 
-Calendar.propTypes = {
+WorkersCalendar.propTypes = {
   date: PropTypes.object,
   calendar: PropTypes.object,
   events: PropTypes.object.isRequired,
@@ -357,4 +360,56 @@ Calendar.propTypes = {
   onPeriodSelection: PropTypes.func.isRequired,
 };
 
-export default Calendar;
+export default WorkersCalendar;
+
+export const WorkerCalendar = ({
+  startDate,
+  endDate,
+  from,
+  to,
+  calendar = {},
+  events,
+  worker,
+}) => {
+  if (!worker) return null;
+  const days = eachDay(startDate, endDate);
+  const daysheader = map(
+    day => <DayHeader key={dmy(day)} date={day} calendar={calendar} />,
+    days,
+  );
+  const monthHeader = <div key={-1} />;
+  const daysRow = [monthHeader, ...daysheader];
+  const workerHeader = <WorkerHeader key={worker._id} worker={worker} />;
+  const workerMonth = map(
+    d => (
+      <Day
+        key={dmy(d)}
+        date={d}
+        calendar={calendar}
+        from={from}
+        to={to}
+        worker={worker}
+        currentWorker={worker}
+        events={getDateEvents(d, events)}
+      />
+    ),
+    days,
+  );
+
+  return (
+    <StyledCalendar days={days}>
+      {daysRow}
+      {[workerHeader, ...workerMonth]}
+    </StyledCalendar>
+  );
+};
+
+WorkerCalendar.propTypes = {
+  startDate: PropTypes.object,
+  endDate: PropTypes.object,
+  from: PropTypes.object,
+  to: PropTypes.object,
+  calendar: PropTypes.object,
+  events: PropTypes.object,
+  worker: PropTypes.object,
+};

@@ -2,6 +2,7 @@ import { loadCompanies } from './companies';
 import { loadPeople } from './people';
 import { loadNotes } from './notes';
 import { loadCalendar } from './calendar';
+import { loadEvents } from './events';
 
 export const LOGIN_REQUEST = 'EvtX:Server:auth:login';
 export const CHECK_TOKEN = 'EvtX:Server:auth:checkToken';
@@ -15,20 +16,21 @@ export const loginRequest = ({ email, idToken }) => ({
   payload: { email, idToken },
 });
 
-export const checkToken = (callback) => ({
+export const checkToken = callback => ({
   type: CHECK_TOKEN,
   callback,
 });
 
-export const userLogged = (user, token) => (dispatch) => {
+export const userLogged = (user, token) => dispatch => {
   dispatch({ type: USER_LOGGED, payload: { user, token } });
   dispatch(loadCompanies());
   dispatch(loadPeople());
   dispatch(loadNotes());
   dispatch(loadCalendar());
+  dispatch(loadEvents());
 };
 
-export const logout = () => (dispatch) => {
+export const logout = () => dispatch => {
   localStorage.removeItem('peepToken');
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_LOGGED_OUT });

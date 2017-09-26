@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { DateInput } from '@blueprintjs/datetime';
 import { Icon, Colors } from '@blueprintjs/core';
-import { isEqual } from 'date-fns';
-import { compose, map, omit } from 'ramda';
-import { fullName } from '../utils/people';
-import { withWorkers } from '../hoc';
-import '@blueprintjs/datetime/dist/blueprint-datetime.css';
 
 export const FormField = ({ field, values, errors, className, ...props }) => {
   const newProps =
@@ -38,10 +32,8 @@ FormField.propTypes = {
 };
 
 const StyledFormField = styled.div`
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: auto;
-  grid-auto-flow: row;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledRequiredTag = styled.span`
@@ -55,7 +47,7 @@ const RequiredTag = ({ required }) => {
 };
 
 RequiredTag.propTypes = {
-  required: PropTypes.bool.isRequired,
+  required: PropTypes.bool,
 };
 
 const Error = styled.span`
@@ -65,8 +57,8 @@ const Error = styled.span`
   margin-top: 5px;
 `;
 
-const Field = ({ label, error, required, children }) => (
-  <StyledFormField>
+export const Field = ({ label, error, required, className, children }) => (
+  <StyledFormField className={className}>
     <label className="pt-label">
       {label}
       <RequiredTag required={required} />
@@ -77,10 +69,11 @@ const Field = ({ label, error, required, children }) => (
 );
 
 Field.propTypes = {
-  children: PropTypes.func.element,
+  children: PropTypes.element,
   label: PropTypes.string,
   error: PropTypes.string,
-  required: PropTypes.bool.isRequired,
+  className: PropTypes.string,
+  required: PropTypes.bool,
 };
 
 export const InputField = ({
@@ -123,55 +116,16 @@ InputField.propTypes = {
   setFieldTouched: PropTypes.func,
 };
 
-const StyledInputIcon = styled(Icon)`margin-right: 4px;`;
-
-export const DateField = ({
+export const TextAreaField = ({
   name,
   label,
+  error,
   required,
-  value,
-  setFieldValue,
+  value = '',
   setFieldTouched,
+  setFieldValue,
+  height,
   ...props
-}) => {
-  const icon = <StyledInputIcon iconName="calendar" />;
-  const handleChange = newValue => {
-    setFieldTouched(name, !isEqual(newValue, value));
-    setFieldValue(name, newValue);
-  };
-
-  return (
-    <Field label={label} required={required}>
-      <DateInput
-        rightElement={icon}
-        className="pt-datepicker pt-fill"
-        name={name}
-        value={value}
-        onChange={handleChange}
-        {...props}
-      />
-    </Field>
-  );
-};
-
-DateField.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  error: PropTypes.string,
-  required: PropTypes.bool.isRequired,
-  value: PropTypes.object,
-  setFieldValue: PropTypes.func,
-  setFieldTouched: PropTypes.func,
-};
-
-export const SelectField = ({
-  name,
-  label,
-  required,
-  value,
-  setFieldTouched,
-  setFieldValue,
-  domainValues,
 }) => {
   const handleChange = e => {
     const newValue = e.target.value;
@@ -180,52 +134,32 @@ export const SelectField = ({
   };
 
   return (
-    <Field label={label} required={required}>
-      <div className="pt-select">
-        <select value={value} name={name} onChange={handleChange}>
-          {map(
-            dm => (
-              <option key={dm.id} value={dm.id}>
-                {dm.value}
-              </option>
-            ),
-            domainValues,
-          )}
-        </select>
-      </div>
+    <Field label={label} error={error} required={required}>
+      <textarea
+        name={name}
+        className="pt-input pt-fill"
+        value={value}
+        onChange={handleChange}
+        dir="auto"
+        style={{ height }}
+        {...props}
+      />
     </Field>
   );
 };
 
-SelectField.propTypes = {
+TextAreaField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
   error: PropTypes.string,
   required: PropTypes.bool.isRequired,
-  domainValues: PropTypes.array,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
+  height: PropTypes.string,
 };
 
-const propTransformer = (src, target, fn) => Component => {
-  const Transformer = props => {
-    const newProps = { ...omit([src], props), [target]: fn(props[src]) };
-    return <Component {...newProps} />;
-  };
-
-  Transformer.propTypes = {
-    workers: PropTypes.array.isRequired,
-  };
-
-  return Transformer;
-};
-
-export const WorkerSelectField = compose(
-  withWorkers,
-  propTransformer(
-    'workers',
-    'domainValues',
-    map(worker => ({ id: worker._id, value: fullName(worker) })),
-  ),
-)(SelectField);
+export const StyledInputIcon = styled(Icon)`
+  margin-right: 4px;
+  margin-top: 5px;
+`;
