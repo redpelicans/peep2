@@ -1,6 +1,6 @@
 import Yup from 'yup';
 import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
-import { InputField, TextAreaField } from '../fields';
+import { InputField } from '../fields';
 import {
   TagsSelectField,
   SelectField,

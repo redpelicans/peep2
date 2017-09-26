@@ -6,6 +6,9 @@ import Agenda from './components/Agenda';
 import Notes from './components/Notes';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
+import PersonView from './components/People/View';
+import CompanyView from './components/Companies/View';
+import Edit from './components/Edit';
 
 const routes = {
   home: {
@@ -21,11 +24,25 @@ const routes = {
     exact: true,
     auth: true,
   },
-  addCompagny: {
+  addCompany: {
     path: '/companies/add',
     component: AddCompany,
     default: true,
     exact: true,
+    auth: true,
+  },
+  company: {
+    path: '/companies/:id',
+    component: CompanyView,
+    default: true,
+    exact: false,
+    auth: true,
+  },
+  editCompany: {
+    path: '/edit/company',
+    component: Edit, // TO BE CHANGED
+    default: true,
+    exact: false,
     auth: true,
   },
   people: {
@@ -33,6 +50,20 @@ const routes = {
     exact: true,
     auth: true,
     component: People,
+  },
+  person: {
+    path: '/people/:id',
+    component: PersonView,
+    default: true,
+    exact: false,
+    auth: true,
+  },
+  editPerson: {
+    path: '/edit/person',
+    component: Edit, // TO BE CHANGED
+    default: true,
+    exact: false,
+    auth: true,
   },
   agenda: {
     path: '/agenda',
@@ -52,6 +83,11 @@ const routes = {
     auth: true,
     component: Notes,
   },
+  editNote: {
+    path: 'edit/note',
+    exact: false,
+    auth: true,
+  },
   login: {
     path: '/login',
     exact: true,
@@ -69,6 +105,6 @@ export const getRouteByPath = path =>
   find(r => r.path === path, exportedRoutes);
 export const getPathByName = (name, param) => {
   const path = prop('path', getRouteByName(name));
-  return param ? `${path}/param` : path;
+  return param ? `${path.replace(':id', param)}` : path;
 };
 export default exportedRoutes;

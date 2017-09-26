@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import { isEmpty } from "ramda";
-import Preview from "./Preview";
-import MasonryLayout from "../widgets/MasonryLayout";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { isEmpty } from 'ramda';
+import Preview from './Preview';
+import MasonryLayout from '../widgets/MasonryLayout';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -25,10 +25,10 @@ export const EmptySearch = styled.span`
 
 const sizes = [
   { columns: 1, gutter: 10 },
-  { mq: "800px", columns: 2, gutter: 10 },
-  { mq: "1100px", columns: 3, gutter: 10 },
-  { mq: "1400px", columns: 4, gutter: 10 },
-  { mq: "1700px", columns: 5, gutter: 10 }
+  { mq: '800px', columns: 2, gutter: 10 },
+  { mq: '1100px', columns: 3, gutter: 10 },
+  { mq: '1400px', columns: 4, gutter: 10 },
+  { mq: '1700px', columns: 5, gutter: 10 },
 ];
 
 export const List = ({ companies, ...params }) => (
@@ -40,8 +40,8 @@ export const List = ({ companies, ...params }) => (
       </EmptySearch>
     ) : (
       <MasonryLayout id="companies" sizes={sizes}>
-        {companies.map(companie => (
-          <Preview key={companie._id} companie={companie} {...params} />
+        {companies.map(company => (
+          <Preview key={company._id} company={company} {...params} />
         ))}
       </MasonryLayout>
     )}
@@ -50,7 +50,7 @@ export const List = ({ companies, ...params }) => (
 
 List.propTypes = {
   companies: PropTypes.array.isRequired,
-  filterCompanyList: PropTypes.func.isRequired
+  filterCompanyList: PropTypes.func.isRequired,
 };
 
 export default List;
