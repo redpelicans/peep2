@@ -15,13 +15,26 @@ const Logo = styled.i`
   font-size: 1.2em;
 `;
 
-const headerBtnClass = (icon, user) => classNames(`pt-button pt-minimal pt-icon-${icon}`, { 'pt-disabled': !user });
+const headerBtnClass = (icon, user) =>
+  classNames(`pt-button pt-minimal pt-icon-${icon}`, { 'pt-disabled': !user });
 const Header = ({ handleTabChange, user, logout, className, history }) => {
-  const Companies = <span className={headerBtnClass('home', user)}>Companies</span>;
+  const Companies = (
+    <span className={headerBtnClass('home', user)}>Companies</span>
+  );
   const People = <span className={headerBtnClass('people', user)}>People</span>;
-  const Agenda = <span className={headerBtnClass('calendar', user)}>Agenda</span>;
+  const Agenda = (
+    <span className={headerBtnClass('calendar', user)}>Agenda</span>
+  );
   const Notes = <span className={headerBtnClass('document', user)}>Notes</span>;
-  const selectedRoute = getRouteByPath(history.location.pathname) || defaultRoute;
+  const getRouteName = path => {
+    const start = path.indexOf('/');
+    const end =
+      path.indexOf('/', 1) !== -1 ? path.indexOf('/', 1) : path.length;
+    const result = path.substring(start, end);
+    return result;
+  };
+  const selectedRoute =
+    getRouteByPath(getRouteName(history.location.pathname)) || defaultRoute;
   const selectedTab = selectedRoute.name;
   return (
     <div className={className}>
@@ -31,7 +44,11 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
           <span>Peep by redpelicans</span>
         </NavBarLeft>
         <NavBarRight>
-          <Tabs2 id="header" onChange={handleTabChange} selectedTabId={selectedTab}>
+          <Tabs2
+            id="header"
+            onChange={handleTabChange}
+            selectedTabId={selectedTab}
+          >
             <Tab2 id="agenda" title={Agenda} />
             <Tab2 id="companies" title={Companies} />
             <Tab2 id="people" title={People} />
