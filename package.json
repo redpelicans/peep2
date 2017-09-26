@@ -54,6 +54,7 @@
     "react-masonry-layout": "^0.2.3",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
+    "react-select": "^1.0.0-rc.10",
     "react-test-renderer": "^15.6.1",
     "recompose": "^0.25.0",
     "redux": "^3.7.2",

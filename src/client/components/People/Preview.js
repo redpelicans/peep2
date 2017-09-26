@@ -105,12 +105,21 @@ const Preview = ({
         <Avatar name={name} color={avatar.color} />
         <StyledInfos>
           <NameLink to={`/people/${_id}`}>{name}</NameLink>
-          <CompanyLink to={`/company/${company._id}`}>{company.name}</CompanyLink>
+          <CompanyLink to={`/company/${company._id}`}>
+            {company.name}
+          </CompanyLink>
         </StyledInfos>
         {showActions && (
           <Actions>
-            <StyledLinkButton to={`/people/edit/${_id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
-            <Icons className="pt-icon-standard pt-icon-trash" onClick={() => handleDeletePeople(_id)} />
+            <StyledLinkButton
+              to={`/people/edit/${_id}`}
+              className="pt-small pt-button"
+              iconName="pt-icon-edit"
+            />
+            <Icons
+              className="pt-icon-standard pt-icon-trash"
+              onClick={() => handleDeletePeople(_id)}
+            />
           </Actions>
         )}
       </TitleRow>

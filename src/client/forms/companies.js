@@ -1,77 +1,75 @@
+import { compose, reduce, toPairs } from 'ramda';
+import { getDefaultValues } from './utils';
+import {
+  TypeSelect,
+  TextInput,
+  TextAreaInput,
+  CitySelect,
+  CountrySelect,
+  TagsSelect,
+} from '../components/widgets';
+
 const fields = {
   types: {
     key: 'Types',
     label: 'Types',
-    type: 'select',
     domainValues: ['Client', 'Partner', 'Tenant'],
-    row: 1,
-    column: 1,
     required: true,
+    component: TypeSelect,
   },
   name: {
     key: 'Name',
     label: 'Name',
-    type: 'input',
-    row: 1,
-    column: 2,
     required: true,
+    component: TextInput,
   },
   website: {
     key: 'Website',
     label: 'Website',
-    type: 'input',
-    row: 1,
-    column: 3,
     required: true,
+    component: TextInput,
   },
   street: {
     key: 'Street',
     label: 'Street',
-    type: 'input',
-    row: 2,
-    column: 1,
     required: true,
+    component: TextInput,
   },
   zipcode: {
     key: 'Zipcode',
-    label: 'Zip Code',
-    type: 'input',
-    row: 2,
-    column: 2,
+    label: 'ZipCode',
     required: true,
+    component: TextInput,
   },
   city: {
     key: 'City',
     label: 'City',
-    type: 'select',
-    row: 3,
-    column: 1,
     required: true,
+    component: CitySelect,
   },
   country: {
     key: 'Country',
     label: 'Country',
-    type: 'select',
-    row: 3,
-    column: 2,
     required: true,
+    component: CountrySelect,
   },
   tags: {
     key: 'Tags',
     label: 'Tags',
-    type: 'select',
-    row: 4,
-    column: 1,
     required: false,
+    component: TagsSelect,
   },
   notes: {
     key: 'Notes',
     label: 'Notes',
-    type: 'textarea',
-    row: 5,
-    column: 1,
     required: false,
+    component: TextAreaInput,
   },
 };
 
-export default fields;
+export const defaultValues = getDefaultValues(fields);
+
+export const exportedFields = compose(
+  reduce((acc, [name, r]) => [...acc, { ...r, name }], []),
+  toPairs,
+)(fields);

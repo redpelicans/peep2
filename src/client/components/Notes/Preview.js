@@ -61,7 +61,14 @@ CardContent.propTypes = {
   entity: PropTypes.object,
 };
 
-const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, note, people, entity }) => (
+const Preview = ({
+  handleMouseEnter,
+  handleMouseLeave,
+  showActions,
+  note,
+  people,
+  entity,
+}) => (
   <PreviewContainer
     className="pt-card pt-elevation-0 pt-interactive"
     onMouseOver={handleMouseEnter}
@@ -70,7 +77,11 @@ const Preview = ({ handleMouseEnter, handleMouseLeave, showActions, note, people
   >
     {showActions && (
       <Actions>
-        <StyledLinkButton to={`/note/edit/${note._id}`} className="pt-small pt-button" iconName="pt-icon-edit" />
+        <StyledLinkButton
+          to={`/note/edit/${note._id}`}
+          className="pt-small pt-button"
+          iconName="pt-icon-edit"
+        />
         <Icons className="pt-icon-standard pt-icon-trash" />
       </Actions>
     )}
