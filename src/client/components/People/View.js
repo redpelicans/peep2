@@ -5,27 +5,18 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { map, prop } from 'ramda';
 import { Colors } from '@blueprintjs/core';
+import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Title, Container, Spacer, Tag, Tags } from '../widgets';
-
-const FieldStyled = styled.div`grid-area: ${props => props.name};`;
-
-const StyledBlock = styled.div`
-  text-align: left;
-  background-color: ${Colors.DARK_GRAY3};
-  border-radius: 3px;
-  width: 100%;
-  height: 40%;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
-`;
-
-const StyledBlockContent = styled.div`
-  padding-top: 5px;
-  margin-left: 15px;
-`;
+import {
+  Title,
+  Container,
+  Spacer,
+  CompanyLink,
+  ViewFieldString,
+} from '../widgets';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -41,6 +32,16 @@ const StyledGrid = styled.div`
     'mobile fixe none none none' 'tags tags tags tags tags';
 `;
 
+const ArrayBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const PersonInfos = ({ person = {} }) => {
   const {
     prefix,
@@ -51,71 +52,47 @@ const PersonInfos = ({ person = {} }) => {
     jobType,
     email,
     phones = [],
-    tags = [],
+    companyId,
   } = person;
   return (
-    <StyledGrid>
-      <FieldStyled name="prefix">
-        <h4>Prefix : </h4>
-        <StyledBlock>
-          {prefix && <StyledBlockContent>{prefix}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="firstName">
-        <h4>First Name : </h4>
-        <StyledBlock>
-          {firstName && <StyledBlockContent>{firstName}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="lastName">
-        <h4>Last Name : </h4>
-        <StyledBlock>
-          {lastName && <StyledBlockContent>{lastName}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="company">
-        <h4>Company : </h4>
-        <StyledBlock>
-          {company && <StyledBlockContent>{company}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="type">
-        <h4>Type : </h4>
-        <StyledBlock>
-          {type && <StyledBlockContent>{type}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="jobType">
-        <h4>Job Type : </h4>
-        <StyledBlock>
-          {jobType && <StyledBlockContent>{jobType}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="email">
-        <h4>Email : </h4>
-        <StyledBlock>
-          {email && <StyledBlockContent>{email}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      {phones &&
-        map(
-          phone => (
-            <FieldStyled key={phone.label} name={phone.label}>
-              <h4>Mobile : </h4>
-              <StyledBlock>
-                <StyledBlockContent>{prop('number', phone)}</StyledBlockContent>
-              </StyledBlock>
-            </FieldStyled>
-          ),
-          phones,
-        )}
-      <FieldStyled name="tags">
-        <h4>Tags : </h4>
-        <StyledBlock>
-          {tags && <Tags>{map(tag => <Tag key={tag}>{tag}</Tag>, tags)}</Tags>}
-        </StyledBlock>
-      </FieldStyled>
-    </StyledGrid>
+    <StyledWrapper>
+      <StyledGrid>
+        <ViewFieldString name="prefix" label="Prefix" value={prefix} />
+        <ViewFieldString
+          name="firstName"
+          label="First Name"
+          value={firstName}
+        />
+        <ViewFieldString name="lastName" label="Last Name" value={lastName} />
+        <ViewFieldString
+          name="company"
+          label="Company"
+          value={
+            <CompanyLink to={getPathByName('company', companyId)}>
+              {company}
+            </CompanyLink>
+          }
+        />
+        <ViewFieldString name="type" label="Type" value={type} />
+        <ViewFieldString name="jobType" label="Job Type" value={jobType} />
+        <ViewFieldString name="email" label="Email" value={email} />
+      </StyledGrid>
+      <label>Phones</label>
+      <ArrayBlock>
+        {phones.length > 0 &&
+          map(
+            phone => (
+              <ViewFieldString
+                key={phone.number}
+                name={phone.label}
+                label={phone.label}
+                value={phone.number}
+              />
+            ),
+            phones,
+          )}
+      </ArrayBlock>
+    </StyledWrapper>
   );
 };
 

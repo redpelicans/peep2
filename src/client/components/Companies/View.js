@@ -9,26 +9,9 @@ import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
 import { getPeopleFromCompany } from '../../selectors/people';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Title, Container, Spacer, Tag, Tags } from '../widgets';
+import { Title, Container, Spacer, ViewFieldString } from '../widgets';
 import Preview from '../People/Preview';
 import { onTagClick, deletePeople } from '../../actions/people';
-
-const FieldStyled = styled.div`grid-area: ${props => props.name};`;
-
-const StyledBlock = styled.div`
-  text-align: left;
-  background-color: ${Colors.DARK_GRAY3};
-  border-radius: 3px;
-  width: 100%;
-  height: 30%;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
-`;
-
-const StyledBlockContent = styled.div`
-  padding-top: 5px;
-  margin-left: 15px;
-  color: ${Colors.LIGHT_GRAY5} !important;
-`;
 
 const StyledGrid = styled.div`
   display: grid;
@@ -43,77 +26,56 @@ const StyledGrid = styled.div`
     'street street zipcode city city country' 'tags tags tags tags tags tags';
 `;
 
+const ArrayBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+  wrap: wrap;
+`;
+
 const StyledLink = styled.a`
   color: ${Colors.LIGHT_GRAY5} !important;
   text-decoration: none !important;
 `;
 
+const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const CompanyInfos = ({ company = {}, people }) => {
-  const { type, website, address = {}, tags = [] } = company;
+  const { type, website, address = {} } = company;
   const { street, zipcode, city, country } = address;
   return (
-    <StyledGrid>
-      <FieldStyled name="type">
-        <h4>Type : </h4>
-        <StyledBlock>
-          {type && <StyledBlockContent>{type}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="website">
-        <h4>Website : </h4>
-        <StyledBlock>
-          {website && (
-            <StyledBlockContent>
-              <StyledLink href={website}>{website}</StyledLink>
-            </StyledBlockContent>
+    <StyledWrapper>
+      <StyledGrid>
+        <ViewFieldString name="type" label="Type" value={type} />
+        <ViewFieldString
+          name="website"
+          label="Website"
+          value={<StyledLink href={website}>{website}</StyledLink>}
+        />
+        <ViewFieldString name="street" label="Street" value={street} />
+        <ViewFieldString name="zipcode" label="Zip code" value={zipcode} />
+        <ViewFieldString name="city" label="City" value={city} />
+        <ViewFieldString name="country" label="Country" value={country} />
+      </StyledGrid>
+      <label>Contacts</label>
+      <ArrayBlock>
+        {people.length > 0 &&
+          map(
+            person => (
+              <Preview
+                key={person._id}
+                person={person}
+                company={company}
+                onTagClick={onTagClick}
+                deletePeople={deletePeople}
+              />
+            ),
+            people,
           )}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="street">
-        <h4>Street : </h4>
-        <StyledBlock>
-          {street && <StyledBlockContent>{street}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="zipcode">
-        <h4>Zipcode : </h4>
-        <StyledBlock>
-          {zipcode && <StyledBlockContent>{zipcode}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="city">
-        <h4>City : </h4>
-        <StyledBlock>
-          {city && <StyledBlockContent>{city}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <FieldStyled name="country">
-        <h4>Country : </h4>
-        <StyledBlock>
-          {country && <StyledBlockContent>{country}</StyledBlockContent>}
-        </StyledBlock>
-      </FieldStyled>
-      <h4>Contacts :</h4>
-      {people.length > 0 &&
-        map(
-          person => (
-            <Preview
-              key={person._id}
-              person={person}
-              company={company}
-              onTagClick={onTagClick}
-              deletePeople={deletePeople}
-            />
-          ),
-          people,
-        )}
-      <FieldStyled name="tags">
-        <h4>Tags : </h4>
-        <StyledBlock>
-          {tags && <Tags>{map(tag => <Tag key={tag}>{tag}</Tag>, tags)}</Tags>}
-        </StyledBlock>
-      </FieldStyled>
-    </StyledGrid>
+      </ArrayBlock>
+    </StyledWrapper>
   );
 };
 
