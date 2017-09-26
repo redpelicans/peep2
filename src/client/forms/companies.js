@@ -73,3 +73,5 @@ export const exportedFields = compose(
   reduce((acc, [name, r]) => [...acc, { ...r, name }], []),
   toPairs,
 )(fields);
+
+export default exportedFields;

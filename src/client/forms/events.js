@@ -6,14 +6,9 @@ import {
   getAllFields,
   getOneValidationSchema,
 } from './utils';
-import {
-  DateField,
-  PeriodField,
-  InputField,
-  TextAreaField,
-  SelectField,
-  WorkerSelectField,
-} from '../fields';
+import { InputField, TextAreaField } from '../fields';
+import { SelectField, WorkerSelectField } from '../fields/SelectField';
+import { PeriodField } from '../fields/DateField';
 
 const fields = {
   period: {
