@@ -13,7 +13,14 @@ import { onTagClick, deletePeople } from '../../actions/people';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
-const People = ({ people, companies, onTagClick, onFilterChange, filter = '', deletePeople }) => (
+const People = ({
+  people,
+  companies,
+  onTagClick,
+  onFilterChange,
+  filter = '',
+  deletePeople,
+}) => (
   <Container>
     <Header>
       <HeaderLeft>
@@ -22,11 +29,20 @@ const People = ({ people, companies, onTagClick, onFilterChange, filter = '', de
         <Title title="People" />
       </HeaderLeft>
       <HeaderRight>
-        <Search filter={filter} onChange={onFilterChange} resetValue={() => onTagClick('')} />
+        <Search
+          filter={filter}
+          onChange={onFilterChange}
+          resetValue={() => onTagClick('')}
+        />
         <StyledLinkButton to="/people/add" iconName="plus" />
       </HeaderRight>
     </Header>
-    <List people={people} companies={companies} onTagClick={onTagClick} deletePeople={deletePeople} />
+    <List
+      people={people}
+      companies={companies}
+      onTagClick={onTagClick}
+      deletePeople={deletePeople}
+    />
   </Container>
 );
 

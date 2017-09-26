@@ -8,9 +8,17 @@ import EmptySearch from './EmptySearch';
 import Spacer from './Spacer';
 import LinkButton from './LinkButton';
 import { CompagnyForm } from './Form';
-import { TextInput, TextAreaInput, SelectInput } from './FormInputs';
+import {
+  TypeSelect,
+  TextInput,
+  TextAreaInput,
+  CitySelect,
+  CountrySelect,
+  TagsSelect,
+} from './FormInputs';
 
 export {
+  TagsSelect,
   EmptySearch,
   LinkButton,
   TitleButton,
@@ -23,5 +31,7 @@ export {
   AvatarSelector,
   TextInput,
   TextAreaInput,
-  SelectInput,
+  CountrySelect,
+  CitySelect,
+  TypeSelect,
 };

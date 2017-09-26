@@ -28,7 +28,14 @@ export const List = ({ people, companies, ...params }) => (
       </EmptySearch>
     ) : (
       <MasonryLayout id="people" sizes={sizes}>
-        {people.map(person => <Preview key={person._id} person={person} company={companies[person.companyId]} {...params} />)}
+        {people.map(person => (
+          <Preview
+            key={person._id}
+            person={person}
+            company={companies[person.companyId]}
+            {...params}
+          />
+        ))}
       </MasonryLayout>
     )}
   </StyledContainer>

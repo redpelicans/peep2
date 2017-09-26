@@ -14,7 +14,14 @@ import { getFilter, getVisibleNotes } from '../../selectors/notes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
-const Notes = ({ filterNotesList, handleFilterChange, notes, companies, people, filter = '' }) => {
+const Notes = ({
+  filterNotesList,
+  handleFilterChange,
+  notes,
+  companies,
+  people,
+  filter = '',
+}) => {
   if (!notes || !people || !companies) return null;
   return (
     <Container>
@@ -25,7 +32,11 @@ const Notes = ({ filterNotesList, handleFilterChange, notes, companies, people, 
           <Title title="Notes" />
         </HeaderLeft>
         <HeaderRight>
-          <Search filter={filter} onChange={handleFilterChange} resetValue={() => filterNotesList('')} />
+          <Search
+            filter={filter}
+            onChange={handleFilterChange}
+            resetValue={() => filterNotesList('')}
+          />
           <StyledLinkButton to="/notes/add" iconName="plus" />
         </HeaderRight>
       </Header>
@@ -57,7 +68,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    handleFilterChange: ({ filterNotesList }) => event => filterNotesList(event.target.value),
+    handleFilterChange: ({ filterNotesList }) => event =>
+      filterNotesList(event.target.value),
   }),
 );
 

@@ -30,7 +30,11 @@ const root = (
   <Provider store={store}>
     <IntlProvider locale={locale} messages={messages}>
       <Router history={history}>
-        <Kontrolo user={path(['login', 'user'])} isAuthorized={user => Boolean(user)} redirect="/login">
+        <Kontrolo
+          user={path(['login', 'user'])}
+          isAuthorized={user => Boolean(user)}
+          redirect="/login"
+        >
           <App />
         </Kontrolo>
       </Router>

@@ -34,10 +34,15 @@ const Footer = ({ note, person, entity }) => {
   if (!person || !entity || !note) return null;
   return (
     <StyledFooter>
-      {entity.avatar && <Avatar name={entity.name} {...entity.avatar} showTooltip />}
+      {entity.avatar && (
+        <Avatar name={entity.name} {...entity.avatar} showTooltip />
+      )}
       <StyledMain>
         <StyledName>
-          <Icon iconName={entityIcon[note.entityType]} style={{ marginRight: '4px' }} />
+          <Icon
+            iconName={entityIcon[note.entityType]}
+            style={{ marginRight: '4px' }}
+          />
           {entity.name}
         </StyledName>
         <span>{note.createdAt}</span>

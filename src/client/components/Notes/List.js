@@ -29,7 +29,14 @@ export const List = ({ notes, people, findEntity }) => (
       </EmptySearch>
     ) : (
       <MasonryLayout id="notes" sizes={sizes}>
-        {notes.map(note => <Preview key={note._id} note={note} people={people} entity={findEntity(note.entityType, note.entityId)} />)}
+        {notes.map(note => (
+          <Preview
+            key={note._id}
+            note={note}
+            people={people}
+            entity={findEntity(note.entityType, note.entityId)}
+          />
+        ))}
       </MasonryLayout>
     )}
   </StyledContainer>
@@ -44,7 +51,8 @@ List.propTypes = {
 
 const enhance = withHandlers({
   findEntity: ({ companies, people }) => (entityType, entityId) => {
-    const entity = entityType === 'person' ? people[entityId] : companies[entityId];
+    const entity =
+      entityType === 'person' ? people[entityId] : companies[entityId];
     return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
   },
 });
