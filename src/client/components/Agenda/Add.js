@@ -24,25 +24,29 @@ import { getPathByName } from '../../routes';
 import { Field, FormField } from '../../fields';
 import { WorkerCalendar } from './WorkersCalendar';
 
+const VSpacer = styled.div`
+  margin-top: 15px;
+  grid-area: spacer;
+`;
+
 const Form = styled.form`
-  margin-top: 25px;
+  margin-top: 50px;
   width: 100%;
   display: grid;
-  grid-template-rows: auto;
   grid-gap: 20px;
   grid-template-areas: 'period' 'valueUnit' 'type' 'workerId' 'status'
     'description';
   @media (min-width: 900px) {
     grid-template-columns: repeat(3, minmax(100px, 1fr));
-    grid-template-rows: auto auto auto;
-    grid-template-areas: 'period period valueUnit ' 'type workerId status'
+    grid-template-areas: 'period valueUnit valueUnit' 'type workerId status'
       'description description description';
   }
   @media (min-width: 1600px) {
-    grid-template-columns: repeat(6, minmax(100px, 1fr));
-    grid-template-rows: auto auto;
-    grid-template-areas: 'period period valueUnit type workerId status'
-      'description description description description description description';
+    grid-template-columns: minmax(100px, 1.3fr) minmax(150px, 1.5fr)
+      repeat(3, minmax(100px, 1fr));
+    grid-template-areas: 'period valueUnit type workerId status'
+      'spacer spacer spacer spacer spacer'
+      'description description description description description';
   }
 `;
 
@@ -53,7 +57,7 @@ const StyledFormField = styled(FormField)`
 const StyledValueUnit = styled.div`
   grid-area: valueUnit;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   font-style: italic;
   font-size: 3em;
@@ -86,6 +90,7 @@ const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
       onSubmit={addEvent}
       render={({
         values,
+        touched,
         isValid,
         errors,
         handleSubmit,
@@ -160,6 +165,7 @@ const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
               <StyledFormField
                 field={getField('workerId')}
                 values={values}
+                touched={touched}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
               />
@@ -167,13 +173,14 @@ const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
               <ValueUnit
                 name="valueUnit"
                 value={daysCount}
-                unit={count => (count > 1 ? 'days' : 'day')}
+                unit={count => (count > 1 ? 'working days' : 'working day')}
               />
 
               <StyledFormField
                 field={getField('type')}
                 values={values}
                 errors={errors}
+                touched={touched}
                 type="text"
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
@@ -183,15 +190,17 @@ const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
                 field={getField('status')}
                 values={values}
                 errors={errors}
+                touched={touched}
                 type="text"
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
               />
-
+              <VSpacer />
               <StyledFormField
                 field={getField('description')}
                 values={values}
                 errors={errors}
+                touched={touched}
                 type="text"
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
