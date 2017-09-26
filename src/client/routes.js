@@ -95,9 +95,16 @@ const routes = {
   },
 };
 
-const exportedRoutes = compose(reduce((acc, [name, r]) => [...acc, { ...r, name }], []), toPairs)(routes);
+const exportedRoutes = compose(
+  reduce((acc, [name, r]) => [...acc, { ...r, name }], []),
+  toPairs,
+)(routes);
 export const defaultRoute = find(prop('default'), exportedRoutes);
 export const getRouteByName = name => routes[name];
-export const getRouteByPath = path => find(r => r.path === path, exportedRoutes);
-export const getPathByName = (name, id) => `${prop('path', getRouteByName(name)).replace(':id', id)}`;
+export const getRouteByPath = path =>
+  find(r => r.path === path, exportedRoutes);
+export const getPathByName = (name, param) => {
+  const path = prop('path', getRouteByName(name));
+  return param ? `${path}/param` : path;
+};
 export default exportedRoutes;
