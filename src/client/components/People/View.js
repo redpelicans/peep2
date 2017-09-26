@@ -18,7 +18,7 @@ const StyledBlock = styled.div`
   background-color: ${Colors.DARK_GRAY3};
   border-radius: 3px;
   width: 100%;
-  height: 30%;
+  height: 40%;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
 `;
 
@@ -36,41 +36,65 @@ const StyledGrid = styled.div`
   grid-column-gap: 25px;
   grid-template-columns: minmax(100px, auto) auto auto;
   grid-auto-rows: minmax(100px, auto);
-  grid-template-areas: 'prefix firstName lastName' 'company company company' 'type jobType email' 'mobile fixe none' 'tags tags tags';
+  grid-template-areas: 'prefix firstName lastName' 'company company company'
+    'type jobType email' 'mobile fixe none' 'tags tags tags';
 `;
 
 const PersonInfos = ({ person = {} }) => {
-  const { prefix, firstName, lastName, company, type, jobType, email, phones = [], tags = [] } = person;
-  console.log(person);
+  const {
+    prefix,
+    firstName,
+    lastName,
+    company,
+    type,
+    jobType,
+    email,
+    phones = [],
+    tags = [],
+  } = person;
   return (
     <StyledGrid>
       <FieldStyled name="prefix">
         <h4>Prefix : </h4>
-        <StyledBlock>{prefix && <StyledBlockContent>{prefix}</StyledBlockContent>}</StyledBlock>
+        <StyledBlock>
+          {prefix && <StyledBlockContent>{prefix}</StyledBlockContent>}
+        </StyledBlock>
       </FieldStyled>
       <FieldStyled name="firstName">
         <h4>First Name : </h4>
-        <StyledBlock>{firstName && <StyledBlockContent>{firstName}</StyledBlockContent>}</StyledBlock>
+        <StyledBlock>
+          {firstName && <StyledBlockContent>{firstName}</StyledBlockContent>}
+        </StyledBlock>
       </FieldStyled>
       <FieldStyled name="lastName">
         <h4>Last Name : </h4>
-        <StyledBlock>{lastName && <StyledBlockContent>{lastName}</StyledBlockContent>}</StyledBlock>
+        <StyledBlock>
+          {lastName && <StyledBlockContent>{lastName}</StyledBlockContent>}
+        </StyledBlock>
       </FieldStyled>
       <FieldStyled name="company">
         <h4>Company : </h4>
-        <StyledBlock>{company && <StyledBlockContent>{company}</StyledBlockContent>}</StyledBlock>
+        <StyledBlock>
+          {company && <StyledBlockContent>{company}</StyledBlockContent>}
+        </StyledBlock>
       </FieldStyled>
       <FieldStyled name="type">
         <h4>Type : </h4>
-        <StyledBlock>{type && <StyledBlockContent>{type}</StyledBlockContent>}</StyledBlock>
+        <StyledBlock>
+          {type && <StyledBlockContent>{type}</StyledBlockContent>}
+        </StyledBlock>
       </FieldStyled>
       <FieldStyled name="jobType">
         <h4>Job Type : </h4>
-        <StyledBlock>{jobType && <StyledBlockContent>{jobType}</StyledBlockContent>}</StyledBlock>
+        <StyledBlock>
+          {jobType && <StyledBlockContent>{jobType}</StyledBlockContent>}
+        </StyledBlock>
       </FieldStyled>
       <FieldStyled name="email">
         <h4>Email : </h4>
-        <StyledBlock>{email && <StyledBlockContent>{email}</StyledBlockContent>}</StyledBlock>
+        <StyledBlock>
+          {email && <StyledBlockContent>{email}</StyledBlockContent>}
+        </StyledBlock>
       </FieldStyled>
       {phones &&
         map(
@@ -86,7 +110,9 @@ const PersonInfos = ({ person = {} }) => {
         )}
       <FieldStyled name="tags">
         <h4>Tags : </h4>
-        <StyledBlock>{tags && <Tags>{map(tag => <Tag key={tag}>{tag}</Tag>, tags)}</Tags>}</StyledBlock>
+        <StyledBlock>
+          {tags && <Tags>{map(tag => <Tag key={tag}>{tag}</Tag>, tags)}</Tags>}
+        </StyledBlock>
       </FieldStyled>
     </StyledGrid>
   );
@@ -111,11 +137,16 @@ GoBack.propTypes = {
   history: PropTypes.object,
 };
 
-const Person = ({ people = {}, companies = {}, history, match: { params: { id } } }) => {
+const Person = ({
+  people = {},
+  companies = {},
+  history,
+  match: { params: { id } },
+}) => {
   //eslint-disable-line
   const person = people[id];
   if (!person || !companies) return null;
-  if (!person.company && person.companyId) person.company = companies[person.companyId].name;
+  person.company = companies[person.companyId].name || '';
   return (
     <Container>
       <Header>
