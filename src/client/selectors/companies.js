@@ -51,8 +51,8 @@ const putStatus = companies =>
   }))(companies);
 
 /* input selectors */
-const getFilter = state => state.companies.filter;
-const getSort = state => state.companies.sort;
+export const getFilter = state => state.companies.filter;
+export const getSort = state => state.companies.sort;
 const getPreferredFilter = state => state.companies.preferredFilter;
 export const getCompanies = state => state.companies.data;
 
