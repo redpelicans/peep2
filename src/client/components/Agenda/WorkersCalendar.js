@@ -28,6 +28,7 @@ import {
   getCalendarDay,
 } from '../../utils';
 import Avatar, { SMALL } from '../Avatar';
+import { getPathByName } from '../../routes';
 import { fullName, isAdmin, isEqual } from '../../utils/people';
 import { getUnitEvents, isVacation } from '../../utils/events';
 
@@ -117,6 +118,7 @@ const WorkerHeader = shouldUpdate(() => false)(({ worker }) => (
   <StyledWorkerHeader>
     <StyledAvatar
       name={fullName(worker)}
+      to={getPathByName('person', worker._id)}
       showTooltip
       color={worker.avatar.color}
       size={SMALL}
