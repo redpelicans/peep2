@@ -7,33 +7,15 @@ import AvatarSelector from './AvatarSelector';
 import EmptySearch from './EmptySearch';
 import Spacer from './Spacer';
 import LinkButton from './LinkButton';
-import { CompagnyForm } from './Form';
-import {
-  TypeSelect,
-  TextInput,
-  TextAreaInput,
-  CitySelect,
-  CountrySelect,
-  TagsSelect,
-  FormField,
-} from './FormInputs';
 
 export {
-  TagsSelect,
   EmptySearch,
   LinkButton,
   TitleButton,
-  CompagnyForm,
   Spacer,
   Search,
   SortMenu,
   Title,
   Container,
   AvatarSelector,
-  TextInput,
-  TextAreaInput,
-  CountrySelect,
-  CitySelect,
-  TypeSelect,
-  FormField,
 };

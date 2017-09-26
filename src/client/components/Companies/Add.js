@@ -5,61 +5,41 @@ import { bindActionCreators } from 'redux';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
-import { compose, map } from 'ramda';
+import { compose } from 'ramda';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import getCities from '../../selectors/cities';
 import getCountries from '../../selectors/countries';
+import { getTags } from '../../selectors/tags';
 import {
-  exportedFields,
   defaultValues,
   getValidationSchema,
   getField,
 } from '../../forms/companies';
-import { getTags } from '../../selectors/tags';
-import {
-  Spacer,
-  Title,
-  CompagnyForm,
-  Container,
-  AvatarSelector,
-  FormField,
-} from '../widgets';
+import { Spacer, Title, Container, AvatarSelector } from '../widgets';
+import { FormField } from '../../fields';
+
+const CompagnyForm = styled.form`
+  display: grid;
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  width: 90%;
+  grid-gap: 20px;
+  grid-auto-columns: minmax(100px, auto);
+  grid-auto-rows: minmax(100px, auto);
+  grid-template-areas: 'Types' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
+    'City' 'Tags' 'Notes';
+  @media (min-width: 700px) {
+    grid-template-areas: 'Types Name Website' 'Zipcode Street Street'
+      'Country City City' 'Tags Tags Tags' 'Notes Notes Notes';
+  }
+`;
 
 const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.label};
 `;
-
-const getFields = (
-  cities,
-  countries,
-  tags,
-  values,
-  errors,
-  handleChange,
-  touched,
-  isSubmitting,
-  setFieldValue,
-) =>
-  map(
-    field => (
-      <StyledFormField key={field.key} name={field.key}>
-        <field.component
-          handleChange={handleChange}
-          field={field}
-          cities={cities}
-          value={values[field.label]}
-          countries={countries}
-          toucher={touched}
-          isSubmitting={isSubmitting}
-          setFieldValue={setFieldValue}
-          tags={tags}
-        />
-      </StyledFormField>
-    ),
-    exportedFields,
-  );
 
 const AddCompany = ({ changeColor, cities, countries, tags }) => {
   const initialValues = {
@@ -76,8 +56,6 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
         values,
         isValid,
         errors,
-        touched,
-        handleChange,
         handleSubmit,
         handleReset,
         setFieldTouched,
@@ -86,7 +64,6 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
         isSubmitting,
       }) => (
         <Container>
-          {console.log('values: ', values)}
           <Header>
             <HeaderLeft>
               <Spacer size={15} />
