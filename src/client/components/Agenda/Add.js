@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'ramda';
-import { differenceInDays } from 'date-fns';
+import { addWeeks, subWeeks, differenceInDays } from 'date-fns';
 import { withHandlers, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { Formik } from 'formik';
+import { getCalendar } from '../../selectors/calendar';
+import { getWorkers } from '../../selectors/people';
+import { getEventsByWorkerDate } from '../../selectors/events';
 import { Container, Title, Spacer } from '../widgets';
+import { WorkerEventGroup } from '../../utils/events';
 import {
   defaultValues,
   getField,
@@ -16,7 +20,8 @@ import {
 } from '../../forms/events';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
-import { FormField } from '../../fields';
+import { Field, FormField } from '../../fields';
+import { WorkerCalendar } from './WorkersCalendar';
 
 const Form = styled.form`
   margin-top: 25px;
@@ -24,12 +29,18 @@ const Form = styled.form`
   display: grid;
   grid-template-rows: auto;
   grid-gap: 20px;
-  grid-template-areas: 'startDate' 'endDate' 'unit' 'value' 'type' 'worker'
-    'status' 'description';
+  grid-template-areas: 'period' 'endDate' 'valueUnit' 'type' 'workerId' 'status'
+    'description';
   @media (min-width: 900px) {
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 'period period valueUnit ' 'type workerId status'
+      'description description description';
+  }
+  @media (min-width: 1600px) {
     grid-template-columns: repeat(6, minmax(100px, 1fr));
-    grid-template-areas: 'startDate startDate endDate endDate value unit'
-      'type type worker worker worker status'
+    grid-template-rows: auto auto;
+    grid-template-areas: 'period period valueUnit type workerId status'
       'description description description description description description';
   }
 `;
@@ -38,13 +49,29 @@ const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.name};
 `;
 
-const Add = ({ history, cancel, addEvent }) => {
+const StyledValue = styled.span`
+  font-style: italic;
+  font-size: 3em;
+`;
+
+const ValueUnit = ({ value, unit }) => (
+  <Field label="">
+    <StyledValue>{`${value} ${unit}`}</StyledValue>
+  </Field>
+);
+
+ValueUnit.propTypes = {
+  value: PropTypes.number.isRequired,
+  unit: PropTypes.string.isRequired,
+};
+
+const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
   const { location: { state } } = history;
   const initialValues = {
     ...defaultValues,
-    startDate: state.from,
+    period: [state.from, state.to],
     endDate: state.to,
-    worker: state.workerId,
+    workerId: state.workerId,
     value: differenceInDays(state.to, state.from) + 1,
   };
   return (
@@ -58,7 +85,6 @@ const Add = ({ history, cancel, addEvent }) => {
         values,
         isValid,
         errors,
-        touched,
         handleSubmit,
         handleReset,
         setFieldValue,
@@ -66,9 +92,22 @@ const Add = ({ history, cancel, addEvent }) => {
         isSubmitting,
         dirty,
       }) => {
-        const [startDate, endDate] = [values['startDate'], values['endDate']];
-        console.log(isValid);
-        console.log(errors);
+        const [startDate, endDate] = values['period'];
+        const [minDate, maxDate] = [
+          subWeeks(state.from, 1),
+          addWeeks(state.to, 1),
+        ];
+        const currentWorker = workers[state.workerId];
+        const workerEvents = events[state.workerId];
+        const eventGroup = WorkerEventGroup({
+          from: startDate,
+          to: endDate,
+          events: workerEvents,
+          calendar,
+        });
+        console.log('------------------------------------');
+        console.log(eventGroup);
+        const daysCount = differenceInDays(endDate, startDate) + 1;
         return (
           <Container>
             <Header>
@@ -98,43 +137,36 @@ const Add = ({ history, cancel, addEvent }) => {
                 </Button>
               </HeaderRight>
             </Header>
+            <WorkerCalendar
+              startDate={minDate}
+              endDate={maxDate}
+              from={startDate}
+              to={endDate}
+              events={workerEvents}
+              worker={currentWorker}
+              calendar={calendar}
+            />
             <Form id="addEvent" onSubmit={handleSubmit}>
               <StyledFormField
-                field={getField('startDate')}
+                field={getField('period')}
                 values={values}
                 errors={errors}
                 setFieldTouched={setFieldTouched}
                 setFieldValue={setFieldValue}
+                allowSingleDayRange={true}
+                contiguousCalendarMonths={true}
+                shortcuts={false}
+                minDate={minDate}
+                maxDate={maxDate}
               />
               <StyledFormField
-                field={getField('endDate')}
-                values={values}
-                errors={errors}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('worker')}
+                field={getField('workerId')}
                 values={values}
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
               />
 
-              <StyledFormField
-                field={getField('value')}
-                value={differenceInDays(endDate, startDate) + 1}
-                errors={errors}
-                disabled={true}
-                type="number"
-              />
-
-              <StyledFormField
-                field={getField('unit')}
-                values={values}
-                errors={errors}
-                disabled={true}
-                type="text"
-              />
+              <ValueUnit value={daysCount} unit="days" />
 
               <StyledFormField
                 field={getField('type')}
@@ -161,6 +193,7 @@ const Add = ({ history, cancel, addEvent }) => {
                 type="text"
                 setFieldValue={setFieldValue}
                 setFieldTouched={setFieldTouched}
+                height="10em"
               />
             </Form>
           </Container>
@@ -174,9 +207,16 @@ Add.propTypes = {
   cancel: PropTypes.func.isRequired,
   addEvent: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  workers: PropTypes.object.isRequired,
+  calendar: PropTypes.object,
+  events: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  calendar: getCalendar(state),
+  workers: getWorkers(state),
+  events: getEventsByWorkerDate(state),
+});
 
 const actions = {};
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

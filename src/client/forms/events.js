@@ -8,33 +8,23 @@ import {
 } from './utils';
 import {
   DateField,
+  PeriodField,
   InputField,
+  TextAreaField,
   SelectField,
   WorkerSelectField,
 } from '../fields';
 
 const fields = {
-  startDate: {
-    label: 'Start Date',
-    component: DateField,
-  },
-  endDate: {
-    label: 'End Date',
-    component: DateField,
-  },
-  unit: {
-    label: 'Unit',
-    component: InputField,
-    defaultValue: 'day',
-  },
-  value: {
-    label: 'Value',
-    component: InputField,
-    validate: Yup.number(),
+  period: {
+    label: 'Period',
+    required: true,
+    component: PeriodField,
   },
   type: {
     label: 'Type',
     component: SelectField,
+    required: true,
     defaultValue: 'vacation',
     domainValues: [
       { id: '', value: '<None>' },
@@ -43,7 +33,7 @@ const fields = {
     ],
     validate: Yup.string(),
   },
-  worker: {
+  workerId: {
     label: 'Worker',
     component: WorkerSelectField,
     required: true,
@@ -62,7 +52,7 @@ const fields = {
   },
   description: {
     label: 'Description',
-    component: InputField,
+    component: TextAreaField,
     validate: Yup.string().oneOf(['A', 'B']),
   },
 };

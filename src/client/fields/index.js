@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { DateInput } from '@blueprintjs/datetime';
+import { DateRangeInput, DateInput } from '@blueprintjs/datetime';
 import { Icon, Colors } from '@blueprintjs/core';
 import { isEqual } from 'date-fns';
 import { compose, map, omit } from 'ramda';
@@ -38,10 +38,8 @@ FormField.propTypes = {
 };
 
 const StyledFormField = styled.div`
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: auto;
-  grid-auto-flow: row;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledRequiredTag = styled.span`
@@ -55,7 +53,7 @@ const RequiredTag = ({ required }) => {
 };
 
 RequiredTag.propTypes = {
-  required: PropTypes.bool.isRequired,
+  required: PropTypes.bool,
 };
 
 const Error = styled.span`
@@ -65,8 +63,8 @@ const Error = styled.span`
   margin-top: 5px;
 `;
 
-const Field = ({ label, error, required, children }) => (
-  <StyledFormField>
+export const Field = ({ label, error, required, className, children }) => (
+  <StyledFormField className={className}>
     <label className="pt-label">
       {label}
       <RequiredTag required={required} />
@@ -77,10 +75,11 @@ const Field = ({ label, error, required, children }) => (
 );
 
 Field.propTypes = {
-  children: PropTypes.func.element,
+  children: PropTypes.element,
   label: PropTypes.string,
   error: PropTypes.string,
-  required: PropTypes.bool.isRequired,
+  className: PropTypes.string,
+  required: PropTypes.bool,
 };
 
 export const InputField = ({
@@ -123,7 +122,53 @@ InputField.propTypes = {
   setFieldTouched: PropTypes.func,
 };
 
-const StyledInputIcon = styled(Icon)`margin-right: 4px;`;
+export const TextAreaField = ({
+  name,
+  label,
+  error,
+  required,
+  value = '',
+  setFieldTouched,
+  setFieldValue,
+  height,
+  ...props
+}) => {
+  const handleChange = e => {
+    const newValue = e.target.value;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
+  };
+
+  return (
+    <Field label={label} error={error} required={required}>
+      <textarea
+        name={name}
+        className="pt-input pt-fill"
+        value={value}
+        onChange={handleChange}
+        dir="auto"
+        style={{ height }}
+        {...props}
+      />
+    </Field>
+  );
+};
+
+TextAreaField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  error: PropTypes.string,
+  required: PropTypes.bool.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+  height: PropTypes.string,
+};
+
+const StyledInputIcon = styled(Icon)`
+  margin-right: 4px;
+  margin-top: 5px;
+`;
 
 export const DateField = ({
   name,
@@ -160,6 +205,45 @@ DateField.propTypes = {
   error: PropTypes.string,
   required: PropTypes.bool.isRequired,
   value: PropTypes.object,
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+};
+
+export const PeriodField = ({
+  name,
+  label,
+  required,
+  value,
+  setFieldValue,
+  setFieldTouched,
+  ...props
+}) => {
+  const icon = <StyledInputIcon iconName="calendar" />;
+  const handleChange = newValue => {
+    setFieldTouched(name, !isEqual(newValue, value));
+    setFieldValue(name, newValue);
+  };
+
+  return (
+    <Field label={label} required={required}>
+      <DateRangeInput
+        startInputProps={{ rightElement: icon }}
+        endInputProps={{ rightElement: icon }}
+        name={name}
+        value={value}
+        onChange={handleChange}
+        {...props}
+      />
+    </Field>
+  );
+};
+
+PeriodField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  error: PropTypes.string,
+  required: PropTypes.bool.isRequired,
+  value: PropTypes.array,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
 };
