@@ -15,6 +15,7 @@ import {
   CitySelect,
   CountrySelect,
   TagsSelect,
+  FormField,
 } from './FormInputs';
 
 export {
@@ -34,4 +35,5 @@ export {
   CountrySelect,
   CitySelect,
   TypeSelect,
+  FormField,
 };

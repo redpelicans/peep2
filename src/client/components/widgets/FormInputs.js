@@ -79,183 +79,280 @@ const SelectStyled = styled(Select.Creatable)`
   }
 `;
 
+export const FormField = ({ field, values, errors, className, ...props }) => {
+  const newProps =
+    'domainValues' in field
+      ? { ...props, domainValues: field.domainValues }
+      : props;
+  return (
+    <div className={className}>
+      <field.component
+        name={field.name}
+        label={'label' in props ? props.label : field.label}
+        value={'value' in props ? props.value : values[field.name]}
+        error={errors && errors[field.name]}
+        required={!!field.required}
+        {...newProps}
+      />
+    </div>
+  );
+};
+
+FormField.propTypes = {
+  field: PropTypes.object.isRequired,
+  value: PropTypes.node,
+  values: PropTypes.object,
+  errors: PropTypes.object,
+  label: PropTypes.string,
+  handleChange: PropTypes.func,
+  className: PropTypes.string,
+};
+
 export const TextInput = ({
-  field: { label, required },
+  name,
+  label,
+  required,
   value,
-  handleChange,
-}) => (
-  <InputElt>
-    <InputText>
-      {label}:
-      {required && <RequiredStar>*</RequiredStar>}
-    </InputText>
-    <InputField
-      onChange={handleChange}
-      type="text"
-      name={label}
-      className="pt-input"
-      value={value}
-    />
-  </InputElt>
-);
+  setFieldTouched,
+  setFieldValue,
+}) => {
+  const handleChange = e => {
+    const newValue = e.target.value;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
+  };
+  return (
+    <InputElt>
+      <InputText>
+        {label}:
+        {required && <RequiredStar>*</RequiredStar>}
+      </InputText>
+      <InputField
+        onChange={handleChange}
+        type="text"
+        name={label}
+        className="pt-input"
+        value={value}
+      />
+    </InputElt>
+  );
+};
 
 TextInput.propTypes = {
-  field: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+  label: PropTypes.string,
+  required: PropTypes.bool,
   value: PropTypes.string,
   handleChange: PropTypes.func.isRequired,
 };
 
 export const TextAreaInput = ({
-  field: { label, required },
+  label,
+  name,
+  required,
   value,
-  handleChange,
-}) => (
-  <InputElt>
-    <InputText>
-      {label}:
-      {required && <RequiredStar>*</RequiredStar>}
-    </InputText>
-    <TextAreaElt
-      onChange={handleChange}
-      name={label}
-      className="pt-input"
-      dir="auto"
-      value={value}
-    />
-  </InputElt>
-);
+  setFieldTouched,
+  setFieldValue,
+}) => {
+  const handleChange = e => {
+    const newValue = e.target.value;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
+  };
+  return (
+    <InputElt>
+      <InputText>
+        {label}:
+        {required && <RequiredStar>*</RequiredStar>}
+      </InputText>
+      <TextAreaElt
+        name={label}
+        className="pt-input"
+        onChange={handleChange}
+        dir="auto"
+        value={value}
+      />
+    </InputElt>
+  );
+};
 
 TextAreaInput.propTypes = {
-  field: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+  label: PropTypes.string,
+  required: PropTypes.bool,
   value: PropTypes.string,
-  handleChange: PropTypes.func.isRequired,
 };
 
-export class CitySelect extends Component {
-  handleChange = value => {
-    this.props.setFieldValue('City', value.value);
+export const CitySelect = ({
+  label,
+  required,
+  cities,
+  value,
+  setFieldTouched,
+  setFieldValue,
+  name,
+}) => {
+  const getOptions = map(city => ({ value: city, label: city }));
+  const handleChange = e => {
+    const newValue = e.value;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
   };
-  render() {
-    const getOptions = map(city => ({ value: city, label: city }));
-    const { field: { label, required }, cities, value } = this.props;
-    return (
-      <InputElt>
-        <InputText>
-          {label}:
-          {required && <RequiredStar>*</RequiredStar>}
-        </InputText>
-        <SelectStyled
-          id="City"
-          options={getOptions(cities)}
-          onChange={this.handleChange}
-          value={value}
-          name={label}
-        />
-      </InputElt>
-    );
-  }
-}
+  return (
+    <InputElt>
+      <InputText>
+        {label}:
+        {required && <RequiredStar>*</RequiredStar>}
+      </InputText>
+      <SelectStyled
+        id="City"
+        options={getOptions(cities)}
+        onChange={handleChange}
+        value={value}
+        name={label}
+      />
+    </InputElt>
+  );
+};
 
 CitySelect.propTypes = {
-  field: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+  label: PropTypes.string,
+  required: PropTypes.bool,
   cities: PropTypes.array.isRequired,
   value: PropTypes.string,
-  setFieldValue: PropTypes.func,
 };
 
-export class CountrySelect extends Component {
-  handleChange = value => {
-    this.props.setFieldValue('Country', value.value);
+export const CountrySelect = ({
+  label,
+  required,
+  countries,
+  value,
+  setFieldTouched,
+  setFieldValue,
+  name,
+}) => {
+  const getOptions = map(city => ({ value: city, label: city }));
+  const handleChange = e => {
+    const newValue = e.value;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
   };
-  render() {
-    const getOptions = map(country => ({ value: country, label: country }));
-    const { field: { label, required }, countries, value } = this.props;
-    return (
-      <InputElt>
-        <InputText>
-          {label}:
-          {required && <RequiredStar>*</RequiredStar>}
-        </InputText>
-        <SelectStyled
-          id="City"
-          options={getOptions(countries)}
-          onChange={this.handleChange}
-          value={value}
-          name={label}
-        />
-      </InputElt>
-    );
-  }
-}
+  return (
+    <InputElt>
+      <InputText>
+        {label}:
+        {required && <RequiredStar>*</RequiredStar>}
+      </InputText>
+      <SelectStyled
+        id="Country"
+        options={getOptions(countries)}
+        onChange={handleChange}
+        value={value}
+        name={label}
+      />
+    </InputElt>
+  );
+};
 
 CountrySelect.propTypes = {
-  field: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+  label: PropTypes.string,
+  required: PropTypes.bool,
   countries: PropTypes.array.isRequired,
   value: PropTypes.string,
-  setFieldValue: PropTypes.func,
 };
 
-export class TypeSelect extends Component {
-  handleChange = value => {
-    this.props.setFieldValue('Types', value.value);
+export const TypeSelect = ({
+  label,
+  required,
+  domainValues,
+  value,
+  setFieldTouched,
+  setFieldValue,
+  name,
+}) => {
+  const getOptions = map(city => ({ value: city, label: city }));
+  const handleChange = e => {
+    const newValue = e.value;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
   };
-  render() {
-    const getOptions = map(type => ({ value: type, label: type }));
-    const { field: { label, required, domainValues = [] }, value } = this.props;
-    return (
-      <InputElt>
-        <InputText>
-          {label}:
-          {required && <RequiredStar>*</RequiredStar>}
-        </InputText>
-        <SelectStyled
-          id="City"
-          options={getOptions(domainValues)}
-          onChange={this.handleChange}
-          value={value}
-          name={label}
-        />
-      </InputElt>
-    );
-  }
-}
+  return (
+    <InputElt>
+      <InputText>
+        {label}:
+        {required && <RequiredStar>*</RequiredStar>}
+      </InputText>
+      <SelectStyled
+        id="Type"
+        options={getOptions(domainValues)}
+        onChange={handleChange}
+        value={value}
+        name={label}
+      />
+    </InputElt>
+  );
+};
 
 TypeSelect.propTypes = {
-  field: PropTypes.object.isRequired,
-  value: PropTypes.string,
+  name: PropTypes.string.isRequired,
   setFieldValue: PropTypes.func,
-  domainValues: PropTypes.array,
+  setFieldTouched: PropTypes.func,
+  label: PropTypes.string,
+  required: PropTypes.bool,
+  domainValues: PropTypes.array.isRequired,
+  value: PropTypes.string,
 };
 
-export class TagsSelect extends Component {
-  handleChange = value => {
-    this.props.setFieldValue('Tags', value);
+export const TagsSelect = ({
+  name,
+  label,
+  required,
+  value,
+  setFieldTouched,
+  setFieldValue,
+  tags,
+}) => {
+  const getOptions = map(tag => ({ value: tag, label: tag }));
+  const handleChange = e => {
+    const newValue = e;
+    setFieldTouched(name, newValue !== value);
+    setFieldValue(name, newValue);
   };
-  render() {
-    const getOptions = map(tag => ({ value: tag, label: tag }));
-    const { field: { label, required }, value, tags } = this.props;
-    return (
-      <InputElt>
-        <InputText>
-          {label}:
-          {required && <RequiredStar>*</RequiredStar>}
-        </InputText>
-        <SelectStyled
-          id="Tags"
-          multi={true}
-          options={getOptions(tags)}
-          onChange={this.handleChange}
-          value={value}
-          name={label}
-        />
-      </InputElt>
-    );
-  }
-}
+  return (
+    <InputElt>
+      <InputText>
+        {label}:
+        {required && <RequiredStar>*</RequiredStar>}
+      </InputText>
+      <SelectStyled
+        id="Tags"
+        multi={true}
+        options={getOptions(tags)}
+        onChange={handleChange}
+        value={value}
+        name={label}
+      />
+    </InputElt>
+  );
+};
 
 TagsSelect.propTypes = {
-  field: PropTypes.object.isRequired,
-  value: PropTypes.array,
   setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  error: PropTypes.string,
+  required: PropTypes.bool,
+  value: PropTypes.array,
   tags: PropTypes.array,
 };
