@@ -14,8 +14,10 @@ import Tag from './Tag';
 import NameLink from './NameLink';
 import CompanyLink from './CompanyLink';
 import Actions from './Actions';
+import ViewFieldString from './ViewFieldString';
 
 export {
+  ViewFieldString,
   Actions,
   NameLink,
   CompanyLink,
