@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Field } from '../fields';
-import { InputField } from './index';
 
 const ButtonStyled = styled.button`
   width: 36px;

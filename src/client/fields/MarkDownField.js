@@ -40,33 +40,35 @@ export class MarkDownField extends Component {
 
     return (
       <Field label={label} error={error} required={required}>
-        <Buttons className="pt-button-group">
-          <button
-            type="button"
-            className="pt-button"
-            onClick={handleDisplayText}
-          >
-            Edit
-          </button>
-          <button
-            type="button"
-            className="pt-button"
-            onClick={handleDisplayMark}
-          >
-            View
-          </button>
-        </Buttons>
-        {displayTextArea && (
-          <textarea
-            name={name}
-            className="pt-input pt-fill"
-            value={value}
-            onChange={handleChange}
-            dir="auto"
-            {...props}
-          />
-        )}
-        {!displayTextArea && <ReactMarkdown source={value} />}
+        <div>
+          <Buttons className="pt-button-group">
+            <button
+              type="button"
+              className="pt-button"
+              onClick={handleDisplayText}
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              className="pt-button"
+              onClick={handleDisplayMark}
+            >
+              View
+            </button>
+          </Buttons>
+          {displayTextArea && (
+            <textarea
+              name={name}
+              className="pt-input pt-fill"
+              value={value}
+              onChange={handleChange}
+              dir="auto"
+              {...props}
+            />
+          )}
+          {!displayTextArea && <ReactMarkdown source={value} />}
+        </div>
       </Field>
     );
   }
@@ -77,7 +79,7 @@ MarkDownField.propTypes = {
   label: PropTypes.string,
   error: PropTypes.string,
   required: PropTypes.bool.isRequired,
-  value: PropTypes.object,
+  value: PropTypes.string,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
 };
