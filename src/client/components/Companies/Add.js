@@ -56,6 +56,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
         values,
         isValid,
         errors,
+        touched,
         handleSubmit,
         handleReset,
         setFieldTouched,
@@ -103,6 +104,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('types')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
@@ -110,6 +112,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('name')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
@@ -117,6 +120,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('website')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
@@ -124,6 +128,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('street')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
@@ -131,6 +136,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('zipcode')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
@@ -138,6 +144,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('city')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
               cities={cities}
@@ -146,6 +153,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('country')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
               countries={countries}
@@ -154,6 +162,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('tags')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
               tags={tags}
@@ -162,6 +171,7 @@ const AddCompany = ({ changeColor, cities, countries, tags }) => {
               field={getField('notes')}
               values={values}
               errors={errors}
+              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />

@@ -7,7 +7,7 @@ export const FormField = ({
   field,
   values,
   errors,
-  touched,
+  touched = {},
   className,
   ...props
 }) => {
