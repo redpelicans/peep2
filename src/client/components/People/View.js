@@ -3,33 +3,52 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { map, prop } from 'ramda';
+import { map } from 'ramda';
 import { Colors } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
+import MasonryLayout from '../widgets/MasonryLayout';
 import {
   Title,
   Container,
   Spacer,
   CompanyLink,
   ViewFieldString,
+  LinkButton,
 } from '../widgets';
+
+const sizes = [
+  { columns: 1, gutter: 10 },
+  { mq: '800px', columns: 2, gutter: 10 },
+  { mq: '1100px', columns: 3, gutter: 10 },
+  { mq: '1400px', columns: 4, gutter: 10 },
+  { mq: '1700px', columns: 5, gutter: 10 },
+];
 
 const StyledGrid = styled.div`
   display: grid;
-  margin: auto;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  width: 90%;
-  grid-column-gap: 25px;
-  grid-template-columns: minmax(100px, auto);
-  grid-auto-rows: minmax(100px, auto);
-  grid-template-areas: 'prefix firstName firstName lastName lastName'
-    'company company company company company' 'type jobType email email email'
-    'mobile fixe none none none' 'tags tags tags tags tags';
+  margin: 25px 0;
+  width: 100%;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  grid-template-rows: auto;
+  grid-template-areas: 'prefix' 'firstName' 'lastName' 'company' 'type'
+    'jobType' 'email';
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    grid-template-rows: auto auto;
+    grid-template-areas: 'prefix firstName' 'lastName company' 'type jobType'
+      'email none';
+  }
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(7, minmax(100px, 1fr));
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 'prefix firstName firstName firstName lastName lastName lastName'
+      'company company type jobType email email email';
+  }
 `;
 
 const ArrayBlock = styled.div`
@@ -77,20 +96,23 @@ const PersonInfos = ({ person = {} }) => {
         <ViewFieldString name="jobType" label="Job Type" value={jobType} />
         <ViewFieldString name="email" label="Email" value={email} />
       </StyledGrid>
-      <label>Phones</label>
+      <label>Phones:</label>
       <ArrayBlock>
-        {phones.length > 0 &&
-          map(
-            phone => (
-              <ViewFieldString
-                key={phone.number}
-                name={phone.label}
-                label={phone.label}
-                value={phone.number}
-              />
-            ),
-            phones,
-          )}
+        {phones.length > 0 && (
+          <MasonryLayout id="phones" sizes={sizes}>
+            {map(
+              phone => (
+                <ViewFieldString
+                  key={phone.number}
+                  name={phone.label}
+                  label={phone.label}
+                  value={phone.number}
+                />
+              ),
+              phones,
+            )}
+          </MasonryLayout>
+        )}
       </ArrayBlock>
     </StyledWrapper>
   );
@@ -136,7 +158,9 @@ const Person = ({
           <Title title={`${person.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <div />
+          <LinkButton iconName="pt-icon-edit" className="pt-button pt-large">
+            Edit
+          </LinkButton>
         </HeaderRight>
       </Header>
       <PersonInfos person={person} />
