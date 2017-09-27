@@ -24,6 +24,13 @@ const routes = {
     exact: true,
     auth: true,
   },
+  addCompany: {
+    path: '/companies/add',
+    component: AddCompany,
+    default: true,
+    exact: true,
+    auth: true,
+  },
   company: {
     path: '/companies/:id',
     component: CompanyView,
@@ -36,13 +43,6 @@ const routes = {
     component: Edit, // TO BE CHANGED
     default: true,
     exact: false,
-    auth: true,
-  },
-  addCompagny: {
-    path: '/companies/add',
-    component: AddCompany,
-    default: true,
-    exact: true,
     auth: true,
   },
   people: {
