@@ -1,15 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
 import { Link } from 'react-router-dom';
 import { compose } from 'ramda';
-import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
-import { getVisibleCompanies } from '../../selectors/companies';
 import {
   defaultValues,
   getValidationSchema,
@@ -186,17 +183,11 @@ AddPeople.propTypes = {
   changeColor: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({});
-
-const actions = {};
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-
 const enhance = compose(
   withState('color', 'changeColor', ''),
   withHandlers({
     changeColorHandler: ({ changeColor }) => () => changeColor(color => color),
   }),
-  connect(mapStateToProps, mapDispatchToProps),
 );
 
 export default enhance(AddPeople);
