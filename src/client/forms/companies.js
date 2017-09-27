@@ -12,7 +12,11 @@ import { MarkDownField } from '../fields/MarkDownField';
 const fields = {
   types: {
     label: 'Types',
-    domainValues: ['Client', 'Partner', 'Tenant'],
+    domainValues: [
+      { id: 'Client', value: 'Client' },
+      { id: 'Partner', value: 'Partner' },
+      { id: 'Tenant', value: 'Tenant' },
+    ],
     required: true,
     component: SelectField,
     validate: Yup.string(),

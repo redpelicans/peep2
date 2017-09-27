@@ -13,7 +13,7 @@ const fields = {
   prefix: {
     key: 'Prefix',
     label: 'Prefix',
-    domainValues: ['Mr', 'Mrs'],
+    domainValues: [{ id: 'Mr', value: 'Mr' }, { id: 'Mrs', value: 'Mrs' }],
     required: true,
     component: SelectField,
     validate: Yup.string(),
@@ -35,7 +35,11 @@ const fields = {
   types: {
     key: 'Types',
     label: 'Types',
-    domainValues: ['Client', 'Partner', 'Tenant'],
+    domainValues: [
+      { id: 'Client', value: 'Client' },
+      { id: 'Partner', value: 'Partner' },
+      { id: 'Tenant', value: 'Tenant' },
+    ],
     required: true,
     component: SelectField,
     validate: Yup.string(),
@@ -51,11 +55,11 @@ const fields = {
     key: 'JobType',
     label: 'Job Type',
     domainValues: [
-      'Designer',
-      'Developer',
-      'Manager',
-      'Sales',
-      'Business Manager',
+      { id: 'Designer', value: 'Designer' },
+      { id: 'Developer', value: 'Developer' },
+      { id: 'Manager', value: 'Manager' },
+      { id: 'Sales', value: 'Sales' },
+      { id: 'Business Manager', value: 'Business Manager' },
     ],
     required: true,
     component: SelectField,
@@ -84,7 +88,11 @@ const fields = {
     key: 'Roles',
     label: 'Roles',
     component: SelectField,
-    domainValues: ['Admin', 'Edit', 'Access'],
+    domainValues: [
+      { id: 'Admin', value: 'Admin' },
+      { id: 'Edit', value: 'Edit' },
+      { id: 'Access', value: 'Accessr' },
+    ],
   },
   notes: {
     key: 'Notes',

@@ -11,15 +11,16 @@ const ButtonStyled = styled.button`
 
 const PhoneFieldContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `;
 
-const InputStyled = styled.input`height: 36px;`;
+const InputStyled = styled.input`min-width: 300px;`;
 
 class PhoneField extends Component {
   state = {
-    valueNumber: 1,
+    values: [],
+    selectedType: 'mobile',
   };
   handleAddValue = () => {
     this.setState({ valueNumber: this.state.valueNumber + 1 });
@@ -40,22 +41,34 @@ class PhoneField extends Component {
       setFieldTouched(name, newValue !== value);
       setFieldValue(name, newValue);
     };
+    const handleChangeSelectedType = e => {
+      console.log('selected type event: ', e);
+    };
+    const { values, selectedType } = this.state;
     return (
       <Field label={label} error={error} required={required}>
         <PhoneFieldContainer>
-          <InputStyled
-            name={name}
-            className="pt-input pt-fill"
-            value={value}
-            dir="auto"
-            onChange={handleChange}
-            {...props}
-          />
-          <ButtonStyled
-            type="button"
-            onClick={this.handleAddValue}
-            className="pt-button pt-icon-plus"
-          />
+          <div className="pt-control-group">
+            <div className="pt-input-group">
+              <span className="pt-icon pt-icon-phone" />
+              <InputStyled
+                type="text"
+                className="pt-input"
+                placeholder="Add phone number"
+              />
+              <div className="pt-input-action">
+                <button
+                  onChange={this.handleChangeSelectedType}
+                  className="pt-button pt-minimal pt-intent-primary"
+                >
+                  type<span className="pt-icon-standard pt-icon-caret-down pt-align-right" />
+                </button>
+              </div>
+            </div>
+            <button className="pt-button">
+              <span className="pt-icon-standard pt-icon-plus" />
+            </button>
+          </div>
         </PhoneFieldContainer>
       </Field>
     );

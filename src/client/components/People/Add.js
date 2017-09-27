@@ -22,8 +22,8 @@ const PeopleForm = styled.form`
   margin-bottom: 25px;
   width: 90%;
   grid-gap: 20px;
-  grid-auto-columns: minmax(100px, auto);
-  grid-auto-rows: minmax(100px, auto);
+  grid-auto-columns: minmax(70px, auto);
+  grid-auto-rows: minmax(70px, auto);
   grid-template-areas: 'Prefix' 'FirstName' 'LastName' 'Types' 'Email' 'JobType'
     'Company' 'Phones' 'Tags' 'Roles' 'Notes';
   @media (min-width: 700px) {
