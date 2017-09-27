@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Icon, Colors } from '@blueprintjs/core';
 
-export const FormField = ({ field, values, errors, className, ...props }) => {
+export const FormField = ({
+  field,
+  values,
+  errors,
+  touched = {},
+  className,
+  ...props
+}) => {
   const newProps =
     'domainValues' in field
       ? { ...props, domainValues: field.domainValues }
@@ -14,7 +21,7 @@ export const FormField = ({ field, values, errors, className, ...props }) => {
         name={field.name}
         label={'label' in props ? props.label : field.label}
         value={'value' in props ? props.value : values[field.name]}
-        error={errors && errors[field.name]}
+        error={errors && touched[field.name] && errors[field.name]}
         required={!!field.required}
         {...newProps}
       />
@@ -27,6 +34,7 @@ FormField.propTypes = {
   value: PropTypes.node,
   values: PropTypes.object,
   errors: PropTypes.object,
+  touched: PropTypes.object,
   label: PropTypes.string,
   className: PropTypes.string,
 };

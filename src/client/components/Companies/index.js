@@ -25,6 +25,7 @@ import {
   filterCompanyList,
   sortCompanyList,
 } from '../../actions/companies';
+import { getPathByName } from '../../routes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
@@ -50,7 +51,7 @@ export const Companies = ({
           resetValue={() => filterCompanyList('')}
         />
         <SortMenu onClick={sortCompanyList} sort={sort} />
-        <StyledLinkButton to="/companies/add" iconName="plus" />
+        <StyledLinkButton to={getPathByName('addCompany')} iconName="plus" />
       </HeaderRight>
     </Header>
     <List companies={companies} filterCompanyList={filterCompanyList} />

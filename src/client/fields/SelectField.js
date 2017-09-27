@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { compose, map, omit } from 'ramda';
+import { compose, map } from 'ramda';
+import { propTransformer } from '../hoc';
 import withWorkers from '../hoc/workers';
 import withCities from '../hoc/cities';
 import withCountries from '../hoc/countries';
@@ -136,19 +137,6 @@ MultiSelectField.propTypes = {
   setFieldTouched: PropTypes.func,
 };
 
-const propTransformer = (src, target, fn) => Component => {
-  const Transformer = props => {
-    const newProps = { ...omit([src], props), [target]: fn(props[src]) };
-    return <Component {...newProps} />;
-  };
-
-  Transformer.propTypes = {
-    workers: PropTypes.array.isRequired,
-  };
-
-  return Transformer;
-};
-
 export const WorkerSelectField = compose(
   withWorkers,
   propTransformer(
@@ -160,17 +148,17 @@ export const WorkerSelectField = compose(
 
 export const CitiesSelectField = compose(
   withCities,
-  propTransformer('cities', 'domainValues', map(city => city)),
+  propTransformer('cities', 'domainValues'),
 )(SelectField);
 
 export const CountriesSelectField = compose(
   withCountries,
-  propTransformer('countries', 'domainValues', map(country => country)),
+  propTransformer('countries', 'domainValues'),
 )(SelectField);
 
 export const TagsSelectField = compose(
   withTags,
-  propTransformer('tags', 'domainValues', map(tag => tag)),
+  propTransformer('tags', 'domainValues'),
 )(MultiSelectField);
 
 export const CompaniesSelectField = compose(

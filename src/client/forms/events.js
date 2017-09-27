@@ -48,6 +48,7 @@ const fields = {
   description: {
     label: 'Description',
     component: TextAreaField,
+    required: true,
     validate: Yup.string().oneOf(['A', 'B']),
   },
 };

@@ -9,27 +9,44 @@ import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
 import { getPeopleFromCompany } from '../../selectors/people';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Title, Container, Spacer, ViewFieldString } from '../widgets';
+import { Title, Container, Spacer, ViewField, LinkButton } from '../widgets';
 import Preview from '../People/Preview';
 import { onTagClick, deletePeople } from '../../actions/people';
+import MasonryLayout from '../widgets/MasonryLayout';
 
 const StyledGrid = styled.div`
   display: grid;
-  margin: auto;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  width: 90%;
-  grid-column-gap: 25px;
-  grid-template-columns: minmax(100px, auto) auto auto;
-  grid-auto-rows: minmax(100px, auto);
-  grid-template-areas: 'type type website website website website'
-    'street street zipcode city city country' 'tags tags tags tags tags tags';
+  margin: 25px 0;
+  width: 100%;
+  gird-template-rows: auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  grid-template-areas: 'type' 'website' 'street' 'zipcode' 'city' 'country';
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    grid-template-rows: auto auto;
+    grid-template-areas: 'type website' 'street zipcode' 'city country';
+  }
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 'type website street' 'zipcode city country';
+  }
 `;
+
+const sizes = [
+  { columns: 1, gutter: 10 },
+  { mq: '800px', columns: 2, gutter: 10 },
+  { mq: '1100px', columns: 3, gutter: 10 },
+  { mq: '1400px', columns: 4, gutter: 10 },
+  { mq: '1700px', columns: 5, gutter: 10 },
+];
 
 const ArrayBlock = styled.div`
   display: flex;
   flex-direction: row;
-  wrap: wrap;
+  flex-wrap: wrap;
+  margin: 25px 0;
 `;
 
 const StyledLink = styled.a`
@@ -42,38 +59,47 @@ const StyledWrapper = styled.div`
   flex-direction: column;
 `;
 
+const StyledViewField = styled(ViewField)`grid-area: ${props => props.name};`;
+
 const CompanyInfos = ({ company = {}, people }) => {
   const { type, website, address = {} } = company;
   const { street, zipcode, city, country } = address;
   return (
     <StyledWrapper>
       <StyledGrid>
-        <ViewFieldString name="type" label="Type" value={type} />
-        <ViewFieldString
+        <StyledViewField name="type" label="Type" value={type} />
+        <StyledViewField
           name="website"
-          label="Website"
-          value={<StyledLink href={website}>{website}</StyledLink>}
+          label="Website:"
+          value={
+            <StyledLink target="_blank" href={website}>
+              {website}
+            </StyledLink>
+          }
         />
-        <ViewFieldString name="street" label="Street" value={street} />
-        <ViewFieldString name="zipcode" label="Zip code" value={zipcode} />
-        <ViewFieldString name="city" label="City" value={city} />
-        <ViewFieldString name="country" label="Country" value={country} />
+        <StyledViewField name="street" label="Street:" value={street} />
+        <StyledViewField name="zipcode" label="Zip code:" value={zipcode} />
+        <StyledViewField name="city" label="City:" value={city} />
+        <StyledViewField name="country" label="Country:" value={country} />
       </StyledGrid>
-      <label>Contacts</label>
+      <label>Contacts:</label>
       <ArrayBlock>
-        {people.length > 0 &&
-          map(
-            person => (
-              <Preview
-                key={person._id}
-                person={person}
-                company={company}
-                onTagClick={onTagClick}
-                deletePeople={deletePeople}
-              />
-            ),
-            people,
-          )}
+        {people.length > 0 && (
+          <MasonryLayout id="people" sizes={sizes}>
+            {map(
+              person => (
+                <Preview
+                  key={person._id}
+                  person={person}
+                  company={company}
+                  onTagClick={onTagClick}
+                  deletePeople={deletePeople}
+                />
+              ),
+              people,
+            )}
+          </MasonryLayout>
+        )}
       </ArrayBlock>
     </StyledWrapper>
   );
@@ -114,7 +140,9 @@ const Company = ({
           <Title title={`${company.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <div />
+          <LinkButton iconName="pt-icon-edit" className="pt-button pt-large">
+            Edit
+          </LinkButton>
         </HeaderRight>
       </Header>
       <CompanyInfos company={company} people={people} />

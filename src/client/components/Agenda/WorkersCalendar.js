@@ -30,7 +30,7 @@ import {
 import Avatar, { SMALL } from '../Avatar';
 import { getPathByName } from '../../routes';
 import { fullName, isAdmin, isEqual } from '../../utils/people';
-import { getUnitEvents, isVacation } from '../../utils/events';
+import { isVacation } from '../../utils/events';
 
 const vacationDayBackground = `repeating-linear-gradient(45deg, ${Colors.GREEN1}, ${Colors.GREEN1} 7%, ${Colors.GREEN3} 7%, ${Colors.GREEN3} 14%)`;
 const sickLeaveDayBackground = `repeating-linear-gradient(45deg, ${Colors.RED1}, ${Colors.RED1} 7%, ${Colors.RED3} 7%, ${Colors.RED3} 14%)`;
@@ -137,8 +137,9 @@ const StyledDay = styled.div`
     isWorkingDay ? workingDayBackground : spareDayBackground};
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: 50%;
-  grid-template-areas: 'AM' 'PM';
+  grid-template-rows: 100%;
+  grid-template-columns: 50% 50%;
+  grid-template-areas: 'AM PM';
 `;
 
 const StyledSpareDay = styled(StyledDay)`
@@ -151,8 +152,7 @@ const SpareDay = onlyUpdateForKeys(['events'])(({ events, selectPeriod }) => {
     e.preventDefault();
     e.stopPropagation();
   };
-  const dayEvents =
-    events && map(e => <Event key={e._id} event={e} />, getUnitEvents(events));
+  const dayEvents = events && map(e => <Event key={e._id} event={e} />, events);
   return <StyledSpareDay onMouseUp={handleMouseUp}>{dayEvents}</StyledSpareDay>;
 });
 
@@ -204,8 +204,7 @@ const WorkingDay = enhanceWorkingDay(
       }) ||
       {};
     const dayEvents =
-      events &&
-      map(e => <Event key={e._id} event={e} />, getUnitEvents(events));
+      events && map(e => <Event key={e._id} event={e} />, events);
     return (
       <StyledWorkingDay
         selected={selected}
@@ -236,7 +235,7 @@ const StyledEvent = styled.div`
   background: ${({ event }) =>
     isVacation(event) ? vacationDayBackground : sickLeaveDayBackground};
   cursor: pointer;
-  grid-area: ${({ event }) => event.period || 'span 2'};
+  grid-column: ${({ event }) => event.period || 'span 2'};
 `;
 
 const Event = ({ event }) => {
