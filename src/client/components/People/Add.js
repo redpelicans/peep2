@@ -9,18 +9,16 @@ import { compose } from 'ramda';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
-import getCities from '../../selectors/cities';
-import getCountries from '../../selectors/countries';
-import { getTags } from '../../selectors/tags';
+import { getVisibleCompanies } from '../../selectors/companies';
 import {
   defaultValues,
   getValidationSchema,
   getField,
-} from '../../forms/companies';
+} from '../../forms/peoples';
 import { Spacer, Title, Container, AvatarSelector } from '../widgets';
 import { FormField } from '../../fields';
 
-const CompagnyForm = styled.form`
+const PeopleForm = styled.form`
   display: grid;
   margin: auto;
   margin-top: 25px;
@@ -29,19 +27,20 @@ const CompagnyForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(100px, auto);
   grid-auto-rows: minmax(100px, auto);
-  grid-template-areas: 'Types' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
-    'City' 'Tags' 'Notes';
+  grid-template-areas: 'Prefix' 'FirstName' 'LastName' 'Types' 'Email' 'JobType'
+    'Company' 'Phones' 'Tags' 'Roles' 'Notes';
   @media (min-width: 700px) {
-    grid-template-areas: 'Types Name Website' 'Zipcode Street Street'
-      'Country City City' 'Tags Tags Tags' 'Notes Notes Notes';
+    grid-template-areas: 'Prefix FirstName LastName' 'Types Email JobType'
+      'Company Company Company' 'Phones NA NA' 'Tags Tags Tags'
+      'Roles Roles Roles' 'Notes Notes Notes';
   }
 `;
 
 const StyledFormField = styled(FormField)`
-  grid-area: ${({ field }) => field.label};
+  grid-area: ${({ field }) => field.key};
 `;
 
-const AddCompany = ({ changeColor }) => {
+const AddPeople = ({ changeColor }) => {
   const initialValues = {
     ...defaultValues,
   };
@@ -56,7 +55,6 @@ const AddCompany = ({ changeColor }) => {
         values,
         isValid,
         errors,
-        touched,
         handleSubmit,
         handleReset,
         setFieldTouched,
@@ -73,7 +71,7 @@ const AddCompany = ({ changeColor }) => {
                 handleChangeColor={changeColor}
               />
               <Spacer />
-              <Title title="New Companie" />
+              <Title title="New People" />
             </HeaderLeft>
             <HeaderRight>
               <Button
@@ -85,7 +83,7 @@ const AddCompany = ({ changeColor }) => {
                 Create
               </Button>
               <Spacer />
-              <Link to="/companies">
+              <Link to="/people">
                 <Button className="pt-intent-warning pt-large">Cancel</Button>
               </Link>
               <Spacer />
@@ -99,60 +97,60 @@ const AddCompany = ({ changeColor }) => {
               <Spacer size={20} />
             </HeaderRight>
           </Header>
-          <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
+          <PeopleForm id="addCompany" onSubmit={handleSubmit}>
+            <StyledFormField
+              field={getField('prefix')}
+              values={values}
+              errors={errors}
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+            />
+            <StyledFormField
+              field={getField('firstName')}
+              values={values}
+              errors={errors}
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+            />
+            <StyledFormField
+              field={getField('lastName')}
+              values={values}
+              errors={errors}
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+            />
             <StyledFormField
               field={getField('types')}
               values={values}
               errors={errors}
-              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
             <StyledFormField
-              field={getField('name')}
+              field={getField('email')}
               values={values}
               errors={errors}
-              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
             <StyledFormField
-              field={getField('website')}
+              field={getField('jobType')}
               values={values}
               errors={errors}
-              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
             <StyledFormField
-              field={getField('street')}
+              field={getField('company')}
               values={values}
               errors={errors}
-              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
             <StyledFormField
-              field={getField('zipcode')}
+              field={getField('phones')}
               values={values}
               errors={errors}
-              touched={touched}
-              setFieldTouched={setFieldTouched}
-              setFieldValue={setFieldValue}
-            />
-            <StyledFormField
-              field={getField('city')}
-              values={values}
-              errors={errors}
-              touched={touched}
-              setFieldTouched={setFieldTouched}
-              setFieldValue={setFieldValue}
-            />
-            <StyledFormField
-              field={getField('country')}
-              values={values}
-              errors={errors}
-              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
@@ -160,7 +158,13 @@ const AddCompany = ({ changeColor }) => {
               field={getField('tags')}
               values={values}
               errors={errors}
-              touched={touched}
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+            />
+            <StyledFormField
+              field={getField('roles')}
+              values={values}
+              errors={errors}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
@@ -168,18 +172,17 @@ const AddCompany = ({ changeColor }) => {
               field={getField('notes')}
               values={values}
               errors={errors}
-              touched={touched}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
             />
-          </CompagnyForm>
+          </PeopleForm>
         </Container>
       )}
     />
   );
 };
 
-AddCompany.propTypes = {
+AddPeople.propTypes = {
   changeColor: PropTypes.func.isRequired,
 };
 
@@ -196,4 +199,4 @@ const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
 );
 
-export default enhance(AddCompany);
+export default enhance(AddPeople);
