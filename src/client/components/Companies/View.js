@@ -9,13 +9,7 @@ import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
 import { getPeopleFromCompany } from '../../selectors/people';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import {
-  Title,
-  Container,
-  Spacer,
-  ViewFieldString,
-  LinkButton,
-} from '../widgets';
+import { Title, Container, Spacer, ViewField, LinkButton } from '../widgets';
 import Preview from '../People/Preview';
 import { onTagClick, deletePeople } from '../../actions/people';
 import MasonryLayout from '../widgets/MasonryLayout';
@@ -65,14 +59,16 @@ const StyledWrapper = styled.div`
   flex-direction: column;
 `;
 
+const StyledViewField = styled(ViewField)`grid-area: ${props => props.name};`;
+
 const CompanyInfos = ({ company = {}, people }) => {
   const { type, website, address = {} } = company;
   const { street, zipcode, city, country } = address;
   return (
     <StyledWrapper>
       <StyledGrid>
-        <ViewFieldString name="type" label="Type" value={type} />
-        <ViewFieldString
+        <StyledViewField name="type" label="Type" value={type} />
+        <StyledViewField
           name="website"
           label="Website:"
           value={
@@ -81,10 +77,10 @@ const CompanyInfos = ({ company = {}, people }) => {
             </StyledLink>
           }
         />
-        <ViewFieldString name="street" label="Street:" value={street} />
-        <ViewFieldString name="zipcode" label="Zip code:" value={zipcode} />
-        <ViewFieldString name="city" label="City:" value={city} />
-        <ViewFieldString name="country" label="Country:" value={country} />
+        <StyledViewField name="street" label="Street:" value={street} />
+        <StyledViewField name="zipcode" label="Zip code:" value={zipcode} />
+        <StyledViewField name="city" label="City:" value={city} />
+        <StyledViewField name="country" label="Country:" value={country} />
       </StyledGrid>
       <label>Contacts:</label>
       <ArrayBlock>
