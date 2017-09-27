@@ -58,7 +58,7 @@ const fields = {
     component: TagsSelectField,
   },
   notes: {
-    label: 'Notes',
+    label: 'Note',
     component: MarkDownField,
   },
 };

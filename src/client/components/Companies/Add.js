@@ -25,10 +25,10 @@ const CompagnyForm = styled.form`
   grid-auto-columns: minmax(100px, auto);
   grid-auto-rows: minmax(100px, auto);
   grid-template-areas: 'Types' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
-    'City' 'Tags' 'Notes';
+    'City' 'Tags' 'Note';
   @media (min-width: 700px) {
     grid-template-areas: 'Types Name Website' 'Zipcode Street Street'
-      'Country City City' 'Tags Tags Tags' 'Notes Notes Notes';
+      'Country City City' 'Tags Tags Tags' 'Note Note Note';
   }
 `;
 
