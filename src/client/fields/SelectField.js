@@ -76,6 +76,7 @@ export const SelectField = ({
   return (
     <Field label={label} required={required}>
       <SelectStyled
+        placeholder={`Select ${label}`}
         id={label}
         options={getOptions(domainValues)}
         onChange={handleChange}
@@ -116,6 +117,7 @@ export const MultiSelectField = ({
     <Field label={label} required={required}>
       <SelectStyled
         id={label}
+        placeholder={`Select ${label}`}
         options={getOptions(domainValues)}
         onChange={handleChange}
         value={value}
