@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field } from '../fields';
+import { Field, RequiredTag } from '../fields';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown';
+import { Spacer } from '../components/widgets';
 
 const Buttons = styled.div`
   right: 0;
   align-self: flex-end;
   margin-bottom: 15px;
+`;
+
+const TextAreaStyled = styled.textarea`
+  min-height: 150px;
+  min-width: 100%;
+`;
+
+const MarkDownLabel = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 export class MarkDownField extends Component {
@@ -39,26 +51,33 @@ export class MarkDownField extends Component {
     };
 
     return (
-      <Field label={label} error={error} required={required}>
+      <Field error={error} required={required}>
         <div>
-          <Buttons className="pt-button-group">
-            <button
-              type="button"
-              className="pt-button"
-              onClick={handleDisplayText}
-            >
-              Edit
-            </button>
-            <button
-              type="button"
-              className="pt-button"
-              onClick={handleDisplayMark}
-            >
-              View
-            </button>
-          </Buttons>
+          <MarkDownLabel>
+            <label className="pt-label">
+              {label}
+              <RequiredTag required={required} />
+            </label>
+            <Spacer />
+            <Buttons className="pt-button-group pt-minimal">
+              <button
+                type="button"
+                className="pt-button"
+                onClick={handleDisplayText}
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                className="pt-button"
+                onClick={handleDisplayMark}
+              >
+                View
+              </button>
+            </Buttons>
+          </MarkDownLabel>
           {displayTextArea && (
-            <textarea
+            <TextAreaStyled
               name={name}
               className="pt-input pt-fill"
               value={value}

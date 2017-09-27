@@ -49,7 +49,7 @@ const StyledRequiredTag = styled.span`
   color: ${Colors.RED5};
 `;
 
-const RequiredTag = ({ required }) => {
+export const RequiredTag = ({ required }) => {
   if (!required) return null;
   return <StyledRequiredTag>*</StyledRequiredTag>;
 };
