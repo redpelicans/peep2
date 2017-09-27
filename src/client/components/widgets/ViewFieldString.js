@@ -6,16 +6,16 @@ import { Colors } from '@blueprintjs/core';
 const FieldStyled = styled.div`grid-area: ${props => props.name};`;
 
 const StyledBlock = styled.div`
-  text-align: left;
+  text-align: center;
+  height: 30px;
   background-color: ${Colors.DARK_GRAY3};
   border-radius: 3px;
-  height: 30%;
+  margin-top: 10px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
 `;
 
 const StyledBlockContent = styled.div`
   padding-top: 5px;
-  margin-left: 15px;
   color: ${Colors.LIGHT_GRAY5} !important;
 `;
 
