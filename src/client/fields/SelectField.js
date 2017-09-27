@@ -6,6 +6,7 @@ import withWorkers from '../hoc/workers';
 import withCities from '../hoc/cities';
 import withCountries from '../hoc/countries';
 import withTags from '../hoc/tags';
+import withCompanies from '../hoc/companies';
 import { Field } from '../fields';
 import 'react-select/dist/react-select.css';
 import Select from 'react-select';
@@ -130,7 +131,7 @@ MultiSelectField.propTypes = {
   error: PropTypes.string,
   required: PropTypes.bool.isRequired,
   domainValues: PropTypes.array,
-  value: PropTypes.string,
+  value: PropTypes.array,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
 };
@@ -171,3 +172,8 @@ export const TagsSelectField = compose(
   withTags,
   propTransformer('tags', 'domainValues', map(tag => tag)),
 )(MultiSelectField);
+
+export const CompaniesSelectField = compose(
+  withCompanies,
+  propTransformer('companies', 'domainValues', map(company => company.name)),
+)(SelectField);
