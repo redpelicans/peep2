@@ -1,77 +1,69 @@
-import { compose, reduce, toPairs } from 'ramda';
-import { getDefaultValues } from './utils';
+import Yup from 'yup';
+import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
+import { InputField } from '../fields';
 import {
-  TypeSelect,
-  TextInput,
-  TextAreaInput,
-  CitySelect,
-  CountrySelect,
-  TagsSelect,
-} from '../components/widgets';
+  TagsSelectField,
+  SelectField,
+  CitiesSelectField,
+  CountriesSelectField,
+} from '../fields/SelectField';
+import { MarkDownField } from '../fields/MarkDownField';
 
 const fields = {
   types: {
-    key: 'Types',
     label: 'Types',
     domainValues: ['Client', 'Partner', 'Tenant'],
     required: true,
-    component: TypeSelect,
+    component: SelectField,
+    validate: Yup.string(),
   },
   name: {
-    key: 'Name',
     label: 'Name',
     required: true,
-    component: TextInput,
+    component: InputField,
+    validate: Yup.string(),
   },
   website: {
-    key: 'Website',
     label: 'Website',
     required: true,
-    component: TextInput,
+    component: InputField,
+    validate: Yup.string(),
   },
   street: {
-    key: 'Street',
     label: 'Street',
     required: true,
-    component: TextInput,
+    component: InputField,
+    validate: Yup.string(),
   },
   zipcode: {
-    key: 'Zipcode',
-    label: 'ZipCode',
+    label: 'Zipcode',
     required: true,
-    component: TextInput,
+    component: InputField,
+    validate: Yup.string(),
   },
   city: {
-    key: 'City',
     label: 'City',
     required: true,
-    component: CitySelect,
+    component: CitiesSelectField,
+    validate: Yup.string(),
   },
   country: {
-    key: 'Country',
     label: 'Country',
     required: true,
-    component: CountrySelect,
+    component: CountriesSelectField,
+    validate: Yup.string(),
   },
   tags: {
-    key: 'Tags',
     label: 'Tags',
-    required: false,
-    component: TagsSelect,
+    component: TagsSelectField,
   },
   notes: {
-    key: 'Notes',
     label: 'Notes',
-    required: false,
-    component: TextAreaInput,
+    component: MarkDownField,
   },
 };
 
 export const defaultValues = getDefaultValues(fields);
-
-export const exportedFields = compose(
-  reduce((acc, [name, r]) => [...acc, { ...r, name }], []),
-  toPairs,
-)(fields);
-
-export default exportedFields;
+export const getField = getOneField(fields);
+export const getValidationSchema = () =>
+  Yup.object().shape(getOneValidationSchema(fields));

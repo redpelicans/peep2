@@ -5,4 +5,6 @@ const mapStateToProps = (state, props) => ({
   ...props,
   workers: getSortedWorkers('firstName')(state),
 });
-export const withWorkers = Component => connect(mapStateToProps)(Component);
+const withWorkers = Component => connect(mapStateToProps)(Component);
+
+export default withWorkers;
