@@ -55,6 +55,7 @@ const Preview = ({
         <Avatar
           name={name}
           color={avatar.color}
+          size="MEDIUM"
           to={getPathByName('person', _id)}
         />
         <StyledInfos>
