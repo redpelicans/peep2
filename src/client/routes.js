@@ -9,12 +9,15 @@ import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
 import PersonView from './components/People/View';
 import CompanyView from './components/Companies/View';
-import Edit from './components/Edit';
+import EditCompany from './components/Companies/Edit';
+import EditPerson from './components/People/Edit';
+import EditNote from './components/Notes/Edit';
 
 const routes = {
   home: {
     path: '/',
     component: Companies,
+    default: true,
     exact: true,
     auth: true,
   },
@@ -28,21 +31,12 @@ const routes = {
   addCompany: {
     path: '/companies/add',
     component: AddCompany,
-    default: true,
     exact: true,
     auth: true,
   },
   company: {
     path: '/companies/:id',
     component: CompanyView,
-    default: true,
-    exact: false,
-    auth: true,
-  },
-  editCompany: {
-    path: '/edit/company',
-    component: Edit, // TO BE CHANGED
-    default: true,
     exact: false,
     auth: true,
   },
@@ -61,14 +55,18 @@ const routes = {
   person: {
     path: '/people/:id',
     component: PersonView,
-    default: true,
     exact: false,
     auth: true,
   },
   editPerson: {
-    path: '/edit/person',
-    component: Edit, // TO BE CHANGED
-    default: true,
+    path: '/person/edit/:id',
+    component: EditPerson,
+    exact: false,
+    auth: true,
+  },
+  editCompany: {
+    path: '/company/edit/:id',
+    component: EditCompany,
     exact: false,
     auth: true,
   },
@@ -91,9 +89,10 @@ const routes = {
     component: Notes,
   },
   editNote: {
-    path: 'edit/note',
+    path: '/note/edit/:id',
     exact: false,
     auth: true,
+    component: EditNote,
   },
   login: {
     path: '/login',

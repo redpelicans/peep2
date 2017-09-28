@@ -10,7 +10,6 @@ import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import MasonryLayout from '../widgets/MasonryLayout';
 import {
   Title,
   Container,
@@ -19,14 +18,6 @@ import {
   ViewField,
   LinkButton,
 } from '../widgets';
-
-const sizes = [
-  { columns: 1, gutter: 10 },
-  { mq: '800px', columns: 2, gutter: 10 },
-  { mq: '1100px', columns: 3, gutter: 10 },
-  { mq: '1400px', columns: 4, gutter: 10 },
-  { mq: '1700px', columns: 5, gutter: 10 },
-];
 
 const StyledGrid = styled.div`
   display: grid;
@@ -61,6 +52,35 @@ const StyledWrapper = styled.div`
   flex-direction: column;
 `;
 
+const StyledPhoneWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 250px;
+  height: 30px;
+  background-color: ${Colors.DARK_GRAY3};
+  border-radius: 3px;
+  padding-top: 5px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
+  flex-direction: row;
+  margin-top: 10px;
+  justify-content: space-between;
+`;
+
+const StyledPhoneLabel = styled.label`margin-left: 15px;`;
+
+const StyledPhoneNumber = styled.span`margin-right: 15px;`;
+
+const PhoneField = ({ label, number }) => (
+  <StyledPhoneWrap>
+    <StyledPhoneLabel>{label}</StyledPhoneLabel>
+    <StyledPhoneNumber>{number}</StyledPhoneNumber>
+  </StyledPhoneWrap>
+);
+
+PhoneField.propTypes = {
+  label: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+};
 const StyledViewField = styled(ViewField)`grid-area: ${({ name }) => name};`;
 
 const PersonInfos = ({ person = {} }) => {
@@ -98,24 +118,23 @@ const PersonInfos = ({ person = {} }) => {
         <StyledViewField name="jobType" label="Job Type" value={jobType} />
         <StyledViewField name="email" label="Email" value={email} />
       </StyledGrid>
-      <label>Phones:</label>
-      <ArrayBlock>
-        {phones.length > 0 && (
-          <MasonryLayout id="phones" sizes={sizes}>
+      {phones.length > 0 && (
+        <div>
+          <label>Phones</label>
+          <ArrayBlock>
             {map(
               phone => (
-                <StyledViewField
-                  key={phone.number}
-                  name={phone.label}
+                <PhoneField
+                  key={phone.label}
                   label={phone.label}
-                  value={phone.number}
+                  number={phone.number}
                 />
               ),
               phones,
             )}
-          </MasonryLayout>
-        )}
-      </ArrayBlock>
+          </ArrayBlock>
+        </div>
+      )}
     </StyledWrapper>
   );
 };
@@ -155,14 +174,16 @@ const Person = ({
         <HeaderLeft>
           <GoBack history={history} />
           <Spacer />
-          <Avatar name={name} color={person.avatar.color} to="#" />
+          <Avatar name={person.name} size="LARGE" color={person.avatar.color} />
           <Spacer />
           <Title title={`${person.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <LinkButton iconName="pt-icon-edit" className="pt-button pt-large">
-            Edit
-          </LinkButton>
+          <LinkButton
+            to={getPathByName('editPerson', id)}
+            iconName="pt-icon-edit"
+            className="pt-button pt-large"
+          />
         </HeaderRight>
       </Header>
       <PersonInfos person={person} />

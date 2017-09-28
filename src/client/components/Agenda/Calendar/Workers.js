@@ -26,16 +26,17 @@ import {
   getWorkingDaysInMonth,
   isWorkingDay,
   getCalendarDay,
-} from '../../utils';
-import Avatar, { SMALL } from '../Avatar';
-import { getPathByName } from '../../routes';
-import { fullName, isAdmin, isEqual } from '../../utils/people';
-import { isVacation } from '../../utils/events';
-
-const vacationDayBackground = `repeating-linear-gradient(45deg, ${Colors.GREEN1}, ${Colors.GREEN1} 7%, ${Colors.GREEN3} 7%, ${Colors.GREEN3} 14%)`;
-const sickLeaveDayBackground = `repeating-linear-gradient(45deg, ${Colors.RED1}, ${Colors.RED1} 7%, ${Colors.RED3} 7%, ${Colors.RED3} 14%)`;
-const spareDayBackground = Colors.GRAY1;
-const workingDayBackground = Colors.DARK_GRAY4;
+} from '../../../utils';
+import Avatar, { SMALL } from '../../Avatar';
+import { getPathByName } from '../../../routes';
+import { fullName, isAdmin, isEqual } from '../../../utils/people';
+import { isVacation } from '../../../utils/events';
+import {
+  vacationDayBackground,
+  sickLeaveDayBackground,
+  spareDayBackground,
+  workingDayBackground,
+} from './utils';
 
 const StyledCalendar = styled.div`
   justify-content: center;
@@ -58,7 +59,7 @@ const StyledTooltip = styled.em`font-size: 0.8em;`;
 const dmyShouldUpdate = (props, nextProps) =>
   dmy(nextProps.date) !== dmy(props.date);
 
-const DayHeader = shouldUpdate(dmyShouldUpdate)(({ date, calendar }) => {
+export const DayHeader = shouldUpdate(dmyShouldUpdate)(({ date, calendar }) => {
   const calDay = getCalendarDay(calendar, date);
   const dateLabel = isToday(date) ? 'Today' : format(date, 'dddd Do of MMMM');
   const TooltipContent = (
@@ -114,7 +115,7 @@ const StyledWorkerHeader = styled.div`
 
 const StyledAvatar = styled(Avatar)``;
 
-const WorkerHeader = shouldUpdate(() => false)(({ worker }) => (
+export const WorkerHeader = shouldUpdate(() => false)(({ worker }) => (
   <StyledWorkerHeader>
     <StyledAvatar
       name={fullName(worker)}
@@ -278,7 +279,6 @@ Day.propTypes = {
 
 const getWorkerDateEvents = (worker, date, events) =>
   path([worker._id, dmy(date)], events);
-const getDateEvents = (date, events) => path([dmy(date)], events);
 
 class WorkersCalendar extends Component {
   state = { selecting: false };
@@ -362,55 +362,3 @@ WorkersCalendar.propTypes = {
 };
 
 export default WorkersCalendar;
-
-export const WorkerCalendar = ({
-  startDate,
-  endDate,
-  from,
-  to,
-  calendar = {},
-  events,
-  worker,
-}) => {
-  if (!worker) return null;
-  const days = eachDay(startDate, endDate);
-  const daysheader = map(
-    day => <DayHeader key={dmy(day)} date={day} calendar={calendar} />,
-    days,
-  );
-  const monthHeader = <div key={-1} />;
-  const daysRow = [monthHeader, ...daysheader];
-  const workerHeader = <WorkerHeader key={worker._id} worker={worker} />;
-  const workerMonth = map(
-    d => (
-      <Day
-        key={dmy(d)}
-        date={d}
-        calendar={calendar}
-        from={from}
-        to={to}
-        worker={worker}
-        currentWorker={worker}
-        events={getDateEvents(d, events)}
-      />
-    ),
-    days,
-  );
-
-  return (
-    <StyledCalendar days={days}>
-      {daysRow}
-      {[workerHeader, ...workerMonth]}
-    </StyledCalendar>
-  );
-};
-
-WorkerCalendar.propTypes = {
-  startDate: PropTypes.object,
-  endDate: PropTypes.object,
-  from: PropTypes.object,
-  to: PropTypes.object,
-  calendar: PropTypes.object,
-  events: PropTypes.object,
-  worker: PropTypes.object,
-};
