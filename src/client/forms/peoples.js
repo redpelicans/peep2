@@ -37,8 +37,7 @@ const fields = {
     label: 'Types',
     domainValues: [
       { id: 'Client', value: 'Client' },
-      { id: 'Partner', value: 'Partner' },
-      { id: 'Tenant', value: 'Tenant' },
+      { id: 'Worker', value: 'Worker' },
     ],
     required: true,
     component: SelectField,
