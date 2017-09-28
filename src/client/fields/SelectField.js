@@ -7,6 +7,7 @@ import withWorkers from '../hoc/workers';
 import withCities from '../hoc/cities';
 import withCountries from '../hoc/countries';
 import withTags from '../hoc/tags';
+import withCompanies from '../hoc/companies';
 import { Field } from '../fields';
 import 'react-select/dist/react-select.css';
 import Select from 'react-select';
@@ -75,6 +76,7 @@ export const SelectField = ({
   return (
     <Field label={label} required={required}>
       <SelectStyled
+        placeholder={`Select ${label}`}
         id={label}
         options={getOptions(domainValues)}
         onChange={handleChange}
@@ -115,6 +117,7 @@ export const MultiSelectField = ({
     <Field label={label} required={required}>
       <SelectStyled
         id={label}
+        placeholder={`Select ${label}`}
         options={getOptions(domainValues)}
         onChange={handleChange}
         value={value}
@@ -131,7 +134,7 @@ MultiSelectField.propTypes = {
   error: PropTypes.string,
   required: PropTypes.bool.isRequired,
   domainValues: PropTypes.array,
-  value: PropTypes.string,
+  value: PropTypes.array,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
 };
@@ -159,3 +162,8 @@ export const TagsSelectField = compose(
   withTags,
   propTransformer('tags', 'domainValues'),
 )(MultiSelectField);
+
+export const CompaniesSelectField = compose(
+  withCompanies,
+  propTransformer('companies', 'domainValues', map(company => company.name)),
+)(SelectField);

@@ -32,6 +32,11 @@ const entityIcon = {
   company: 'home',
 };
 
+const StyledCreatedAt = styled.span`
+  font-style: italic;
+  font-size: 0.8em;
+`;
+
 const Footer = ({ note, person, entity }) => {
   if (!person || !entity || !note) return null;
   return (
@@ -39,6 +44,7 @@ const Footer = ({ note, person, entity }) => {
       {entity.avatar && (
         <Avatar
           name={entity.name}
+          size="MEDIUM"
           to={getPathByName(entity.typeName, entity._id)}
           {...entity.avatar}
         />
@@ -57,11 +63,12 @@ const Footer = ({ note, person, entity }) => {
             entity.name
           )}
         </StyledName>
-        <span>{note.createdAt}</span>
+        <StyledCreatedAt>{note.createdAt}</StyledCreatedAt>
       </StyledMain>
       {person.avatar && (
         <Avatar
           name={person.name}
+          size="SMALL"
           {...person.avatar}
           to={getPathByName('person', person._id)}
           style={{

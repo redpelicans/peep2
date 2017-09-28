@@ -58,6 +58,7 @@ export const Preview = ({
         <Avatar
           name={name}
           color={avatar.color}
+          size="MEDIUM"
           to={getPathByName('company', _id)}
         />
         <Title>

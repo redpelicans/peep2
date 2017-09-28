@@ -13,6 +13,7 @@ import { Title, Container, Spacer, ViewField, LinkButton } from '../widgets';
 import Preview from '../People/Preview';
 import { onTagClick, deletePeople } from '../../actions/people';
 import MasonryLayout from '../widgets/MasonryLayout';
+import { getPathByName } from '../../routes';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -70,37 +71,39 @@ const CompanyInfos = ({ company = {}, people }) => {
         <StyledViewField name="type" label="Type" value={type} />
         <StyledViewField
           name="website"
-          label="Website:"
+          label="Website"
           value={
             <StyledLink target="_blank" href={website}>
               {website}
             </StyledLink>
           }
         />
-        <StyledViewField name="street" label="Street:" value={street} />
-        <StyledViewField name="zipcode" label="Zip code:" value={zipcode} />
-        <StyledViewField name="city" label="City:" value={city} />
-        <StyledViewField name="country" label="Country:" value={country} />
+        <StyledViewField name="street" label="Street" value={street} />
+        <StyledViewField name="zipcode" label="Zip code" value={zipcode} />
+        <StyledViewField name="city" label="City" value={city} />
+        <StyledViewField name="country" label="Country" value={country} />
       </StyledGrid>
-      <label>Contacts:</label>
-      <ArrayBlock>
-        {people.length > 0 && (
-          <MasonryLayout id="people" sizes={sizes}>
-            {map(
-              person => (
-                <Preview
-                  key={person._id}
-                  person={person}
-                  company={company}
-                  onTagClick={onTagClick}
-                  deletePeople={deletePeople}
-                />
-              ),
-              people,
-            )}
-          </MasonryLayout>
-        )}
-      </ArrayBlock>
+      {people.length > 0 && (
+        <div>
+          <label>Contacts</label>
+          <ArrayBlock>
+            <MasonryLayout id="people" sizes={sizes}>
+              {map(
+                person => (
+                  <Preview
+                    key={person._id}
+                    person={person}
+                    company={company}
+                    onTagClick={() => {}}
+                    deletePeople={deletePeople}
+                  />
+                ),
+                people,
+              )}
+            </MasonryLayout>
+          </ArrayBlock>
+        </div>
+      )}
     </StyledWrapper>
   );
 };
@@ -135,14 +138,20 @@ const Company = ({
         <HeaderLeft>
           <GoBack history={history} />
           <Spacer />
-          <Avatar name={name} color={company.avatar.color} to="#" />
+          <Avatar
+            name={company.name}
+            size="LARGE"
+            color={company.avatar.color}
+          />
           <Spacer />
           <Title title={`${company.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <LinkButton iconName="pt-icon-edit" className="pt-button pt-large">
-            Edit
-          </LinkButton>
+          <LinkButton
+            to={getPathByName('editCompany', id)}
+            iconName="pt-icon-edit"
+            className="pt-button pt-large"
+          />
         </HeaderRight>
       </Header>
       <CompanyInfos company={company} people={people} />

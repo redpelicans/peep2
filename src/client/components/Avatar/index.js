@@ -24,7 +24,7 @@ export const Circle = styled.div`
   font-weight: bold;
   border-radius: 50%;
   overflow: hidden;
-  cursor: pointer;
+  cursor: ${props => (!props.noPointer ? 'pointer' : 'default')};
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
 `;
 
@@ -40,15 +40,25 @@ const Avatar = ({
   size = SMALL,
   showTooltip = false,
   className,
-  to = '',
+  to,
 }) => (
-  <Link to={to}>
-    <Tooltip2 content={name} disabled={!showTooltip}>
-      <Circle color={color} size={size} className={className}>
-        {initials(name)}
-      </Circle>
-    </Tooltip2>
-  </Link>
+  <div>
+    {to ? (
+      <Link to={to}>
+        <Tooltip2 content={name} disabled={!showTooltip}>
+          <Circle color={color} size={size} className={className}>
+            {initials(name)}
+          </Circle>
+        </Tooltip2>
+      </Link>
+    ) : (
+      <Tooltip2 content={name} disabled={!showTooltip}>
+        <Circle noPointer color={color} size={size} className={className}>
+          {initials(name)}
+        </Circle>
+      </Tooltip2>
+    )}
+  </div>
 );
 
 Avatar.propTypes = {

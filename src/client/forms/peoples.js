@@ -4,61 +4,91 @@ import { InputField } from '../fields';
 import {
   TagsSelectField,
   SelectField,
-  CitiesSelectField,
-  CountriesSelectField,
+  CompaniesSelectField,
 } from '../fields/SelectField';
+import PhoneField from '../fields/PhoneField';
 import { MarkDownField } from '../fields/MarkDownField';
 
 const fields = {
+  prefix: {
+    key: 'Prefix',
+    label: 'Prefix',
+    domainValues: ['Mr', 'Mrs'],
+    required: true,
+    component: SelectField,
+    validate: Yup.string(),
+  },
+  firstName: {
+    key: 'FirstName',
+    label: 'First Name',
+    required: true,
+    component: InputField,
+    validate: Yup.string(),
+  },
+  lastName: {
+    key: 'LastName',
+    label: 'Last Name',
+    required: true,
+    component: InputField,
+    validate: Yup.string(),
+  },
   types: {
+    key: 'Types',
     label: 'Types',
     domainValues: ['Client', 'Partner', 'Tenant'],
     required: true,
     component: SelectField,
     validate: Yup.string(),
   },
-  name: {
-    label: 'Name',
+  email: {
+    key: 'Email',
+    label: 'Email',
     required: true,
     component: InputField,
     validate: Yup.string(),
   },
-  website: {
-    label: 'Website',
+  jobType: {
+    key: 'JobType',
+    label: 'Job Type',
+    domainValues: [
+      'Designer',
+      'Developer',
+      'Manager',
+      'Sales',
+      'Business Manager',
+    ],
     required: true,
-    component: InputField,
+    component: SelectField,
     validate: Yup.string(),
   },
-  street: {
-    label: 'Street',
+  company: {
+    key: 'Company',
+    label: 'Company',
     required: true,
-    component: InputField,
+    component: CompaniesSelectField,
     validate: Yup.string(),
   },
-  zipcode: {
-    label: 'Zipcode',
+  phones: {
+    key: 'Phones',
+    label: 'Phones',
     required: true,
-    component: InputField,
-    validate: Yup.string(),
-  },
-  city: {
-    label: 'City',
-    required: true,
-    component: CitiesSelectField,
-    validate: Yup.string(),
-  },
-  country: {
-    label: 'Country',
-    required: true,
-    component: CountriesSelectField,
-    validate: Yup.string(),
+    component: PhoneField,
+    validate: Yup.number(),
   },
   tags: {
+    key: 'Tags',
     label: 'Tags',
     component: TagsSelectField,
   },
+  roles: {
+    key: 'Roles',
+    label: 'Roles',
+    component: SelectField,
+    domainValues: ['Admin', 'Edit', 'Access'],
+  },
   notes: {
-    label: 'Note',
+    key: 'Notes',
+    label: 'Notes',
     component: MarkDownField,
   },
 };

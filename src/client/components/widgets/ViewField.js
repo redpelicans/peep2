@@ -29,7 +29,7 @@ const ViewField = ({ label, value, className }) => (
 ViewField.propTypes = {
   label: PropTypes.string,
   className: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.node,
 };
 
 export default ViewField;
