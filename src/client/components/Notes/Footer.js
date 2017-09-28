@@ -6,7 +6,7 @@ import { NameLink } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
-const StyledFooter = styled.div`
+export const StyledFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -69,14 +69,8 @@ const Footer = ({ note, person, entity }) => {
         <Avatar
           name={person.name}
           size="SMALL"
-          {...person.avatar}
           to={getPathByName('person', person._id)}
-          style={{
-            minWidth: '30px',
-            width: '30px',
-            height: '30px',
-            fontSize: '.8rem',
-          }}
+          {...person.avatar}
         />
       )}
     </StyledFooter>
