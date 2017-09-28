@@ -32,6 +32,8 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
       path.indexOf('/', 1) !== -1 ? path.indexOf('/', 1) : path.length;
     const result = path.substring(start, end);
     switch (result) {
+      case '/':
+        return '/companies';
       case '/person':
         return '/people';
       case '/company':

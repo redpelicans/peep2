@@ -1,8 +1,16 @@
-import { connect } from 'react-redux';
-import { getSortedWorkers } from '../selectors/people';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { identity, omit } from 'ramda';
 
-const mapStateToProps = (state, props) => ({
-  ...props,
-  workers: getSortedWorkers('firstName')(state),
-});
-export const withWorkers = Component => connect(mapStateToProps)(Component);
+export const propTransformer = (src, target, fn = identity) => Component => {
+  const Transformer = props => {
+    const newProps = { ...omit([src], props), [target]: fn(props[src]) };
+    return <Component {...newProps} />;
+  };
+
+  Transformer.propTypes = {
+    workers: PropTypes.array.isRequired,
+  };
+
+  return Transformer;
+};

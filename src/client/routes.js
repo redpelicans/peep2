@@ -2,6 +2,7 @@ import { compose, find, prop, reduce, toPairs } from 'ramda';
 import Login from './components/Login';
 import Companies from './components/Companies';
 import People from './components/People';
+import AddPeople from './components/People/Add';
 import Agenda from './components/Agenda';
 import Notes from './components/Notes';
 import AddCompany from './components/Companies/Add';
@@ -16,6 +17,7 @@ const routes = {
   home: {
     path: '/',
     component: Companies,
+    default: true,
     exact: true,
     auth: true,
   },
@@ -43,6 +45,12 @@ const routes = {
     exact: true,
     auth: true,
     component: People,
+  },
+  addPeople: {
+    path: '/people/add',
+    exact: true,
+    auth: true,
+    component: AddPeople,
   },
   person: {
     path: '/people/:id',

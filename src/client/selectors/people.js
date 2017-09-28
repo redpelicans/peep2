@@ -71,8 +71,8 @@ export const getPeopleFromCompany = createSelector(
 );
 
 export const getWorkers = createSelector([getPeople], people =>
-  compose(filter(isWorker), values)(people),
+  compose(filter(isWorker))(people),
 );
 
 export const getSortedWorkers = attr =>
-  createSelector([getWorkers], people => sortBy(prop(attr), people));
+  createSelector(getWorkers, compose(sortBy(prop(attr)), values));

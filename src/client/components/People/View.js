@@ -15,7 +15,7 @@ import {
   Container,
   Spacer,
   CompanyLink,
-  ViewFieldString,
+  ViewField,
   LinkButton,
 } from '../widgets';
 
@@ -81,6 +81,7 @@ PhoneField.propTypes = {
   label: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
 };
+const StyledViewField = styled(ViewField)`grid-area: ${({ name }) => name};`;
 
 const PersonInfos = ({ person = {} }) => {
   const {
@@ -97,14 +98,14 @@ const PersonInfos = ({ person = {} }) => {
   return (
     <StyledWrapper>
       <StyledGrid>
-        <ViewFieldString name="prefix" label="Prefix" value={prefix} />
-        <ViewFieldString
+        <StyledViewField name="prefix" label="Prefix" value={prefix} />
+        <StyledViewField
           name="firstName"
           label="First Name"
           value={firstName}
         />
-        <ViewFieldString name="lastName" label="Last Name" value={lastName} />
-        <ViewFieldString
+        <StyledViewField name="lastName" label="Last Name" value={lastName} />
+        <StyledViewField
           name="company"
           label="Company"
           value={
@@ -113,9 +114,9 @@ const PersonInfos = ({ person = {} }) => {
             </CompanyLink>
           }
         />
-        <ViewFieldString name="type" label="Type" value={type} />
-        <ViewFieldString name="jobType" label="Job Type" value={jobType} />
-        <ViewFieldString name="email" label="Email" value={email} />
+        <StyledViewField name="type" label="Type" value={type} />
+        <StyledViewField name="jobType" label="Job Type" value={jobType} />
+        <StyledViewField name="email" label="Email" value={email} />
       </StyledGrid>
       {phones.length > 0 && (
         <div>
