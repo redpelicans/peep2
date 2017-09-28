@@ -31,7 +31,16 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
     const end =
       path.indexOf('/', 1) !== -1 ? path.indexOf('/', 1) : path.length;
     const result = path.substring(start, end);
-    return result;
+    switch (result) {
+      case '/person':
+        return '/people';
+      case '/company':
+        return '/companies';
+      case '/note':
+        return '/notes';
+      default:
+        return result;
+    }
   };
   const selectedRoute =
     getRouteByPath(getRouteName(history.location.pathname)) || defaultRoute;
