@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, sum, pluck } from 'ramda';
-import { addWeeks, subWeeks, differenceInDays } from 'date-fns';
+import { startOfDay, endOfDay, addWeeks, subWeeks } from 'date-fns';
 import { withHandlers, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -21,8 +21,14 @@ import {
 } from '../../forms/events';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
-import { Field, FormField } from '../../fields';
-import { WorkerCalendar } from './WorkersCalendar';
+import { FormField } from '../../fields';
+import WorkerCalendar from './Calendar/Worker';
+
+const StyledContainer = styled(Container)`min-width: 300px;`;
+const StyledForm = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const VSpacer = styled.div`
   margin-top: 15px;
@@ -30,27 +36,31 @@ const VSpacer = styled.div`
 `;
 
 const Form = styled.form`
+  padding: 20px;
   margin-top: 50px;
-  width: 100%;
+  width: 90%;
   display: grid;
   grid-gap: 20px;
-  grid-template-areas: 'period' 'valueUnit' 'type' 'workerId' 'status'
-    'description';
+  justify-content: center;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-template-areas: 'calendar' 'period' 'valueUnit' 'type' 'workerId'
+    'status' 'description';
   @media (min-width: 900px) {
     grid-template-columns: repeat(3, minmax(100px, 1fr));
-    grid-template-areas: 'period valueUnit valueUnit' 'type workerId status'
+    grid-template-areas: 'calendar calendar calendar' 'period period period'
+      'valueUnit valueUnit valueUnit' 'type workerId status'
       'description description description';
-  }
-  @media (min-width: 1600px) {
-    grid-template-columns: minmax(100px, 1.3fr) minmax(150px, 1.5fr)
-      repeat(3, minmax(100px, 1fr));
-    grid-template-areas: 'period valueUnit type workerId status'
-      'spacer spacer spacer spacer spacer'
-      'description description description description description';
   }
 `;
 
+const StyledCalendar = styled(WorkerCalendar)`
+  justify-content: center;
+  grid-area: calendar;
+`;
+
 const StyledFormField = styled(FormField)`
+  justify-content: center;
   grid-area: ${({ field }) => field.name};
 `;
 
@@ -74,12 +84,15 @@ ValueUnit.propTypes = {
 
 const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
   const { location: { state } } = history;
+  const calendarPeriod = [
+    startOfDay(subWeeks(state.from, 1)),
+    endOfDay(addWeeks(state.to, 1)),
+  ];
+  const selectedPeriod = [startOfDay(state.from), endOfDay(state.to)];
   const initialValues = {
     ...defaultValues,
-    period: [state.from, state.to],
-    endDate: state.to,
+    period: selectedPeriod,
     workerId: state.workerId,
-    value: differenceInDays(state.to, state.from) + 1,
   };
   return (
     <Formik
@@ -100,22 +113,19 @@ const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
         isSubmitting,
         dirty,
       }) => {
-        const [startDate, endDate] = values['period'];
-        const [minDate, maxDate] = [
-          subWeeks(state.from, 1),
-          addWeeks(state.to, 1),
-        ];
+        const [from, to] = values['period'];
+        const [minDate, maxDate] = calendarPeriod;
         const currentWorker = workers[state.workerId];
         const workerEvents = events[state.workerId];
         const newEvents = freeEventsFromPeriod({
-          from: startDate,
-          to: endDate,
+          from,
+          to,
           events: workerEvents,
           calendar,
         });
         const daysCount = compose(sum, pluck('value'))(newEvents);
         return (
-          <Container>
+          <StyledContainer>
             <Header>
               <HeaderLeft>
                 <div className="pt-icon-standard pt-icon-calendar" />
@@ -143,71 +153,73 @@ const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
                 </Button>
               </HeaderRight>
             </Header>
-            <WorkerCalendar
-              startDate={minDate}
-              endDate={maxDate}
-              from={startDate}
-              to={endDate}
-              events={workerEvents}
-              worker={currentWorker}
-              calendar={calendar}
-            />
-            <Form id="addEvent" onSubmit={handleSubmit}>
-              <PeriodPicker
-                field={getField('period')}
-                from={startDate}
-                to={endDate}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-                minDate={minDate}
-                maxDate={maxDate}
-              />
-              <StyledFormField
-                field={getField('workerId')}
-                values={values}
-                touched={touched}
-                setFieldValue={setFieldValue}
-                setFieldTouched={setFieldTouched}
-              />
+            <StyledForm>
+              <Form id="addEvent" onSubmit={handleSubmit}>
+                <StyledCalendar
+                  startDate={minDate}
+                  endDate={maxDate}
+                  from={from}
+                  to={to}
+                  events={workerEvents}
+                  worker={currentWorker}
+                  calendar={calendar}
+                />
+                <PeriodPicker
+                  field={getField('period')}
+                  from={from}
+                  to={to}
+                  setFieldTouched={setFieldTouched}
+                  setFieldValue={setFieldValue}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                />
+                <StyledFormField
+                  field={getField('workerId')}
+                  values={values}
+                  touched={touched}
+                  setFieldValue={setFieldValue}
+                  setFieldTouched={setFieldTouched}
+                />
 
-              <ValueUnit
-                name="valueUnit"
-                value={daysCount}
-                unit={count => (count > 1 ? 'working days' : 'working day')}
-              />
+                <ValueUnit
+                  name="valueUnit"
+                  value={daysCount}
+                  unit={count => (count > 1 ? 'working days' : 'working day')}
+                />
 
-              <StyledFormField
-                field={getField('type')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                type="text"
-                setFieldValue={setFieldValue}
-                setFieldTouched={setFieldTouched}
-              />
+                <StyledFormField
+                  field={getField('type')}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  type="text"
+                  setFieldValue={setFieldValue}
+                  setFieldTouched={setFieldTouched}
+                />
 
-              <StyledFormField
-                field={getField('status')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                type="text"
-                setFieldValue={setFieldValue}
-                setFieldTouched={setFieldTouched}
-              />
-              <VSpacer />
-              <StyledFormField
-                field={getField('description')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                type="text"
-                setFieldValue={setFieldValue}
-                setFieldTouched={setFieldTouched}
-                height="10em"
-              />
-            </Form>
-          </Container>
+                <StyledFormField
+                  field={getField('status')}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  type="text"
+                  setFieldValue={setFieldValue}
+                  setFieldTouched={setFieldTouched}
+                />
+                <VSpacer />
+                <StyledFormField
+                  field={getField('description')}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  type="text"
+                  setFieldValue={setFieldValue}
+                  setFieldTouched={setFieldTouched}
+                  height="10em"
+                />
+              </Form>
+            </StyledForm>
+          </StyledContainer>
         );
       }}
     />

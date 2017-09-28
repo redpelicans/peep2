@@ -16,12 +16,22 @@ import { loadEvents } from '../../actions/events';
 import { getCalendar } from '../../selectors/calendar';
 import { getCurrentDate } from '../../selectors/agenda';
 import { getUser } from '../../selectors/login';
-import Calendar from './WorkersCalendar';
+import Calendar from './Calendar/Workers';
 import Day from './Day';
 
 const StyledContainer = styled(Container)`min-width: 1200px;`;
 
-const Agenda = ({ user, date, events, calendar, workers, goPreviousMonth, goNextMonth, goToday, addEvent }) => (
+const Agenda = ({
+  user,
+  date,
+  events,
+  calendar,
+  workers,
+  goPreviousMonth,
+  goNextMonth,
+  goToday,
+  addEvent,
+}) => (
   <StyledContainer>
     <Header>
       <HeaderLeft>
@@ -37,7 +47,15 @@ const Agenda = ({ user, date, events, calendar, workers, goPreviousMonth, goNext
         <Button iconName="arrow-right" onClick={goNextMonth} />
       </HeaderRight>
     </Header>
-    <Calendar date={date} events={events} dayComponent={Day} calendar={calendar} onPeriodSelection={addEvent} workers={workers} user={user} />
+    <Calendar
+      date={date}
+      events={events}
+      dayComponent={Day}
+      calendar={calendar}
+      onPeriodSelection={addEvent}
+      workers={workers}
+      user={user}
+    />
   </StyledContainer>
 );
 
@@ -72,10 +90,16 @@ const enhance = compose(
     },
   }),
   withHandlers({
-    goPreviousMonth: ({ date, changeDate }) => () => changeDate(subMonths(date, 1)),
+    goPreviousMonth: ({ date, changeDate }) => () =>
+      changeDate(subMonths(date, 1)),
     goNextMonth: ({ date, changeDate }) => () => changeDate(addMonths(date, 1)),
     goToday: ({ changeDate }) => () => changeDate(new Date()),
-    addEvent: ({ history }) => (worker, from, to) => history.push(getPathByName('addAgendaEvent'), { workerId: worker._id, from, to }),
+    addEvent: ({ history }) => (worker, from, to) =>
+      history.push(getPathByName('addAgendaEvent'), {
+        workerId: worker._id,
+        from,
+        to,
+      }),
   }),
 );
 
