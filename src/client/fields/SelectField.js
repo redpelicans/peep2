@@ -72,11 +72,11 @@ export const SelectField = ({
     setFieldTouched(name, newValue !== value);
     setFieldValue(name, newValue);
   };
-  const getOptions = map(value => ({ value: value, label: value }));
+  const getOptions = map(value => ({ value: value.value, label: value.value }));
   return (
     <Field label={label} required={required}>
       <SelectStyled
-        placeholder={`Select ${label}`}
+        placeholder={`Select ${label}...`}
         id={label}
         options={getOptions(domainValues)}
         onChange={handleChange}
@@ -112,12 +112,12 @@ export const MultiSelectField = ({
     setFieldTouched(name, newValue !== value);
     setFieldValue(name, newValue);
   };
-  const getOptions = map(val => ({ value: val, label: val }));
+  const getOptions = map(value => ({ value: value.value, label: value.value }));
   return (
     <Field label={label} required={required}>
       <SelectStyled
         id={label}
-        placeholder={`Select ${label}`}
+        placeholder={`Select ${label}...`}
         options={getOptions(domainValues)}
         onChange={handleChange}
         value={value}
@@ -150,20 +150,36 @@ export const WorkerSelectField = compose(
 
 export const CitiesSelectField = compose(
   withCities,
-  propTransformer('cities', 'domainValues'),
+  propTransformer(
+    'cities',
+    'domainValues',
+    map(city => ({ id: city, value: city })),
+  ),
 )(SelectField);
 
 export const CountriesSelectField = compose(
   withCountries,
-  propTransformer('countries', 'domainValues'),
+  propTransformer(
+    'countries',
+    'domainValues',
+    map(country => ({ id: country, value: country })),
+  ),
 )(SelectField);
 
 export const TagsSelectField = compose(
   withTags,
-  propTransformer('tags', 'domainValues'),
+  propTransformer(
+    'tags',
+    'domainValues',
+    map(tag => ({ id: tag, value: tag })),
+  ),
 )(MultiSelectField);
 
 export const CompaniesSelectField = compose(
   withCompanies,
-  propTransformer('companies', 'domainValues', map(company => company.name)),
+  propTransformer(
+    'companies',
+    'domainValues',
+    map(company => ({ id: company.name, value: company.name })),
+  ),
 )(SelectField);
