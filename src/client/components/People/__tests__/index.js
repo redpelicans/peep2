@@ -11,7 +11,12 @@ const { describe, it } = global;
 describe('List component', () => {
   it('should not render anything', () => {
     const wrapper = shallow(
-      <List people={[]} companies={{}} deletePeople={() => {}} onTagClick={() => {}} />,
+      <List
+        people={[]}
+        companies={{}}
+        deletePeople={() => {}}
+        onTagClick={() => {}}
+      />,
     );
     should(wrapper.find(enhancedPreview)).have.length(0);
   });

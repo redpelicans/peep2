@@ -4,6 +4,7 @@ import { Field, RequiredTag } from '../fields';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown';
 import { Spacer } from '../components/widgets';
+import { Colors } from '@blueprintjs/core';
 
 const Buttons = styled.div`
   right: 0;
@@ -18,9 +19,18 @@ const TextAreaStyled = styled.textarea`
 
 const MarkDownLabel = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 `;
+
+const MarkdownContainer = styled.div`
+  background-color: ${Colors.DARK_GRAY3};
+  padding: 25px;
+  border-radius: 4px;
+  min-height: 150px;
+`;
+
+const ButtonsStyled = styled(Buttons)`z-index: 0;`;
 
 export class MarkDownField extends Component {
   state = {
@@ -59,7 +69,7 @@ export class MarkDownField extends Component {
               <RequiredTag required={required} />
             </label>
             <Spacer />
-            <Buttons className="pt-button-group pt-minimal">
+            <ButtonsStyled className="pt-button-group pt-minimal">
               <button
                 type="button"
                 className="pt-button"
@@ -74,7 +84,7 @@ export class MarkDownField extends Component {
               >
                 View
               </button>
-            </Buttons>
+            </ButtonsStyled>
           </MarkDownLabel>
           {displayTextArea && (
             <TextAreaStyled
@@ -86,7 +96,11 @@ export class MarkDownField extends Component {
               {...props}
             />
           )}
-          {!displayTextArea && <ReactMarkdown source={value} />}
+          {!displayTextArea && (
+            <MarkdownContainer>
+              <ReactMarkdown source={value} />
+            </MarkdownContainer>
+          )}
         </div>
       </Field>
     );

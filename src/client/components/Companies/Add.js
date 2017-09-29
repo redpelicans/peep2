@@ -22,8 +22,8 @@ const CompagnyForm = styled.form`
   margin-bottom: 25px;
   width: 90%;
   grid-gap: 20px;
-  grid-auto-columns: minmax(100px, auto);
-  grid-auto-rows: minmax(100px, auto);
+  grid-auto-columns: minmax(70px, auto);
+  grid-auto-rows: minmax(70px, auto);
   grid-template-areas: 'Types' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
     'City' 'Tags' 'Note';
   @media (min-width: 700px) {
@@ -64,7 +64,7 @@ const AddCompany = ({ changeColor }) => {
             <HeaderLeft>
               <Spacer size={15} />
               <AvatarSelector
-                name={values.Name}
+                name={values.name}
                 handleChangeColor={changeColor}
               />
               <Spacer />
