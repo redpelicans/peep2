@@ -34,7 +34,7 @@ export const Icons = styled.div`
   color: rgb(68, 86, 99);
 `;
 
-const Preview = ({
+export const Preview = ({
   handleMouseEnter,
   handleMouseLeave,
   showActions,

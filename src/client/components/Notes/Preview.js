@@ -39,7 +39,7 @@ CardContent.propTypes = {
   entity: PropTypes.object,
 };
 
-const Preview = ({
+export const Preview = ({
   handleMouseEnter,
   handleMouseLeave,
   showActions,
