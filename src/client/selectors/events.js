@@ -1,5 +1,17 @@
 /* eslint-disable no-shadow */
-import { compose, filter, values, reduce, propOr } from 'ramda';
+import {
+  compose,
+  prop,
+  filter,
+  values,
+  reduce,
+  propOr,
+  isEmpty,
+  head,
+  last,
+  pick,
+  sortBy,
+} from 'ramda';
 import { createSelector } from 'reselect';
 import { isWithinRange, startOfMonth, endOfMonth, eachDay } from 'date-fns';
 import { getCurrentDate } from './agenda';
@@ -41,3 +53,20 @@ export const getEventsByWorkerDate = createSelector(
   getEvents,
   eventsByWorkerDate,
 );
+
+const eventGroup = id => events => {
+  const evts = compose(
+    sortBy(prop('from')),
+    filter(e => e.groupId === id),
+    values,
+  )(events);
+  if (isEmpty(evts)) return;
+  return {
+    groupId: id,
+    from: head(evts).from,
+    to: last(evts).to,
+    ...pick(['workerId', 'type', 'status'], head(evts)),
+  };
+};
+
+export const getEventGroup = id => createSelector(getEvents, eventGroup(id));

@@ -10,6 +10,8 @@ import {
   propEq,
   identity,
   filter,
+  sortBy,
+  pick,
 } from 'ramda';
 import {
   addHours,

@@ -2,7 +2,6 @@ import { loadCompanies } from './companies';
 import { loadPeople } from './people';
 import { loadNotes } from './notes';
 import { loadCalendar } from './calendar';
-import { loadEvents } from './events';
 
 export const LOGIN_REQUEST = 'EvtX:Server:auth:login';
 export const CHECK_TOKEN = 'EvtX:Server:auth:checkToken';
@@ -27,7 +26,6 @@ export const userLogged = (user, token) => dispatch => {
   dispatch(loadPeople());
   dispatch(loadNotes());
   dispatch(loadCalendar());
-  dispatch(loadEvents());
 };
 
 export const logout = () => dispatch => {

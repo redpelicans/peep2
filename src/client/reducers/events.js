@@ -1,7 +1,12 @@
-import { compose, fromPairs, map } from "ramda";
-import { EVENTS_LOADED } from "../actions/events";
+import { compose, fromPairs, map } from 'ramda';
+import { EVENTS_LOADED } from '../actions/events';
 
-const makeAll = compose(fromPairs, map(o => [o._id, o]));
+const make = event => ({
+  ...event,
+  from: new Date(event.from),
+  to: new Date(event.to),
+});
+const makeAll = compose(fromPairs, map(event => [event._id, make(event)]));
 
 const people = (state = { data: {} }, action) => {
   switch (action.type) {
