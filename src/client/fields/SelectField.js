@@ -66,6 +66,7 @@ export const SelectField = ({
   setFieldTouched,
   setFieldValue,
   domainValues,
+  ...props
 }) => {
   const handleChange = e => {
     const newValue = e.value;
@@ -82,6 +83,7 @@ export const SelectField = ({
         onChange={handleChange}
         value={value}
         name={label}
+        {...props}
       />
     </Field>
   );
