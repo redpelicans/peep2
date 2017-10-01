@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button, Dialog } from '@blueprintjs/core';
-import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addCompany } from '../../actions/companies';
 import { compose } from 'ramda';
+import { onlyUpdateForKeys } from 'recompose';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import {
@@ -38,6 +38,161 @@ const CompagnyForm = styled.form`
 const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.label};
 `;
+
+const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
+  <Formik
+    initialValues={initialValues}
+    validationSchema={getValidationSchema()}
+    isInitialValid={({ validationSchema, initialValues }) =>
+      validationSchema.isValid(initialValues)}
+    onSubmit={values => console.log('submit!, values:', values)}
+    render={({
+      values,
+      isValid,
+      errors,
+      touched,
+      handleSubmit,
+      handleReset,
+      setFieldTouched,
+      dirty,
+      setFieldValue,
+      isSubmitting,
+    }) => (
+      <Container>
+        <Header>
+          <HeaderLeft>
+            <Spacer size={15} />
+            <AvatarSelector
+              name={values.name}
+              handleChangeColor={changeColor}
+            />
+            <Spacer />
+            <Title title="New Companie" />
+          </HeaderLeft>
+          <HeaderRight>
+            <Button
+              form="addCompany"
+              type="submit"
+              disabled={isSubmitting || !isValid || !dirty}
+              className="pt-intent-success pt-large"
+            >
+              Create
+            </Button>
+            <Spacer />
+            <Button
+              onClick={() => {
+                if (!dirty) {
+                  history.goBack();
+                } else {
+                  showDialogHandler();
+                }
+              }}
+              className="pt-intent-warning pt-large"
+            >
+              Cancel
+            </Button>
+            <Spacer />
+            <Button
+              className="pt-intent-danger pt-large"
+              onClick={handleReset}
+              disabled={!dirty || isSubmitting}
+            >
+              Reset
+            </Button>
+            <Spacer size={20} />
+          </HeaderRight>
+        </Header>
+        <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
+          <StyledFormField
+            field={getField('types')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <StyledFormField
+            field={getField('name')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <StyledFormField
+            field={getField('website')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <StyledFormField
+            field={getField('street')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <StyledFormField
+            field={getField('zipcode')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <StyledFormField
+            field={getField('city')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <StyledFormField
+            field={getField('country')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <StyledFormField
+            field={getField('tags')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <StyledFormField
+            field={getField('notes')}
+            values={values}
+            errors={errors}
+            touched={touched}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+        </CompagnyForm>
+      </Container>
+    )}
+  />
+);
+
+Form.propTypes = {
+  initialValues: PropTypes.object.isRequired,
+  changeColor: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  showDialogHandler: PropTypes.func.isRequired,
+};
+
+const FormElem = onlyUpdateForKeys([
+  'changeColor',
+  'history',
+  'showDialogHandler',
+])(Form);
 
 const AddCompany = ({
   changeColor,
@@ -72,144 +227,11 @@ const AddCompany = ({
           </div>
         </div>
       </Dialog>
-      <Formik
+      <FormElem
         initialValues={initialValues}
-        validationSchema={getValidationSchema()}
-        isInitialValid={({ validationSchema, initialValues }) =>
-          validationSchema.isValid(initialValues)}
-        onSubmit={values => console.log('submit!, values:', values)}
-        render={({
-          values,
-          isValid,
-          errors,
-          touched,
-          handleSubmit,
-          handleReset,
-          setFieldTouched,
-          dirty,
-          setFieldValue,
-          isSubmitting,
-        }) => (
-          <Container>
-            <Header>
-              <HeaderLeft>
-                <Spacer size={15} />
-                <AvatarSelector
-                  name={values.name}
-                  handleChangeColor={changeColor}
-                />
-                <Spacer />
-                <Title title="New Companie" />
-              </HeaderLeft>
-              <HeaderRight>
-                <Button
-                  form="addCompany"
-                  type="submit"
-                  disabled={isSubmitting || !isValid || !dirty}
-                  className="pt-intent-success pt-large"
-                >
-                  Create
-                </Button>
-                <Spacer />
-                <Button
-                  onClick={() => {
-                    if (!dirty) {
-                      history.goBack();
-                    } else {
-                      showDialogHandler();
-                    }
-                  }}
-                  className="pt-intent-warning pt-large"
-                >
-                  Cancel
-                </Button>
-                <Spacer />
-                <Button
-                  className="pt-intent-danger pt-large"
-                  onClick={handleReset}
-                  disabled={!dirty || isSubmitting}
-                >
-                  Reset
-                </Button>
-                <Spacer size={20} />
-              </HeaderRight>
-            </Header>
-            <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
-              <StyledFormField
-                field={getField('types')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('name')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('website')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('street')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('zipcode')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('city')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('country')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('tags')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-              <StyledFormField
-                field={getField('notes')}
-                values={values}
-                errors={errors}
-                touched={touched}
-                setFieldTouched={setFieldTouched}
-                setFieldValue={setFieldValue}
-              />
-            </CompagnyForm>
-          </Container>
-        )}
+        changeColor={changeColor}
+        history={history}
+        showDialogHandler={showDialogHandler}
       />
     </div>
   );
