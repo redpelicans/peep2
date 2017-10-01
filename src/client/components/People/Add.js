@@ -56,12 +56,16 @@ const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
       isSubmitting,
     }) => (
       <Container>
+        {console.log('values: ', values)}
         <Header>
           <HeaderLeft>
             <Spacer size={15} />
             <AvatarSelector
-              name={values.Name}
+              formId="addPeople"
+              name={values.firstName}
+              lastName={values.lastName}
               handleChangeColor={changeColor}
+              setFieldValue={setFieldValue}
             />
             <Spacer />
             <Title title="New People" />
