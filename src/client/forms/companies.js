@@ -10,8 +10,8 @@ import {
 import { MarkDownField } from '../fields/MarkDownField';
 
 const fields = {
-  types: {
-    label: 'Types',
+  type: {
+    label: 'Type',
     domainValues: [
       { id: 'Client', value: 'Client' },
       { id: 'Partner', value: 'Partner' },
@@ -64,6 +64,9 @@ const fields = {
   notes: {
     label: 'Note',
     component: MarkDownField,
+  },
+  color: {
+    label: 'Color',
   },
 };
 

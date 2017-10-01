@@ -6,7 +6,7 @@ import { Button, Dialog } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addCompany } from '../../actions/companies';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
 import { onlyUpdateForKeys } from 'recompose';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
@@ -27,10 +27,10 @@ const CompagnyForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'Types' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
+  grid-template-areas: 'Type' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
     'City' 'Tags' 'Note';
   @media (min-width: 700px) {
-    grid-template-areas: 'Types Name Website' 'Zipcode Street Street'
+    grid-template-areas: 'Type Name Website' 'Zipcode Street Street'
       'Country City City' 'Tags Tags Tags' 'Note Note Note';
   }
 `;
@@ -39,13 +39,35 @@ const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.label};
 `;
 
-const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
+const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
   <Formik
     initialValues={initialValues}
     validationSchema={getValidationSchema()}
     isInitialValid={({ validationSchema, initialValues }) =>
       validationSchema.isValid(initialValues)}
-    onSubmit={values => console.log('submit!, values:', values)}
+    onSubmit={({
+      name,
+      type,
+      tags = [],
+      website,
+      zipcode,
+      street,
+      country,
+      city,
+      notes = '',
+      color,
+    }) => {
+      const newCompagny = {
+        name,
+        avatar: { color },
+        type,
+        tags: map(tag => tag.value, tags),
+        website,
+        address: { street, city, zipcode, country },
+        notes,
+      };
+      addCompany(newCompagny);
+    }}
     render={({
       values,
       isValid,
@@ -63,8 +85,10 @@ const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
           <HeaderLeft>
             <Spacer size={15} />
             <AvatarSelector
+              formId="addCompany"
               name={values.name}
-              handleChangeColor={changeColor}
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
             />
             <Spacer />
             <Title title="New Companie" />
@@ -104,7 +128,7 @@ const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
         </Header>
         <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
           <StyledFormField
-            field={getField('types')}
+            field={getField('type')}
             values={values}
             errors={errors}
             touched={touched}
@@ -183,19 +207,19 @@ const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
 
 Form.propTypes = {
   initialValues: PropTypes.object.isRequired,
-  changeColor: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   showDialogHandler: PropTypes.func.isRequired,
+  addCompany: PropTypes.func.isRequired,
 };
 
 const FormElem = onlyUpdateForKeys([
   'changeColor',
+  'color',
   'history',
   'showDialogHandler',
 ])(Form);
 
 const AddCompany = ({
-  changeColor,
   addCompany,
   history,
   isDialogOpen,
@@ -229,16 +253,15 @@ const AddCompany = ({
       </Dialog>
       <FormElem
         initialValues={initialValues}
-        changeColor={changeColor}
         history={history}
         showDialogHandler={showDialogHandler}
+        addCompany={addCompany}
       />
     </div>
   );
 };
 
 AddCompany.propTypes = {
-  changeColor: PropTypes.func.isRequired,
   addCompany: PropTypes.func.isRequired,
   isDialogOpen: PropTypes.bool,
   showDialogHandler: PropTypes.func.isRequired,
@@ -248,14 +271,12 @@ AddCompany.propTypes = {
 const actions = { addCompany };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 const enhance = compose(
-  withState('color', 'changeColor', ''),
   withState('isDialogOpen', 'showDialog', false),
   withHandlers({
-    changeColorHandler: ({ changeColor }) => () => changeColor(color => color),
     showDialogHandler: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),
   }),
-  connect(mapDispatchToProps),
+  connect(null, mapDispatchToProps),
 );
 
 export default enhance(AddCompany);
