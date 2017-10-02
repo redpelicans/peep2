@@ -46,6 +46,7 @@ const Form = ({
   history,
   showDialogHandler,
   addPeople,
+  title,
 }) => (
   <Formik
     initialValues={initialValues}
@@ -109,7 +110,7 @@ const Form = ({
               setFieldValue={setFieldValue}
             />
             <Spacer />
-            <Title title="New People" />
+            <Title title={title} />
           </HeaderLeft>
           <HeaderRight>
             <Button
@@ -246,9 +247,10 @@ Form.propTypes = {
   history: PropTypes.object.isRequired,
   showDialogHandler: PropTypes.func.isRequired,
   addPeople: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
-const FormElem = onlyUpdateForKeys([
+export const FormElem = onlyUpdateForKeys([
   'changeColor',
   'history',
   'showDialogHandler',
@@ -293,6 +295,7 @@ const AddPeople = ({
         history={history}
         showDialogHandler={showDialogHandler}
         addPeople={addPeople}
+        title="New People"
       />
     </div>
   );
@@ -304,6 +307,7 @@ AddPeople.propTypes = {
   history: PropTypes.object,
   isDialogOpen: PropTypes.bool,
   addPeople: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 const actions = { addPeople };
