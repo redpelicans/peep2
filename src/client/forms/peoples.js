@@ -8,6 +8,7 @@ import {
 } from '../fields/SelectField';
 import PhoneField from '../fields/PhoneField';
 import { MarkDownField } from '../fields/MarkDownField';
+import { randomColor } from '../utils/colors';
 
 const fields = {
   prefix: {
@@ -67,6 +68,7 @@ const fields = {
   phones: {
     label: 'Phones',
     component: PhoneField,
+    validate: Yup.array(),
   },
   tags: {
     label: 'Tags',
@@ -84,6 +86,10 @@ const fields = {
   notes: {
     label: 'Notes',
     component: MarkDownField,
+  },
+  color: {
+    label: 'Color',
+    defaultValue: randomColor(),
   },
 };
 

@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button, Dialog } from '@blueprintjs/core';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import {
@@ -11,6 +13,7 @@ import {
   getField,
   defaultValues,
 } from '../../forms/peoples';
+import { addPeople } from '../../actions/people';
 import { Spacer, Title, Container, AvatarSelector } from '../widgets';
 import { onlyUpdateForKeys } from 'recompose';
 import { FormField } from '../../fields';
@@ -37,13 +40,52 @@ const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.label};
 `;
 
-const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
+const Form = ({
+  initialValues,
+  changeColor,
+  history,
+  showDialogHandler,
+  addPeople,
+}) => (
   <Formik
     initialValues={initialValues}
     validationSchema={getValidationSchema()}
     isInitialValid={({ validationSchema, initialValues }) =>
       validationSchema.isValid(initialValues)}
-    onSubmit={values => console.log('submit!, values:', values)}
+    onSubmit={({
+      color,
+      firstName,
+      type,
+      lastName,
+      notes,
+      phones = [],
+      prefix,
+      tags = [],
+      roles,
+      jobType,
+      email,
+      company,
+    }) => {
+      const newPeople = {
+        avatar: { color },
+        firstName,
+        type,
+        lastName,
+        email,
+        jobType,
+        company,
+        name: `${firstName} ${lastName}`,
+        note: notes,
+        phones: map(
+          phone => ({ label: phone.type, number: phone.number }),
+          phones,
+        ),
+        prefix,
+        tags: map(tag => tag.value, tags),
+        roles,
+      };
+      addPeople(newPeople);
+    }}
     render={({
       values,
       isValid,
@@ -56,10 +98,6 @@ const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
       isSubmitting,
     }) => (
       <Container>
-        {console.log('values: ', values)}
-        {console.log('isValid: ', isValid)}
-        {console.log('isdirty: ', dirty)}
-        {console.log('isSubmitting: ', isSubmitting)}
         <Header>
           <HeaderLeft>
             <Spacer size={15} />
@@ -207,6 +245,7 @@ Form.propTypes = {
   changeColor: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   showDialogHandler: PropTypes.func.isRequired,
+  addPeople: PropTypes.func.isRequired,
 };
 
 const FormElem = onlyUpdateForKeys([
@@ -220,6 +259,7 @@ const AddPeople = ({
   history,
   isDialogOpen,
   showDialogHandler,
+  addPeople,
 }) => {
   const initialValues = {
     ...defaultValues,
@@ -252,6 +292,7 @@ const AddPeople = ({
         changeColor={changeColor}
         history={history}
         showDialogHandler={showDialogHandler}
+        addPeople={addPeople}
       />
     </div>
   );
@@ -262,7 +303,11 @@ AddPeople.propTypes = {
   showDialogHandler: PropTypes.func.isRequired,
   history: PropTypes.object,
   isDialogOpen: PropTypes.bool,
+  addPeople: PropTypes.func.isRequired,
 };
+
+const actions = { addPeople };
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
   withState('color', 'changeColor', ''),
@@ -272,6 +317,7 @@ const enhance = compose(
     showDialogHandler: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),
   }),
+  connect(null, mapDispatchToProps),
 );
 
 export default enhance(AddPeople);
