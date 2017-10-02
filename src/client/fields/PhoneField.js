@@ -58,7 +58,6 @@ const InputStyled = styled.input`
 
 class PhoneField extends Component {
   state = {
-    values: [],
     number: '',
     selectedType: 'mobile',
   };
@@ -68,7 +67,7 @@ class PhoneField extends Component {
       label,
       error,
       required,
-      value = '',
+      value = [],
       setFieldTouched,
       setFieldValue,
     } = this.props;
@@ -82,24 +81,18 @@ class PhoneField extends Component {
       if (isEmpty(number)) {
         return;
       }
-      this.setState(
-        {
-          values: [...values, { type: selectedType, number: number }],
-          number: '',
-        },
-        () => {
-          const newValue = this.state.values;
-          setFieldTouched(name, newValue !== value);
-          setFieldValue(name, newValue);
-        },
-      );
+      this.setState({ number: '' }, () => {
+        const newValue = [...value, { type: selectedType, number: number }];
+        setFieldValue(name, newValue);
+      });
     };
     const handleDeletePhone = id => {
-      const newValues = values.filter(value => value !== values[id]);
-      this.setState({ values: newValues });
+      const newValues = value.filter(val => val !== value[id]);
+      setFieldTouched(name, newValues !== value);
+      setFieldValue(name, newValues);
     };
     const phoneTypes = ['Mobile', 'Home', 'Work'];
-    const { values, selectedType, number } = this.state;
+    const { selectedType, number } = this.state;
     return (
       <Field label={label} error={error} required={required}>
         <Container>
@@ -132,7 +125,7 @@ class PhoneField extends Component {
             </div>
           </PhoneFieldContainer>
           <PhoneNumberContainer>
-            {values.map((value, index) => (
+            {value.map((value, index) => (
               <PhoneNumber key={index}>
                 <PhoneNumberText>{value.type}:</PhoneNumberText>
                 <PhoneNumberText>{value.number}</PhoneNumberText>

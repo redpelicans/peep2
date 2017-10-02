@@ -34,7 +34,7 @@ const PeopleForm = styled.form`
 `;
 
 const StyledFormField = styled(FormField)`
-  grid-area: ${({ field }) => field.key};
+  grid-area: ${({ field }) => field.label};
 `;
 
 const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
@@ -57,6 +57,9 @@ const Form = ({ initialValues, changeColor, history, showDialogHandler }) => (
     }) => (
       <Container>
         {console.log('values: ', values)}
+        {console.log('isValid: ', isValid)}
+        {console.log('isdirty: ', dirty)}
+        {console.log('isSubmitting: ', isSubmitting)}
         <Header>
           <HeaderLeft>
             <Spacer size={15} />
