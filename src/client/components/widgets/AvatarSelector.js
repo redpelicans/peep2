@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Popover, Position } from '@blueprintjs/core';
-import { withState, withHandlers } from 'recompose';
 import { compose, join, map, take, split } from 'ramda';
 import colors, { randomColor } from '../../utils/colors';
 

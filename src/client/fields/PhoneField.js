@@ -82,8 +82,9 @@ class PhoneField extends Component {
         return;
       }
       this.setState({ number: '' }, () => {
-        const newValue = [...value, { type: selectedType, number: number }];
-        setFieldValue(name, newValue);
+        const newValues = [...value, { type: selectedType, number }];
+        setFieldTouched(name, newValues !== value);
+        setFieldValue(name, newValues);
       });
     };
     const handleDeletePhone = id => {
@@ -119,9 +120,9 @@ class PhoneField extends Component {
                   </div>
                 </div>
               </InputGroup>
-              <button onClick={handleAddValue} className="pt-button">
+              <div onClick={handleAddValue} className="pt-button">
                 Add
-              </button>
+              </div>
             </div>
           </PhoneFieldContainer>
           <PhoneNumberContainer>

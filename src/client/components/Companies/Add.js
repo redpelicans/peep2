@@ -57,7 +57,7 @@ const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
       notes = '',
       color,
     }) => {
-      const newCompagny = {
+      const newCompany = {
         name,
         avatar: { color },
         type,
@@ -66,7 +66,7 @@ const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
         address: { street, city, zipcode, country },
         notes,
       };
-      addCompany(newCompagny);
+      addCompany(newCompany);
     }}
     render={({
       values,

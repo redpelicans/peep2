@@ -8,6 +8,7 @@ import {
   CountriesSelectField,
 } from '../fields/SelectField';
 import { MarkDownField } from '../fields/MarkDownField';
+import { randomColor } from '../utils/colors';
 
 const fields = {
   type: {
@@ -67,6 +68,7 @@ const fields = {
   },
   color: {
     label: 'Color',
+    defaultValue: randomColor(),
   },
 };
 
