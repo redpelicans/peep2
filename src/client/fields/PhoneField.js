@@ -21,26 +21,24 @@ const Container = styled.div`
 `;
 
 const PhoneNumberContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+  grid-auto-rows: auto;
+  grid-gap: 10px;
   background-color: ${Colors.DARK_GRAY4};
   min-height: 26px;
   border-radius: 4px;
   width: 100%;
-  flex-wrap: wrap;
-  padding-bottom: 10px;
+  padding: 10px;
 `;
 const PhoneNumber = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 250px;
-  margin-top: 10px;
   justify-content: space-between;
   align-items: center;
   background-color: ${Colors.DARK_GRAY5};
   border-radius: 4px;
   padding: 10px;
-  margin-left: 10px;
-  margin-right: 0px;
 `;
 
 const InputGroup = styled.div`min-width: 100%;`;
