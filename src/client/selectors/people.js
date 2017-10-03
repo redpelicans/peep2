@@ -70,6 +70,9 @@ export const getPeopleFromCompany = createSelector(
     compose(values, filter(person => person.companyId === companyId))(people),
 );
 
+export const getWorker = id =>
+  createSelector([getPeople], people => people[id]);
+
 export const getWorkers = createSelector([getPeople], people =>
   compose(filter(isWorker))(people),
 );
