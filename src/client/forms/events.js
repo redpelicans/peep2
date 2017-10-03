@@ -5,9 +5,9 @@ import {
   getAllFields,
   getOneValidationSchema,
 } from './utils';
-import { TextAreaField } from '../fields';
 import { SelectField, WorkerSelectField } from '../fields/SelectField';
 import { PeriodField } from '../fields/DateField';
+import { MarkDownField } from '../fields/MarkDownField';
 
 const fields = {
   period: {
@@ -45,7 +45,7 @@ const fields = {
   },
   description: {
     label: 'Description',
-    component: TextAreaField,
+    component: MarkDownField,
     validate: Yup.string(),
   },
 };
