@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import {
+  sort,
   match,
   filter,
   concat,
@@ -10,6 +11,14 @@ import {
   prop,
   split,
   values,
+  ifElse,
+  is,
+  toLower,
+  identity,
+  reverse,
+  reduce,
+  descend,
+  pathOr,
 } from 'ramda';
 import { createSelector } from 'reselect';
 import { isWorker } from '../utils/people';
@@ -21,7 +30,14 @@ const getPreferredFilter = state => state.people.preferredFilter;
 const getCompanies = state => state.companies.data;
 const getCompanyId = (state, props) => props.match.params.id;
 
-const doSort = sortBy(prop('name'));
+const sortByProp = pprop =>
+sortBy(
+  compose(ifElse(is(String), toLower, identity), prop(pprop)),
+);
+const sortByOrder = order => (order === 'desc' ? reverse : identity);
+const doSort = ({ by, order }) =>
+by && by.length ? compose(sortByOrder(order), sortByProp(by)) : identity;
+
 const regexp = filter => new RegExp(filter, 'i');
 const getTagsPredicate = filter => ({ tags = [] }) =>
   match(regexp(filter.slice(1)), tags.join(' ')).length;
@@ -45,8 +61,8 @@ const doFilter = (pfilter, preferredFilter) =>
       ...getPredicates(pfilter),
     ]),
   );
-const filterAndSort = (filter, preferredFilter, people) =>
-  compose(doSort, doFilter(filter, preferredFilter), values)(people);
+const filterAndSort = (filter, sort, preferredFilter, people) =>
+  compose(doSort(sort), doFilter(filter, preferredFilter), values)(people);
 const getCompanyName = companies => prop(['companyId', 'name'])(companies);
 const peopleWithCompanyName = companies =>
   map(person => ({
@@ -55,10 +71,11 @@ const peopleWithCompanyName = companies =>
   }));
 
 export const getVisiblePeople = createSelector(
-  [getFilter, getPreferredFilter, getPeople, getCompanies],
-  (filter, preferredFilter, people, companies) =>
+  [getFilter, getSort, getPreferredFilter, getPeople, getCompanies],
+  (filter, sort, preferredFilter, people, companies) =>
     filterAndSort(
       filter,
+      sort,
       preferredFilter,
       peopleWithCompanyName(companies)(people),
     ),
@@ -76,3 +93,21 @@ export const getWorkers = createSelector([getPeople], people =>
 
 export const getSortedWorkers = attr =>
   createSelector(getWorkers, compose(sortBy(prop(attr)), values));
+
+const groupPersonTags = (acc, person) => {
+  const tags = person.tags || [];
+  return reduce((acc2, tag) => ({ ...acc2, [tag]: { label: tag, count: pathOr(0, [tag, 'count'], acc) + 1 } }), acc, tags);
+}
+
+const firstLevelReducer = reduce((acc, person) => groupPersonTags(acc, person), {});
+const sortTag = sort(descend(prop('count')));
+
+const getTagsUnsorted = compose(firstLevelReducer, values);
+const groupTags = compose(sortTag, values, getTagsUnsorted);
+
+export const getGroupedTagsByCount = createSelector(
+  getPeople,
+  groupTags,
+);
+
+export const getNotesByPerson = (person, notes) => filter(note => person._id === note.entityId, notes);

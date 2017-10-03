@@ -1,4 +1,4 @@
-import R from 'ramda';
+import { isEmpty } from 'ramda';
 
 export const LOAD_PEOPLE = 'EvtX:Server:people:load';
 export const PEOPLE_LOADED = 'people:loaded';
@@ -12,6 +12,7 @@ export const SET_PREFERRED_PEOPLE = 'EvtX:Server:people:setPreferred';
 export const CHECK_EMAIL = 'EvtX:Server:people:checkEmailUniqueness';
 export const TOGGLE_PREFERRED_FILTER = 'toggle:preferred:people';
 export const FILTER_PEOPLE_LIST = 'filter:people:list';
+export const SORT_PEOPLE_LIST = 'sort:people:list';
 
 export const TYPES = {
   WORKER: 'worker',
@@ -19,7 +20,7 @@ export const TYPES = {
 
 export const loadPeople = () => (dispatch, getState) => {
   const { people } = getState();
-  if (R.isEmpty(people.data)) {
+  if (isEmpty(people.data)) {
     dispatch({
       type: LOAD_PEOPLE,
       replyTo: PEOPLE_LOADED,
@@ -79,6 +80,12 @@ export const onPreferredClick = person => (dispatch) => {
 };
 
 export const togglePreferredFilter = () => ({ type: TOGGLE_PREFERRED_FILTER });
+
+export const sortPeopleList = (sortBy, revertOrder) => ({
+  type: SORT_PEOPLE_LIST,
+  sortBy,
+  revertOrder,
+});
 
 export const onTagClick = filter => ({
   type: FILTER_PEOPLE_LIST,
