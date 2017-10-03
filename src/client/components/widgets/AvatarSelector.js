@@ -60,8 +60,7 @@ const initials = compose(join(''), map(take(1)), take(3), split(' '));
 
 class AvatarSelector extends Component {
   state = {
-    selectedColor: randomColor(),
-    name: '',
+    color: randomColor(),
     showIcon: false,
   };
 
@@ -73,16 +72,23 @@ class AvatarSelector extends Component {
     this.setState({ showIcon: false });
   };
 
+  handleChangeColor = color => {
+    const { setFieldValue } = this.props;
+    this.setState({ color }, () => {
+      setFieldValue('color', color);
+    });
+  };
+
   render() {
-    const { selectedColor, showIcon } = this.state;
-    const { name = '', handleChangeColor } = this.props;
+    const { showIcon, color } = this.state;
+    const { name = '', lastName = '', formId } = this.props;
     const ColorSelector = () => (
       <ColorSelectorElt>
         {colors.map(color => (
           <ColorCase
             className="pt-popover-dismiss"
             key={color}
-            onClick={() => this.setState({ selectedColor: color }, handleChangeColor(color))}
+            onClick={() => this.handleChangeColor(color)}
             color={color}
           />
         ))}
@@ -94,10 +100,25 @@ class AvatarSelector extends Component {
         position={Position.BOTTOM_LEFT}
         popoverClassName="pt-popover-content-sizing"
         target={
-          <Circle color={selectedColor} onMouseOver={this.handleMouseEnter} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-            {showIcon && <Icon className="pt-icon-standard pt-icon-edit" />}
-            {initials(name)}
-          </Circle>
+          <div>
+            <input
+              type="hidden"
+              id="color"
+              name="color"
+              form={formId}
+              value={color}
+            />
+            <Circle
+              color={color}
+              onMouseOver={this.handleMouseEnter}
+              onMouseEnter={this.handleMouseEnter}
+              onMouseLeave={this.handleMouseLeave}
+            >
+              {showIcon && <Icon className="pt-icon-standard pt-icon-edit" />}
+              {initials(name)}
+              {initials(lastName)}
+            </Circle>
+          </div>
         }
       />
     );
@@ -106,7 +127,9 @@ class AvatarSelector extends Component {
 
 AvatarSelector.propTypes = {
   name: PropTypes.string,
-  handleChangeColor: PropTypes.func.isRequired,
+  formId: PropTypes.string.isRequired,
+  setFieldValue: PropTypes.func,
+  lastName: PropTypes.string,
 };
 
 export default AvatarSelector;

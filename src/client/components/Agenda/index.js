@@ -4,7 +4,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, lifecycle, withHandlers } from 'recompose';
 import styled from 'styled-components';
-import { subMonths, addMonths, format } from 'date-fns';
+import {
+  startOfMonth,
+  endOfMonth,
+  subMonths,
+  addMonths,
+  format,
+} from 'date-fns';
 import { Button } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
@@ -31,6 +37,7 @@ const Agenda = ({
   goNextMonth,
   goToday,
   addEvent,
+  editEvent,
 }) => (
   <StyledContainer>
     <Header>
@@ -53,6 +60,7 @@ const Agenda = ({
       dayComponent={Day}
       calendar={calendar}
       onPeriodSelection={addEvent}
+      editEvent={editEvent}
       workers={workers}
       user={user}
     />
@@ -68,6 +76,7 @@ Agenda.propTypes = {
   goNextMonth: PropTypes.func.isRequired,
   goToday: PropTypes.func.isRequired,
   addEvent: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 
@@ -86,7 +95,11 @@ const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentWillMount() {
-      this.props.loadEvents();
+      const { date } = this.props;
+      this.props.loadEvents({
+        from: startOfMonth(date),
+        to: endOfMonth(date),
+      });
     },
   }),
   withHandlers({
@@ -94,6 +107,8 @@ const enhance = compose(
       changeDate(subMonths(date, 1)),
     goNextMonth: ({ date, changeDate }) => () => changeDate(addMonths(date, 1)),
     goToday: ({ changeDate }) => () => changeDate(new Date()),
+    editEvent: ({ history }) => event =>
+      history.push(getPathByName('editAgendaEvent', event.groupId)),
     addEvent: ({ history }) => (worker, from, to) =>
       history.push(getPathByName('addAgendaEvent'), {
         workerId: worker._id,

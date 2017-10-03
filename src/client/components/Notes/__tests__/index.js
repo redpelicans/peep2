@@ -13,7 +13,13 @@ const { describe, it } = global;
 describe('List component', () => {
   it('should not render anything', () => {
     const wrapper = shallow(
-      <List notes={[]} people={{}} companies={{}} findEntity={() => {}} deletePeople={() => {}} />,
+      <List
+        notes={[]}
+        people={{}}
+        companies={{}}
+        findEntity={() => {}}
+        deletePeople={() => {}}
+      />,
     );
     should(wrapper.find(enhancedPreview)).have.length(0);
   });
@@ -48,13 +54,13 @@ describe('Preview component', () => {
         people={{}}
         entity={{}}
         note={{
-         _id: 0,
+          _id: 0,
         }}
         showActions={false}
       />,
     );
     should(wrapper.find(Actions)).have.length(0);
-  })
+  });
   it('Should render actions buttons', () => {
     const wrapper = shallow(
       <Preview
@@ -67,7 +73,7 @@ describe('Preview component', () => {
       />,
     );
     should(wrapper.find(Actions)).have.length(1);
-  })
+  });
   it('Should render a CardContent component', () => {
     const wrapper = shallow(
       <Preview
@@ -80,8 +86,8 @@ describe('Preview component', () => {
       />,
     );
     should(wrapper.find(CardContent)).have.length(1);
-  })
-})
+  });
+});
 
 describe('CardContent component', () => {
   it('Should render basic CardContent', () => {

@@ -1,11 +1,11 @@
-import R from 'ramda';
+import { is } from 'ramda';
 import { push, goBack } from '../history';
 import { USER_LOGGED } from '../actions/login';
 
 const EVTX_ERROR = 'EvtX:Error';
 
 export const socketIoMiddleWare = socket => ({ dispatch, getState }) => {
-  socket.on('action', (action) => {
+  socket.on('action', action => {
     if (!action || !action.type) return;
     switch (action.type) {
       case USER_LOGGED:
@@ -24,16 +24,22 @@ export const socketIoMiddleWare = socket => ({ dispatch, getState }) => {
         return dispatch(action);
     }
   });
-  return next => (action) => {
-    if (action.type && action.type.toLowerCase().indexOf('evtx:server:') === 0) {
+  return next => action => {
+    if (
+      action.type &&
+      action.type.toLowerCase().indexOf('evtx:server:') === 0
+    ) {
       const { login } = getState();
-      const message = { ...action, type: action.type.slice(12), token: login.token };
+      const message = {
+        ...action,
+        type: action.type.slice(12),
+        token: login.token,
+      };
       const params = ['action', message];
       const { callback } = action;
-      if (callback && R.is(Function, callback)) params.push(callback);
+      if (callback && is(Function, callback)) params.push(callback);
       socket.emit(...params);
     }
     return next(action);
   };
 };
-

@@ -7,6 +7,7 @@ import Agenda from './components/Agenda';
 import Notes from './components/Notes';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
+import EditAgenda from './components/Agenda/Edit';
 import PersonView from './components/People/View';
 import CompanyView from './components/Companies/View';
 import EditCompany from './components/Companies/Edit';
@@ -82,6 +83,13 @@ const routes = {
     auth: true,
     component: AddAgenda,
   },
+  editAgendaEvent: {
+    path: '/agenda/editevent/:id',
+    exact: true,
+    auth: true,
+    component: EditAgenda,
+  },
+
   notes: {
     path: '/notes',
     exact: true,

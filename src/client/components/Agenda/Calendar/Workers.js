@@ -185,6 +185,11 @@ const enhanceWorkingDay = compose(
       e.preventDefault();
       e.stopPropagation();
     },
+    handleClick: ({ editEvent }) => event => e => {
+      editEvent && editEvent(event);
+      e.preventDefault();
+      e.stopPropagation();
+    },
   }),
 );
 
@@ -196,6 +201,7 @@ const WorkingDay = enhanceWorkingDay(
     handleMouseEnter,
     handleMouseUp,
     handleMouseDown,
+    handleClick,
   }) => {
     const props =
       (!readOnly && {
@@ -205,7 +211,11 @@ const WorkingDay = enhanceWorkingDay(
       }) ||
       {};
     const dayEvents =
-      events && map(e => <Event key={e._id} event={e} />, events);
+      events &&
+      map(
+        evt => <Event key={evt._id} event={evt} onClick={handleClick(evt)} />,
+        events,
+      );
     return (
       <StyledWorkingDay
         selected={selected}
@@ -225,6 +235,7 @@ WorkingDay.propTypes = {
   startPeriod: PropTypes.func,
   selectPeriod: PropTypes.func,
   extendPeriod: PropTypes.func,
+  editEvent: PropTypes.func,
 };
 
 const betweenDates = (date, first, last) => {
@@ -239,12 +250,21 @@ const StyledEvent = styled.div`
   grid-column: ${({ event }) => event.period || 'span 2'};
 `;
 
-const Event = ({ event }) => {
-  return <StyledEvent event={event} />;
+const Event = ({ event, onClick }) => {
+  return (
+    <StyledEvent
+      event={event}
+      onClick={onClick}
+      onMouseUp={e => e.stopPropagation()}
+      onMouseEnter={e => e.stopPropagation()}
+      onMouseDown={e => e.stopPropagation()}
+    />
+  );
 };
 
 Event.propTypes = {
   event: PropTypes.object.isRequired,
+  onClick: PropTypes.func,
 };
 
 const Day = ({ calendar, currentWorker, user, events, from, to, ...props }) => {
@@ -308,7 +328,7 @@ class WorkersCalendar extends Component {
 
   render() {
     const { from, to, worker: currentWorker } = this.state;
-    const { date, calendar, events, workers, user } = this.props;
+    const { date, calendar, events, workers, user, editEvent } = this.props;
     const currentDate = date ? startOfDay(date) : startOfDay(new Date());
     const days = eachDay(startOfMonth(date), endOfMonth(date));
     const daysheader = map(
@@ -336,6 +356,7 @@ class WorkersCalendar extends Component {
             startPeriod={this.startPeriod}
             selectPeriod={this.selectPeriod}
             extendPeriod={this.extendPeriod}
+            editEvent={editEvent}
           />
         ),
         days,
@@ -359,6 +380,7 @@ WorkersCalendar.propTypes = {
   workers: PropTypes.array,
   user: PropTypes.object,
   onPeriodSelection: PropTypes.func.isRequired,
+  editEvent: PropTypes.func,
 };
 
 export default WorkersCalendar;

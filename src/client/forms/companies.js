@@ -8,11 +8,16 @@ import {
   CountriesSelectField,
 } from '../fields/SelectField';
 import { MarkDownField } from '../fields/MarkDownField';
+import { randomColor } from '../utils/colors';
 
 const fields = {
-  types: {
-    label: 'Types',
-    domainValues: ['Client', 'Partner', 'Tenant'],
+  type: {
+    label: 'Type',
+    domainValues: [
+      { id: 'Client', value: 'Client' },
+      { id: 'Partner', value: 'Partner' },
+      { id: 'Tenant', value: 'Tenant' },
+    ],
     required: true,
     component: SelectField,
     validate: Yup.string(),
@@ -60,6 +65,10 @@ const fields = {
   notes: {
     label: 'Note',
     component: MarkDownField,
+  },
+  color: {
+    label: 'Color',
+    defaultValue: randomColor(),
   },
 };
 
