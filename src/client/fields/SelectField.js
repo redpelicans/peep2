@@ -14,7 +14,51 @@ import Select from 'react-select';
 import { fullName } from '../utils/people';
 import { Colors } from '@blueprintjs/core';
 
-const SelectStyled = styled(Select.Creatable)`
+const SelectCreatableStyled = styled(Select.Creatable)`
+  &.Select--multi {
+    .Select-value {
+      display: inline-flex;
+      align-items: center;
+      color: ${Colors.WHITE};
+      background-color: ${Colors.DARK_GRAY4};
+    }
+  }
+  & .is-searchable.is-open > .Select-control {
+    background-color: ${Colors.DARK_GRAY4};
+  }
+  & .Select-control {
+    border-radius: 2px;
+    border: 1px solid ${Colors.DARK_GRAY3};
+    background-color: ${Colors.DARK_GRAY4};
+    color: ${Colors.WHITE};
+  }
+  & .is-open > .Select-value {
+    background-color: red !important;
+  }
+  & .Select-clear-zone:hover {
+    color: ${Colors.RED3};
+  }
+  & .Select-value-label {
+    color: white !important;
+  }
+  & .Select-menu-outer {
+    border: 0;
+    background-color: ${Colors.DARK_GRAY5};
+  }
+  & .Select-option {
+    box-sizing: none;
+    background-color: ${Colors.DARK_GRAY4};
+    color: ${Colors.LIGHT_GRAY4};
+  }
+  & .Select-placeholder {
+    font-size: smaller;
+    color: ${Colors.WHITE};
+    background-color: ${Colors.DARK_GRAY4};
+    border: 0;
+  }
+`;
+
+const SelectStyled = styled(Select)`
   &.Select--multi {
     .Select-value {
       display: inline-flex;
@@ -66,6 +110,7 @@ export const SelectField = ({
   setFieldTouched,
   setFieldValue,
   domainValues,
+  creatable = false,
   ...props
 }) => {
   const handleChange = e => {
@@ -80,15 +125,27 @@ export const SelectField = ({
   const getOptions = map(value => ({ value: value.value, label: value.value }));
   return (
     <Field label={label} required={required}>
-      <SelectStyled
-        placeholder={`Select ${label}...`}
-        id={label}
-        options={getOptions(domainValues)}
-        onChange={handleChange}
-        value={value}
-        name={label}
-        {...props}
-      />
+      {creatable ? (
+        <SelectCreatableStyled
+          placeholder={`Select ${label}...`}
+          id={label}
+          options={getOptions(domainValues)}
+          onChange={handleChange}
+          value={value}
+          name={label}
+          {...props}
+        />
+      ) : (
+        <SelectStyled
+          placeholder={`Select ${label}...`}
+          id={label}
+          options={getOptions(domainValues)}
+          onChange={handleChange}
+          value={value}
+          name={label}
+          {...props}
+        />
+      )}
     </Field>
   );
 };
@@ -102,6 +159,7 @@ SelectField.propTypes = {
   value: PropTypes.string,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
+  creatable: PropTypes.bool,
 };
 
 export const MultiSelectField = ({
@@ -112,6 +170,8 @@ export const MultiSelectField = ({
   setFieldTouched,
   setFieldValue,
   domainValues,
+  creatable = false,
+  ...props
 }) => {
   const handleChange = e => {
     const newValue = e;
@@ -121,15 +181,29 @@ export const MultiSelectField = ({
   const getOptions = map(value => ({ value: value.value, label: value.value }));
   return (
     <Field label={label} required={required}>
-      <SelectStyled
-        id={label}
-        placeholder={`Select ${label}...`}
-        options={getOptions(domainValues)}
-        onChange={handleChange}
-        value={value}
-        multi={true}
-        name={label}
-      />
+      {creatable ? (
+        <SelectCreatableStyled
+          placeholder={`Select ${label}...`}
+          id={label}
+          multi={true}
+          options={getOptions(domainValues)}
+          onChange={handleChange}
+          value={value}
+          name={label}
+          {...props}
+        />
+      ) : (
+        <SelectStyled
+          placeholder={`Select ${label}...`}
+          id={label}
+          multi={true}
+          options={getOptions(domainValues)}
+          onChange={handleChange}
+          value={value}
+          name={label}
+          {...props}
+        />
+      )}
     </Field>
   );
 };
@@ -143,6 +217,7 @@ MultiSelectField.propTypes = {
   value: PropTypes.array,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
+  creatable: PropTypes.bool,
 };
 
 export const WorkerSelectField = compose(

@@ -175,6 +175,7 @@ const Form = ({ initialValues, history, showDialogHandler, submit }) => (
             touched={touched}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
+            creatable={true}
           />
           <StyledFormField
             field={getField('country')}
@@ -183,6 +184,7 @@ const Form = ({ initialValues, history, showDialogHandler, submit }) => (
             touched={touched}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
+            creatable={true}
           />
           <StyledFormField
             field={getField('tags')}
@@ -191,6 +193,7 @@ const Form = ({ initialValues, history, showDialogHandler, submit }) => (
             touched={touched}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
+            creatable={true}
           />
           <StyledFormField
             field={getField('notes')}
@@ -252,6 +255,7 @@ const AddCompany = ({
         history={history}
         showDialogHandler={showDialogHandler}
         submit={addCompany}
+        title="Add Company"
       />
     </div>
   );

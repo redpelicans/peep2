@@ -5,6 +5,7 @@ import {
   TagsSelectField,
   SelectField,
   CompaniesSelectField,
+  MultiSelectField,
 } from '../fields/SelectField';
 import PhoneField from '../fields/PhoneField';
 import { MarkDownField } from '../fields/MarkDownField';
@@ -76,11 +77,11 @@ const fields = {
   },
   roles: {
     label: 'Roles',
-    component: SelectField,
+    component: MultiSelectField,
     domainValues: [
       { id: 'Admin', value: 'Admin' },
       { id: 'Edit', value: 'Edit' },
-      { id: 'Access', value: 'Accessr' },
+      { id: 'Access', value: 'Access' },
     ],
   },
   notes: {

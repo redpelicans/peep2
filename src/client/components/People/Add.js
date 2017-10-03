@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
+import { getCompanyId, getVisibleCompanies } from '../../selectors/companies';
 import {
   getValidationSchema,
   getField,
@@ -47,6 +48,7 @@ const Form = ({
   showDialogHandler,
   submit,
   title,
+  companies,
 }) => (
   <Formik
     initialValues={initialValues}
@@ -62,7 +64,7 @@ const Form = ({
       phones = [],
       prefix,
       tags = [],
-      roles,
+      roles = [],
       jobType,
       email,
       company,
@@ -74,7 +76,7 @@ const Form = ({
         lastName,
         email,
         jobType,
-        company,
+        company: getCompanyId(companies, company),
         name: `${firstName} ${lastName}`,
         note: notes,
         phones: map(
@@ -83,7 +85,7 @@ const Form = ({
         ),
         prefix,
         tags: map(tag => tag.value, tags),
-        roles,
+        roles: map(role => role.value, roles),
       };
       submit(newPeople);
     }}
@@ -99,6 +101,7 @@ const Form = ({
       isSubmitting,
     }) => (
       <Container>
+        {console.log('values: ', values)}
         <Header>
           <HeaderLeft>
             <Spacer size={15} />
@@ -222,6 +225,7 @@ const Form = ({
             errors={errors}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
+            creatable={true}
           />
           <StyledFormField
             field={getField('roles')}
@@ -229,6 +233,7 @@ const Form = ({
             errors={errors}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
+            multi={true}
           />
           <StyledFormField
             field={getField('notes')}
@@ -250,6 +255,7 @@ Form.propTypes = {
   showDialogHandler: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  companies: PropTypes.array.isRequired,
 };
 
 export const FormElem = onlyUpdateForKeys([
@@ -264,6 +270,7 @@ const AddPeople = ({
   isDialogOpen,
   showDialogHandler,
   addPeople,
+  companies,
 }) => {
   const initialValues = {
     ...defaultValues,
@@ -298,6 +305,7 @@ const AddPeople = ({
         showDialogHandler={showDialogHandler}
         submit={addPeople}
         title="New People"
+        companies={companies}
       />
     </div>
   );
@@ -309,11 +317,14 @@ AddPeople.propTypes = {
   history: PropTypes.object,
   isDialogOpen: PropTypes.bool,
   addPeople: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
+  companies: PropTypes.array.isRequired,
 };
 
 const actions = { addPeople };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+const mapStateToProps = state => ({
+  companies: getVisibleCompanies(state),
+});
 
 const enhance = compose(
   withState('color', 'changeColor', ''),
@@ -323,7 +334,7 @@ const enhance = compose(
     showDialogHandler: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),
   }),
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
 );
 
 export default enhance(AddPeople);

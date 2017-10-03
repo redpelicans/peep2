@@ -1,4 +1,4 @@
-import R from 'ramda';
+import R, { propEq, find, prop } from 'ramda';
 import moment from 'moment';
 import { createSelector } from 'reselect';
 
@@ -55,6 +55,8 @@ export const getFilter = state => state.companies.filter;
 export const getSort = state => state.companies.sort;
 const getPreferredFilter = state => state.companies.preferredFilter;
 export const getCompanies = state => state.companies.data;
+export const getCompanyId = (companies, name) =>
+  prop('_id', find(propEq('name', name), companies));
 
 /* selectors */
 const updateCompaniesStatus = createSelector(getCompanies, putStatus);
