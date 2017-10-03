@@ -7,8 +7,18 @@ import { compose } from 'ramda';
 import { connect } from 'react-redux';
 import { FormElem } from './Add';
 
-const Edit = ({ isDialogOpen, showDialogHandler, changeColor }) => {
-  const initialValues = {};
+const Edit = ({
+  people,
+  isDialogOpen,
+  showDialogHandler,
+  changeColor,
+  history,
+  match: { params: { id } },
+}) => {
+  const getInitialValues = p => ({
+    ...p,
+  });
+  const initialValues = getInitialValues(people.data[id]);
   return (
     <div>
       <Dialog isOpen={isDialogOpen} className="pt-dark">
@@ -44,14 +54,21 @@ const Edit = ({ isDialogOpen, showDialogHandler, changeColor }) => {
 };
 
 Edit.propTypes = {
+  people: PropTypes.object.isRequired,
   showDialogHandler: PropTypes.func.isRequired,
   isDialogOpen: PropTypes.bool,
   changeColor: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  history: PropTypes.object,
+  match: PropTypes.object,
 };
 
 const actions = {};
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+
+const mapStateToProps = state => ({
+  people: state.people,
+});
 
 const enhance = compose(
   withState('color', 'changeColor', ''),
@@ -61,7 +78,7 @@ const enhance = compose(
     showDialogHandler: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),
   }),
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
 );
 
 export default enhance(Edit);
