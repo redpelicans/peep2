@@ -69,6 +69,10 @@ export const SelectField = ({
   ...props
 }) => {
   const handleChange = e => {
+    if (!e) {
+      setFieldValue(name, '');
+      return;
+    }
     const newValue = e.value;
     setFieldTouched(name, newValue !== value);
     setFieldValue(name, newValue);
