@@ -8,10 +8,10 @@ import {
 } from '../fields/SelectField';
 import PhoneField from '../fields/PhoneField';
 import { MarkDownField } from '../fields/MarkDownField';
+import { randomColor } from '../utils/colors';
 
 const fields = {
   prefix: {
-    key: 'Prefix',
     label: 'Prefix',
     domainValues: [{ id: 'Mr', value: 'Mr' }, { id: 'Mrs', value: 'Mrs' }],
     required: true,
@@ -19,21 +19,18 @@ const fields = {
     validate: Yup.string(),
   },
   firstName: {
-    key: 'FirstName',
     label: 'First Name',
     required: true,
     component: InputField,
     validate: Yup.string(),
   },
   lastName: {
-    key: 'LastName',
     label: 'Last Name',
     required: true,
     component: InputField,
     validate: Yup.string(),
   },
   types: {
-    key: 'Types',
     label: 'Types',
     domainValues: [
       { id: 'Client', value: 'Client' },
@@ -44,14 +41,12 @@ const fields = {
     validate: Yup.string(),
   },
   email: {
-    key: 'Email',
     label: 'Email',
     required: true,
     component: InputField,
     validate: Yup.string(),
   },
   jobType: {
-    key: 'JobType',
     label: 'Job Type',
     domainValues: [
       { id: 'Designer', value: 'Designer' },
@@ -65,26 +60,21 @@ const fields = {
     validate: Yup.string(),
   },
   company: {
-    key: 'Company',
     label: 'Company',
     required: true,
     component: CompaniesSelectField,
     validate: Yup.string(),
   },
   phones: {
-    key: 'Phones',
     label: 'Phones',
-    required: true,
     component: PhoneField,
-    validate: Yup.number(),
+    validate: Yup.array(),
   },
   tags: {
-    key: 'Tags',
     label: 'Tags',
     component: TagsSelectField,
   },
   roles: {
-    key: 'Roles',
     label: 'Roles',
     component: SelectField,
     domainValues: [
@@ -94,9 +84,12 @@ const fields = {
     ],
   },
   notes: {
-    key: 'Notes',
     label: 'Notes',
     component: MarkDownField,
+  },
+  color: {
+    label: 'Color',
+    defaultValue: randomColor(),
   },
 };
 

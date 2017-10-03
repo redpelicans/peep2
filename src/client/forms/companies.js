@@ -8,10 +8,11 @@ import {
   CountriesSelectField,
 } from '../fields/SelectField';
 import { MarkDownField } from '../fields/MarkDownField';
+import { randomColor } from '../utils/colors';
 
 const fields = {
-  types: {
-    label: 'Types',
+  type: {
+    label: 'Type',
     domainValues: [
       { id: 'Client', value: 'Client' },
       { id: 'Partner', value: 'Partner' },
@@ -64,6 +65,10 @@ const fields = {
   notes: {
     label: 'Note',
     component: MarkDownField,
+  },
+  color: {
+    label: 'Color',
+    defaultValue: randomColor(),
   },
 };
 

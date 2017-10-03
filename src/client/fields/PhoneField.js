@@ -21,26 +21,24 @@ const Container = styled.div`
 `;
 
 const PhoneNumberContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+  grid-auto-rows: auto;
+  grid-gap: 10px;
   background-color: ${Colors.DARK_GRAY4};
   min-height: 26px;
   border-radius: 4px;
   width: 100%;
-  flex-wrap: wrap;
-  padding-bottom: 10px;
+  padding: 10px;
 `;
 const PhoneNumber = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 250px;
-  margin-top: 10px;
   justify-content: space-between;
   align-items: center;
   background-color: ${Colors.DARK_GRAY5};
   border-radius: 4px;
   padding: 10px;
-  margin-left: 10px;
-  margin-right: 0px;
 `;
 
 const InputGroup = styled.div`min-width: 100%;`;
@@ -60,7 +58,6 @@ const InputStyled = styled.input`
 
 class PhoneField extends Component {
   state = {
-    values: [],
     number: '',
     selectedType: 'mobile',
   };
@@ -70,7 +67,7 @@ class PhoneField extends Component {
       label,
       error,
       required,
-      value = '',
+      value = [],
       setFieldTouched,
       setFieldValue,
     } = this.props;
@@ -84,24 +81,19 @@ class PhoneField extends Component {
       if (isEmpty(number)) {
         return;
       }
-      this.setState(
-        {
-          values: [...values, { type: selectedType, number: number }],
-          number: '',
-        },
-        () => {
-          const newValue = this.state.values;
-          setFieldTouched(name, newValue !== value);
-          setFieldValue(name, newValue);
-        },
-      );
+      this.setState({ number: '' }, () => {
+        const newValues = [...value, { type: selectedType, number }];
+        setFieldTouched(name, newValues !== value);
+        setFieldValue(name, newValues);
+      });
     };
     const handleDeletePhone = id => {
-      const newValues = values.filter(value => value !== values[id]);
-      this.setState({ values: newValues });
+      const newValues = value.filter(val => val !== value[id]);
+      setFieldTouched(name, newValues !== value);
+      setFieldValue(name, newValues);
     };
     const phoneTypes = ['Mobile', 'Home', 'Work'];
-    const { values, selectedType, number } = this.state;
+    const { selectedType, number } = this.state;
     return (
       <Field label={label} error={error} required={required}>
         <Container>
@@ -128,13 +120,13 @@ class PhoneField extends Component {
                   </div>
                 </div>
               </InputGroup>
-              <button onClick={handleAddValue} className="pt-button">
+              <div onClick={handleAddValue} className="pt-button">
                 Add
-              </button>
+              </div>
             </div>
           </PhoneFieldContainer>
           <PhoneNumberContainer>
-            {values.map((value, index) => (
+            {value.map((value, index) => (
               <PhoneNumber key={index}>
                 <PhoneNumberText>{value.type}:</PhoneNumberText>
                 <PhoneNumberText>{value.number}</PhoneNumberText>
