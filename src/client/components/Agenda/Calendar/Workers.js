@@ -168,7 +168,7 @@ const StyledWorkingDay = styled(StyledDay)`
 `;
 
 const enhanceWorkingDay = compose(
-  onlyUpdateForKeys(['selected', 'events']),
+  // onlyUpdateForKeys(['selected', 'events']),
   withHandlers({
     handleMouseDown: ({ startPeriod, worker, date }) => e => {
       startPeriod && startPeriod(worker, date);
