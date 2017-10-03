@@ -1,10 +1,22 @@
-import { ALERT, SUCCESS, WARNING } from '../actions/message';
+import {
+  ALERT,
+  DANGER,
+  SUCCESS,
+  WARNING,
+  EVTX_ERROR,
+} from '../actions/message';
 import { COMPANY_ADDED, COMPANY_UPDATED } from '../actions/companies';
 import { PEOPLE_ADDED, PEOPLE_UPDATED } from '../actions/people';
 
-const message = (state = {}, action) => {
+const message = (state = { id: 0 }, action) => {
   const { type, payload } = action;
   switch (type) {
+    case EVTX_ERROR:
+      return {
+        id: state.id + 1,
+        type: DANGER,
+        message: action.message,
+      };
     case ALERT:
       return {
         id: state.id + 1,
@@ -24,7 +36,7 @@ const message = (state = {}, action) => {
       const { name, authorId } = payload;
       return {
         id: state.id + 1,
-        type: WARNING,
+        type: SUCCESS,
         icon: 'home',
         message: `Company '${name}' updated`,
         authorId,
@@ -44,7 +56,7 @@ const message = (state = {}, action) => {
       const { name, authorId } = payload;
       return {
         id: state.id + 1,
-        type: WARNING,
+        type: SUCCESS,
         icon: 'team',
         message: `People '${name}' updated`,
         authorId,

@@ -37,15 +37,11 @@ const StyledFormField = styled(FormField)`
 `;
 
 const AddCompany = ({ changeColor }) => {
-  const initialValues = {
-    ...defaultValues,
-  };
+  const initialValues = { ...defaultValues };
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={getValidationSchema()}
-      isInitialValid={({ validationSchema, initialValues }) =>
-        validationSchema.isValid(initialValues)}
       onSubmit={values => console.log('submit!, values:', values)}
       render={({
         values,

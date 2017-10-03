@@ -35,13 +35,13 @@ const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
     period: selectedPeriod,
     workerId: worker._id,
   };
+  // getValidationSchema().isValid(initialValues) .then(x => console.log(x))
+
   return (
     <StyledContainer>
       <Formik
         initialValues={initialValues}
         validationSchema={getValidationSchema()}
-        isInitialValid={({ validationSchema, initialValues }) =>
-          validationSchema.isValid(initialValues)}
         onSubmit={addEvent}
         render={({ isSubmitting, isValid, handleReset, dirty, ...props }) => {
           return (
@@ -56,7 +56,7 @@ const Add = ({ history, cancel, addEvent, workers, events, calendar }) => {
                   <Button
                     form="addEvent"
                     type="submit"
-                    disabled={isSubmitting || !isValid}
+                    disabled={isSubmitting}
                     className="pt-intent-success pt-large"
                   >
                     Create

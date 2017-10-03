@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { Formik } from 'formik';
-import { loadEvents } from '../../actions/events';
+import { loadEventGroup } from '../../actions/events';
 import { getCalendar } from '../../selectors/calendar';
 import { getWorkers } from '../../selectors/people';
 import { getEventsByWorkerDate, getEventGroup } from '../../selectors/events';
@@ -38,9 +38,6 @@ const Edit = ({ event, cancel, editEvent, workers, events, calendar }) => {
     <StyledContainer>
       <Formik
         initialValues={initialValues}
-        validationSchema={getValidationSchema()}
-        isInitialValid={({ validationSchema, initialValues }) =>
-          validationSchema.isValid(initialValues)}
         onSubmit={editEvent}
         render={({ isSubmitting, isValid, ...props }) => {
           return (
@@ -55,7 +52,7 @@ const Edit = ({ event, cancel, editEvent, workers, events, calendar }) => {
                   <Button
                     form="editEvent"
                     type="submit"
-                    disabled={isSubmitting || !isValid}
+                    disabled={isSubmitting}
                     className="pt-intent-success pt-large"
                   >
                     Update
@@ -72,7 +69,6 @@ const Edit = ({ event, cancel, editEvent, workers, events, calendar }) => {
                 minDate={minDate}
                 maxDate={maxDate}
                 calendar={calendar}
-                event={event}
                 events={workerEvents}
                 cancel={cancel}
                 {...props}
@@ -104,13 +100,13 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const actions = { loadEvents };
+const actions = { loadEventGroup };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 const componentLifecycle = {
   componentWillMount() {
     const { match } = this.props;
     const { params: { id } = {} } = match;
-    this.props.loadEvents({ groupId: id });
+    this.props.loadEventGroup({ groupId: id });
   },
 };
 
