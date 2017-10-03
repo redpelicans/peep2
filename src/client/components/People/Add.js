@@ -45,7 +45,7 @@ const Form = ({
   changeColor,
   history,
   showDialogHandler,
-  addPeople,
+  submit,
   title,
 }) => (
   <Formik
@@ -85,7 +85,7 @@ const Form = ({
         tags: map(tag => tag.value, tags),
         roles,
       };
-      addPeople(newPeople);
+      submit(newPeople);
     }}
     render={({
       values,
@@ -104,8 +104,10 @@ const Form = ({
             <Spacer size={15} />
             <AvatarSelector
               formId="addPeople"
+              color={values.color}
               name={values.firstName}
               lastName={values.lastName}
+              setFieldTouched={setFieldTouched}
               handleChangeColor={changeColor}
               setFieldValue={setFieldValue}
             />
@@ -246,7 +248,7 @@ Form.propTypes = {
   changeColor: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   showDialogHandler: PropTypes.func.isRequired,
-  addPeople: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
 
@@ -294,7 +296,7 @@ const AddPeople = ({
         changeColor={changeColor}
         history={history}
         showDialogHandler={showDialogHandler}
-        addPeople={addPeople}
+        submit={addPeople}
         title="New People"
       />
     </div>

@@ -60,7 +60,6 @@ const initials = compose(join(''), map(take(1)), take(3), split(' '));
 
 class AvatarSelector extends Component {
   state = {
-    color: randomColor(),
     showIcon: false,
   };
 
@@ -73,15 +72,14 @@ class AvatarSelector extends Component {
   };
 
   handleChangeColor = color => {
-    const { setFieldValue } = this.props;
-    this.setState({ color }, () => {
-      setFieldValue('color', color);
-    });
+    const { setFieldValue, setFieldTouched } = this.props;
+    setFieldTouched('color', color);
+    setFieldValue('color', color);
   };
 
   render() {
-    const { showIcon, color } = this.state;
-    const { name = '', lastName = '', formId } = this.props;
+    const { showIcon } = this.state;
+    const { name = '', lastName = '', formId, color } = this.props;
     const ColorSelector = () => (
       <ColorSelectorElt>
         {colors.map(color => (
@@ -128,8 +126,10 @@ class AvatarSelector extends Component {
 AvatarSelector.propTypes = {
   name: PropTypes.string,
   formId: PropTypes.string.isRequired,
-  setFieldValue: PropTypes.func,
+  setFieldValue: PropTypes.func.isRequired,
+  setFieldTouched: PropTypes.func.isRequired,
   lastName: PropTypes.string,
+  color: PropTypes.string.isRequired,
 };
 
 export default AvatarSelector;
