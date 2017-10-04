@@ -30,10 +30,31 @@ const addEventSchema = Joi.object().keys({
 });
 
 const delEventGroupSchema = Joi.object().keys({
-  groupId: Joi.string().required(),
+  groupId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/, 'valid ObjectId')
+    .required(),
 });
 
 const addEventGroupSchema = Joi.object().keys({
+  from: Joi.date().required(),
+  to: Joi.date().required(),
+  status: Joi.string()
+    .valid(['TBV', 'V'])
+    .required(),
+  type: Joi.string()
+    .valid(['vacation', 'sickLeaveDay'])
+    .required(),
+  workerId: Joi.string().required(),
+  events: Joi.array()
+    .items(addEventSchema)
+    .required(),
+  description: Joi.string(),
+});
+
+const updateEventGroupSchema = Joi.object().keys({
+  groupId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/, 'valid ObjectId')
+    .required(),
   from: Joi.date().required(),
   to: Joi.date().required(),
   status: Joi.string()
@@ -83,7 +104,6 @@ export const event = {
     if (from) query.to = { $gte: from.toISOString() };
     if (to) query.from = { $lte: to.toISOString() };
     try {
-      // TODO check groupId with Joi
       if (groupId) query.groupId = ObjectId(groupId);
       return Event.loadAll(query);
     } catch (err) {
@@ -115,9 +135,33 @@ export const event = {
       return Promise.reject(err);
     }
   },
+
   updateEventGroup(eventGroup) {
-    console.log(eventGroup);
-    return Promise.resolve([]);
+    try {
+      const { groupId: id, type, workerId: worker, status } = eventGroup;
+      const groupId = ObjectId(id);
+      const workerId = ObjectId(worker);
+      const deleteAll = () => Event.collection.remove({ groupId });
+      const loadEventGroup = () => Event.loadAll({ groupId });
+      const loadAll = ids => Event.loadAll({ _id: { $in: ids } });
+      const insertAll = (previousEvents, nextEventGroup) => {
+        const { events } = nextEventGroup;
+        const newEvents = R.map(
+          e => ({ ...e, groupId, workerId, status, type }),
+          events,
+        );
+        return Event.collection
+          .insertMany(newEvents)
+          .then(R.prop('insertedIds'));
+      };
+      return loadEventGroup().then(previousEvents => {
+        return deleteAll()
+          .then(() => insertAll(previousEvents, eventGroup))
+          .then(loadAll);
+      });
+    } catch (err) {
+      return Promise.reject(err);
+    }
   },
 };
 
@@ -144,6 +188,7 @@ const init = evtx => {
       all: [checkUser()],
       load: [formatInput(inLoadMaker), validate(loadSchema)],
       addEventGroup: [formatInput(inAddMaker), validate(addEventGroupSchema)],
+      updateEventGroup: [validate(updateEventGroupSchema)],
       delEventGroup: [validate(delEventGroupSchema)],
     })
     .after({
