@@ -41,7 +41,7 @@ const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.label};
 `;
 
-const Form = ({
+export const Form = ({
   initialValues,
   changeColor,
   history,
@@ -76,7 +76,7 @@ const Form = ({
         lastName,
         email,
         jobType,
-        company: getCompanyId(companies, company),
+        companyId: getCompanyId(companies, company),
         name: `${firstName} ${lastName}`,
         note: notes,
         phones: map(
@@ -101,7 +101,6 @@ const Form = ({
       isSubmitting,
     }) => (
       <Container>
-        {console.log('values: ', values)}
         <Header>
           <HeaderLeft>
             <Spacer size={15} />

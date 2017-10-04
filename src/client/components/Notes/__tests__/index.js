@@ -55,6 +55,8 @@ describe('Preview component', () => {
           _id: 0,
         }}
         showActions={false}
+        handleMouseEnter={() => {}}
+        handleMouseLeave={() => {}}
       />,
     );
     should(wrapper.find(Actions)).have.length(0);
@@ -68,6 +70,8 @@ describe('Preview component', () => {
           _id: 0,
         }}
         showActions={true}
+        handleMouseEnter={() => {}}
+        handleMouseLeave={() => {}}
       />,
     );
     should(wrapper.find(Actions)).have.length(1);
@@ -81,6 +85,8 @@ describe('Preview component', () => {
           _id: 0,
         }}
         showActions={true}
+        handleMouseEnter={() => {}}
+        handleMouseLeave={() => {}}
       />,
     );
     should(wrapper.find(CardContent)).have.length(1);

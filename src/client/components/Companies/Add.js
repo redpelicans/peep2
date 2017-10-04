@@ -39,7 +39,7 @@ const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.label};
 `;
 
-const Form = ({ initialValues, history, showDialogHandler, submit }) => (
+export const Form = ({ initialValues, history, showDialogHandler, submit }) => (
   <Formik
     initialValues={initialValues}
     validationSchema={getValidationSchema()}

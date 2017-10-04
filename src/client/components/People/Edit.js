@@ -9,14 +9,16 @@ import { FormElem } from './Add';
 import { updatePeople } from '../../actions/people';
 import { getPathByName } from '../../routes';
 import { getPerson } from '../../selectors/people';
+import { getVisibleCompanies } from '../../selectors/companies';
 
-const Edit = ({
+export const Edit = ({
   updatePeople,
   people,
   isDialogOpen,
   showDialogHandler,
   changeColor,
   history,
+  companies,
 }) => {
   const getInitialValues = p => ({
     ...p,
@@ -57,6 +59,7 @@ const Edit = ({
         showDialogHandler={showDialogHandler}
         title="Edit People"
         submit={updatePeople}
+        companies={companies}
       />
     </div>
   );
@@ -70,6 +73,7 @@ Edit.propTypes = {
   history: PropTypes.object,
   match: PropTypes.object,
   updatePeople: PropTypes.func.isRequired,
+  companies: PropTypes.array.isRequired,
 };
 
 const actions = { updatePeople };
@@ -82,6 +86,7 @@ const mapStateToProps = (state, props) => {
   }
   return {
     people: getPerson(state.people, id),
+    companies: getVisibleCompanies(state),
   };
 };
 

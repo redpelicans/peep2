@@ -2,8 +2,10 @@ import React from 'react';
 import should from 'should';
 import { shallow } from 'enzyme';
 import List from '../List';
+import { Formik } from 'formik';
 import Avatar from '../../Avatar';
 import { Tags, Tag, Actions } from '../../widgets';
+import { Form } from '../Add';
 import enhancedPreview, { Preview, Title } from '../Preview';
 
 const { describe, it } = global;
@@ -84,6 +86,7 @@ describe('Preview component', () => {
           tags: ['0', '1', '2', '3', '4'],
         }}
         showActions={true}
+        filterCompanyList={() => {}}
       />,
     );
     should(wrapper.find(Actions)).have.length(1);
@@ -99,8 +102,23 @@ describe('Preview component', () => {
           tags: ['0', '1', '2', '3', '4'],
         }}
         showActions={false}
+        filterCompanyList={() => {}}
       />,
     );
     should(wrapper.find(Actions)).have.length(0);
+  });
+});
+
+describe('Add component', () => {
+  it('should render a Formik', () => {
+    const wrapper = shallow(
+      <Form
+        initialValues={{}}
+        history={{}}
+        showDialogHandler={() => {}}
+        submit={() => {}}
+      />,
+    );
+    should(wrapper.find(Formik)).have.length(1);
   });
 });

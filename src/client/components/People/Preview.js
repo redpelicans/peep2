@@ -17,12 +17,12 @@ import { getPathByName } from '../../routes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 
-const TitleRow = styled.div`
+export const TitleRow = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const StyledInfos = styled.div`
+export const StyledInfos = styled.div`
   display: flex;
   margin-left: 15px;
   flex-direction: column;
