@@ -25,11 +25,8 @@ const loadSchema = Joi.object().keys({
 const addEventSchema = Joi.object().keys({
   from: Joi.date().required(),
   to: Joi.date().required(),
-  unit: Joi.string()
-    .valid('day')
-    .required(),
   value: Joi.number().required(),
-  period: Joi.string().valid(['AM', 'PM']),
+  period: Joi.string().valid(['AM', 'PM', 'DAY']),
 });
 
 const addEventGroupSchema = Joi.object().keys({
