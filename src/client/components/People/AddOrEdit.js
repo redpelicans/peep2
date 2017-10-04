@@ -29,6 +29,7 @@ const StyledFormField = styled(FormField)`
 const AddOrEditForm = ({
   handleSubmit,
   values,
+  touched,
   errors,
   setFieldTouched,
   setFieldValue,
@@ -39,6 +40,7 @@ const AddOrEditForm = ({
         field={getField('prefix')}
         values={values}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
@@ -46,6 +48,7 @@ const AddOrEditForm = ({
         field={getField('firstName')}
         values={values}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
@@ -53,6 +56,7 @@ const AddOrEditForm = ({
         field={getField('lastName')}
         values={values}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
@@ -60,6 +64,7 @@ const AddOrEditForm = ({
         field={getField('type')}
         values={values}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
@@ -67,6 +72,7 @@ const AddOrEditForm = ({
         field={getField('email')}
         values={values}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
@@ -74,6 +80,7 @@ const AddOrEditForm = ({
         field={getField('jobType')}
         values={values}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
@@ -81,6 +88,7 @@ const AddOrEditForm = ({
         <StyledFormField
           field={getField('company')}
           values={values}
+          touched={touched}
           value="redpelicans"
           disabled={true}
           errors={errors}
@@ -91,6 +99,7 @@ const AddOrEditForm = ({
         <StyledFormField
           field={getField('company')}
           values={values}
+          touched={touched}
           errors={errors}
           setFieldTouched={setFieldTouched}
           setFieldValue={setFieldValue}
@@ -99,6 +108,7 @@ const AddOrEditForm = ({
       <StyledFormField
         field={getField('phones')}
         values={values}
+        touched={touched}
         errors={errors}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
@@ -106,6 +116,7 @@ const AddOrEditForm = ({
       <StyledFormField
         field={getField('tags')}
         values={values}
+        touched={touched}
         errors={errors}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
@@ -115,6 +126,7 @@ const AddOrEditForm = ({
         field={getField('roles')}
         values={values}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
         multi={true}
@@ -123,6 +135,7 @@ const AddOrEditForm = ({
         field={getField('notes')}
         values={values}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
@@ -136,6 +149,7 @@ AddOrEditForm.propTypes = {
   setFieldTouched: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
+  touched: PropTypes.object.isRequired,
 };
 
 export default AddOrEditForm;

@@ -136,6 +136,7 @@ export default compose(
         roles = [],
         jobType,
         email,
+        company,
       },
       { props },
     ) => {

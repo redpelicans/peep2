@@ -105,7 +105,6 @@ const SelectStyled = styled(Select)`
 export const SelectField = ({
   name,
   label,
-  error,
   required,
   value,
   setFieldTouched,

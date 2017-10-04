@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button, Dialog } from '@blueprintjs/core';
-import { compose, map } from 'ramda';
+import { compose, map, isEmpty } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
@@ -22,7 +22,6 @@ export const Add = ({
   toggleDialog,
   values,
   isSubmitting,
-  isValid,
   dirty,
   handleSubmit,
   handleReset,
@@ -30,11 +29,9 @@ export const Add = ({
   setFieldValue,
   leave,
   cancel,
-  people,
   ...props
 }) => (
   <StyledContainer>
-    {console.log('people: ', people)}
     <Dialog isOpen={isDialogOpen} className="pt-dark">
       <div className="pt-dialog-body">Would you like to cancel this form?</div>
       <div className="pt-dialog-footer">
@@ -72,10 +69,10 @@ export const Add = ({
         <Button
           form="companyForm"
           type="submit"
-          disabled={isSubmitting || !isValid || !dirty}
+          disabled={isSubmitting || !dirty}
           className="pt-intent-success pt-large"
         >
-          Create
+          Update
         </Button>
         <Spacer />
         <Button onClick={cancel(dirty)} className="pt-intent-warning pt-large">
@@ -159,24 +156,25 @@ export default compose(
         jobType,
         name: `${firstName} ${lastName}`,
         note: notes,
-        phones: map(
-          phone => ({ label: phone.type, number: phone.number }),
-          phones,
-        ),
+        phones: isEmpty(phones)
+          ? map(phone => ({ label: phone.type, number: phone.number }), phones)
+          : [],
         prefix,
-        tags: map(tag => tag.value, tags),
-        roles: map(role => role.value, roles),
+        tags: isEmpty(tags) ? map(tag => tag.value, tags) : [],
+        roles: isEmpty(roles) ? map(role => role.value, roles) : [],
       };
       updatePeople(newPeople);
       history.goBack();
     },
     validationSchema: getValidationSchema(),
-    mapPropsToValues: ({ people = { phone: [] } }) => ({
+    mapPropsToValues: ({ people = {} }) => ({
       ...people,
-      phones: people.phones.map(phone => ({
-        type: phone.label,
-        number: phone.number,
-      })),
+      phones: isEmpty(people.phones)
+        ? people.phones.map(phone => ({
+            type: phone.label,
+            number: phone.number,
+          }))
+        : [],
       color: people.avatar.color,
       company: people.companyId,
     }),
