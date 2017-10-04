@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { map } from 'ramda';
+import { distanceInWords } from 'date-fns';
 import { Colors } from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
@@ -65,11 +66,42 @@ const StyledWrapper = styled.div`
 
 const StyledViewField = styled(ViewField)`grid-area: ${props => props.name};`;
 
+const StyledDates = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.8em;
+`;
+
+const Dates = ({ updatedAt, createdAt }) => {
+  const distanceUpdatedAt = distanceInWords(new Date(), updatedAt);
+  const distanceCreatedAt = distanceInWords(new Date(), createdAt);
+  return (
+    <StyledDates>
+      {createdAt && <span>{`Created ${distanceCreatedAt} ago`}</span>}
+      {createdAt &&
+        updatedAt && (
+          <span>
+            <Spacer size="2" />
+            {' - '}
+            <Spacer size="2" />
+          </span>
+        )}
+      {updatedAt && <span>{`Updated ${distanceUpdatedAt} ago`}</span>}
+    </StyledDates>
+  );
+};
+
+Dates.propTypes = {
+  updatedAt: PropTypes.string,
+  createdAt: PropTypes.string,
+};
+
 const CompanyInfos = ({ company = {}, people }) => {
   const { type, website, address = {}, _id } = company;
   const { street, zipcode, city, country } = address;
   return (
     <StyledWrapper>
+      <Dates updatedAt={company.updatedAt} createdAt={company.createdAt} />
       <StyledGrid>
         <StyledViewField name="type" label="Type" value={type} />
         <StyledViewField
@@ -132,24 +164,6 @@ GoBack.propTypes = {
   history: PropTypes.object,
 };
 
-const StyledDates = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-size: 0.6em;
-`;
-
-const Dates = ({ updatedAt, createdAt }) => (
-  <StyledDates>
-    {createdAt && <span>{`Created at ${createdAt}`}</span>}
-    {updatedAt && <span>{`Updated at ${updatedAt}`}</span>}
-  </StyledDates>
-);
-
-Dates.propTypes = {
-  updatedAt: PropTypes.string,
-  createdAt: PropTypes.string,
-};
-
 const Company = ({
   people,
   companies = {},
@@ -174,8 +188,6 @@ const Company = ({
           <Title title={`${company.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <Dates updatedAt={company.updatedAt} createdAt={company.createdAt} />
-          <Spacer />
           <LinkButton
             to={getPathByName('editCompany', id)}
             iconName="pt-icon-edit"

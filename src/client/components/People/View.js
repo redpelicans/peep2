@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { isEmpty, map, find, propEq } from 'ramda';
 import { Colors } from '@blueprintjs/core';
+import { distanceInWords } from 'date-fns';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
@@ -131,6 +132,36 @@ const StyledLink = styled.a`
   font-style: normal !important;
 `;
 
+const StyledDates = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.8em;
+`;
+
+const Dates = ({ updatedAt, createdAt }) => {
+  const distanceUpdatedAt = distanceInWords(new Date(), updatedAt);
+  const distanceCreatedAt = distanceInWords(new Date(), createdAt);
+  return (
+    <StyledDates>
+      {createdAt && <span>{`Created ${distanceCreatedAt}`}</span>}
+      {createdAt &&
+        updatedAt && (
+          <span>
+            <Spacer size="20" />
+            {' - '}
+            <Spacer size="20" />
+          </span>
+        )}
+      {updatedAt && <span>{`Updated ${distanceUpdatedAt}`}</span>}
+    </StyledDates>
+  );
+};
+
+Dates.propTypes = {
+  updatedAt: PropTypes.string,
+  createdAt: PropTypes.string,
+};
+
 const PersonInfos = ({ person = {} }) => {
   const {
     _id,
@@ -149,6 +180,7 @@ const PersonInfos = ({ person = {} }) => {
   } = person;
   return (
     <StyledWrapper>
+      <Dates updatedAt={person.updatedAt} createdAt={person.createdAt} />
       <StyledGrid>
         <StyledViewField name="prefix" label="Prefix" value={prefix} />
         <StyledViewField
@@ -187,7 +219,6 @@ const PersonInfos = ({ person = {} }) => {
           }
           value={email}
         />
-        {/* <StyledViewField name="email" label="Email" value={email} /> */}
       </StyledGrid>
       {!isEmpty(phones) > 0 && (
         <div>
@@ -229,24 +260,6 @@ GoBack.propTypes = {
   history: PropTypes.object,
 };
 
-const StyledDates = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-size: 0.6em;
-`;
-
-const Dates = ({ updatedAt, createdAt }) => (
-  <StyledDates>
-    {createdAt && <span>{`Created at ${createdAt}`}</span>}
-    {updatedAt && <span>{`Updated at ${updatedAt}`}</span>}
-  </StyledDates>
-);
-
-Dates.propTypes = {
-  updatedAt: PropTypes.string,
-  createdAt: PropTypes.string,
-};
-
 const Person = ({
   people = {},
   companies = {},
@@ -268,8 +281,6 @@ const Person = ({
           <Title title={`${person.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <Dates updatedAt={person.updatedAt} createdAt={person.createdAt} />
-          <Spacer />
           <LinkButton
             to={getPathByName('editPerson', id)}
             iconName="pt-icon-edit"
