@@ -26,7 +26,7 @@ const StyledWrapper = styled.div`
 const StyledLabel = styled.span`margin-bottom: 10px;`;
 
 const NotesView = ({ findEntity, notes, people, entityType, entityId }) => {
-  if (isEmpty(notes)) return null;
+  if (notes === null || isEmpty(notes)) return null;
   return (
     <StyledWrapper>
       <StyledLabel>Notes</StyledLabel>
