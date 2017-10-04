@@ -111,7 +111,7 @@ Edit.propTypes = {
   leave: PropTypes.func.isRequired,
   event: PropTypes.object,
   calendar: PropTypes.object,
-  events: PropTypes.object.isRequired,
+  events: PropTypes.object,
   worker: PropTypes.object.isRequired,
   toggleDialog: PropTypes.func.isRequired,
   isDialogOpen: PropTypes.bool.isRequired,

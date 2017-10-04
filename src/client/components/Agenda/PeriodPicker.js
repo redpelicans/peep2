@@ -2,7 +2,7 @@ import React from 'react';
 import { map } from 'ramda';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { format, addHours, subHours } from 'date-fns';
+import { format, addDays, subDays } from 'date-fns';
 import { Button } from '@blueprintjs/core';
 
 const StyledPeriod = styled.div`
@@ -51,19 +51,19 @@ const PeriodPicker = ({
 }) => {
   const subFrom = () => {
     setFieldTouched('period', true);
-    setFieldValue('period', [subHours(from, 12), to]);
+    setFieldValue('period', [subDays(from, 0.5), to]);
   };
   const addFrom = () => {
     setFieldTouched('period', true);
-    setFieldValue('period', [addHours(from, 12), to]);
+    setFieldValue('period', [addDays(from, 0.5), to]);
   };
   const subTo = () => {
     setFieldTouched('period', true);
-    setFieldValue('period', [from, subHours(to, 12)]);
+    setFieldValue('period', [from, subDays(to, 0.5)]);
   };
   const addTo = () => {
     setFieldTouched('period', true);
-    setFieldValue('period', [from, addHours(to, 12)]);
+    setFieldValue('period', [from, addDays(to, 0.5)]);
   };
 
   const makeButton = ([name, iconName, fn, active]) => (
@@ -72,9 +72,9 @@ const PeriodPicker = ({
     </StyledIcon>
   );
   const buttons = [
-    ['addFrom', 'pt-icon-minus', addFrom, addHours(from, 12) < to],
+    ['addFrom', 'pt-icon-minus', addFrom, addDays(from, 0.5) < to],
     ['subFrom', 'pt-icon-plus', subFrom, from > minDate],
-    ['subTo', 'pt-icon-minus', subTo, to > addHours(from, 12)],
+    ['subTo', 'pt-icon-minus', subTo, to > addDays(from, 0.5)],
     ['addTo', 'pt-icon-plus', addTo, to < maxDate],
   ];
   return (

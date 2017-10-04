@@ -30,7 +30,12 @@ import {
 import Avatar, { SMALL } from '../../Avatar';
 import { getPathByName } from '../../../routes';
 import { fullName, isAdmin, isEqual } from '../../../utils/people';
-import { isVacation } from '../../../utils/events';
+import {
+  EVENT_DAY,
+  EVENT_AM,
+  EVENT_PM,
+  isVacation,
+} from '../../../utils/events';
 import {
   vacationDayBackground,
   sickLeaveDayBackground,
@@ -247,7 +252,8 @@ const StyledEvent = styled.div`
   background: ${({ event }) =>
     isVacation(event) ? vacationDayBackground : sickLeaveDayBackground};
   cursor: pointer;
-  grid-column: ${({ event }) => event.period || 'span 2'};
+  grid-column: ${({ event }) =>
+    event.period === EVENT_DAY ? 'span 2' : event.period};
 `;
 
 const Event = ({ event, onClick }) => {
