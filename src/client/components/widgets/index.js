@@ -15,8 +15,10 @@ import NameLink from './NameLink';
 import CompanyLink from './CompanyLink';
 import Actions from './Actions';
 import ViewField from './ViewField';
+import TagsMenu from './TagsMenu';
 
 export {
+  TagsMenu,
   ViewField,
   Actions,
   NameLink,

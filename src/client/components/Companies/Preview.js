@@ -55,12 +55,14 @@ export const Preview = ({
       onMouseLeave={handleMouseLeave}
     >
       <TitleRow>
-        <Avatar
-          name={name}
-          color={avatar ? avatar.color : ''}
-          size="MEDIUM"
-          to={getPathByName('company', _id)}
-        />
+        {avatar && (
+          <Avatar
+            name={name}
+            color={avatar ? avatar.color : ''}
+            size="MEDIUM"
+            to={getPathByName('company', _id)}
+          />
+        )}
         <Title>
           <NameLink to={getPathByName('company', _id)}>{name}</NameLink>
         </Title>

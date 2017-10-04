@@ -7,7 +7,8 @@ const doFilter = (nfilter, notes) =>
   filter(note => nmatch(regexp(nfilter), note.content), notes);
 
 export const getFilter = state => state.notes.filter || '';
-const getNotes = state => state.notes.data;
+export const getSort = state => state.notes.sort;
+export const getNotes = state => state.notes.data;
 
 export const getVisibleNotes = createSelector(
   [getFilter, getNotes],

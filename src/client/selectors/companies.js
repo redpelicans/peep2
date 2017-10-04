@@ -1,40 +1,55 @@
-import R from 'ramda';
+import {
+  descend,
+  reduce,
+  pathOr,
+  values,
+  mapObjIndexed,
+  map,
+  sortBy,
+  compose,
+  ifElse,
+  is,
+  toLower,
+  identity,
+  prop,
+  reverse,
+  match,
+  split,
+  filter,
+  allPass,
+  sort,
+} from 'ramda';
 import moment from 'moment';
 import { createSelector } from 'reselect';
 
 /* sorting */
-const sortByProp = prop =>
-  R.sortBy(
-    R.compose(R.ifElse(R.is(String), R.toLower, R.identity), R.prop(prop)),
-  );
-const sortByOrder = order => (order === 'desc' ? R.reverse : R.identity);
+const sortByProp = cprop =>
+  sortBy(compose(ifElse(is(String), toLower, identity), prop(cprop)));
+const sortByOrder = order => (order === 'desc' ? reverse : identity);
 const doSort = ({ by, order }) =>
-  by && by.length ? R.compose(sortByOrder(order), sortByProp(by)) : R.identity;
+  by && by.length ? compose(sortByOrder(order), sortByProp(by)) : identity;
 
 /* filtering */
 const regexp = filter => new RegExp(filter, 'i');
 const getTagsPredicate = filter => ({ tags = [] }) =>
-  R.match(regexp(filter.slice(1)), tags.join(' ')).length;
+  match(regexp(filter.slice(1)), tags.join(' ')).length;
 const getNamePredicate = filter => ({ name }) =>
-  R.match(regexp(filter), name).length;
+  match(regexp(filter), name).length;
 const getPredicate = filter =>
   filter[0] === '#' ? getTagsPredicate(filter) : getNamePredicate(filter);
-const getPredicates = filter =>
-  R.compose(R.map(getPredicate), R.split(' '))(filter);
+const getPredicates = filter => compose(map(getPredicate), split(' '))(filter);
 const getPreferredPredicate = filter => ({ preferred }) =>
   !filter || !!preferred === !!filter;
-const doFilter = (filter, preferredFilter) =>
-  R.filter(
-    R.allPass([
+const doFilter = (cfilter, preferredFilter) =>
+  filter(
+    allPass([
       getPreferredPredicate(preferredFilter),
-      ...getPredicates(filter),
+      ...getPredicates(cfilter),
     ]),
   );
 
 const filterAndSort = (filter, sort, preferredFilter, companies) =>
-  R.compose(doSort(sort), doFilter(filter, preferredFilter), R.values)(
-    companies,
-  );
+  compose(doSort(sort), doFilter(filter, preferredFilter), values)(companies);
 
 /* status */
 const isNew = company =>
@@ -44,7 +59,7 @@ const isUpdated = company =>
   company.updatedAt &&
   moment.duration(moment() - company.updatedAt).asHours() < 1;
 const putStatus = companies =>
-  R.mapObjIndexed(company => ({
+  mapObjIndexed(company => ({
     ...company,
     isNew: isNew(company),
     isUpdated: isUpdated(company),
@@ -53,8 +68,8 @@ const putStatus = companies =>
 /* input selectors */
 export const getFilter = state => state.companies.filter;
 export const getSort = state => state.companies.sort;
-const getPreferredFilter = state => state.companies.preferredFilter;
 export const getCompanies = state => state.companies.data;
+const getPreferredFilter = state => state.companies.preferredFilter;
 
 /* selectors */
 const updateCompaniesStatus = createSelector(getCompanies, putStatus);
@@ -64,3 +79,26 @@ export const getVisibleCompanies = createSelector(
   (filter, sort, preferredFilter, companies) =>
     filterAndSort(filter, sort, preferredFilter, companies),
 );
+
+const groupCompanyTags = (acc, company) => {
+  const tags = company.tags || [];
+  return reduce(
+    (acc2, tag) => ({
+      ...acc2,
+      [tag]: { label: tag, count: pathOr(0, [tag, 'count'], acc) + 1 },
+    }),
+    acc,
+    tags,
+  );
+};
+
+const firstLevelReducer = reduce(
+  (acc, company) => groupCompanyTags(acc, company),
+  {},
+);
+const sortTag = sort(descend(prop('count')));
+
+const getUnsortedTags = compose(firstLevelReducer, values);
+const groupTags = compose(sortTag, values, getUnsortedTags);
+
+export const getGroupedTagsByCount = createSelector(getCompanies, groupTags);

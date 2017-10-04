@@ -71,12 +71,17 @@ const CompanyInfos = ({ company = {}, people }) => {
         <StyledViewField name="type" label="Type" value={type} />
         <StyledViewField
           name="website"
-          label="Website"
-          value={
-            <StyledLink target="_blank" href={website}>
-              {website}
-            </StyledLink>
+          label={
+            website && (
+              <div>
+                <span style={{ marginRight: 10 }}>Website</span>
+                <StyledLink target="_blank" href={website}>
+                  <i className="fa fa-external-link" />
+                </StyledLink>
+              </div>
+            )
           }
+          value={website}
         />
         <StyledViewField name="street" label="Street" value={street} />
         <StyledViewField name="zipcode" label="Zip code" value={zipcode} />

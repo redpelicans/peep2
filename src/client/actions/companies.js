@@ -1,4 +1,4 @@
-import R from 'ramda';
+import { isEmpty } from 'ramda';
 
 export const LOAD_COMPANIES = 'EvtX:Server:companies:load';
 export const COMPANIES_LOADED = 'companies:loaded';
@@ -13,7 +13,7 @@ export const SORT_COMPANY_LIST = 'sort:company:list';
 
 export const loadCompanies = () => (dispatch, getState) => {
   const { companies } = getState();
-  if (R.isEmpty(companies.data)) {
+  if (isEmpty(companies.data)) {
     dispatch({
       type: LOAD_COMPANIES,
       replyTo: COMPANIES_LOADED,
@@ -21,7 +21,7 @@ export const loadCompanies = () => (dispatch, getState) => {
   }
 };
 
-export const addCompany = company => (dispatch) => {
+export const addCompany = company => dispatch => {
   dispatch({
     type: ADD_COMPANY,
     payload: company,
@@ -29,7 +29,7 @@ export const addCompany = company => (dispatch) => {
   });
 };
 
-export const updateCompany = company => (dispatch) => {
+export const updateCompany = company => dispatch => {
   dispatch({
     type: UPDATE_COMPANY,
     payload: company,
@@ -37,7 +37,7 @@ export const updateCompany = company => (dispatch) => {
   });
 };
 
-export const togglePreferred = company => (dispatch) => {
+export const togglePreferred = company => dispatch => {
   const { _id, preferred } = company;
   dispatch({
     type: SET_PREFERRED_COMPANY,

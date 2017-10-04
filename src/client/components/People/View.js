@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { map } from 'ramda';
+import { isEmpty, map } from 'ramda';
 import { Colors } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
@@ -13,10 +13,11 @@ import { Header, HeaderLeft, HeaderRight } from '../Header';
 import {
   Title,
   Container,
-  Spacer,
   CompanyLink,
   ViewField,
   LinkButton,
+  Tag,
+  Spacer,
 } from '../widgets';
 
 const StyledGrid = styled.div`
@@ -42,46 +43,78 @@ const StyledGrid = styled.div`
   }
 `;
 
-const ArrayBlock = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const StyledPhoneWrap = styled.div`
+const ReadOnlyField = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  width: 250px;
-  height: 30px;
+  height: 100%;
   background-color: ${Colors.DARK_GRAY3};
   border-radius: 3px;
-  padding-top: 5px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
   flex-direction: row;
   margin-top: 10px;
-  justify-content: space-between;
 `;
 
-const StyledPhoneLabel = styled.label`margin-left: 15px;`;
+const StyledTag = styled(Tag)`cursor: default;`;
 
-const StyledPhoneNumber = styled.span`margin-right: 15px;`;
+const PhoneNumberText = styled.p`margin: 0;`;
+
+const PhoneNumberContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+  grid-auto-rows: auto;
+  grid-gap: 10px;
+  background-color: ${Colors.DARK_GRAY3};
+  min-height: 26px;
+  border-radius: 4px;
+  width: 100%;
+  padding: 10px;
+`;
+const PhoneNumber = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: ${Colors.DARK_GRAY5};
+  border-radius: 4px;
+  padding: 10px;
+`;
 
 const PhoneField = ({ label, number }) => (
-  <StyledPhoneWrap>
-    <StyledPhoneLabel>{label}</StyledPhoneLabel>
-    <StyledPhoneNumber>{number}</StyledPhoneNumber>
-  </StyledPhoneWrap>
+  <PhoneNumber>
+    <PhoneNumberText>{label}</PhoneNumberText>
+    <PhoneNumberText>{number}</PhoneNumberText>
+  </PhoneNumber>
 );
 
 PhoneField.propTypes = {
   label: PropTypes.string.isRequired,
   number: PropTypes.string.isRequired,
 };
+
 const StyledViewField = styled(ViewField)`grid-area: ${({ name }) => name};`;
+
+const ViewFieldArray = ({ label, items }) => (
+  <StyledViewFieldArray>
+    <label>{label}</label>
+    <ReadOnlyField>
+      {map(item => <StyledTag key={item}>{item}</StyledTag>, items)}
+    </ReadOnlyField>
+  </StyledViewFieldArray>
+);
+
+ViewFieldArray.propTypes = {
+  label: PropTypes.string.isRequired,
+  items: PropTypes.array,
+};
+
+const StyledViewFieldArray = styled.div`margin: 10px 0;`;
 
 const PersonInfos = ({ person = {} }) => {
   const {
@@ -93,6 +126,9 @@ const PersonInfos = ({ person = {} }) => {
     jobType,
     email,
     phones = [],
+    skills = [],
+    tags = [],
+    roles = [],
     companyId,
   } = person;
   return (
@@ -107,21 +143,26 @@ const PersonInfos = ({ person = {} }) => {
         <StyledViewField name="lastName" label="Last Name" value={lastName} />
         <StyledViewField
           name="company"
-          label="Company"
-          value={
-            <CompanyLink to={getPathByName('company', companyId)}>
-              {company}
-            </CompanyLink>
+          label={
+            <div>
+              <span style={{ marginRight: 10 }}>Company</span>
+              {company && (
+                <CompanyLink to={getPathByName('company', companyId)}>
+                  <i className="fa fa-external-link" />
+                </CompanyLink>
+              )}
+            </div>
           }
+          value={company}
         />
         <StyledViewField name="type" label="Type" value={type} />
         <StyledViewField name="jobType" label="Job Type" value={jobType} />
         <StyledViewField name="email" label="Email" value={email} />
       </StyledGrid>
-      {phones.length > 0 && (
+      {!isEmpty(phones) > 0 && (
         <div>
           <label>Phones</label>
-          <ArrayBlock>
+          <PhoneNumberContainer>
             {map(
               phone => (
                 <PhoneField
@@ -132,9 +173,13 @@ const PersonInfos = ({ person = {} }) => {
               ),
               phones,
             )}
-          </ArrayBlock>
+          </PhoneNumberContainer>
         </div>
       )}
+      {!isEmpty(skills) && <ViewFieldArray label="Skills" items={skills} />}
+      {!isEmpty(tags) && <ViewFieldArray label="Tags" items={tags} />}
+      {roles === null ||
+        (!isEmpty(roles) && <ViewFieldArray label="Roles" items={roles} />)}
     </StyledWrapper>
   );
 };
