@@ -1,5 +1,5 @@
 import { compose, fromPairs, map } from 'ramda';
-import moment from 'moment';
+import { format } from 'date-fns';
 import {
   FILTER_COMPANY_LIST,
   SORT_COMPANY_LIST,
@@ -10,13 +10,16 @@ import {
   TOGGLE_PREFERRED_FILTER,
 } from '../actions/companies';
 
+const formatString = 'MM/DD/YYYY';
+
 const make = company => {
   const updatedCompany = {
     ...company,
     typeName: 'company',
-    createdAt: moment(company.createdAt),
+    createdAt: format(company.createdAt, formatString),
   };
-  if (company.updatedAt) updatedCompany.updatedAt = moment(company.updatedAt);
+  if (company.updatedAt)
+    updatedCompany.updatedAt = format(Date.now(), formatString);
   return updatedCompany;
 };
 const makeAll = compose(fromPairs, map(c => [c._id, make(c)]));

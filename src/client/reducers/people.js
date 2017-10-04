@@ -1,5 +1,5 @@
 import { compose, fromPairs, map, omit } from 'ramda';
-import moment from 'moment';
+import { format } from 'date-fns';
 import {
   PEOPLE_LOADED,
   FILTER_PEOPLE_LIST,
@@ -11,15 +11,18 @@ import {
   SORT_PEOPLE_LIST,
 } from '../actions/people';
 
+const formatString = 'MM/DD/YYYY';
+
 const make = person => {
   const { firstName, lastName } = person;
   const updatedPerson = {
     ...person,
     name: `${firstName} ${lastName}`,
     typeName: 'person',
-    createdAt: moment(person.createdAt),
+    createdAt: format(person.createdAt, formatString),
   };
-  if (person.updatedAt) updatedPerson.updatedAt = moment(person.updatedAt);
+  if (person.updatedAt)
+    updatedPerson.updatedAt = format(Date.now(), formatString);
   return updatedPerson;
 };
 
