@@ -31,7 +31,7 @@ const StyledHeader = styled(Header)`
   top: 0px;
   left: 0px;
   width: 100%;
-  z-index: 1000;
+  z-index: 20;
   background-color: #394b59;
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), 0 0 0 rgba(16, 22, 26, 0),
     0 1px 1px rgba(16, 22, 26, 0.4);

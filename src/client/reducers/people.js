@@ -1,4 +1,4 @@
-import R from 'ramda';
+import { compose, fromPairs, map, omit } from 'ramda';
 import moment from 'moment';
 import {
   PEOPLE_LOADED,
@@ -8,6 +8,7 @@ import {
   PEOPLE_ADDED,
   PEOPLE_UPDATED,
   PEOPLE_DELETED,
+  SORT_PEOPLE_LIST,
 } from '../actions/people';
 
 const make = (person) => {
@@ -17,12 +18,23 @@ const make = (person) => {
   return updatedPerson;
 };
 
-const makeAll = R.compose(R.fromPairs, R.map(o => [o._id, make(o)]));
+const makeAll = compose(fromPairs, map(o => [o._id, make(o)]));
 
-const people = (state = { data: { } }, action) => {
+const initialState = {
+  data: {},
+  sort: { by: '', order: '' },
+  filter: '',
+};
+
+const people = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_PREFERRED_FILTER:
       return { ...state, preferredFilter: !state.preferredFilter };
+    case SORT_PEOPLE_LIST: {
+      const { by, order } = state.sort;
+      const newOrder = (by === action.sortBy && order === 'asc' && !action.revertOrder) ? 'desc' : 'asc';
+      return { ...state, sort: { by: action.sortBy, order: newOrder } };
+    }
     case FILTER_PEOPLE_LIST:
       return { ...state, filter: action.filter };
     case PEOPLE_LOADED:
@@ -47,7 +59,7 @@ const people = (state = { data: { } }, action) => {
         },
       };
     case PEOPLE_DELETED:
-      return { data: R.omit([action.payload._id])(state.data) };
+      return { data: omit([action.payload._id])(state.data) };
     default:
       return state;
   }

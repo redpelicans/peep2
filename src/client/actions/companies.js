@@ -1,4 +1,4 @@
-import R from 'ramda';
+import { isEmpty } from 'ramda';
 
 export const LOAD_COMPANIES = 'EvtX:Server:companies:load';
 export const COMPANIES_LOADED = 'companies:loaded';
@@ -13,7 +13,7 @@ export const SORT_COMPANY_LIST = 'sort:company:list';
 
 export const loadCompanies = () => (dispatch, getState) => {
   const { companies } = getState();
-  if (R.isEmpty(companies.data)) {
+  if (isEmpty(companies.data)) {
     dispatch({
       type: LOAD_COMPANIES,
       replyTo: COMPANIES_LOADED,
