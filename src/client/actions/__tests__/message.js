@@ -3,8 +3,6 @@ import reducer from '../../reducers';
 import { configureStore } from './utils';
 import { alert, ALERT } from '../message';
 
-const { describe, it } = global;
-
 describe('Action:message', () => {
   it('ALERT Once', done => {
     const [TYPE, MESSAGE, DESCRIPTION] = ['type', 'message', 'description'];
