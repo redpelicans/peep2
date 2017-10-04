@@ -8,9 +8,5 @@ export const propTransformer = (src, target, fn = identity) => Component => {
     return <Component {...newProps} />;
   };
 
-  Transformer.propTypes = {
-    workers: PropTypes.array.isRequired,
-  };
-
   return Transformer;
 };

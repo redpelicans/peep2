@@ -9,7 +9,10 @@ const getUser = ctx => {
   if (user) return Promise.resolve(ctx);
   if (!token) return Promise.resolve(ctx);
   const { secretKey } = ctx.evtx.globals;
-  return Person.getFromToken(token, secretKey).then(person => ({ ...ctx, user: person }));
+  return Person.getFromToken(token, secretKey).then(person => ({
+    ...ctx,
+    user: person,
+  }));
 };
 
 const formatServiceMethod = ctx => {
@@ -48,9 +51,7 @@ class Reactor {
   }
 
   initEvtX() {
-    this.evtx
-      .before(getUser, formatServiceMethod)
-      .after(formatResponse);
+    this.evtx.before(getUser, formatServiceMethod).after(formatResponse);
   }
 
   initEvents() {
@@ -65,15 +66,26 @@ class Reactor {
   }
 
   getSockets(targetUser) {
-    return R.compose(R.pluck('socket'), R.filter(({ user }) => targetUser.equals(user)), R.values)(this.conx);
+    return R.compose(
+      R.pluck('socket'),
+      R.filter(({ user }) => targetUser.equals(user)),
+      R.values,
+    )(this.conx);
   }
 
   getConnectedUsers() {
-    return R.compose(R.values, R.reduce((acc, { user }) => { acc[user._id] = user; return acc; }, {}), R.values)(this.conx);
+    return R.compose(
+      R.values,
+      R.reduce((acc, { user }) => {
+        acc[user._id] = user;
+        return acc;
+      }, {}),
+      R.values,
+    )(this.conx);
   }
 
   broadcast(pushEvent) {
-    return (ctx) => {
+    return ctx => {
       const { message: { replyTo } } = ctx;
       if (!replyTo) return;
       this.getConnectedUsers().forEach(targetUser => {
@@ -86,18 +98,27 @@ class Reactor {
 
   initCompanies() {
     const { evtx } = this;
-    const pushPreferredEvent = ({ socket, user, output: company, message: { replyTo } }, targetUser, targetSocket) => {
+    const pushPreferredEvent = (
+      { socket, user, output: company, message: { replyTo } },
+      targetUser,
+      targetSocket,
+    ) => {
       const action = makeOutput(company, replyTo);
       if (targetSocket === socket) return;
       if (user.equals(targetUser)) return targetSocket.emit('action', action);
     };
-    const pushEvent = ({ socket, user, output: company, message: { replyTo } }, targetUser, targetSocket) => {
+    const pushEvent = (
+      { socket, user, output: company, message: { replyTo } },
+      targetUser,
+      targetSocket,
+    ) => {
       const action = makeOutput(company, replyTo);
       if (targetSocket === socket) return;
       if (user.equals(targetUser)) return targetSocket.emit('action', action);
-      evtx.service('companies')
+      evtx
+        .service('companies')
         .loadOne(company._id, { user: targetUser })
-        .then((userCompany) => {
+        .then(userCompany => {
           const pushedCompany = { ...userCompany, authorId: user._id };
           const action = makeOutput(pushedCompany, replyTo); // eslint-disable-line no-shadow
           targetSocket.emit('action', action);
@@ -105,18 +126,25 @@ class Reactor {
     };
     evtx.service('companies').on('company:added', this.broadcast(pushEvent));
     evtx.service('companies').on('company:updated', this.broadcast(pushEvent));
-    evtx.service('companies').on('company:setPreferred', this.broadcast(pushPreferredEvent));
+    evtx
+      .service('companies')
+      .on('company:setPreferred', this.broadcast(pushPreferredEvent));
   }
 
   initPeople() {
     const { evtx } = this;
-    const pushEvent = ({ socket, user, output: person, message: { replyTo } }, targetUser, targetSocket) => {
+    const pushEvent = (
+      { socket, user, output: person, message: { replyTo } },
+      targetUser,
+      targetSocket,
+    ) => {
       const action = makeOutput(person, replyTo);
       if (targetSocket === socket) return;
       if (user.equals(targetUser)) return targetSocket.emit('action', action);
-      evtx.service('people')
+      evtx
+        .service('people')
         .loadOne(person._id, { user: targetUser })
-        .then((userPerson) => {
+        .then(userPerson => {
           const pushedPerson = { ...userPerson, authorId: user._id };
           const action = makeOutput(pushedPerson, replyTo); // eslint-disable-line no-shadow
           targetSocket.emit('action', action);
@@ -128,7 +156,11 @@ class Reactor {
 
   initNotes() {
     const { evtx } = this;
-    const pushEvent = ({ socket, output: note, message: { broadcastAll, replyTo } }, targetUser, targetSocket) => {
+    const pushEvent = (
+      { socket, output: note, message: { broadcastAll, replyTo } },
+      targetUser,
+      targetSocket,
+    ) => {
       const action = makeOutput(note, replyTo);
       if (!broadcastAll && targetSocket === socket) return;
       targetSocket.emit('action', action);
@@ -154,21 +186,25 @@ class Reactor {
     io.on('connection', socket => {
       socket.on('action', (message, cb) => {
         loginfo(`receive ${message.type} action`);
-        const localCtx = { io, socket, test: 'COUCOU' };
-        evtx.run(message, localCtx)
-          .then((res) => {
+        const localCtx = { io, socket };
+        evtx
+          .run(message, localCtx)
+          .then(res => {
             if (!res) return;
             if (cb) {
-              loginfo(`answered ${message.type} action`);
+              loginfo(`answered ${message.type} action callback`);
               return cb(null, res);
             }
             socket.emit('action', res);
             if (res.type) loginfo(`sent ${res.type} action`);
             else loginfo(`answered ${message.type} action`);
           })
-          .catch((err) => {
-            const res = R.is(Error, err) ? { code: 500, message: err.toString() } : { code: err.code, message: err.error };
-            if (process.env.NODE_ENV !== 'test') console.error(err.stack || res.message); // eslint-disable-line no-console
+          .catch(err => {
+            const res = R.is(Error, err)
+              ? { code: 500, message: err.toString() }
+              : { code: err.code, message: err.error };
+            if (process.env.NODE_ENV !== 'test')
+              console.error(err.stack || res.message); // eslint-disable-line no-console
             if (cb) return cb(res);
             socket.emit('action', { type: 'EvtX:Error', ...res });
           });

@@ -78,8 +78,6 @@ const AddOrEditForm = ({
   errors,
 }) => {
   const [from, to] = values['period'];
-  console.log('--------- ADDOrEdit');
-  console.log(from, to);
   const newEvents = freeEventsFromPeriod({
     from,
     to,

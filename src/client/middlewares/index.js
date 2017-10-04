@@ -1,8 +1,7 @@
 import { is } from 'ramda';
 import { push, goBack } from '../history';
 import { USER_LOGGED } from '../actions/login';
-
-const EVTX_ERROR = 'EvtX:Error';
+import { EVTX_ERROR } from '../actions/message';
 
 export const socketIoMiddleWare = socket => ({ dispatch, getState }) => {
   socket.on('action', action => {

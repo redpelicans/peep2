@@ -54,6 +54,13 @@ export const getEventsByWorkerDate = createSelector(
   eventsByWorkerDate,
 );
 
+export const getWorkerEventsByDate = id =>
+  createSelector(
+    getCurrentDate,
+    getEvents,
+    (date, events) => eventsByWorkerDate(date, events)[id],
+  );
+
 const eventGroup = id => events => {
   const evts = compose(
     sortBy(prop('from')),

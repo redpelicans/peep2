@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Popover, Position } from '@blueprintjs/core';
 import { compose, join, map, take, split } from 'ramda';
-import colors, { randomColor } from '../../utils/colors';
+import colors from '../../utils/colors';
 
 export const Circle = styled.div`
   display: flex;

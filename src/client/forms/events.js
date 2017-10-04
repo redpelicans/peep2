@@ -5,9 +5,9 @@ import {
   getAllFields,
   getOneValidationSchema,
 } from './utils';
-import { TextAreaField } from '../fields';
 import { SelectField, WorkerSelectField } from '../fields/SelectField';
 import { PeriodField } from '../fields/DateField';
+import { MarkDownField } from '../fields/MarkDownField';
 
 const fields = {
   period: {
@@ -21,7 +21,6 @@ const fields = {
     required: true,
     defaultValue: 'vacation',
     domainValues: [
-      { id: '', value: '<None>' },
       { id: 'vacation', value: 'Vacation' },
       { id: 'sickLeaveDay', value: 'Sick Leave Day' },
     ],
@@ -46,9 +45,8 @@ const fields = {
   },
   description: {
     label: 'Description',
-    component: TextAreaField,
-    required: true,
-    validate: Yup.string().oneOf(['A', 'B']),
+    component: MarkDownField,
+    validate: Yup.string(),
   },
 };
 
