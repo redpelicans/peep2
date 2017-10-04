@@ -101,6 +101,16 @@ const enhance = compose(
         to: endOfMonth(date),
       });
     },
+    componentWillReceiveProps(nextProps) {
+      const { date: nextDate } = nextProps;
+      const { date } = this.props;
+      if (date !== nextDate) {
+        this.props.loadEvents({
+          from: startOfMonth(nextDate),
+          to: endOfMonth(nextDate),
+        });
+      }
+    },
   }),
   withHandlers({
     goPreviousMonth: ({ date, changeDate }) => () =>

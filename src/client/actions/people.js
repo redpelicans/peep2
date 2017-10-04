@@ -28,7 +28,7 @@ export const loadPeople = () => (dispatch, getState) => {
   }
 };
 
-export const addPeople = people => (dispatch) => {
+export const addPeople = people => dispatch => {
   dispatch({
     type: ADD_PEOPLE,
     payload: people,
@@ -36,7 +36,7 @@ export const addPeople = people => (dispatch) => {
   });
 };
 
-export const updatePeople = people => (dispatch) => {
+export const updatePeople = people => dispatch => {
   dispatch({
     type: UPDATE_PEOPLE,
     payload: people,
@@ -44,7 +44,7 @@ export const updatePeople = people => (dispatch) => {
   });
 };
 
-export const deletePeople = id => (dispatch) => {
+export const deletePeople = id => dispatch => {
   dispatch({
     type: DELETE_PEOPLE,
     payload: id,
@@ -52,7 +52,7 @@ export const deletePeople = id => (dispatch) => {
   });
 };
 
-export const checkEmail = email => (dispatch) => {
+export const checkEmail = email => dispatch => {
   if (!email) return Promise.reject(new Error('Email cannot be null'));
   const promise = new Promise((resolve, reject) => {
     const callback = (err, res) => {
@@ -70,7 +70,7 @@ export const checkEmail = email => (dispatch) => {
   return promise;
 };
 
-export const onPreferredClick = person => (dispatch) => {
+export const onPreferredClick = person => dispatch => {
   const { _id, preferred } = person;
   dispatch({
     type: SET_PREFERRED_PEOPLE,

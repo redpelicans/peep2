@@ -34,7 +34,10 @@ const people = (state = initialState, action) => {
       return { ...state, preferredFilter: !state.preferredFilter };
     case SORT_PEOPLE_LIST: {
       const { by, order } = state.sort;
-      const newOrder = (by === action.sortBy && order === 'asc' && !action.revertOrder) ? 'desc' : 'asc';
+      const newOrder =
+        by === action.sortBy && order === 'asc' && !action.revertOrder
+          ? 'desc'
+          : 'asc';
       return { ...state, sort: { by: action.sortBy, order: newOrder } };
     }
     case FILTER_PEOPLE_LIST:

@@ -14,7 +14,12 @@ class Message extends React.Component {
     const { id, icon } = this.props.message;
     if (id !== nextProps.message.id) {
       const { message: { type, message, description } } = nextProps;
-      const alert = <div><h3>{message}</h3><p>{description}</p></div>;
+      const alert = (
+        <div>
+          <h5>{message}</h5>
+          <p>{description}</p>
+        </div>
+      );
       const iconName = this.getIcon(type, icon);
       const intent = Intent[type];
       this.toast.show({ iconName, message: alert, intent });
@@ -24,13 +29,18 @@ class Message extends React.Component {
   getIcon = (type, icon) => {
     if (icon) return icon;
     switch (type) {
-      case DANGER: return 'pt-icon-error';
-      case PRIMARY: return 'pt-icon-help';
-      case SUCCESS: return 'pt-icon-tick';
-      case WARNING: return 'pt-icon-warning-sign';
-      default: return null;
+      case DANGER:
+        return 'pt-icon-error';
+      case PRIMARY:
+        return 'pt-icon-help';
+      case SUCCESS:
+        return 'pt-icon-tick';
+      case WARNING:
+        return 'pt-icon-warning-sign';
+      default:
+        return null;
     }
-  }
+  };
 
   render() {
     return null;

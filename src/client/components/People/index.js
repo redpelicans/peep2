@@ -3,11 +3,24 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers, lifecycle } from 'recompose';
-import { getVisiblePeople, getFilter, getSort, getGroupedTagsByCount } from '../../selectors/people';
+import {
+  getVisiblePeople,
+  getFilter,
+  getSort,
+  getGroupedTagsByCount,
+} from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import List from './List';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Container, Search, Spacer, Title, LinkButton, SortMenu, TagsMenu } from '../widgets';
+import {
+  Container,
+  Search,
+  Spacer,
+  Title,
+  LinkButton,
+  SortMenu,
+  TagsMenu,
+} from '../widgets';
 import { onTagClick, deletePeople, sortPeopleList } from '../../actions/people';
 
 const sortTypes = [
@@ -16,7 +29,17 @@ const sortTypes = [
   { key: 'updatedAt', label: 'Sort by updated date' },
 ];
 
-const People = ({ people, tags, companies, onTagClick, onFilterChange, filter = '', deletePeople, sort, sortPeopleList }) => (
+const People = ({
+  people,
+  tags,
+  companies,
+  onTagClick,
+  onFilterChange,
+  filter = '',
+  deletePeople,
+  sort,
+  sortPeopleList,
+}) => (
   <Container>
     <Header>
       <HeaderLeft>

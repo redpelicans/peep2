@@ -1,5 +1,5 @@
-import { compose, fromPairs, map } from 'ramda';
-import { EVENTS_LOADED } from '../actions/events';
+import { compose, fromPairs, map, merge } from 'ramda';
+import { EVENTS_LOADED, EVENTS_ADDED } from '../actions/events';
 
 const make = event => ({
   ...event,
@@ -12,6 +12,8 @@ const people = (state = { data: {} }, action) => {
   switch (action.type) {
     case EVENTS_LOADED:
       return { ...state, data: makeAll(action.payload) };
+    case EVENTS_ADDED:
+      return { ...state, data: merge(state.data, makeAll(action.payload)) };
     default:
       return state;
   }

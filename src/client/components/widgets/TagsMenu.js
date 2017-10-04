@@ -14,8 +14,8 @@ const TagsMenu = ({ tags, onClick, filter }) => {
   const handleClick = tag => onClick(`#${tag}`);
   return (
     <Menu>
-      {
-        map(tag => (
+      {map(
+        tag =>
           filter === `#${tag.label}` ? (
             <MenuItem
               key={tag.label}
@@ -40,12 +40,12 @@ const TagsMenu = ({ tags, onClick, filter }) => {
               }
               onClick={() => handleClick(tag.label)}
             />
-          )
-        ), tags)
-      }
+          ),
+        tags,
+      )}
     </Menu>
   );
-}
+};
 
 TagsMenu.propTypes = {
   tags: PropTypes.array,
@@ -61,7 +61,7 @@ const TagsMenuWrapper = ({ tags, onClick, filter }) => (
   >
     <button className="pt-button">
       Tags
-      <span className="pt-icon-standard pt-icon-caret-down pt-align-right"></span>
+      <span className="pt-icon-standard pt-icon-caret-down pt-align-right" />
     </button>
   </Popover2>
 );
@@ -70,6 +70,6 @@ TagsMenuWrapper.propTypes = {
   tags: PropTypes.array,
   onClick: PropTypes.func.isRequired,
   filter: PropTypes.string,
-}
+};
 
 export default TagsMenuWrapper;

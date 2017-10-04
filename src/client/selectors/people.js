@@ -39,12 +39,10 @@ export const getPersonNotes = (state, props) => {
 }
 
 const sortByProp = pprop =>
-sortBy(
-  compose(ifElse(is(String), toLower, identity), prop(pprop)),
-);
+  sortBy(compose(ifElse(is(String), toLower, identity), prop(pprop)));
 const sortByOrder = order => (order === 'desc' ? reverse : identity);
 const doSort = ({ by, order }) =>
-by && by.length ? compose(sortByOrder(order), sortByProp(by)) : identity;
+  by && by.length ? compose(sortByOrder(order), sortByProp(by)) : identity;
 
 const regexp = filter => new RegExp(filter, 'i');
 const getTagsPredicate = filter => ({ tags = [] }) =>
@@ -95,6 +93,9 @@ export const getPeopleFromCompany = createSelector(
     compose(values, filter(person => person.companyId === companyId))(people),
 );
 
+export const getWorker = id =>
+  createSelector([getPeople], people => people[id]);
+
 export const getWorkers = createSelector([getPeople], people =>
   compose(filter(isWorker))(people),
 );
@@ -104,17 +105,23 @@ export const getSortedWorkers = attr =>
 
 const groupPersonTags = (acc, person) => {
   const tags = person.tags || [];
-  return reduce((acc2, tag) => ({ ...acc2, [tag]: { label: tag, count: pathOr(0, [tag, 'count'], acc) + 1 } }), acc, tags);
-}
+  return reduce(
+    (acc2, tag) => ({
+      ...acc2,
+      [tag]: { label: tag, count: pathOr(0, [tag, 'count'], acc) + 1 },
+    }),
+    acc,
+    tags,
+  );
+};
 
-const firstLevelReducer = reduce((acc, person) => groupPersonTags(acc, person), {});
+const firstLevelReducer = reduce(
+  (acc, person) => groupPersonTags(acc, person),
+  {},
+);
 const sortTag = sort(descend(prop('count')));
 
 const getTagsUnsorted = compose(firstLevelReducer, values);
 const groupTags = compose(sortTag, values, getTagsUnsorted);
 
-export const getGroupedTagsByCount = createSelector(
-  getPeople,
-  groupTags,
-);
-
+export const getGroupedTagsByCount = createSelector(getPeople, groupTags);

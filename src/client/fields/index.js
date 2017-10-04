@@ -21,7 +21,7 @@ export const FormField = ({
         name={field.name}
         label={'label' in props ? props.label : field.label}
         value={'value' in props ? props.value : values[field.name]}
-        error={errors && touched[field.name] && errors[field.name]}
+        error={(errors && touched[field.name] && errors[field.name]) || null}
         required={!!field.required}
         {...newProps}
       />

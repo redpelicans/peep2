@@ -61,6 +61,7 @@ const SelectStyled = styled(Select.Creatable)`
 export const SelectField = ({
   name,
   label,
+  error,
   required,
   value,
   setFieldTouched,
@@ -73,9 +74,9 @@ export const SelectField = ({
     setFieldTouched(name, newValue !== value);
     setFieldValue(name, newValue);
   };
-  const getOptions = map(value => ({ value: value.value, label: value.value }));
+  const getOptions = map(value => ({ value: value.id, label: value.value }));
   return (
-    <Field label={label} required={required}>
+    <Field label={label} error={error} required={required}>
       <SelectStyled
         placeholder={`Select ${label}...`}
         id={label}
@@ -104,6 +105,7 @@ export const MultiSelectField = ({
   name,
   label,
   required,
+  error,
   value,
   setFieldTouched,
   setFieldValue,
@@ -114,9 +116,9 @@ export const MultiSelectField = ({
     setFieldTouched(name, newValue !== value);
     setFieldValue(name, newValue);
   };
-  const getOptions = map(value => ({ value: value.value, label: value.value }));
+  const getOptions = map(value => ({ value: value.id, label: value.value }));
   return (
-    <Field label={label} required={required}>
+    <Field label={label} error={error} required={required}>
       <SelectStyled
         id={label}
         placeholder={`Select ${label}...`}

@@ -6,7 +6,14 @@ import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
 import { filterNotesList, sortNotesList } from '../../actions/notes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Container, Title, Search, Spacer, LinkButton, SortMenu } from '../widgets';
+import {
+  Container,
+  Title,
+  Search,
+  Spacer,
+  LinkButton,
+  SortMenu,
+} from '../widgets';
 import List from './List';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
@@ -17,7 +24,7 @@ const StyledLinkButton = styled(LinkButton)``;
 const sortTypes = [
   { key: 'createdAt', label: 'Sort by creation date' },
   { key: 'updatedAt', label: 'Sort by updated date' },
-]
+];
 
 const Notes = ({
   filterNotesList,

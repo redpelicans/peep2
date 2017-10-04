@@ -78,8 +78,6 @@ const AddOrEditForm = ({
   errors,
 }) => {
   const [from, to] = values['period'];
-  console.log('--------- ADDOrEdit');
-  console.log(from, to);
   const newEvents = freeEventsFromPeriod({
     from,
     to,
@@ -89,7 +87,7 @@ const AddOrEditForm = ({
   const daysCount = compose(sum, pluck('value'))(newEvents);
   return (
     <StyledForm>
-      <Form id="addEvent" onSubmit={handleSubmit}>
+      <Form id="AddOrEdit" onSubmit={handleSubmit}>
         <StyledCalendar
           startDate={minDate}
           endDate={maxDate}

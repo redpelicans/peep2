@@ -33,7 +33,7 @@ const companies = (state = initialState, action) => {
       return { ...state, filter: action.filter };
     case SORT_COMPANY_LIST: {
       const { by, order } = state.sort;
-      const newOrder = (by === action.sortBy && order === 'asc') ? 'desc' : 'asc';
+      const newOrder = by === action.sortBy && order === 'asc' ? 'desc' : 'asc';
       return { ...state, sort: { by: action.sortBy, order: newOrder } };
     }
     case COMPANIES_LOADED:

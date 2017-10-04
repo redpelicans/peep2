@@ -1,8 +1,11 @@
 /* eslint-disable no-shadow */
 import {
+  curry,
+  identity,
   compose,
   prop,
   filter,
+  reject,
   values,
   reduce,
   propOr,
@@ -37,7 +40,7 @@ const hashByWorkerAndDate = (acc, event) => {
 
 const belongsToPeriod = (date, monthDate) =>
   isWithinRange(date, startOfMonth(monthDate), endOfMonth(monthDate));
-const eventsByWorkerDate = (date, events) =>
+const eventsByWorkerDate = curry((date, events) =>
   compose(
     reduce(hashByWorkerAndDate, {}),
     values,
@@ -45,7 +48,8 @@ const eventsByWorkerDate = (date, events) =>
       ({ from, to }) =>
         belongsToPeriod(from, date) || belongsToPeriod(to, date),
     ),
-  )(events);
+  )(events),
+);
 
 export const getEvents = state => state.events.data;
 export const getEventsByWorkerDate = createSelector(
@@ -53,6 +57,15 @@ export const getEventsByWorkerDate = createSelector(
   getEvents,
   eventsByWorkerDate,
 );
+
+export const getWorkerEventsByDate = (workerId, groupId) =>
+  createSelector(getCurrentDate, getEvents, (date, events) =>
+    compose(
+      prop(workerId),
+      eventsByWorkerDate(date),
+      !groupId ? identity : reject(e => e.groupId === groupId),
+    )(events),
+  );
 
 const eventGroup = id => events => {
   const evts = compose(

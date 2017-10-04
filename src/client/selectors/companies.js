@@ -33,9 +33,7 @@ export const getCompanyNotes = (state, props) => {
 
 /* sorting */
 const sortByProp = cprop =>
-  sortBy(
-    compose(ifElse(is(String), toLower, identity), prop(cprop)),
-  );
+  sortBy(compose(ifElse(is(String), toLower, identity), prop(cprop)));
 const sortByOrder = order => (order === 'desc' ? reverse : identity);
 const doSort = ({ by, order }) =>
   by && by.length ? compose(sortByOrder(order), sortByProp(by)) : identity;
@@ -48,8 +46,7 @@ const getNamePredicate = filter => ({ name }) =>
   match(regexp(filter), name).length;
 const getPredicate = filter =>
   filter[0] === '#' ? getTagsPredicate(filter) : getNamePredicate(filter);
-const getPredicates = filter =>
-  compose(map(getPredicate), split(' '))(filter);
+const getPredicates = filter => compose(map(getPredicate), split(' '))(filter);
 const getPreferredPredicate = filter => ({ preferred }) =>
   !filter || !!preferred === !!filter;
 const doFilter = (cfilter, preferredFilter) =>
@@ -61,9 +58,7 @@ const doFilter = (cfilter, preferredFilter) =>
   );
 
 const filterAndSort = (filter, sort, preferredFilter, companies) =>
-  compose(doSort(sort), doFilter(filter, preferredFilter), values)(
-    companies,
-  );
+  compose(doSort(sort), doFilter(filter, preferredFilter), values)(companies);
 
 /* status */
 const isNew = company =>
@@ -96,16 +91,23 @@ export const getVisibleCompanies = createSelector(
 
 const groupCompanyTags = (acc, company) => {
   const tags = company.tags || [];
-  return reduce((acc2, tag) => ({ ...acc2, [tag]: { label: tag, count: pathOr(0, [tag, 'count'], acc) + 1 } }), acc, tags);
-}
+  return reduce(
+    (acc2, tag) => ({
+      ...acc2,
+      [tag]: { label: tag, count: pathOr(0, [tag, 'count'], acc) + 1 },
+    }),
+    acc,
+    tags,
+  );
+};
 
-const firstLevelReducer = reduce((acc, company) => groupCompanyTags(acc, company), {});
+const firstLevelReducer = reduce(
+  (acc, company) => groupCompanyTags(acc, company),
+  {},
+);
 const sortTag = sort(descend(prop('count')));
 
 const getUnsortedTags = compose(firstLevelReducer, values);
 const groupTags = compose(sortTag, values, getUnsortedTags);
 
-export const getGroupedTagsByCount = createSelector(
-  getCompanies,
-  groupTags,
-);
+export const getGroupedTagsByCount = createSelector(getCompanies, groupTags);

@@ -62,9 +62,7 @@ const ReadOnlyField = styled.div`
   margin-top: 10px;
 `;
 
-const StyledTag = styled(Tag)`
-  cursor: default;
-`;
+const StyledTag = styled(Tag)`cursor: default;`;
 
 const PhoneNumberText = styled.p`margin: 0;`;
 
@@ -115,14 +113,7 @@ const ViewFieldArray = ({ label, items }) => (
   <StyledViewFieldArray>
     <label>{label}</label>
     <ReadOnlyField>
-      {map(
-        item => (
-          <StyledTag key={item}>
-            {item}
-          </StyledTag>
-        ),
-        items,
-      )}
+      {map(item => <StyledTag key={item}>{item}</StyledTag>, items)}
     </ReadOnlyField>
   </StyledViewFieldArray>
 );
@@ -171,14 +162,14 @@ const PersonInfos = ({ person = {} }) => {
         <StyledViewField
           name="company"
           label={
-            (
-              <div>
-                <span style={{ marginRight: 10 }}>Company</span>
-                {company && <CompanyLink to={getPathByName('company', companyId)}>
+            <div>
+              <span style={{ marginRight: 10 }}>Company</span>
+              {company && (
+                <CompanyLink to={getPathByName('company', companyId)}>
                   <i className="fa fa-external-link" />
-                </CompanyLink>}
-              </div>
-            )
+                </CompanyLink>
+              )}
+            </div>
           }
           value={company}
         />
