@@ -18,7 +18,6 @@ const routes = {
   home: {
     path: '/',
     component: Companies,
-    default: true,
     exact: true,
     auth: true,
   },

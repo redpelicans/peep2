@@ -9,6 +9,7 @@ import { Dialog, Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { withFormik } from 'formik';
 import { getCalendar } from '../../selectors/calendar';
+import { addEventGroup } from '../../actions/events';
 import { getWorker, getWorkers } from '../../selectors/people';
 import { getWorkerEventsByDate } from '../../selectors/events';
 import { Container, Title, Spacer } from '../widgets';
@@ -16,13 +17,14 @@ import { defaultValues, getValidationSchema } from '../../forms/events';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
 import AddOrEdit from './AddOrEdit';
+import { freeEventsFromPeriod } from '../../utils/events';
 
 const StyledContainer = styled(Container)`min-width: 300px;`;
 
 const Add = ({
   worker,
   period,
-  history,
+  leave,
   cancel,
   events,
   calendar,
@@ -59,7 +61,7 @@ const Add = ({
                 No{' '}
               </Button>
               <Button
-                onClick={() => history.goBack()}
+                onClick={() => leave()}
                 className="pt-intent-success pt-large"
               >
                 {' '}
@@ -76,7 +78,7 @@ const Add = ({
           </HeaderLeft>
           <HeaderRight>
             <Button
-              form="addEvent"
+              form="AddOrEdit"
               type="submit"
               disabled={isSubmitting}
               className="pt-intent-success pt-large"
@@ -118,7 +120,7 @@ const Add = ({
 
 Add.propTypes = {
   period: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired,
+  leave: PropTypes.func.isRequired,
   worker: PropTypes.object.isRequired,
   calendar: PropTypes.object,
   events: PropTypes.object,
@@ -142,7 +144,7 @@ const mapStateToProps = (state, { history }) => {
   };
 };
 
-const actions = {};
+const actions = { addEventGroup };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 const componentLifecycle = {
   componentWillMount() {
@@ -156,7 +158,24 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle(componentLifecycle),
   withFormik({
-    handleSubmit: console.log,
+    handleSubmit: (
+      { type, workerId, status, period, description },
+      { props },
+    ) => {
+      const { calendar, events, addEventGroup, history } = props;
+      const [from, to] = period;
+      const newEvents = freeEventsFromPeriod({ from, to, events, calendar });
+      addEventGroup({
+        type,
+        workerId,
+        status,
+        from,
+        to,
+        description,
+        events: newEvents,
+      });
+      history.goBack();
+    },
     validationSchema: getValidationSchema(),
     mapPropsToValues: ({ worker, period }) => ({
       ...defaultValues,
@@ -166,6 +185,7 @@ export default compose(
   }),
   withState('isDialogOpen', 'showDialog', false),
   withHandlers({
+    leave: ({ history }) => () => history.goBack(),
     cancel: ({ history, showDialog }) => dirty => () => {
       if (!dirty) return history.goBack();
       return showDialog(isDialogOpen => !isDialogOpen);
