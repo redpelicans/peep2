@@ -18,9 +18,18 @@ import {
   filter,
   allPass,
   sort,
+  isEmpty,
 } from 'ramda';
 import moment from 'moment';
 import { createSelector } from 'reselect';
+
+const getNotes = state => state.notes.data;
+
+export const getCompanyNotes = (state, props) => {
+  const notes = getNotes(state);
+  if (isEmpty(notes)) return null;
+  return filter(note => note.entityId === props.entityId, notes);
+}
 
 /* sorting */
 const sortByProp = cprop =>

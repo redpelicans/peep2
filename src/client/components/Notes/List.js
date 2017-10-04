@@ -33,7 +33,7 @@ export const List = ({ notes, people, findEntity }) => (
           <Preview
             key={note._id}
             note={note}
-            people={people}
+            person={people[note.authorId]}
             entity={findEntity(note.entityType, note.entityId)}
           />
         ))}

@@ -44,7 +44,7 @@ export const Preview = ({
   handleMouseLeave,
   showActions,
   note,
-  people,
+  person,
   entity,
 }) => (
   <PreviewContainer
@@ -63,13 +63,13 @@ export const Preview = ({
         <Icons className="pt-icon-standard pt-icon-trash" />
       </Actions>
     )}
-    <CardContent note={note} person={people[note.authorId]} entity={entity} />
+    <CardContent note={note} person={person} entity={entity} />
   </PreviewContainer>
 );
 
 Preview.propTypes = {
   note: PropTypes.object,
-  people: PropTypes.object,
+  person: PropTypes.object,
   entity: PropTypes.object,
   showActions: PropTypes.bool.isRequired,
   handleMouseEnter: PropTypes.func.isRequired,
