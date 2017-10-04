@@ -23,7 +23,7 @@ import {
 } from 'date-fns';
 import { dmy, isWorkingDay } from '../utils';
 
-const EVENT_UNIT = 'day';
+export const EVENT_DAY = 'DAY';
 export const EVENT_AM = 'AM';
 export const EVENT_PM = 'PM';
 
@@ -31,7 +31,7 @@ export const isVacation = propEq('type', 'vacation');
 export const isAfternoon = propEq('period', EVENT_PM);
 export const isMorningEvent = propEq('period', EVENT_AM);
 export const isAfternoonEvent = propEq('period', EVENT_PM);
-export const isFullDayEvent = event => !event.period;
+export const isFullDayEvent = propEq('period', EVENT_DAY);
 export const isHalfDayEvent = (period, event) =>
   period === EVENT_PM ? isAfternoonEvent(event) : isMorningEvent(event);
 const isMidDay = date => getHours(date) === 12 || getHours(date) === 11;
@@ -39,34 +39,40 @@ const isMidDay = date => getHours(date) === 12 || getHours(date) === 11;
 const FullDayEvent = date => ({
   from: startOfDay(date),
   to: endOfDay(date),
-  unit: EVENT_UNIT,
+  period: EVENT_DAY,
   value: 1,
 });
 const AMDayEvent = date => ({
   from: startOfDay(date),
   to: addHours(startOfDay(date), 12),
-  unit: EVENT_UNIT,
-  value: 0.5,
   period: EVENT_AM,
+  value: 0.5,
 });
 const PMDayEvent = date => ({
   from: addHours(startOfDay(date), 12),
   to: endOfDay(date),
-  unit: EVENT_UNIT,
-  value: 0.5,
   period: EVENT_PM,
+  value: 0.5,
 });
 
-const halfDays = reduce((acc, e) => ({ ...acc, [e.period]: 1 }), {});
+const periodSlot = reduce((acc, e) => ({ ...acc, [e.period]: 1 }), {});
 const isDayFree = event => !event;
-const isMorningFree = events => !halfDays(events)[EVENT_AM];
-const isAfternoonFree = events => !halfDays(events)[EVENT_PM];
-const availableSlot = (events, calendar, date) => {
+const isDayFull = events => periodSlot(events)[EVENT_DAY];
+const isMorningFree = events => !periodSlot(events)[EVENT_AM];
+const isAfternoonFree = events => !periodSlot(events)[EVENT_PM];
+
+const availableSlot = (events, calendar, event) => {
+  const date = event.from;
   const dayEvents = events[dmy(date)];
   if (!isWorkingDay(calendar, date)) return;
-  if (isDayFree(dayEvents)) return FullDayEvent(date);
-  if (isMorningFree(dayEvents)) return AMDayEvent(date);
-  if (isAfternoonFree(dayEvents)) return PMDayEvent(date);
+  if (isDayFree(dayEvents)) return event;
+  if (isDayFull(dayEvents)) return;
+  if (isMorningEvent(event) && isMorningFree(dayEvents)) return event;
+  if (isFullDayEvent(event) && isMorningFree(dayEvents))
+    return AMDayEvent(date);
+  if (isAfternoonEvent(event) && isAfternoonFree(dayEvents)) return event;
+  if (isFullDayEvent(event) && isAfternoonFree(dayEvents))
+    return PMDayEvent(date);
 };
 
 export const freeEventsFromPeriod = ({
@@ -75,31 +81,25 @@ export const freeEventsFromPeriod = ({
   events = {},
   calendar = {},
 }) => {
-  const days = eachDay(from, to);
-  const newEvents = compose(
-    filter(identity),
-    map(d => availableSlot(events, calendar, d)),
-  )(days);
-  if (isEmpty(newEvents)) return [];
+  const requestedEvents = [];
   if (isSameDay(from, to)) {
-    if (isMidDay(from)) return [PMDayEvent(from)];
-    if (isMidDay(to)) return [AMDayEvent(to)];
-    return newEvents;
+    if (isMidDay(from)) requestedEvents.push(PMDayEvent(from));
+    else if (isMidDay(to)) requestedEvents.push(AMDayEvent(to));
+    else requestedEvents.push(FullDayEvent(from));
+  } else {
+    const days = eachDay(from, to);
+    days.forEach(d => {
+      if (isSameDay(from, d) && isMidDay(from))
+        requestedEvents.push(PMDayEvent(from));
+      else if (isSameDay(to, d) && isMidDay(to))
+        requestedEvents.push(AMDayEvent(to));
+      else requestedEvents.push(FullDayEvent(d));
+    });
   }
-  if (newEvents.length === 1) {
-    if (isMidDay(from) && isSameDay(prop('from', head(newEvents)), from))
-      return [PMDayEvent(from)];
-    if (isMidDay(to) && isSameDay(prop('to', last(newEvents)), to))
-      return [AMDayEvent(to)];
-    return newEvents;
-  }
-  return [
-    isMidDay(from) && isSameDay(prop('from', head(newEvents)), from)
-      ? PMDayEvent(from)
-      : head(newEvents),
-    ...slice(1, -1, newEvents),
-    isMidDay(to) && isSameDay(prop('to', last(newEvents)), to)
-      ? AMDayEvent(to)
-      : last(newEvents),
-  ];
+  const availableEvents = compose(
+    filter(identity),
+    map(e => availableSlot(events, calendar, e)),
+  )(requestedEvents);
+  console.log(from, to);
+  return availableEvents;
 };
