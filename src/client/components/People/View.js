@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { isEmpty, map } from 'ramda';
+import { isEmpty, map, find, propEq } from 'ramda';
 import { Colors } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
@@ -19,6 +19,7 @@ import {
   Tag,
   Spacer,
 } from '../widgets';
+import NotesView from './NotesView';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -72,6 +73,7 @@ const PhoneNumberContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(250px, auto));
   grid-auto-rows: auto;
   grid-gap: 10px;
+  margin-top: 10px;
   background-color: ${Colors.DARK_GRAY3};
   min-height: 26px;
   border-radius: 4px;
@@ -88,8 +90,15 @@ const PhoneNumber = styled.div`
   padding: 10px;
 `;
 
+const phoneIcons = [
+  { label: 'mobile', iconName: 'pt-icon-mobile-phone' },
+  { label: 'work', iconName: 'pt-icon-office' },
+  { label: 'home', iconName: 'pt-icon-home' },
+];
+
 const PhoneField = ({ label, number }) => (
   <PhoneNumber>
+    <span className={find(propEq('label', label), phoneIcons).iconName} />
     <PhoneNumberText>{label}</PhoneNumberText>
     <PhoneNumberText>{number}</PhoneNumberText>
   </PhoneNumber>
@@ -127,9 +136,15 @@ const StyledViewFieldArray = styled.div`
   margin: 10px 0;
 `;
 
+const StyledLink = styled.a`
+  color: ${Colors.LIGHT_GRAY5} !important;
+  text-decoration: none !important;
+  font-style: normal !important;
+`;
 
 const PersonInfos = ({ person = {} }) => {
   const {
+    _id,
     prefix,
     firstName,
     lastName,
@@ -169,7 +184,21 @@ const PersonInfos = ({ person = {} }) => {
         />
         <StyledViewField name="type" label="Type" value={type} />
         <StyledViewField name="jobType" label="Job Type" value={jobType} />
-        <StyledViewField name="email" label="Email" value={email} />
+        <StyledViewField
+          name="email"
+          label={
+            (
+              <div>
+                <span style={{ marginRight: 10 }}>Email</span>
+                {email && <StyledLink target="_blank" href={`mailto:${email}`}>
+                  <span className="pt-icon-envelope" />
+                </StyledLink>}
+              </div>
+            )
+          }
+          value={email}
+        />
+        {/* <StyledViewField name="email" label="Email" value={email} /> */}
       </StyledGrid>
       {!isEmpty(phones) > 0 && (
         <div>
@@ -191,6 +220,7 @@ const PersonInfos = ({ person = {} }) => {
       {!isEmpty(skills) && (<ViewFieldArray label="Skills" items={skills} />)}
       {!isEmpty(tags) && (<ViewFieldArray label="Tags" items={tags} />)}
       {roles === null || !isEmpty(roles) && (<ViewFieldArray label="Roles" items={roles} />)}
+      <NotesView entityType="person" entityId={_id} />
     </StyledWrapper>
   );
 };
@@ -199,20 +229,33 @@ PersonInfos.propTypes = {
   person: PropTypes.object,
 };
 
-const StyledGoBack = styled.a`
-  color: ${Colors.LIGHT_GRAY5} !important;
-  text-decoration: none !important;
-`;
-
 const GoBack = ({ history }) => (
-  <StyledGoBack onClick={() => history.goBack()}>
-    <i className="pt-icon-arrow-left" />
-  </StyledGoBack>
+  <StyledLink onClick={() => history.goBack()}>
+    <span className="pt-icon-arrow-left" />
+  </StyledLink>
 );
 
 GoBack.propTypes = {
   history: PropTypes.object,
 };
+
+const StyledDates = styled.div`
+display: flex;
+flex-direction: column;
+font-size: 0.6em;
+`;
+
+const Dates = ({ updatedAt, createdAt}) => (
+  <StyledDates>
+    {createdAt && <span>{`Created at ${createdAt}`}</span>}
+    {updatedAt && <span>{`Updated at ${updatedAt}`}</span>}
+  </StyledDates>
+)
+
+Dates.propTypes = {
+updatedAt: PropTypes.string,
+createdAt: PropTypes.string,
+}
 
 const Person = ({
   people = {},
@@ -235,6 +278,8 @@ const Person = ({
           <Title title={`${person.name}`} />
         </HeaderLeft>
         <HeaderRight>
+          <Dates updatedAt={person.updatedAt} createdAt={person.createdAt} />
+          <Spacer />
           <LinkButton
             to={getPathByName('editPerson', id)}
             iconName="pt-icon-edit"
