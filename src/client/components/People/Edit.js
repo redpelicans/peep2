@@ -22,7 +22,6 @@ export const Add = ({
   toggleDialog,
   values,
   isSubmitting,
-  isValid,
   dirty,
   handleSubmit,
   handleReset,
@@ -72,7 +71,7 @@ export const Add = ({
         <Button
           form="companyForm"
           type="submit"
-          disabled={isSubmitting || !isValid || !dirty}
+          disabled={isSubmitting}
           className="pt-intent-success pt-large"
         >
           Create
@@ -108,7 +107,6 @@ Add.propTypes = {
   toggleDialog: PropTypes.func.isRequired,
   isDialogOpen: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
-  isValid: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   dirty: PropTypes.bool.isRequired,

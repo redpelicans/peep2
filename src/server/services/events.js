@@ -29,6 +29,10 @@ const addEventSchema = Joi.object().keys({
   period: Joi.string().valid(['AM', 'PM', 'DAY']),
 });
 
+const delEventGroupSchema = Joi.object().keys({
+  groupId: Joi.string().required(),
+});
+
 const addEventGroupSchema = Joi.object().keys({
   from: Joi.date().required(),
   to: Joi.date().required(),
@@ -86,6 +90,20 @@ export const event = {
       return Promise.reject(err);
     }
   },
+
+  delEventGroup({ groupId: id }) {
+    try {
+      const groupId = ObjectId(id);
+      const deleteAll = () => Event.collection.remove({ groupId });
+      const loadEventGroup = () => Event.loadAll({ groupId });
+      return loadEventGroup().then(events => {
+        return deleteAll().then(() => R.pluck('_id', events));
+      });
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  },
+
   addEventGroup(eventGroup) {
     try {
       const events = makeEventsFromGroup(eventGroup);
@@ -126,6 +144,7 @@ const init = evtx => {
       all: [checkUser()],
       load: [formatInput(inLoadMaker), validate(loadSchema)],
       addEventGroup: [formatInput(inAddMaker), validate(addEventGroupSchema)],
+      delEventGroup: [validate(delEventGroupSchema)],
     })
     .after({
       load: [formatOutput(outMakerMany)],

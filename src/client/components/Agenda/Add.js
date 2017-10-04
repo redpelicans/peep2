@@ -5,14 +5,14 @@ import { startOfDay, endOfDay, addWeeks, subWeeks } from 'date-fns';
 import { withState, withHandlers, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Dialog, Button } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { withFormik } from 'formik';
 import { getCalendar } from '../../selectors/calendar';
 import { addEventGroup } from '../../actions/events';
 import { getWorker, getWorkers } from '../../selectors/people';
 import { getWorkerEventsByDate } from '../../selectors/events';
-import { Container, Title, Spacer } from '../widgets';
+import { Container, Title, Spacer, ModalConfirmation } from '../widgets';
 import { defaultValues, getValidationSchema } from '../../forms/events';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getPathByName } from '../../routes';
@@ -24,12 +24,12 @@ const StyledContainer = styled(Container)`min-width: 300px;`;
 const Add = ({
   worker,
   period,
-  leave,
   cancel,
+  requestCancel,
   events,
   calendar,
-  isDialogOpen,
-  toggleDialog,
+  isCancelDialogOpen,
+  showCancelDialog,
   isSubmitting,
   isValid,
   handleReset,
@@ -47,29 +47,13 @@ const Add = ({
   return (
     <StyledContainer>
       <div>
-        <Dialog isOpen={isDialogOpen} className="pt-dark">
-          <div className="pt-dialog-body">
-            Would you like to cancel this form?
-          </div>
-          <div className="pt-dialog-footer">
-            <div className="pt-dialog-footer-actions">
-              <Button
-                onClick={() => toggleDialog()}
-                className="pt-intent-warning pt-large"
-              >
-                {' '}
-                No{' '}
-              </Button>
-              <Button
-                onClick={() => leave()}
-                className="pt-intent-success pt-large"
-              >
-                {' '}
-                Yes{' '}
-              </Button>
-            </div>
-          </div>
-        </Dialog>
+        <ModalConfirmation
+          isOpen={isCancelDialogOpen}
+          title="Would you like to cancel this form ?"
+          reject={() => showCancelDialog(false)}
+          accept={cancel}
+        />
+
         <Header>
           <HeaderLeft>
             <div className="pt-icon-standard pt-icon-calendar" />
@@ -89,7 +73,7 @@ const Add = ({
             <Button
               className="pt-intent-warning pt-large"
               disabled={isSubmitting}
-              onClick={cancel(dirty)}
+              onClick={requestCancel(dirty)}
             >
               Cancel
             </Button>
@@ -120,13 +104,13 @@ const Add = ({
 
 Add.propTypes = {
   period: PropTypes.array.isRequired,
-  leave: PropTypes.func.isRequired,
   worker: PropTypes.object.isRequired,
   calendar: PropTypes.object,
   events: PropTypes.object,
   cancel: PropTypes.func.isRequired,
-  toggleDialog: PropTypes.func.isRequired,
-  isDialogOpen: PropTypes.bool.isRequired,
+  requestCancel: PropTypes.func.isRequired,
+  showCancelDialog: PropTypes.func.isRequired,
+  isCancelDialogOpen: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   isValid: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
@@ -183,14 +167,12 @@ export default compose(
       workerId: prop('_id', worker || {}),
     }),
   }),
-  withState('isDialogOpen', 'showDialog', false),
+  withState('isCancelDialogOpen', 'showCancelDialog', false),
   withHandlers({
-    leave: ({ history }) => () => history.goBack(),
-    cancel: ({ history, showDialog }) => dirty => () => {
+    cancel: ({ history }) => () => history.goBack(),
+    requestCancel: ({ history, showCancelDialog }) => dirty => () => {
       if (!dirty) return history.goBack();
-      return showDialog(isDialogOpen => !isDialogOpen);
+      return showCancelDialog(true);
     },
-    toggleDialog: ({ showDialog }) => () =>
-      showDialog(isDialogOpen => !isDialogOpen),
   }),
 )(Add);
