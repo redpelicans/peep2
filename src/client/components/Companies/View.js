@@ -14,6 +14,7 @@ import Preview from '../People/Preview';
 import { onTagClick, deletePeople } from '../../actions/people';
 import MasonryLayout from '../widgets/MasonryLayout';
 import { getPathByName } from '../../routes';
+import NotesView from './NotesView';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -29,9 +30,9 @@ const StyledGrid = styled.div`
     grid-template-areas: 'type website' 'street zipcode' 'city country';
   }
   @media (min-width: 900px) {
-    grid-template-columns: repeat(3, minmax(100px, 1fr));
-    grid-template-rows: auto auto auto;
-    grid-template-areas: 'type website street' 'zipcode city country';
+    grid-template-columns: repeat(4, minmax(100px, 1fr));
+    grid-template-rows: auto auto;
+    grid-template-areas: 'type website website none' 'street zipcode city country';
   }
 `;
 
@@ -47,12 +48,13 @@ const ArrayBlock = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 25px 0;
+  margin: 10px 0;
 `;
 
 const StyledLink = styled.a`
   color: ${Colors.LIGHT_GRAY5} !important;
   text-decoration: none !important;
+  font-style: normal !important;
 `;
 
 const StyledWrapper = styled.div`
@@ -63,7 +65,7 @@ const StyledWrapper = styled.div`
 const StyledViewField = styled(ViewField)`grid-area: ${props => props.name};`;
 
 const CompanyInfos = ({ company = {}, people }) => {
-  const { type, website, address = {} } = company;
+  const { type, website, address = {}, _id } = company;
   const { street, zipcode, city, country } = address;
   return (
     <StyledWrapper>
@@ -72,12 +74,12 @@ const CompanyInfos = ({ company = {}, people }) => {
         <StyledViewField
           name="website"
           label={
-            website && (
+            (
               <div>
                 <span style={{ marginRight: 10 }}>Website</span>
-                <StyledLink target="_blank" href={website}>
+                {website && <StyledLink target="_blank" href={website}>
                   <i className="fa fa-external-link" />
-                </StyledLink>
+                </StyledLink>}
               </div>
             )
           }
@@ -109,6 +111,7 @@ const CompanyInfos = ({ company = {}, people }) => {
           </ArrayBlock>
         </div>
       )}
+      <NotesView entityType="company" entityId={_id} />
     </StyledWrapper>
   );
 };
@@ -120,13 +123,31 @@ CompanyInfos.propTypes = {
 
 const GoBack = ({ history }) => (
   <StyledLink onClick={() => history.goBack()}>
-    <i className="pt-icon-arrow-left" />
+    <span className="pt-icon-arrow-left" />
   </StyledLink>
 );
 
 GoBack.propTypes = {
   history: PropTypes.object,
 };
+
+const StyledDates = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 0.6em;
+`;
+
+const Dates = ({ updatedAt, createdAt}) => (
+  <StyledDates>
+    {createdAt && <span>{`Created at ${createdAt}`}</span>}
+    {updatedAt && <span>{`Updated at ${updatedAt}`}</span>}
+  </StyledDates>
+)
+
+Dates.propTypes = {
+  updatedAt: PropTypes.string,
+  createdAt: PropTypes.string,
+}
 
 const Company = ({
   people,
@@ -152,6 +173,8 @@ const Company = ({
           <Title title={`${company.name}`} />
         </HeaderLeft>
         <HeaderRight>
+          <Dates updatedAt={company.updatedAt} createdAt={company.createdAt} />
+          <Spacer />
           <LinkButton
             to={getPathByName('editCompany', id)}
             iconName="pt-icon-edit"

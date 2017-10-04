@@ -19,6 +19,7 @@ import {
   reduce,
   descend,
   pathOr,
+  isEmpty,
 } from 'ramda';
 import { createSelector } from 'reselect';
 import { isWorker } from '../utils/people';
@@ -28,7 +29,14 @@ export const getSort = state => state.people.sort;
 export const getPeople = state => state.people.data;
 const getPreferredFilter = state => state.people.preferredFilter;
 const getCompanies = state => state.companies.data;
+const getNotes = state => state.notes.data;
 const getCompanyId = (state, props) => props.match.params.id;
+
+export const getPersonNotes = (state, props) => {
+  const notes = getNotes(state);
+  if (isEmpty(notes)) return null
+  return filter(note => note.entityId === props.entityId, notes);
+}
 
 const sortByProp = pprop =>
   sortBy(compose(ifElse(is(String), toLower, identity), prop(pprop)));
@@ -117,6 +125,3 @@ const getTagsUnsorted = compose(firstLevelReducer, values);
 const groupTags = compose(sortTag, values, getTagsUnsorted);
 
 export const getGroupedTagsByCount = createSelector(getPeople, groupTags);
-
-export const getNotesByPerson = (person, notes) =>
-  filter(note => person._id === note.entityId, notes);
