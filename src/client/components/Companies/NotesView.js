@@ -23,27 +23,28 @@ const StyledWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledLabel = styled.span`
-  margin-bottom: 10px;
-`;
+const StyledLabel = styled.span`margin-bottom: 10px;`;
 
 const NotesView = ({ findEntity, notes, people, entityType, entityId }) => {
   if (isEmpty(notes)) return null;
   return (
     <StyledWrapper>
-        <StyledLabel>Notes</StyledLabel>
-        <MasonryLayout id="entityNotes" sizes={sizes}>
-        {map(note =>
-          <Preview
-            key={note._id}
-            note={note}
-            person={people[note.authorId]}
-            entity={findEntity(entityType, entityId)}
-          />, notes)
-        }
-        </MasonryLayout>
+      <StyledLabel>Notes</StyledLabel>
+      <MasonryLayout id="entityNotes" sizes={sizes}>
+        {map(
+          note => (
+            <Preview
+              key={note._id}
+              note={note}
+              person={people[note.authorId]}
+              entity={findEntity(entityType, entityId)}
+            />
+          ),
+          notes,
+        )}
+      </MasonryLayout>
     </StyledWrapper>
-  )
+  );
 };
 
 NotesView.propTypes = {

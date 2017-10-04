@@ -13,10 +13,16 @@ import {
 
 const formatString = 'MM/DD/YYYY';
 
-const make = (person) => {
+const make = person => {
   const { firstName, lastName } = person;
-  const updatedPerson = { ...person, name: `${firstName} ${lastName}`, typeName: 'person', createdAt: format(person.createdAt, formatString) };
-  if (person.updatedAt) updatedPerson.updatedAt = format(Date.now(), formatString);
+  const updatedPerson = {
+    ...person,
+    name: `${firstName} ${lastName}`,
+    typeName: 'person',
+    createdAt: format(person.createdAt, formatString),
+  };
+  if (person.updatedAt)
+    updatedPerson.updatedAt = format(Date.now(), formatString);
   return updatedPerson;
 };
 

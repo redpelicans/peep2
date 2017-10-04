@@ -13,6 +13,7 @@ import CompanyView from './components/Companies/View';
 import EditCompany from './components/Companies/Edit';
 import EditPerson from './components/People/Edit';
 import EditNote from './components/Notes/Edit';
+import NotFound from './components/NotFound';
 
 const routes = {
   home: {
@@ -105,6 +106,11 @@ const routes = {
     path: '/login',
     exact: true,
     component: Login,
+  },
+  notfound: {
+    path: '/notfound',
+    exact: true,
+    component: NotFound,
   },
 };
 

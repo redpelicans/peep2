@@ -18,6 +18,9 @@ import {
   filter,
   allPass,
   sort,
+  propEq,
+  find,
+  prop,
   isEmpty,
 } from 'ramda';
 import moment from 'moment';
@@ -29,7 +32,7 @@ export const getCompanyNotes = (state, props) => {
   const notes = getNotes(state);
   if (isEmpty(notes)) return null;
   return filter(note => note.entityId === props.entityId, notes);
-}
+};
 
 /* sorting */
 const sortByProp = cprop =>
@@ -78,8 +81,9 @@ const putStatus = companies =>
 export const getFilter = state => state.companies.filter;
 export const getSort = state => state.companies.sort;
 export const getCompanies = state => state.companies.data;
+export const getCompanyId = (companies, name) =>
+  prop('_id', find(propEq('name', name), companies));
 const getPreferredFilter = state => state.companies.preferredFilter;
-
 /* selectors */
 const updateCompaniesStatus = createSelector(getCompanies, putStatus);
 

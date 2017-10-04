@@ -13,8 +13,13 @@ import {
 const formatString = 'MM/DD/YYYY';
 
 const make = company => {
-  const updatedCompany = { ...company, typeName: 'company', createdAt: format(company.createdAt, formatString) };
-  if (company.updatedAt) updatedCompany.updatedAt = format(Date.now(), formatString);
+  const updatedCompany = {
+    ...company,
+    typeName: 'company',
+    createdAt: format(company.createdAt, formatString),
+  };
+  if (company.updatedAt)
+    updatedCompany.updatedAt = format(Date.now(), formatString);
   return updatedCompany;
 };
 const makeAll = compose(fromPairs, map(c => [c._id, make(c)]));

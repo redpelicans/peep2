@@ -3,8 +3,12 @@ import should from 'should';
 import { shallow } from 'enzyme';
 import Avatar from '../../Avatar';
 import List from '../List';
-import { Tags, Tag, Actions } from '../../widgets';
-import enhancedPreview, { Preview } from '../Preview';
+import { Form, FormElem } from '../Add';
+import { Formik } from 'formik';
+import { Tags, Tag, Actions, PreviewContainer, Container } from '../../widgets';
+import enhancedPreview, { TitleRow, Preview, StyledInfos } from '../Preview';
+import { Dialog, Button } from '@blueprintjs/core';
+import { Edit } from '../Edit';
 
 const { describe, it } = global;
 
@@ -141,5 +145,68 @@ describe('Preview component', () => {
       />,
     );
     should(wrapper.find(Actions)).have.length(1);
+  });
+  it('Preview should have a PreviewContainer', () => {
+    const wrapper = shallow(
+      <Preview
+        person={{
+          name: 'test2',
+          avatar: {
+            color: 'red',
+          },
+          tags: ['0', '1', '2', '3', '4'],
+        }}
+        handleMouseEnter={() => {}}
+        handleMouseLeave={() => {}}
+        showActions={true}
+        onTagClick={() => {}}
+        deletePeople={() => {}}
+        handleDeletePeople={() => {}}
+      />,
+    );
+    should(wrapper.find(PreviewContainer)).have.length(1);
+    should(wrapper.find(TitleRow)).have.length(1);
+    should(wrapper.find(Avatar)).have.length(1);
+    should(wrapper.find(StyledInfos)).have.length(1);
+  });
+});
+
+describe('Edit component', () => {
+  const wrapper = shallow(
+    <Edit
+      showDialogHandler={() => {}}
+      changeColor={() => {}}
+      updatePeople={() => {}}
+      people={{
+        phones: [{ label: 'mobile', number: '0646626954' }],
+        avatar: { color: 'red' },
+      }}
+    />,
+  );
+  it('should render a FormElem', () => {
+    should(wrapper.find(FormElem)).have.length(1);
+  });
+  it('should render a Dialog', () => {
+    should(wrapper.find(Dialog)).have.length(1);
+  });
+  it('should render 2 Button', () => {
+    should(wrapper.find(Button)).have.length(2);
+  });
+});
+
+describe('Form component', () => {
+  const wrapper = shallow(
+    <Form
+      initialValues={{}}
+      changeColor={() => {}}
+      history={{}}
+      showDialogHandler={() => {}}
+      submit={() => {}}
+      title="test"
+      companies={[]}
+    />,
+  );
+  it('should render a Formik', () => {
+    should(wrapper.find(Formik)).have.length(1);
   });
 });

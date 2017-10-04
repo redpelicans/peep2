@@ -39,7 +39,7 @@ const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.label};
 `;
 
-const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
+export const Form = ({ initialValues, history, showDialogHandler, submit }) => (
   <Formik
     initialValues={initialValues}
     validationSchema={getValidationSchema()}
@@ -66,7 +66,7 @@ const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
         address: { street, city, zipcode, country },
         notes,
       };
-      addCompany(newCompany);
+      submit(newCompany);
     }}
     render={({
       values,
@@ -86,6 +86,7 @@ const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
             <Spacer size={15} />
             <AvatarSelector
               formId="addCompany"
+              color={values.color}
               name={values.name}
               setFieldTouched={setFieldTouched}
               setFieldValue={setFieldValue}
@@ -174,6 +175,7 @@ const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
             touched={touched}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
+            creatable={true}
           />
           <StyledFormField
             field={getField('country')}
@@ -182,6 +184,7 @@ const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
             touched={touched}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
+            creatable={true}
           />
           <StyledFormField
             field={getField('tags')}
@@ -190,6 +193,7 @@ const Form = ({ initialValues, history, showDialogHandler, addCompany }) => (
             touched={touched}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
+            creatable={true}
           />
           <StyledFormField
             field={getField('notes')}
@@ -209,15 +213,10 @@ Form.propTypes = {
   initialValues: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   showDialogHandler: PropTypes.func.isRequired,
-  addCompany: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
 };
 
-const FormElem = onlyUpdateForKeys([
-  'changeColor',
-  'color',
-  'history',
-  'showDialogHandler',
-])(Form);
+const FormElem = onlyUpdateForKeys(['history', 'showDialogHandler'])(Form);
 
 const AddCompany = ({
   addCompany,
@@ -255,7 +254,8 @@ const AddCompany = ({
         initialValues={initialValues}
         history={history}
         showDialogHandler={showDialogHandler}
-        addCompany={addCompany}
+        submit={addCompany}
+        title="Add Company"
       />
     </div>
   );

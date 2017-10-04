@@ -32,7 +32,8 @@ const StyledGrid = styled.div`
   @media (min-width: 900px) {
     grid-template-columns: repeat(4, minmax(100px, 1fr));
     grid-template-rows: auto auto;
-    grid-template-areas: 'type website website none' 'street zipcode city country';
+    grid-template-areas: 'type website website none'
+      'street zipcode city country';
   }
 `;
 
@@ -74,14 +75,14 @@ const CompanyInfos = ({ company = {}, people }) => {
         <StyledViewField
           name="website"
           label={
-            (
-              <div>
-                <span style={{ marginRight: 10 }}>Website</span>
-                {website && <StyledLink target="_blank" href={website}>
+            <div>
+              <span style={{ marginRight: 10 }}>Website</span>
+              {website && (
+                <StyledLink target="_blank" href={website}>
                   <i className="fa fa-external-link" />
-                </StyledLink>}
-              </div>
-            )
+                </StyledLink>
+              )}
+            </div>
           }
           value={website}
         />
@@ -137,17 +138,17 @@ const StyledDates = styled.div`
   font-size: 0.6em;
 `;
 
-const Dates = ({ updatedAt, createdAt}) => (
+const Dates = ({ updatedAt, createdAt }) => (
   <StyledDates>
     {createdAt && <span>{`Created at ${createdAt}`}</span>}
     {updatedAt && <span>{`Updated at ${updatedAt}`}</span>}
   </StyledDates>
-)
+);
 
 Dates.propTypes = {
   updatedAt: PropTypes.string,
   createdAt: PropTypes.string,
-}
+};
 
 const Company = ({
   people,

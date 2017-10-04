@@ -123,9 +123,7 @@ ViewFieldArray.propTypes = {
   items: PropTypes.array,
 };
 
-const StyledViewFieldArray = styled.div`
-  margin: 10px 0;
-`;
+const StyledViewFieldArray = styled.div`margin: 10px 0;`;
 
 const StyledLink = styled.a`
   color: ${Colors.LIGHT_GRAY5} !important;
@@ -178,14 +176,14 @@ const PersonInfos = ({ person = {} }) => {
         <StyledViewField
           name="email"
           label={
-            (
-              <div>
-                <span style={{ marginRight: 10 }}>Email</span>
-                {email && <StyledLink target="_blank" href={`mailto:${email}`}>
+            <div>
+              <span style={{ marginRight: 10 }}>Email</span>
+              {email && (
+                <StyledLink target="_blank" href={`mailto:${email}`}>
                   <span className="pt-icon-envelope" />
-                </StyledLink>}
-              </div>
-            )
+                </StyledLink>
+              )}
+            </div>
           }
           value={email}
         />
@@ -208,9 +206,10 @@ const PersonInfos = ({ person = {} }) => {
           </PhoneNumberContainer>
         </div>
       )}
-      {!isEmpty(skills) && (<ViewFieldArray label="Skills" items={skills} />)}
-      {!isEmpty(tags) && (<ViewFieldArray label="Tags" items={tags} />)}
-      {roles === null || !isEmpty(roles) && (<ViewFieldArray label="Roles" items={roles} />)}
+      {!isEmpty(skills) && <ViewFieldArray label="Skills" items={skills} />}
+      {!isEmpty(tags) && <ViewFieldArray label="Tags" items={tags} />}
+      {roles === null ||
+        (!isEmpty(roles) && <ViewFieldArray label="Roles" items={roles} />)}
       <NotesView entityType="person" entityId={_id} />
     </StyledWrapper>
   );
@@ -231,22 +230,22 @@ GoBack.propTypes = {
 };
 
 const StyledDates = styled.div`
-display: flex;
-flex-direction: column;
-font-size: 0.6em;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.6em;
 `;
 
-const Dates = ({ updatedAt, createdAt}) => (
+const Dates = ({ updatedAt, createdAt }) => (
   <StyledDates>
     {createdAt && <span>{`Created at ${createdAt}`}</span>}
     {updatedAt && <span>{`Updated at ${updatedAt}`}</span>}
   </StyledDates>
-)
+);
 
 Dates.propTypes = {
-updatedAt: PropTypes.string,
-createdAt: PropTypes.string,
-}
+  updatedAt: PropTypes.string,
+  createdAt: PropTypes.string,
+};
 
 const Person = ({
   people = {},

@@ -6,19 +6,29 @@ import { withState, withHandlers } from 'recompose';
 import { compose } from 'ramda';
 import { connect } from 'react-redux';
 import { FormElem } from './Add';
+import { updatePeople } from '../../actions/people';
+import { getPathByName } from '../../routes';
+import { getPerson } from '../../selectors/people';
+import { getVisibleCompanies } from '../../selectors/companies';
 
-const Edit = ({
+export const Edit = ({
+  updatePeople,
   people,
   isDialogOpen,
   showDialogHandler,
   changeColor,
   history,
-  match: { params: { id } },
+  companies,
 }) => {
   const getInitialValues = p => ({
     ...p,
+    phones: p.phones.map(phone => ({
+      type: phone.label,
+      number: phone.number,
+    })),
+    color: p.avatar.color,
   });
-  const initialValues = getInitialValues(people.data[id]);
+  const initialValues = getInitialValues(people);
   return (
     <div>
       <Dialog isOpen={isDialogOpen} className="pt-dark">
@@ -48,6 +58,8 @@ const Edit = ({
         history={history}
         showDialogHandler={showDialogHandler}
         title="Edit People"
+        submit={updatePeople}
+        companies={companies}
       />
     </div>
   );
@@ -58,17 +70,25 @@ Edit.propTypes = {
   showDialogHandler: PropTypes.func.isRequired,
   isDialogOpen: PropTypes.bool,
   changeColor: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
   history: PropTypes.object,
   match: PropTypes.object,
+  updatePeople: PropTypes.func.isRequired,
+  companies: PropTypes.array.isRequired,
 };
 
-const actions = {};
+const actions = { updatePeople };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-const mapStateToProps = state => ({
-  people: state.people,
-});
+const mapStateToProps = (state, props) => {
+  const { match: { params: { id } = {} }, history } = props;
+  if (getPerson(state.people, id) === undefined) {
+    history.push(getPathByName('notfound'));
+  }
+  return {
+    people: getPerson(state.people, id),
+    companies: getVisibleCompanies(state),
+  };
+};
 
 const enhance = compose(
   withState('color', 'changeColor', ''),
