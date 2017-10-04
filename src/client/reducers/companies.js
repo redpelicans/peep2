@@ -16,7 +16,9 @@ const make = company => {
   const updatedCompany = {
     ...company,
     typeName: 'company',
-    createdAt: format(company.createdAt, formatString),
+    createdAt: company.createdAt
+      ? format(company.createdAt, formatString)
+      : undefined,
   };
   if (company.updatedAt)
     updatedCompany.updatedAt = format(Date.now(), formatString);
