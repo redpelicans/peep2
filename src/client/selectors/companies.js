@@ -20,7 +20,6 @@ import {
   sort,
   propEq,
   find,
-  prop,
   isEmpty,
 } from 'ramda';
 import moment from 'moment';

@@ -31,11 +31,12 @@ const fields = {
     component: InputField,
     validate: Yup.string(),
   },
-  types: {
+  type: {
     label: 'Types',
     domainValues: [
-      { id: 'Client', value: 'Client' },
-      { id: 'Worker', value: 'Worker' },
+      { id: 'client', value: 'Client' },
+      { id: 'worker', value: 'Worker' },
+      { id: 'contact', value: 'Contact' },
     ],
     required: true,
     component: SelectField,
@@ -50,11 +51,11 @@ const fields = {
   jobType: {
     label: 'Job Type',
     domainValues: [
-      { id: 'Designer', value: 'Designer' },
-      { id: 'Developer', value: 'Developer' },
-      { id: 'Manager', value: 'Manager' },
-      { id: 'Sales', value: 'Sales' },
-      { id: 'Business Manager', value: 'Business Manager' },
+      { id: 'designer', value: 'Designer' },
+      { id: 'developer', value: 'Developer' },
+      { id: 'manager', value: 'Manager' },
+      { id: 'sales', value: 'Sales' },
+      { id: 'business Manager', value: 'Business Manager' },
     ],
     required: true,
     component: SelectField,

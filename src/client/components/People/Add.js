@@ -7,68 +7,139 @@ import { compose, map } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Formik } from 'formik';
-import { getCompanyId, getVisibleCompanies } from '../../selectors/companies';
-import {
-  getValidationSchema,
-  getField,
-  defaultValues,
-} from '../../forms/peoples';
+import { withFormik } from 'formik';
+import { getVisibleCompanies } from '../../selectors/companies';
+import { getValidationSchema, defaultValues } from '../../forms/peoples';
 import { addPeople } from '../../actions/people';
 import { Spacer, Title, Container, AvatarSelector } from '../widgets';
-import { onlyUpdateForKeys } from 'recompose';
-import { FormField } from '../../fields';
+import AddOrEdit from './AddOrEdit';
 
-const PeopleForm = styled.form`
-  display: grid;
-  margin: auto;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  width: 90%;
-  grid-gap: 20px;
-  grid-auto-columns: minmax(70px, auto);
-  grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'Prefix' 'FirstName' 'LastName' 'Types' 'Email' 'JobType'
-    'Company' 'Phones' 'Tags' 'Roles' 'Notes';
-  @media (min-width: 700px) {
-    grid-template-areas: 'Prefix FirstName LastName' 'Types Email JobType'
-      'Company Company Company' 'Phones Phones Phones' 'Tags Tags Tags'
-      'Roles Roles Roles' 'Notes Notes Notes';
-  }
-`;
+const StyledContainer = styled(Container)`min-width: 300px;`;
 
-const StyledFormField = styled(FormField)`
-  grid-area: ${({ field }) => field.label};
-`;
-
-export const Form = ({
-  initialValues,
-  changeColor,
-  history,
-  showDialogHandler,
-  submit,
-  title,
-  companies,
+export const Add = ({
+  isDialogOpen,
+  toggleDialog,
+  values,
+  isSubmitting,
+  isValid,
+  dirty,
+  handleSubmit,
+  handleReset,
+  setFieldTouched,
+  setFieldValue,
+  leave,
+  cancel,
+  ...props
 }) => (
-  <Formik
-    initialValues={initialValues}
-    validationSchema={getValidationSchema()}
-    isInitialValid={({ validationSchema, initialValues }) =>
-      validationSchema.isValid(initialValues)}
-    onSubmit={({
-      color,
-      firstName,
-      type,
-      lastName,
-      notes,
-      phones = [],
-      prefix,
-      tags = [],
-      roles = [],
-      jobType,
-      email,
-      company,
-    }) => {
+  <StyledContainer>
+    <Dialog isOpen={isDialogOpen} className="pt-dark">
+      <div className="pt-dialog-body">Would you like to cancel this form?</div>
+      <div className="pt-dialog-footer">
+        <div className="pt-dialog-footer-actions">
+          <Button
+            onClick={() => toggleDialog()}
+            className="pt-intent-warning pt-large"
+          >
+            No
+          </Button>
+          <Button
+            onClick={() => leave()}
+            className="pt-intent-success pt-large"
+          >
+            Yes
+          </Button>
+        </div>
+      </div>
+    </Dialog>
+    <Header>
+      <HeaderLeft>
+        <Spacer size={15} />
+        <AvatarSelector
+          formId="companyForm"
+          color={values.color}
+          name={values.firstName}
+          lastName={values.lastName}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+        />
+        <Spacer />
+        <Title title={'Add People'} />
+      </HeaderLeft>
+      <HeaderRight>
+        <Button
+          form="companyForm"
+          type="submit"
+          disabled={isSubmitting || !isValid || !dirty}
+          className="pt-intent-success pt-large"
+        >
+          Create
+        </Button>
+        <Spacer />
+        <Button onClick={cancel(dirty)} className="pt-intent-warning pt-large">
+          Cancel
+        </Button>
+        <Spacer />
+        <Button
+          className="pt-intent-danger pt-large"
+          onClick={handleReset}
+          disabled={!dirty || isSubmitting}
+        >
+          Reset
+        </Button>
+        <Spacer size={20} />
+      </HeaderRight>
+    </Header>
+    <AddOrEdit
+      handleSubmit={handleSubmit}
+      values={values}
+      setFieldTouched={setFieldTouched}
+      setFieldValue={setFieldValue}
+      {...props}
+    />
+  </StyledContainer>
+);
+
+Add.propTypes = {
+  leave: PropTypes.func.isRequired,
+  cancel: PropTypes.func.isRequired,
+  toggleDialog: PropTypes.func.isRequired,
+  isDialogOpen: PropTypes.bool.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  isValid: PropTypes.bool.isRequired,
+  handleReset: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  dirty: PropTypes.bool.isRequired,
+  values: PropTypes.object.isRequired,
+  setFieldTouched: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+};
+
+const actions = { addPeople };
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+const mapStateToProps = state => ({
+  companies: getVisibleCompanies(state),
+});
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withFormik({
+    handleSubmit: (
+      {
+        color,
+        firstName,
+        type,
+        lastName,
+        notes,
+        phones = [],
+        prefix,
+        tags = [],
+        roles = [],
+        jobType,
+        email,
+      },
+      { props },
+    ) => {
+      const { addPeople, history } = props;
       const newPeople = {
         avatar: { color },
         firstName,
@@ -76,7 +147,6 @@ export const Form = ({
         lastName,
         email,
         jobType,
-        companyId: getCompanyId(companies, company),
         name: `${firstName} ${lastName}`,
         note: notes,
         phones: map(
@@ -87,253 +157,22 @@ export const Form = ({
         tags: map(tag => tag.value, tags),
         roles: map(role => role.value, roles),
       };
-      submit(newPeople);
-    }}
-    render={({
-      values,
-      isValid,
-      errors,
-      handleSubmit,
-      handleReset,
-      setFieldTouched,
-      dirty,
-      setFieldValue,
-      isSubmitting,
-    }) => (
-      <Container>
-        <Header>
-          <HeaderLeft>
-            <Spacer size={15} />
-            <AvatarSelector
-              formId="addPeople"
-              color={values.color}
-              name={values.firstName}
-              lastName={values.lastName}
-              setFieldTouched={setFieldTouched}
-              handleChangeColor={changeColor}
-              setFieldValue={setFieldValue}
-            />
-            <Spacer />
-            <Title title={title} />
-          </HeaderLeft>
-          <HeaderRight>
-            <Button
-              form="addCompany"
-              type="submit"
-              disabled={isSubmitting || !isValid || !dirty}
-              className="pt-intent-success pt-large"
-            >
-              Create
-            </Button>
-            <Spacer />
-            <Button
-              onClick={() => {
-                if (!dirty) {
-                  history.goBack();
-                } else {
-                  showDialogHandler();
-                }
-              }}
-              className="pt-intent-warning pt-large"
-            >
-              Cancel
-            </Button>
-            <Spacer />
-            <Button
-              className="pt-intent-danger pt-large"
-              onClick={handleReset}
-              disabled={!dirty || isSubmitting}
-            >
-              Reset
-            </Button>
-            <Spacer size={20} />
-          </HeaderRight>
-        </Header>
-        <PeopleForm id="addCompany" onSubmit={handleSubmit}>
-          <StyledFormField
-            field={getField('prefix')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('firstName')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('lastName')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('types')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('email')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('jobType')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          {values.types === 'Worker' ? (
-            <StyledFormField
-              field={getField('company')}
-              values={values}
-              value="redpelicans"
-              disabled={true}
-              errors={errors}
-              setFieldTouched={setFieldTouched}
-              setFieldValue={setFieldValue}
-            />
-          ) : (
-            <StyledFormField
-              field={getField('company')}
-              values={values}
-              errors={errors}
-              setFieldTouched={setFieldTouched}
-              setFieldValue={setFieldValue}
-            />
-          )}
-          <StyledFormField
-            field={getField('phones')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('tags')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-            creatable={true}
-          />
-          <StyledFormField
-            field={getField('roles')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-            multi={true}
-          />
-          <StyledFormField
-            field={getField('notes')}
-            values={values}
-            errors={errors}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-        </PeopleForm>
-      </Container>
-    )}
-  />
-);
-
-Form.propTypes = {
-  initialValues: PropTypes.object.isRequired,
-  changeColor: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
-  showDialogHandler: PropTypes.func.isRequired,
-  submit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  companies: PropTypes.array.isRequired,
-};
-
-export const FormElem = onlyUpdateForKeys([
-  'changeColor',
-  'history',
-  'showDialogHandler',
-])(Form);
-
-const AddPeople = ({
-  changeColor,
-  history,
-  isDialogOpen,
-  showDialogHandler,
-  addPeople,
-  companies,
-}) => {
-  const initialValues = {
-    ...defaultValues,
-  };
-  return (
-    <div>
-      <Dialog isOpen={isDialogOpen} className="pt-dark">
-        <div className="pt-dialog-body">
-          Would you like to cancel this form?
-        </div>
-        <div className="pt-dialog-footer">
-          <div className="pt-dialog-footer-actions">
-            <Button
-              onClick={() => showDialogHandler()}
-              className="pt-intent-warning pt-large"
-            >
-              No
-            </Button>
-            <Button
-              onClick={() => history.goBack()}
-              className="pt-intent-success pt-large"
-            >
-              Yes
-            </Button>
-          </div>
-        </div>
-      </Dialog>
-      <FormElem
-        initialValues={initialValues}
-        changeColor={changeColor}
-        history={history}
-        showDialogHandler={showDialogHandler}
-        submit={addPeople}
-        title="New People"
-        companies={companies}
-      />
-    </div>
-  );
-};
-
-AddPeople.propTypes = {
-  changeColor: PropTypes.func.isRequired,
-  showDialogHandler: PropTypes.func.isRequired,
-  history: PropTypes.object,
-  isDialogOpen: PropTypes.bool,
-  addPeople: PropTypes.func.isRequired,
-  companies: PropTypes.array.isRequired,
-};
-
-const actions = { addPeople };
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-const mapStateToProps = state => ({
-  companies: getVisibleCompanies(state),
-});
-
-const enhance = compose(
-  withState('color', 'changeColor', ''),
+      addPeople(newPeople);
+      history.goBack();
+    },
+    validationSchema: getValidationSchema(),
+    mapPropsToValues: () => ({
+      ...defaultValues,
+    }),
+  }),
   withState('isDialogOpen', 'showDialog', false),
   withHandlers({
-    changeColorHandler: ({ changeColor }) => () => changeColor(color => color),
-    showDialogHandler: ({ showDialog }) => () =>
+    leave: ({ history }) => () => history.goBack(),
+    cancel: ({ history, showDialog }) => dirty => () => {
+      if (!dirty) return history.goBack();
+      return showDialog(isDialogOpen => !isDialogOpen);
+    },
+    toggleDialog: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),
   }),
-  connect(mapStateToProps, mapDispatchToProps),
-);
-
-export default enhance(AddPeople);
+)(Add);
