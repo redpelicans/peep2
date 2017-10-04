@@ -7,6 +7,7 @@ import AvatarSelector from './AvatarSelector';
 import EmptySearch from './EmptySearch';
 import Spacer from './Spacer';
 import LinkButton from './LinkButton';
+import ModalConfirmation from './ModalConfirmation';
 
 import PreviewContainer from './PreviewContainer';
 import Tags from './Tags';
@@ -37,4 +38,5 @@ export {
   Title,
   Container,
   AvatarSelector,
+  ModalConfirmation,
 };

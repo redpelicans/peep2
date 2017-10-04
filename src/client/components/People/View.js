@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { isEmpty, map, find, propOr, propEq } from 'ramda';
+import { isEmpty, map, find, propEq } from 'ramda';
 import { Colors } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';

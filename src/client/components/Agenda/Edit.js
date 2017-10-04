@@ -5,14 +5,18 @@ import { startOfDay, endOfDay, addWeeks, subWeeks } from 'date-fns';
 import { withState, withHandlers, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Button, Dialog } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { withFormik } from 'formik';
-import { loadEventGroup, updateEventGroup } from '../../actions/events';
+import {
+  loadEventGroup,
+  updateEventGroup,
+  delEventGroup,
+} from '../../actions/events';
 import { getCalendar } from '../../selectors/calendar';
 import { getWorker } from '../../selectors/people';
 import { getWorkerEventsByDate, getEventGroup } from '../../selectors/events';
-import { Container, Title, Spacer } from '../widgets';
+import { Container, Title, Spacer, ModalConfirmation } from '../widgets';
 import { getValidationSchema } from '../../forms/events';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import AddOrEdit from './AddOrEdit';
@@ -22,13 +26,17 @@ const StyledContainer = styled(Container)`min-width: 300px;`;
 
 const Edit = ({
   dirty,
-  isDialogOpen,
-  leave,
-  toggleDialog,
+  isCancelDialogOpen,
+  isDeleteDialogOpen,
+  cancel,
+  showCancelDialog,
+  showDeleteDialog,
+  requestDeleteEventGroup,
+  deleteEventGroup,
   isSubmitting,
   worker,
   event,
-  cancel,
+  requestCancel,
   events,
   calendar,
   ...props
@@ -42,29 +50,18 @@ const Edit = ({
   return (
     <StyledContainer>
       <div>
-        <Dialog isOpen={isDialogOpen} className="pt-dark">
-          <div className="pt-dialog-body">
-            Would you like to cancel this form?
-          </div>
-          <div className="pt-dialog-footer">
-            <div className="pt-dialog-footer-actions">
-              <Button
-                onClick={() => toggleDialog()}
-                className="pt-intent-warning pt-large"
-              >
-                No
-              </Button>
-              <Button
-                onClick={() => leave()}
-                className="pt-intent-success pt-large"
-              >
-                {' '}
-                Yes{' '}
-              </Button>
-            </div>
-          </div>
-        </Dialog>
-
+        <ModalConfirmation
+          isOpen={isDeleteDialogOpen}
+          title="Would you like to delete this event group ?"
+          reject={() => showDeleteDialog(false)}
+          accept={deleteEventGroup}
+        />
+        <ModalConfirmation
+          isOpen={isCancelDialogOpen}
+          title="Would you like to cancel this form ?"
+          reject={() => showCancelDialog(false)}
+          accept={cancel}
+        />
         <Header>
           <HeaderLeft>
             <div className="pt-icon-standard pt-icon-calendar" />
@@ -81,10 +78,15 @@ const Edit = ({
               Update
             </Button>
             <Spacer />
-            <Button className="pt-intent-danger pt-large">Delete</Button>
+            <Button
+              className="pt-intent-danger pt-large"
+              onClick={requestDeleteEventGroup}
+            >
+              Delete
+            </Button>
             <Spacer />
             <Button
-              onClick={cancel(dirty)}
+              onClick={requestCancel(dirty)}
               className="pt-intent-warning pt-large"
             >
               Cancel
@@ -98,7 +100,6 @@ const Edit = ({
           maxDate={maxDate}
           calendar={calendar}
           events={events}
-          cancel={cancel}
           {...props}
         />
       </div>
@@ -107,14 +108,18 @@ const Edit = ({
 };
 
 Edit.propTypes = {
+  requestCancel: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired,
-  leave: PropTypes.func.isRequired,
   event: PropTypes.object,
   calendar: PropTypes.object,
   events: PropTypes.object,
-  worker: PropTypes.object.isRequired,
-  toggleDialog: PropTypes.func.isRequired,
-  isDialogOpen: PropTypes.bool.isRequired,
+  worker: PropTypes.object,
+  showCancelDialog: PropTypes.func.isRequired,
+  showDeleteDialog: PropTypes.func.isRequired,
+  requestDeleteEventGroup: PropTypes.func.isRequired,
+  deleteEventGroup: PropTypes.func.isRequired,
+  isCancelDialogOpen: PropTypes.bool.isRequired,
+  isDeleteDialogOpen: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   dirty: PropTypes.bool.isRequired,
 };
@@ -132,7 +137,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const actions = { loadEventGroup, updateEventGroup };
+const actions = { loadEventGroup, updateEventGroup, delEventGroup };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 const componentLifecycle = {
   componentWillMount() {
@@ -174,14 +179,25 @@ export default compose(
       workerId: prop('_id', worker),
     }),
   }),
-  withState('isDialogOpen', 'showDialog', false),
+  withState('isCancelDialogOpen', 'showCancelDialog', false),
+  withState('isDeleteDialogOpen', 'showDeleteDialog', false),
   withHandlers({
-    leave: ({ history }) => () => history.goBack(),
-    cancel: ({ history, showDialog }) => dirty => () => {
+    cancel: ({ history }) => () => history.goBack(),
+    requestCancel: ({ history, showCancelDialog }) => dirty => () => {
       if (!dirty) return history.goBack();
-      return showDialog(isDialogOpen => !isDialogOpen);
+      return showCancelDialog(true);
     },
-    toggleDialog: ({ showDialog }) => () =>
-      showDialog(isDialogOpen => !isDialogOpen),
+    requestDeleteEventGroup: ({ showDeleteDialog }) => () =>
+      showDeleteDialog(true),
+    deleteEventGroup: ({
+      history,
+      delEventGroup,
+      showDeleteDialog,
+      event,
+    }) => () => {
+      showDeleteDialog(false);
+      delEventGroup(event);
+      history.goBack();
+    },
   }),
 )(Edit);
