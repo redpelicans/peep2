@@ -86,7 +86,7 @@
       "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "lint": "eslint src --color",
     "wtest": "NODE_ENV=test node scripts/test.js --env=jsdom",
-    "test": "NODE_ENV=test jest",
+    "test": "NODE_ENV=test jest --coverage",
     "start": "NODE_ENV=development node scripts/start.js",
     "build": "NODE_ENV=production node scripts/build.js",
     "bundle:stats":
