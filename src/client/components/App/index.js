@@ -1,18 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { bindActionCreators } from "redux";
-import { withRouter, Switch, Route } from "react-router-dom";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import routes, { defaultRoute } from "../../routes";
-import { logout } from "../../actions/login";
-import { Auth } from "../../lib/kontrolo";
-import Message from "../Message";
-import Header from "./Header";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { withRouter, Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import routes, { defaultRoute } from '../../routes';
+import { logout } from '../../actions/login';
+import { Auth } from '../../lib/kontrolo';
+import Message from '../Message';
+import Header from './Header';
 
 const Layout = styled.div`
   display: grid;
-  grid-template-areas: "header" "content";
+  grid-template-areas: 'header' 'content';
   grid-template-columns: 100%;
   grid-template-rows: 61px 1fr;
   grid-auto-flow: column;
@@ -31,7 +31,7 @@ const StyledHeader = styled(Header)`
   top: 0px;
   left: 0px;
   width: 100%;
-  z-index: 1000;
+  z-index: 20;
   background-color: #394b59;
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), 0 0 0 rgba(16, 22, 26, 0),
     0 1px 1px rgba(16, 22, 26, 0.4);
@@ -78,12 +78,12 @@ App.propTypes = {
   user: PropTypes.object,
   message: PropTypes.object,
   history: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   user: state.login.user,
-  message: state.message
+  message: state.message,
 });
 
 const actions = { logout };

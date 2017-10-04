@@ -7,9 +7,9 @@ import {
   getVisibleCompanies,
   getFilter,
   getSort,
+  getGroupedTagsByCount,
 } from '../../selectors/companies';
 import { List } from './List';
-import styled from 'styled-components';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import {
   Container,
@@ -18,6 +18,7 @@ import {
   Title,
   Spacer,
   LinkButton,
+  TagsMenu,
 } from '../widgets';
 import {
   togglePreferredFilter,
@@ -27,7 +28,11 @@ import {
 } from '../../actions/companies';
 import { getPathByName } from '../../routes';
 
-const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
+const sortTypes = [
+  { key: 'name', label: 'Sort by name' },
+  { key: 'createdAt', label: 'Sort by creation date' },
+  { key: 'updatedAt', label: 'Sort by updated date' },
+];
 
 export const Companies = ({
   companies,
@@ -36,6 +41,7 @@ export const Companies = ({
   sortCompanyList,
   filterCompanyList,
   handleFilterChange,
+  tags,
 }) => (
   <Container>
     <Header>
@@ -50,8 +56,12 @@ export const Companies = ({
           onChange={handleFilterChange}
           resetValue={() => filterCompanyList('')}
         />
-        <SortMenu onClick={sortCompanyList} sort={sort} />
-        <StyledLinkButton to={getPathByName('addCompany')} iconName="plus" />
+        <Spacer />
+        <TagsMenu tags={tags} onClick={filterCompanyList} filter={filter} />
+        <Spacer size="10" />
+        <SortMenu sortTypes={sortTypes} onClick={sortCompanyList} sort={sort} />
+        <Spacer size="10" />
+        <LinkButton to={getPathByName('addCompany')} iconName="plus" />
       </HeaderRight>
     </Header>
     <List companies={companies} filterCompanyList={filterCompanyList} />
@@ -60,6 +70,7 @@ export const Companies = ({
 
 Companies.propTypes = {
   companies: PropTypes.array.isRequired,
+  tags: PropTypes.array,
   filter: PropTypes.string,
   filterCompanyList: PropTypes.func.isRequired,
   sortCompanyList: PropTypes.func.isRequired,
@@ -69,6 +80,7 @@ Companies.propTypes = {
 
 const mapStateToProps = state => ({
   companies: getVisibleCompanies(state),
+  tags: getGroupedTagsByCount(state),
   filter: getFilter(state),
   sort: getSort(state),
 });

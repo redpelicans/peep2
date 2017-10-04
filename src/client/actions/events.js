@@ -2,7 +2,10 @@ import { reduce } from 'ramda';
 import { startOfMonth, endOfMonth } from 'date-fns';
 import { alert, DANGER } from './message';
 export const LOAD_EVENTS = 'EvtX:Server:events:load';
+export const ADD_EVENT_GROUP = 'EvtX:Server:events:addEventGroup';
+export const UPDATE_EVENT_GROUP = 'EvtX:Server:events:updateEventGroup';
 export const EVENTS_LOADED = 'events:loaded';
+export const EVENTS_ADDED = 'events:added';
 
 export const loadEvents = ({ from, to }) => dispatch => {
   const payload = { from: from && +from, to: to && +to };
@@ -36,6 +39,24 @@ export const loadEventGroup = ({ groupId }) => dispatch => {
     payload,
     callback: getEventGroup,
   });
+};
+
+export const addEventGroup = payload => ({
+  type: ADD_EVENT_GROUP,
+  payload,
+  replyTo: EVENTS_ADDED,
+});
+
+export const updateEventGroup = ({ previous, next }) => {
+  const payload = {
+    groupId: previous.groupId,
+    ...next,
+  };
+  return {
+    type: UPDATE_EVENT_GROUP,
+    payload,
+    replyTo: EVENTS_ADDED,
+  };
 };
 
 export default { loadEvents };

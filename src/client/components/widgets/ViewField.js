@@ -27,9 +27,9 @@ const ViewField = ({ label, value, className }) => (
 );
 
 ViewField.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.node,
   className: PropTypes.string,
-  value: PropTypes.node,
+  value: PropTypes.string,
 };
 
 export default ViewField;

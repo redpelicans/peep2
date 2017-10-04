@@ -87,7 +87,7 @@ const AddOrEditForm = ({
   const daysCount = compose(sum, pluck('value'))(newEvents);
   return (
     <StyledForm>
-      <Form id="addEvent" onSubmit={handleSubmit}>
+      <Form id="AddOrEdit" onSubmit={handleSubmit}>
         <StyledCalendar
           startDate={minDate}
           endDate={maxDate}

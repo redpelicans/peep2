@@ -1,4 +1,4 @@
-import R from 'ramda';
+import { isEmpty } from 'ramda';
 
 export const LOAD_PEOPLE = 'EvtX:Server:people:load';
 export const PEOPLE_LOADED = 'people:loaded';
@@ -12,6 +12,7 @@ export const SET_PREFERRED_PEOPLE = 'EvtX:Server:people:setPreferred';
 export const CHECK_EMAIL = 'EvtX:Server:people:checkEmailUniqueness';
 export const TOGGLE_PREFERRED_FILTER = 'toggle:preferred:people';
 export const FILTER_PEOPLE_LIST = 'filter:people:list';
+export const SORT_PEOPLE_LIST = 'sort:people:list';
 
 export const TYPES = {
   WORKER: 'worker',
@@ -19,7 +20,7 @@ export const TYPES = {
 
 export const loadPeople = () => (dispatch, getState) => {
   const { people } = getState();
-  if (R.isEmpty(people.data)) {
+  if (isEmpty(people.data)) {
     dispatch({
       type: LOAD_PEOPLE,
       replyTo: PEOPLE_LOADED,
@@ -27,7 +28,7 @@ export const loadPeople = () => (dispatch, getState) => {
   }
 };
 
-export const addPeople = people => (dispatch) => {
+export const addPeople = people => dispatch => {
   dispatch({
     type: ADD_PEOPLE,
     payload: people,
@@ -35,7 +36,7 @@ export const addPeople = people => (dispatch) => {
   });
 };
 
-export const updatePeople = people => (dispatch) => {
+export const updatePeople = people => dispatch => {
   dispatch({
     type: UPDATE_PEOPLE,
     payload: people,
@@ -43,7 +44,7 @@ export const updatePeople = people => (dispatch) => {
   });
 };
 
-export const deletePeople = id => (dispatch) => {
+export const deletePeople = id => dispatch => {
   dispatch({
     type: DELETE_PEOPLE,
     payload: id,
@@ -51,7 +52,7 @@ export const deletePeople = id => (dispatch) => {
   });
 };
 
-export const checkEmail = email => (dispatch) => {
+export const checkEmail = email => dispatch => {
   if (!email) return Promise.reject(new Error('Email cannot be null'));
   const promise = new Promise((resolve, reject) => {
     const callback = (err, res) => {
@@ -69,7 +70,7 @@ export const checkEmail = email => (dispatch) => {
   return promise;
 };
 
-export const onPreferredClick = person => (dispatch) => {
+export const onPreferredClick = person => dispatch => {
   const { _id, preferred } = person;
   dispatch({
     type: SET_PREFERRED_PEOPLE,
@@ -79,6 +80,12 @@ export const onPreferredClick = person => (dispatch) => {
 };
 
 export const togglePreferredFilter = () => ({ type: TOGGLE_PREFERRED_FILTER });
+
+export const sortPeopleList = (sortBy, revertOrder) => ({
+  type: SORT_PEOPLE_LIST,
+  sortBy,
+  revertOrder,
+});
 
 export const onTagClick = filter => ({
   type: FILTER_PEOPLE_LIST,
