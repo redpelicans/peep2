@@ -1,12 +1,9 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
-export function configureStore(reducer, initialState, hooks) {
-  return createStore(
-    reducer,
-    initialState,
-    applyMiddleware(testMiddleware(hooks), thunk),
-  );
+export function configureStore(reducer, initialState, hooks, middlewares = []) {
+  const allMiddlewares = [...middlewares, testMiddleware(hooks), thunk];
+  return createStore(reducer, initialState, applyMiddleware(...allMiddlewares));
 }
 
 const isFunction = arg => typeof arg === 'function';
