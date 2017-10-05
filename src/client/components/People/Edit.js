@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { withFormik } from 'formik';
 import { getPerson } from '../../selectors/people';
+import { getCompanies } from '../../selectors/companies';
 import { getPathByName } from '../../routes';
 import { getValidationSchema } from '../../forms/peoples';
 import { updatePeople } from '../../actions/people';
@@ -120,6 +121,7 @@ const mapStateToProps = (state, props) => {
   }
   return {
     people: getPerson(state, id),
+    companies: getCompanies(state),
   };
 };
 
@@ -163,7 +165,7 @@ export default compose(
       history.goBack();
     },
     validationSchema: getValidationSchema(),
-    mapPropsToValues: ({ people = {} }) => ({
+    mapPropsToValues: ({ people = {}, companies = {} }) => ({
       ...people,
       phones: isEmpty(people.phones)
         ? people.phones.map(phone => ({
@@ -172,7 +174,9 @@ export default compose(
           }))
         : [],
       color: people.avatar ? people.avatar.color : '',
-      company: people.companyId,
+      company: companies[people.companyId]
+        ? companies[people.companyId].name
+        : '',
     }),
   }),
   withState('isCancelDialogOpen', 'showCancelDialog', false),
