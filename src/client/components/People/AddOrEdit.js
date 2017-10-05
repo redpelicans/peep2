@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormField } from '../../fields';
-import { getField } from '../../forms/peoples';
+import { getField } from '../../forms/people';
 
 const PeopleForm = styled.form`
   display: grid;
@@ -13,17 +13,17 @@ const PeopleForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'Prefix' 'FirstName' 'LastName' 'Types' 'Email' 'JobType'
-    'Company' 'Phones' 'Tags' 'Roles' 'Notes';
+  grid-template-areas: 'prefix' 'firstName' 'lastName' 'type' 'email' 'jobType'
+    'companyId' 'phones' 'tags' 'roles' 'notes';
   @media (min-width: 700px) {
-    grid-template-areas: 'Prefix FirstName LastName' 'Types Email JobType'
-      'Company Company Company' 'Phones Phones Phones' 'Tags Tags Tags'
-      'Roles Roles Roles' 'Notes Notes Notes';
+    grid-template-areas: 'prefix firstName lastName' 'type email jobType'
+      'companyId companyId companyId' phones phones phones' 'tags tags tags'
+      'roles roles roles' 'notes notes notes';
   }
 `;
 
 const StyledFormField = styled(FormField)`
-  grid-area: ${({ field }) => field.label};
+  grid-area: ${({ field }) => field.name};
 `;
 
 const AddOrEditForm = ({
@@ -84,9 +84,9 @@ const AddOrEditForm = ({
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
-      {values.types === 'Worker' ? (
+      {values.type === 'worker' ? (
         <StyledFormField
-          field={getField('company')}
+          field={getField('companyId')}
           values={values}
           touched={touched}
           value="redpelicans"
@@ -97,7 +97,7 @@ const AddOrEditForm = ({
         />
       ) : (
         <StyledFormField
-          field={getField('company')}
+          field={getField('companyId')}
           values={values}
           touched={touched}
           errors={errors}

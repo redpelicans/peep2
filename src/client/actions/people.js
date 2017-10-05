@@ -58,7 +58,7 @@ export const checkEmail = email => dispatch => {
     const callback = (err, res) => {
       if (err) return reject(err);
       if (!res.ok) return reject(new Error('Email is not uniq'));
-      return resolve(res.email);
+      return resolve(true);
     };
     const action = {
       type: CHECK_EMAIL,

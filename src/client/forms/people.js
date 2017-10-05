@@ -15,6 +15,7 @@ const fields = {
   prefix: {
     label: 'Prefix',
     domainValues: [{ id: 'Mr', value: 'Mr' }, { id: 'Mrs', value: 'Mrs' }],
+    defaultValue: 'Mr',
     required: true,
     component: SelectField,
     validate: Yup.string(),
@@ -32,12 +33,13 @@ const fields = {
     validate: Yup.string(),
   },
   type: {
-    label: 'Types',
+    label: 'Type',
     domainValues: [
       { id: 'client', value: 'Client' },
       { id: 'worker', value: 'Worker' },
       { id: 'contact', value: 'Contact' },
     ],
+    defaultValue: 'contact',
     required: true,
     component: SelectField,
     validate: Yup.string(),
@@ -61,7 +63,7 @@ const fields = {
     component: SelectField,
     validate: Yup.string(),
   },
-  company: {
+  companyId: {
     label: 'Company',
     required: true,
     component: CompaniesSelectField,
@@ -97,5 +99,5 @@ const fields = {
 
 export const defaultValues = getDefaultValues(fields);
 export const getField = getOneField(fields);
-export const getValidationSchema = () =>
-  Yup.object().shape(getOneValidationSchema(fields));
+export const getValidationSchema = extend =>
+  Yup.object().shape(getOneValidationSchema(fields, extend));
