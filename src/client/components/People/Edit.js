@@ -104,7 +104,7 @@ Add.propTypes = {
   values: PropTypes.object.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
-  people: PropTypes.object.isRequired,
+  people: PropTypes.object,
   showCancelDialog: PropTypes.func.isRequired,
   isCancelDialogOpen: PropTypes.bool.isRequired,
   cancel: PropTypes.func.isRequired,
@@ -171,7 +171,7 @@ export default compose(
             number: phone.number,
           }))
         : [],
-      color: people.avatar.color,
+      color: people.avatar ? people.avatar.color : '',
       company: people.companyId,
     }),
   }),

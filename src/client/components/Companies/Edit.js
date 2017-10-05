@@ -49,8 +49,8 @@ export const Add = ({
         <Spacer size={15} />
         <AvatarSelector
           formId="addCompany"
-          color={values.avatar.color}
-          name={values.firstName}
+          color={values.avatar ? values.avatar.color : ''}
+          name={values.name}
           lastName={values.lastName}
           setFieldTouched={setFieldTouched}
           setFieldValue={setFieldValue}
@@ -104,7 +104,7 @@ Add.propTypes = {
   values: PropTypes.object.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
-  company: PropTypes.object.isRequired,
+  company: PropTypes.object,
   showCancelDialog: PropTypes.func.isRequired,
   isCancelDialogOpen: PropTypes.bool.isRequired,
   cancel: PropTypes.func.isRequired,
@@ -157,6 +157,10 @@ export default compose(
     validationSchema: getValidationSchema(),
     mapPropsToValues: ({ company = {} }) => ({
       ...company,
+      street: isEmpty(company.address) ? company.address.street : '',
+      zipcode: isEmpty(company.address) ? company.address.zipcode : '',
+      city: isEmpty(company.address) ? company.address.city : '',
+      country: isEmpty(company.address) ? company.address.country : '',
     }),
   }),
   withState('isCancelDialogOpen', 'showCancelDialog', false),
