@@ -25,11 +25,13 @@ export const EmptySearch = styled.span`
 
 const sizes = [
   { columns: 1, gutter: 10 },
-  { mq: '700px', columns: 2, gutter: 10 },
-  { mq: '1000px', columns: 3, gutter: 10 },
-  { mq: '1300px', columns: 4, gutter: 10 },
-  { mq: '1600px', columns: 5, gutter: 10 },
-  { mq: '1900px', columns: 6, gutter: 10 },
+  { mq: '750px', columns: 2, gutter: 10 },
+  { mq: '1025px', columns: 3, gutter: 10 },
+  { mq: '1325px', columns: 4, gutter: 10 },
+  { mq: '1625px', columns: 5, gutter: 10 },
+  { mq: '1925px', columns: 6, gutter: 10 },
+  { mq: '2225px', columns: 7, gutter: 10 },
+  { mq: '2535px', columns: 8, gutter: 10 },
 ];
 
 export const List = ({ companies, ...params }) => (
