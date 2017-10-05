@@ -13,10 +13,11 @@ const StyledContainer = styled.div`
 
 const sizes = [
   { columns: 1, gutter: 10 },
-  { mq: '800px', columns: 2, gutter: 10 },
-  { mq: '1100px', columns: 3, gutter: 10 },
-  { mq: '1400px', columns: 4, gutter: 10 },
-  { mq: '1700px', columns: 5, gutter: 10 },
+  { mq: '700px', columns: 2, gutter: 10 },
+  { mq: '1000px', columns: 3, gutter: 10 },
+  { mq: '1300px', columns: 4, gutter: 10 },
+  { mq: '1600px', columns: 5, gutter: 10 },
+  { mq: '1900px', columns: 6, gutter: 10 },
 ];
 
 export const List = ({ people, companies, ...params }) => (

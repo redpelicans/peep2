@@ -80,6 +80,7 @@ const putStatus = companies =>
 export const getFilter = state => state.companies.filter;
 export const getSort = state => state.companies.sort;
 export const getCompanies = state => state.companies.data;
+export const getCompany = (state, id) => state.companies.data[id];
 export const getCompanyId = (companies, name) =>
   prop('_id', find(propEq('name', name), companies));
 const getPreferredFilter = state => state.companies.preferredFilter;

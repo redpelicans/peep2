@@ -14,9 +14,9 @@ const fields = {
   type: {
     label: 'Type',
     domainValues: [
-      { id: 'Client', value: 'Client' },
-      { id: 'Partner', value: 'Partner' },
-      { id: 'Tenant', value: 'Tenant' },
+      { id: 'client', value: 'Client' },
+      { id: 'partner', value: 'Partner' },
+      { id: 'tenant', value: 'Tenant' },
     ],
     required: true,
     component: SelectField,

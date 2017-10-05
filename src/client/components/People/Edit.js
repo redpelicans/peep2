@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
-import { Button, Dialog } from '@blueprintjs/core';
-import { compose, map } from 'ramda';
+import { Button } from '@blueprintjs/core';
+import { compose, map, isEmpty } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
@@ -12,14 +12,18 @@ import { getPerson } from '../../selectors/people';
 import { getPathByName } from '../../routes';
 import { getValidationSchema } from '../../forms/peoples';
 import { updatePeople } from '../../actions/people';
-import { Spacer, Title, Container, AvatarSelector } from '../widgets';
+import {
+  Spacer,
+  Title,
+  Container,
+  AvatarSelector,
+  ModalConfirmation,
+} from '../widgets';
 import AddOrEdit from './AddOrEdit';
 
 const StyledContainer = styled(Container)`min-width: 300px;`;
 
 export const Add = ({
-  isDialogOpen,
-  toggleDialog,
   values,
   isSubmitting,
   dirty,
@@ -27,37 +31,24 @@ export const Add = ({
   handleReset,
   setFieldTouched,
   setFieldValue,
-  leave,
+  isCancelDialogOpen,
+  showCancelDialog,
   cancel,
-  people,
+  requestCancel,
   ...props
 }) => (
   <StyledContainer>
-    {console.log('people: ', people)}
-    <Dialog isOpen={isDialogOpen} className="pt-dark">
-      <div className="pt-dialog-body">Would you like to cancel this form?</div>
-      <div className="pt-dialog-footer">
-        <div className="pt-dialog-footer-actions">
-          <Button
-            onClick={() => toggleDialog()}
-            className="pt-intent-warning pt-large"
-          >
-            No
-          </Button>
-          <Button
-            onClick={() => leave()}
-            className="pt-intent-success pt-large"
-          >
-            Yes
-          </Button>
-        </div>
-      </div>
-    </Dialog>
+    <ModalConfirmation
+      isOpen={isCancelDialogOpen}
+      title="Would you like to cancel this form ?"
+      reject={() => showCancelDialog(false)}
+      accept={cancel}
+    />
     <Header>
       <HeaderLeft>
         <Spacer size={15} />
         <AvatarSelector
-          formId="companyForm"
+          formId="peopleForm"
           color={values.color}
           name={values.firstName}
           lastName={values.lastName}
@@ -69,15 +60,18 @@ export const Add = ({
       </HeaderLeft>
       <HeaderRight>
         <Button
-          form="companyForm"
+          form="peopleForm"
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !dirty}
           className="pt-intent-success pt-large"
         >
-          Create
+          Update
         </Button>
         <Spacer />
-        <Button onClick={cancel(dirty)} className="pt-intent-warning pt-large">
+        <Button
+          onClick={requestCancel(dirty)}
+          className="pt-intent-warning pt-large"
+        >
           Cancel
         </Button>
         <Spacer />
@@ -102,29 +96,30 @@ export const Add = ({
 );
 
 Add.propTypes = {
-  leave: PropTypes.func.isRequired,
-  cancel: PropTypes.func.isRequired,
-  toggleDialog: PropTypes.func.isRequired,
-  isDialogOpen: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
+  isValid: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   dirty: PropTypes.bool.isRequired,
   values: PropTypes.object.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
-  people: PropTypes.object.isRequired,
+  people: PropTypes.object,
+  showCancelDialog: PropTypes.func.isRequired,
+  isCancelDialogOpen: PropTypes.bool.isRequired,
+  cancel: PropTypes.func.isRequired,
+  requestCancel: PropTypes.func.isRequired,
 };
 
 const actions = { updatePeople };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 const mapStateToProps = (state, props) => {
   const { match: { params: { id } = {} }, history } = props;
-  if (getPerson(state.people, id) === undefined) {
+  if (getPerson(state, id) === undefined) {
     history.push(getPathByName('notfound'));
   }
   return {
-    people: getPerson(state.people, id),
+    people: getPerson(state, id),
   };
 };
 
@@ -157,34 +152,35 @@ export default compose(
         jobType,
         name: `${firstName} ${lastName}`,
         note: notes,
-        phones: map(
-          phone => ({ label: phone.type, number: phone.number }),
-          phones,
-        ),
+        phones: isEmpty(phones)
+          ? map(phone => ({ label: phone.type, number: phone.number }), phones)
+          : [],
         prefix,
-        tags: map(tag => tag.value, tags),
-        roles: map(role => role.value, roles),
+        tags: isEmpty(tags) ? map(tag => tag.value, tags) : [],
+        roles: isEmpty(roles) ? map(role => role.value, roles) : [],
       };
       updatePeople(newPeople);
       history.goBack();
     },
     validationSchema: getValidationSchema(),
-    mapPropsToValues: ({ people = { phone: [] } }) => ({
+    mapPropsToValues: ({ people = {} }) => ({
       ...people,
-      phones: people.phones.map(phone => ({
-        type: phone.label,
-        number: phone.number,
-      })),
-      color: people.avatar.color,
+      phones: isEmpty(people.phones)
+        ? people.phones.map(phone => ({
+            type: phone.label,
+            number: phone.number,
+          }))
+        : [],
+      color: people.avatar ? people.avatar.color : '',
       company: people.companyId,
     }),
   }),
-  withState('isDialogOpen', 'showDialog', false),
+  withState('isCancelDialogOpen', 'showCancelDialog', false),
   withHandlers({
-    leave: ({ history }) => () => history.goBack(),
-    cancel: ({ history, showDialog }) => dirty => () => {
+    cancel: ({ history }) => () => history.goBack(),
+    requestCancel: ({ history, showCancelDialog }) => dirty => () => {
       if (!dirty) return history.goBack();
-      return showDialog(isDialogOpen => !isDialogOpen);
+      return showCancelDialog(true);
     },
     toggleDialog: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),

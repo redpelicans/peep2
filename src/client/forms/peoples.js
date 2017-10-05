@@ -46,7 +46,7 @@ const fields = {
     label: 'Email',
     required: true,
     component: InputField,
-    validate: Yup.string(),
+    validate: Yup.string().email(),
   },
   jobType: {
     label: 'Job Type',
