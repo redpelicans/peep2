@@ -1,20 +1,24 @@
 import { map } from 'ramda';
-import moment from 'moment';
+import { format } from 'date-fns';
 import {
   NOTES_LOADED,
   FILTER_NOTES_LIST,
   SORT_NOTES_LIST,
 } from '../actions/notes';
 
+const formatString = 'dddd, MMMM Do YYYY';
+
 const make = note => {
   const updatedNote = {
     ...note,
     typeName: 'note',
-    createdAt: moment(note.createdAt).format('dddd, MMMM Do YYYY'),
+    createdAt: note.createdAt
+      ? format(note.createdAt, formatString)
+      : undefined,
   };
   updatedNote.updatedAt = note.updatedAt
-    ? moment(note.updatedAt).format('dddd, MMMM Do YYYY')
-    : moment(note.createdAt).format('dddd, MMMM Do YYYY');
+    ? format(note.updatedAt, formatString)
+    : format(note.createdAt, formatString);
   return updatedNote;
 };
 

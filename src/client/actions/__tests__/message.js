@@ -1,83 +1,23 @@
-import configureStore from 'redux-mock-store';
 import should from 'should';
-import { alert, ALERT, DANGER, PRIMARY, SUCCESS, WARNING } from '../message';
+import reducer from '../../reducers';
+import { configureStore } from './utils';
+import { alert, ALERT } from '../message';
 
-const { describe, it } = global;
-
-const middlewares = [];
-const mockStore = configureStore(middlewares);
-
-describe('action message test', () => {
-  it('should dispatch success message', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    const type = SUCCESS;
-    const message = 'test message';
-    const description = 'test description';
-
-    store.dispatch(alert({
-      type,
-      message,
-      description,
-    }));
-
-    const actions = store.getActions();
-    const expectedPayload = { type: ALERT, payload: { type, message, description } };
-    should(actions).eql([expectedPayload]);
-  });
-  it('should dispatch warning message', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    const type = WARNING;
-    const message = 'test message';
-    const description = 'test description';
-
-    store.dispatch(alert({
-      type,
-      message,
-      description,
-    }));
-
-    const actions = store.getActions();
-    const expectedPayload = { type: ALERT, payload: { type, message, description } };
-    should(actions).eql([expectedPayload]);
-  });
-  it('should dispatch danger message', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    const type = DANGER;
-    const message = 'test message';
-    const description = 'test description';
-
-    store.dispatch(alert({
-      type,
-      message,
-      description,
-    }));
-
-    const actions = store.getActions();
-    const expectedPayload = { type: ALERT, payload: { type, message, description } };
-    should(actions).eql([expectedPayload]);
-  });
-  it('should dispatch informative message', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    const type = PRIMARY;
-    const message = 'test message';
-    const description = 'test description';
-
-    store.dispatch(alert({
-      type,
-      message,
-      description,
-    }));
-
-    const actions = store.getActions();
-    const expectedPayload = { type: ALERT, payload: { type, message, description } };
-    should(actions).eql([expectedPayload]);
+describe('Action:message', () => {
+  it('ALERT Once', done => {
+    const [TYPE, MESSAGE, DESCRIPTION] = ['type', 'message', 'description'];
+    const hook = {
+      [ALERT]: getState => {
+        const { message } = getState();
+        should(message.type).eql(TYPE);
+        should(message.message).eql(MESSAGE);
+        should(message.description).eql(DESCRIPTION);
+        done();
+      },
+    };
+    const store = configureStore(reducer, {}, hook);
+    store.dispatch(
+      alert({ type: TYPE, message: MESSAGE, description: DESCRIPTION }),
+    );
   });
 });

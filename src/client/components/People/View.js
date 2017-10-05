@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { isEmpty, map, find, propEq } from 'ramda';
 import { Colors } from '@blueprintjs/core';
-import { distanceInWords } from 'date-fns';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
@@ -19,6 +18,7 @@ import {
   LinkButton,
   Tag,
   Spacer,
+  Dates,
 } from '../widgets';
 import NotesView from './NotesView';
 
@@ -95,13 +95,15 @@ const phoneIcons = [
   { label: 'home', iconName: 'pt-icon-home' },
 ];
 
-const PhoneField = ({ label, number }) => (
-  <PhoneNumber>
-    <span className={find(propEq('label', label), phoneIcons).iconName} />
-    <PhoneNumberText>{label}</PhoneNumberText>
-    <PhoneNumberText>{number}</PhoneNumberText>
-  </PhoneNumber>
-);
+const PhoneField = ({ label, number }) => {
+  const icon = find(propEq('label', label), phoneIcons);
+  return (
+    <PhoneNumber>
+      <span className={icon ? icon.iconName : 'pt-icon-mobile-phone'} />
+      <PhoneNumberText>{number}</PhoneNumberText>
+    </PhoneNumber>
+  );
+};
 
 PhoneField.propTypes = {
   label: PropTypes.string.isRequired,
@@ -131,36 +133,6 @@ const StyledLink = styled.a`
   text-decoration: none !important;
   font-style: normal !important;
 `;
-
-const StyledDates = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  font-size: 0.8em;
-`;
-
-const Dates = ({ updatedAt, createdAt }) => {
-  const distanceUpdatedAt = distanceInWords(new Date(), updatedAt);
-  const distanceCreatedAt = distanceInWords(new Date(), createdAt);
-  return (
-    <StyledDates>
-      {createdAt && <span>{`Created ${distanceCreatedAt}`}</span>}
-      {createdAt &&
-        updatedAt && (
-          <span>
-            <Spacer size="20" />
-            {' - '}
-            <Spacer size="20" />
-          </span>
-        )}
-      {updatedAt && <span>{`Updated ${distanceUpdatedAt}`}</span>}
-    </StyledDates>
-  );
-};
-
-Dates.propTypes = {
-  updatedAt: PropTypes.string,
-  createdAt: PropTypes.string,
-};
 
 const PersonInfos = ({ person = {} }) => {
   const {
