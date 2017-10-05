@@ -2,281 +2,160 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
-import { Button, Dialog } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withFormik } from 'formik';
 import { addCompany } from '../../actions/companies';
-import { compose, map } from 'ramda';
-import { onlyUpdateForKeys } from 'recompose';
+import { compose, isEmpty, map } from 'ramda';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Formik } from 'formik';
+import { getValidationSchema, defaultValues } from '../../forms/companies';
+import AddOrEdit from './AddOrEdit';
 import {
-  defaultValues,
-  getValidationSchema,
-  getField,
-} from '../../forms/companies';
-import { Spacer, Title, Container, AvatarSelector } from '../widgets';
-import { FormField } from '../../fields';
+  Spacer,
+  Title,
+  Container,
+  AvatarSelector,
+  ModalConfirmation,
+} from '../widgets';
 
-const CompagnyForm = styled.form`
-  display: grid;
-  margin: auto;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  width: 90%;
-  grid-gap: 20px;
-  grid-auto-columns: minmax(70px, auto);
-  grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'Type' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
-    'City' 'Tags' 'Note';
-  @media (min-width: 700px) {
-    grid-template-areas: 'Type Name Website' 'Zipcode Street Street'
-      'Country City City' 'Tags Tags Tags' 'Note Note Note';
-  }
-`;
+const StyledContainer = styled(Container)`min-width: 300px;`;
 
-const StyledFormField = styled(FormField)`
-  grid-area: ${({ field }) => field.label};
-`;
-
-export const Form = ({ initialValues, history, showDialogHandler, submit }) => (
-  <Formik
-    initialValues={initialValues}
-    validationSchema={getValidationSchema()}
-    isInitialValid={({ validationSchema, initialValues }) =>
-      validationSchema.isValid(initialValues)}
-    onSubmit={({
-      name,
-      type,
-      tags = [],
-      website,
-      zipcode,
-      street,
-      country,
-      city,
-      notes = '',
-      color,
-    }) => {
-      const newCompany = {
-        name,
-        avatar: { color },
-        type,
-        tags: map(tag => tag.value, tags),
-        website,
-        address: { street, city, zipcode, country },
-        notes,
-      };
-      submit(newCompany);
-    }}
-    render={({
-      values,
-      isValid,
-      errors,
-      touched,
-      handleSubmit,
-      handleReset,
-      setFieldTouched,
-      dirty,
-      setFieldValue,
-      isSubmitting,
-    }) => (
-      <Container>
-        <Header>
-          <HeaderLeft>
-            <Spacer size={15} />
-            <AvatarSelector
-              formId="addCompany"
-              color={values.color}
-              name={values.name}
-              setFieldTouched={setFieldTouched}
-              setFieldValue={setFieldValue}
-            />
-            <Spacer />
-            <Title title="New Companie" />
-          </HeaderLeft>
-          <HeaderRight>
-            <Button
-              form="addCompany"
-              type="submit"
-              disabled={isSubmitting || !isValid || !dirty}
-              className="pt-intent-success pt-large"
-            >
-              Create
-            </Button>
-            <Spacer />
-            <Button
-              onClick={() => {
-                if (!dirty) {
-                  history.goBack();
-                } else {
-                  showDialogHandler();
-                }
-              }}
-              className="pt-intent-warning pt-large"
-            >
-              Cancel
-            </Button>
-            <Spacer />
-            <Button
-              className="pt-intent-danger pt-large"
-              onClick={handleReset}
-              disabled={!dirty || isSubmitting}
-            >
-              Reset
-            </Button>
-            <Spacer size={20} />
-          </HeaderRight>
-        </Header>
-        <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
-          <StyledFormField
-            field={getField('type')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('name')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('website')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('street')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('zipcode')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <StyledFormField
-            field={getField('city')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-            creatable={true}
-          />
-          <StyledFormField
-            field={getField('country')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-            creatable={true}
-          />
-          <StyledFormField
-            field={getField('tags')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-            creatable={true}
-          />
-          <StyledFormField
-            field={getField('notes')}
-            values={values}
-            errors={errors}
-            touched={touched}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-        </CompagnyForm>
-      </Container>
-    )}
-  />
+export const Add = ({
+  values,
+  isSubmitting,
+  isValid,
+  dirty,
+  handleSubmit,
+  handleReset,
+  setFieldTouched,
+  setFieldValue,
+  isCancelDialogOpen,
+  showCancelDialog,
+  cancel,
+  requestCancel,
+  ...props
+}) => (
+  <StyledContainer>
+    <ModalConfirmation
+      isOpen={isCancelDialogOpen}
+      title="Would you like to cancel this form ?"
+      reject={() => showCancelDialog(false)}
+      accept={cancel}
+    />
+    <Header>
+      <HeaderLeft>
+        <Spacer size={15} />
+        <AvatarSelector
+          formId="addCompany"
+          color={values.color}
+          name={values.name}
+          lastName={values.lastName}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+        />
+        <Spacer />
+        <Title title={'Add Company'} />
+      </HeaderLeft>
+      <HeaderRight>
+        <Button
+          form="addCompany"
+          type="submit"
+          disabled={isSubmitting || !isValid || !dirty}
+          className="pt-intent-success pt-large"
+        >
+          Create
+        </Button>
+        <Spacer />
+        <Button
+          onClick={requestCancel(dirty)}
+          className="pt-intent-warning pt-large"
+        >
+          Cancel
+        </Button>
+        <Spacer />
+        <Button
+          className="pt-intent-danger pt-large"
+          onClick={handleReset}
+          disabled={!dirty || isSubmitting}
+        >
+          Reset
+        </Button>
+        <Spacer size={20} />
+      </HeaderRight>
+    </Header>
+    <AddOrEdit
+      handleSubmit={handleSubmit}
+      values={values}
+      setFieldTouched={setFieldTouched}
+      setFieldValue={setFieldValue}
+      {...props}
+    />
+  </StyledContainer>
 );
 
-Form.propTypes = {
-  initialValues: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  showDialogHandler: PropTypes.func.isRequired,
-  submit: PropTypes.func.isRequired,
-};
-
-const FormElem = onlyUpdateForKeys(['history', 'showDialogHandler'])(Form);
-
-const AddCompany = ({
-  addCompany,
-  history,
-  isDialogOpen,
-  showDialogHandler,
-}) => {
-  const initialValues = {
-    ...defaultValues,
-  };
-  return (
-    <div>
-      <Dialog isOpen={isDialogOpen} className="pt-dark">
-        <div className="pt-dialog-body">
-          Would you like to cancel this form?
-        </div>
-        <div className="pt-dialog-footer">
-          <div className="pt-dialog-footer-actions">
-            <Button
-              onClick={() => showDialogHandler()}
-              className="pt-intent-warning pt-large"
-            >
-              No
-            </Button>
-            <Button
-              onClick={() => history.goBack()}
-              className="pt-intent-success pt-large"
-            >
-              Yes
-            </Button>
-          </div>
-        </div>
-      </Dialog>
-      <FormElem
-        initialValues={initialValues}
-        history={history}
-        showDialogHandler={showDialogHandler}
-        submit={addCompany}
-        title="Add Company"
-      />
-    </div>
-  );
-};
-
-AddCompany.propTypes = {
-  addCompany: PropTypes.func.isRequired,
-  isDialogOpen: PropTypes.bool,
-  showDialogHandler: PropTypes.func.isRequired,
-  history: PropTypes.object,
+Add.propTypes = {
+  isSubmitting: PropTypes.bool.isRequired,
+  isValid: PropTypes.bool.isRequired,
+  handleReset: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  dirty: PropTypes.bool.isRequired,
+  values: PropTypes.object.isRequired,
+  setFieldTouched: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+  showCancelDialog: PropTypes.func.isRequired,
+  isCancelDialogOpen: PropTypes.bool.isRequired,
+  cancel: PropTypes.func.isRequired,
+  requestCancel: PropTypes.func.isRequired,
 };
 
 const actions = { addCompany };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-const enhance = compose(
-  withState('isDialogOpen', 'showDialog', false),
+
+export default compose(
+  connect(null, mapDispatchToProps),
+  withFormik({
+    handleSubmit: (
+      {
+        name,
+        type,
+        tags = [],
+        website,
+        zipcode,
+        street,
+        country,
+        city,
+        notes = '',
+        color,
+      },
+      { props },
+    ) => {
+      const { addCompany, history } = props;
+      const newCompany = {
+        name,
+        avatar: { color },
+        type,
+        tags: isEmpty(tags) ? map(tag => tag.value, tags) : [],
+        website,
+        address: { street, city, zipcode, country },
+        notes,
+      };
+      addCompany(newCompany);
+      history.goBack();
+    },
+    validationSchema: getValidationSchema(),
+    mapPropsToValues: () => ({
+      ...defaultValues,
+    }),
+  }),
+  withState('isCancelDialogOpen', 'showCancelDialog', false),
   withHandlers({
-    showDialogHandler: ({ showDialog }) => () =>
+    cancel: ({ history }) => () => history.goBack(),
+    requestCancel: ({ history, showCancelDialog }) => dirty => () => {
+      if (!dirty) return history.goBack();
+      return showCancelDialog(true);
+    },
+    toggleDialog: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),
   }),
-  connect(null, mapDispatchToProps),
-);
-
-export default enhance(AddCompany);
+)(Add);

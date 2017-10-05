@@ -108,17 +108,3 @@ describe('Preview component', () => {
     should(wrapper.find(Actions)).have.length(0);
   });
 });
-
-describe('Add component', () => {
-  it('should render a Formik', () => {
-    const wrapper = shallow(
-      <Form
-        initialValues={{}}
-        history={{}}
-        showDialogHandler={() => {}}
-        submit={() => {}}
-      />,
-    );
-    should(wrapper.find(Formik)).have.length(1);
-  });
-});
