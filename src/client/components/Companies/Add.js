@@ -111,10 +111,9 @@ Add.propTypes = {
 
 const actions = { addCompany };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-const mapStateToProps = state => ({});
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(null, mapDispatchToProps),
   withFormik({
     handleSubmit: (
       {
