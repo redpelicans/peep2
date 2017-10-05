@@ -166,7 +166,6 @@ export const MultiSelectField = ({
   name,
   label,
   required,
-  error,
   value,
   setFieldTouched,
   setFieldValue,

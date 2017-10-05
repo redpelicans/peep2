@@ -48,7 +48,7 @@ export const Add = ({
       <HeaderLeft>
         <Spacer size={15} />
         <AvatarSelector
-          formId="companyForm"
+          formId="peopleForm"
           color={values.color}
           name={values.firstName}
           lastName={values.lastName}
@@ -60,7 +60,7 @@ export const Add = ({
       </HeaderLeft>
       <HeaderRight>
         <Button
-          form="companyForm"
+          form="peopleForm"
           type="submit"
           disabled={isSubmitting || !isValid || !dirty}
           className="pt-intent-success pt-large"
@@ -143,7 +143,6 @@ export default compose(
         lastName,
         email,
         jobType,
-        name: `${firstName} ${lastName}`,
         note: notes,
         phones: map(
           phone => ({ label: phone.type, number: phone.number }),

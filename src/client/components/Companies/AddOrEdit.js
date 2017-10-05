@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormField } from '../../fields';
-import { getField } from '../../forms/peoples';
+import { getField } from '../../forms/companies';
 
-const PeopleForm = styled.form`
+const CompagnyForm = styled.form`
   display: grid;
   margin: auto;
   margin-top: 25px;
@@ -13,12 +13,11 @@ const PeopleForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'Prefix' 'FirstName' 'LastName' 'Types' 'Email' 'JobType'
-    'Company' 'Phones' 'Tags' 'Roles' 'Notes';
+  grid-template-areas: 'Type' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
+    'City' 'Tags' 'Note';
   @media (min-width: 700px) {
-    grid-template-areas: 'Prefix FirstName LastName' 'Types Email JobType'
-      'Company Company Company' 'Phones Phones Phones' 'Tags Tags Tags'
-      'Roles Roles Roles' 'Notes Notes Notes';
+    grid-template-areas: 'Type Name Website' 'Zipcode Street Street'
+      'Country City City' 'Tags Tags Tags' 'Note Note Note';
   }
 `;
 
@@ -35,31 +34,7 @@ const AddOrEditForm = ({
   setFieldValue,
 }) => {
   return (
-    <PeopleForm id="peopleForm" onSubmit={handleSubmit}>
-      <StyledFormField
-        field={getField('prefix')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('firstName')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('lastName')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
+    <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
       <StyledFormField
         field={getField('type')}
         values={values}
@@ -69,7 +44,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('email')}
+        field={getField('name')}
         values={values}
         errors={errors}
         touched={touched}
@@ -77,59 +52,55 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('jobType')}
+        field={getField('website')}
         values={values}
         errors={errors}
         touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
-      {values.types === 'Worker' ? (
-        <StyledFormField
-          field={getField('company')}
-          values={values}
-          touched={touched}
-          value="redpelicans"
-          disabled={true}
-          errors={errors}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
-        />
-      ) : (
-        <StyledFormField
-          field={getField('company')}
-          values={values}
-          touched={touched}
-          errors={errors}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
-        />
-      )}
       <StyledFormField
-        field={getField('phones')}
+        field={getField('street')}
         values={values}
-        touched={touched}
         errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('tags')}
+        field={getField('zipcode')}
         values={values}
-        touched={touched}
         errors={errors}
+        touched={touched}
+        setFieldTouched={setFieldTouched}
+        setFieldValue={setFieldValue}
+      />
+      <StyledFormField
+        field={getField('city')}
+        values={values}
+        errors={errors}
+        touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
         creatable={true}
       />
       <StyledFormField
-        field={getField('roles')}
+        field={getField('country')}
         values={values}
         errors={errors}
         touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
-        multi={true}
+        creatable={true}
+      />
+      <StyledFormField
+        field={getField('tags')}
+        values={values}
+        errors={errors}
+        touched={touched}
+        setFieldTouched={setFieldTouched}
+        setFieldValue={setFieldValue}
+        creatable={true}
       />
       <StyledFormField
         field={getField('notes')}
@@ -139,7 +110,7 @@ const AddOrEditForm = ({
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
-    </PeopleForm>
+    </CompagnyForm>
   );
 };
 

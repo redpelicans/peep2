@@ -48,7 +48,7 @@ export const Add = ({
       <HeaderLeft>
         <Spacer size={15} />
         <AvatarSelector
-          formId="companyForm"
+          formId="peopleForm"
           color={values.color}
           name={values.firstName}
           lastName={values.lastName}
@@ -60,7 +60,7 @@ export const Add = ({
       </HeaderLeft>
       <HeaderRight>
         <Button
-          form="companyForm"
+          form="peopleForm"
           type="submit"
           disabled={isSubmitting || !dirty}
           className="pt-intent-success pt-large"
@@ -115,11 +115,11 @@ const actions = { updatePeople };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 const mapStateToProps = (state, props) => {
   const { match: { params: { id } = {} }, history } = props;
-  if (getPerson(state.people, id) === undefined) {
+  if (getPerson(state, id) === undefined) {
     history.push(getPathByName('notfound'));
   }
   return {
-    people: getPerson(state.people, id),
+    people: getPerson(state, id),
   };
 };
 
