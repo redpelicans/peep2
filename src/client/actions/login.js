@@ -21,6 +21,7 @@ export const checkToken = callback => ({
 });
 
 export const userLogged = (user, token) => dispatch => {
+  localStorage.setItem('peepToken', token);
   dispatch({ type: USER_LOGGED, payload: { user, token } });
   dispatch(loadCompanies());
   dispatch(loadPeople());

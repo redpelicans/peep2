@@ -1,21 +1,22 @@
 import { is } from 'ramda';
-import { push, goBack } from '../history';
-import { USER_LOGGED } from '../actions/login';
+import { goBack } from '../history';
+import { USER_LOGGED, logout, userLogged } from '../actions/login';
 import { EVTX_ERROR } from '../actions/message';
 
 export const socketIoMiddleWare = socket => ({ dispatch, getState }) => {
   socket.on('action', action => {
     if (!action || !action.type) return;
     switch (action.type) {
-      case USER_LOGGED:
-        localStorage.setItem('peepToken', action.payload.token);
-        dispatch(action);
+      case USER_LOGGED: {
+        const { payload: { user, token } } = action;
+        dispatch(userLogged(user, token));
         return goBack();
+      }
       case EVTX_ERROR:
         switch (action.code) {
           case 403:
           case 401:
-            return push('/login');
+            return dispatch(logout());
           default:
             return dispatch(action);
         }
