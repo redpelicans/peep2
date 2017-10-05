@@ -39,7 +39,7 @@ export const Add = ({
 }) => (
   <StyledContainer>
     <Prompt
-      when={!isCancelDialogOpen && dirty}
+      when={!isCancelDialogOpen && dirty && !isSubmitting}
       message="Would you like to cancel this form ?"
     />
     <ModalConfirmation
