@@ -19,7 +19,9 @@ const make = person => {
     ...person,
     name: `${firstName} ${lastName}`,
     typeName: 'person',
-    createdAt: format(person.createdAt, formatString),
+    createdAt: person.createdAt
+      ? format(person.createdAt, formatString)
+      : undefined,
   };
   if (person.updatedAt)
     updatedPerson.updatedAt = format(Date.now(), formatString);

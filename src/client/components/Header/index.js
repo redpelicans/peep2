@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-export const HeaderLeftElt = styled.div`
+export const StyledHeaderLeftElement = styled.div`
   display: flex;
   font-size: 1.5em;
   justify-content: flex-start;
@@ -11,7 +11,7 @@ export const HeaderLeftElt = styled.div`
   flex: 1;
 `;
 
-export const HeaderRightElt = styled.div`
+export const StyledHeaderRightElement = styled.div`
   display: flex;
   font-size: 1.5em;
   align-items: center;
@@ -20,7 +20,7 @@ export const HeaderRightElt = styled.div`
   flex: 1;
 `;
 
-export const HeaderElt = styled.div`
+export const StyledHeaderElement = styled.div`
   padding-top: 1rem;
   display: flex;
   margin-bottom: 1em;
@@ -33,7 +33,7 @@ export const HeaderElt = styled.div`
   grid-row: 2;
 `;
 
-export const TimeElt = styled.div`
+export const StyledTimeElement = styled.div`
   font-size: '.7rem';
   font-style: 'italic';
   display: 'block';
@@ -41,7 +41,7 @@ export const TimeElt = styled.div`
 `;
 
 export const HeaderLeft = ({ children }) => (
-  <HeaderLeftElt>{children}</HeaderLeftElt>
+  <StyledHeaderLeftElement>{children}</StyledHeaderLeftElement>
 );
 
 HeaderLeft.propTypes = {
@@ -49,7 +49,7 @@ HeaderLeft.propTypes = {
 };
 
 export const HeaderRight = ({ children }) => (
-  <HeaderRightElt>{children}</HeaderRightElt>
+  <StyledHeaderRightElement>{children}</StyledHeaderRightElement>
 );
 
 HeaderRight.propTypes = {
@@ -70,14 +70,14 @@ export const Header = ({ obj, children }) => {
 
   const time = () => {
     if (!obj) return '';
-    return <TimeElt>{timeLabels(obj)}</TimeElt>;
+    return <StyledTimeElement>{timeLabels(obj)}</StyledTimeElement>;
   };
   return (
     <div>
-      <HeaderElt>
+      <StyledHeaderElement>
         {left()}
         {right()}
-      </HeaderElt>
+      </StyledHeaderElement>
       {time()}
     </div>
   );

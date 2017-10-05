@@ -17,8 +17,10 @@ import CompanyLink from './CompanyLink';
 import Actions from './Actions';
 import ViewField from './ViewField';
 import TagsMenu from './TagsMenu';
+import Dates from './Dates';
 
 export {
+  Dates,
   TagsMenu,
   ViewField,
   Actions,

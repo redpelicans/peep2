@@ -1,10 +1,4 @@
-import {
-  ALERT,
-  DANGER,
-  SUCCESS,
-  WARNING,
-  EVTX_ERROR,
-} from '../actions/message';
+import { ALERT, DANGER, SUCCESS, EVTX_ERROR } from '../actions/message';
 import { COMPANY_ADDED, COMPANY_UPDATED } from '../actions/companies';
 import { PEOPLE_ADDED, PEOPLE_UPDATED } from '../actions/people';
 

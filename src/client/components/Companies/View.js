@@ -4,13 +4,19 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { map } from 'ramda';
-import { distanceInWords } from 'date-fns';
 import { Colors } from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
 import { getPeopleFromCompany } from '../../selectors/people';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { Title, Container, Spacer, ViewField, LinkButton } from '../widgets';
+import {
+  Title,
+  Container,
+  Spacer,
+  ViewField,
+  LinkButton,
+  Dates,
+} from '../widgets';
 import Preview from '../People/Preview';
 import { onTagClick, deletePeople } from '../../actions/people';
 import MasonryLayout from '../widgets/MasonryLayout';
@@ -65,36 +71,6 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledViewField = styled(ViewField)`grid-area: ${props => props.name};`;
-
-const StyledDates = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  font-size: 0.8em;
-`;
-
-const Dates = ({ updatedAt, createdAt }) => {
-  const distanceUpdatedAt = distanceInWords(new Date(), updatedAt);
-  const distanceCreatedAt = distanceInWords(new Date(), createdAt);
-  return (
-    <StyledDates>
-      {createdAt && <span>{`Created ${distanceCreatedAt} ago`}</span>}
-      {createdAt &&
-        updatedAt && (
-          <span>
-            <Spacer size="2" />
-            {' - '}
-            <Spacer size="2" />
-          </span>
-        )}
-      {updatedAt && <span>{`Updated ${distanceUpdatedAt} ago`}</span>}
-    </StyledDates>
-  );
-};
-
-Dates.propTypes = {
-  updatedAt: PropTypes.string,
-  createdAt: PropTypes.string,
-};
 
 const CompanyInfos = ({ company = {}, people }) => {
   const { type, website, address = {}, _id } = company;
