@@ -38,6 +38,7 @@ export const Add = ({
   ...props
 }) => (
   <StyledContainer>
+    {console.log('valuesL ', values)}
     <ModalConfirmation
       isOpen={isCancelDialogOpen}
       title="Would you like to cancel this form ?"
@@ -155,12 +156,12 @@ export default compose(
       history.goBack();
     },
     validationSchema: getValidationSchema(),
-    mapPropsToValues: ({ company = {} }) => ({
+    mapPropsToValues: ({ company = { address: {} } }) => ({
       ...company,
-      street: isEmpty(company.address) ? company.address.street : '',
-      zipcode: isEmpty(company.address) ? company.address.zipcode : '',
-      city: isEmpty(company.address) ? company.address.city : '',
-      country: isEmpty(company.address) ? company.address.country : '',
+      street: company.address.street ? company.address.street : '',
+      zipcode: company.address.zipcode ? company.address.zipcode : '',
+      city: company.address.city ? company.address.city : '',
+      country: company.address.country ? company.address.country : '',
     }),
   }),
   withState('isCancelDialogOpen', 'showCancelDialog', false),
