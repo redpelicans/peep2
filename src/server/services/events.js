@@ -98,8 +98,8 @@ const makeEventsFromGroup = ({
   );
 };
 
-export const event = {
-  load({ from, to, groupId }) {
+export const events = {
+  load({ from, to, groupId } = {}) {
     const query = {};
     if (from) query.to = { $gte: from.toISOString() };
     if (to) query.from = { $lte: to.toISOString() };
@@ -181,7 +181,7 @@ export const outMaker = event => event;
 export const outMakerMany = R.map(outMaker);
 
 const init = evtx => {
-  evtx.use(SERVICE_NAME, event);
+  evtx.use(SERVICE_NAME, events);
   evtx
     .service(SERVICE_NAME)
     .before({

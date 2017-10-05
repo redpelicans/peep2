@@ -1,14 +1,40 @@
 import should from 'should';
+import MockedSocket from 'socket.io-mock';
 import reducer from '../../reducers';
 import { configureStore } from './utils';
+import { socketIoMiddleWare } from '../../middlewares';
 import {
+  loadPeople,
   onTagClick,
   sortPeopleList,
+  PEOPLE_LOADED,
   SORT_PEOPLE_LIST,
   FILTER_PEOPLE_LIST,
 } from '../people';
 
 describe('Action:people', () => {
+  test('Should load people', done => {
+    const socket = new MockedSocket();
+    const DATA = [{ _id: 1 }, { _id: 2 }];
+    const hook = {
+      [PEOPLE_LOADED]: getState => {
+        const { people: { data } } = getState();
+        expect(data).toEqual(data);
+        done();
+      },
+    };
+    const store = configureStore(reducer, {}, hook, [
+      socketIoMiddleWare(socket.socketClient),
+    ]);
+    socket.on('action', action => {
+      socket.emit('action', {
+        type: action.replyTo,
+        payload: DATA,
+      });
+    });
+    store.dispatch(loadPeople());
+  });
+
   it('Should change the filter', done => {
     const FILTER = 'filter';
     const hook = {
