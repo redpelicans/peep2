@@ -38,7 +38,6 @@ export const Add = ({
   ...props
 }) => (
   <StyledContainer>
-    {console.log('valuesL ', values)}
     <ModalConfirmation
       isOpen={isCancelDialogOpen}
       title="Would you like to cancel this form ?"
