@@ -12,6 +12,7 @@ import { getCompany } from '../../selectors/companies';
 import { getPathByName } from '../../routes';
 import { getValidationSchema } from '../../forms/companies';
 import { updateCompany } from '../../actions/companies';
+import { Prompt } from 'react-router';
 import {
   Spacer,
   Title,
@@ -38,6 +39,10 @@ export const Add = ({
   ...props
 }) => (
   <StyledContainer>
+    <Prompt
+      when={!isCancelDialogOpen && dirty}
+      message="Would you like to cancel this form ?"
+    />
     <ModalConfirmation
       isOpen={isCancelDialogOpen}
       title="Would you like to cancel this form ?"

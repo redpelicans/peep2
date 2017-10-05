@@ -11,6 +11,7 @@ import { withFormik } from 'formik';
 import { getVisibleCompanies } from '../../selectors/companies';
 import { getValidationSchema, defaultValues } from '../../forms/peoples';
 import { addPeople } from '../../actions/people';
+import { Prompt } from 'react-router';
 import {
   Spacer,
   Title,
@@ -38,6 +39,10 @@ export const Add = ({
   ...props
 }) => (
   <StyledContainer>
+    <Prompt
+      when={!isCancelDialogOpen && dirty}
+      message="Would you like to cancel this form ?"
+    />
     <ModalConfirmation
       isOpen={isCancelDialogOpen}
       title="Would you like to cancel this form ?"
