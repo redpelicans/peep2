@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { withFormik } from 'formik';
 import { Prompt } from 'react-router';
 import { addCompany } from '../../actions/companies';
-import { compose, isEmpty, map } from 'ramda';
+import { compose, map } from 'ramda';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { getValidationSchema, defaultValues } from '../../forms/companies';
 import AddOrEdit from './AddOrEdit';
@@ -140,7 +140,7 @@ export default compose(
         name,
         avatar: { color },
         type,
-        tags: isEmpty(tags) ? map(tag => tag.value, tags) : [],
+        tags: map(tag => tag.value, tags),
         website,
         address: { street, city, zipcode, country },
         notes,

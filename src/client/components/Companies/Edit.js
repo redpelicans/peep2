@@ -135,7 +135,7 @@ export default compose(
       {
         avatar,
         name,
-        note,
+        note = '',
         tags,
         type,
         website,
@@ -143,6 +143,7 @@ export default compose(
         street,
         country,
         city,
+        _id,
       },
       { props },
     ) => {
@@ -152,9 +153,10 @@ export default compose(
         avatar,
         name,
         note,
-        tags: isEmpty(tags) ? map(tag => tag.value, tags) : [],
+        tags: map(tag => tag.value, tags),
         website,
         type,
+        _id,
       };
       updateCompany(newCompany);
       history.goBack();
@@ -166,6 +168,9 @@ export default compose(
       zipcode: company.address.zipcode ? company.address.zipcode : '',
       city: company.address.city ? company.address.city : '',
       country: company.address.country ? company.address.country : '',
+      tags: company.tags
+        ? map(tag => ({ value: tag, label: tag }), company.tags)
+        : [],
     }),
   }),
   withState('isCancelDialogOpen', 'showCancelDialog', false),
