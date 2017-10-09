@@ -1,12 +1,9 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
-export function configureStore(reducer, initialState, hooks) {
-  return createStore(
-    reducer,
-    initialState,
-    applyMiddleware(testMiddleware(hooks), thunk),
-  );
+export function configureStore(reducer, initialState, hooks, middlewares = []) {
+  const allMiddlewares = [...middlewares, testMiddleware(hooks), thunk];
+  return createStore(reducer, initialState, applyMiddleware(...allMiddlewares));
 }
 
 const isFunction = arg => typeof arg === 'function';
@@ -26,3 +23,25 @@ const testMiddleware = (hooks = {}) => {
     }
   };
 };
+
+export class LocalStorageMock {
+  constructor() {
+    this.store = {};
+  }
+
+  clear() {
+    this.store = {};
+  }
+
+  getItem(key) {
+    return this.store[key] || null;
+  }
+
+  setItem(key, value) {
+    this.store[key] = value.toString();
+  }
+
+  removeItem(key) {
+    delete this.store[key];
+  }
+}
