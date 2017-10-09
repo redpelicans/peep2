@@ -22,7 +22,7 @@ const sizes = [
   { mq: '2535px', columns: 8, gutter: 10 },
 ];
 
-export const List = ({ people, companies, ...params }) => (
+export const List = ({ people, companies, deletePeople, ...params }) => (
   <StyledContainer>
     {isEmpty(people) ? (
       <EmptySearch>
@@ -36,6 +36,7 @@ export const List = ({ people, companies, ...params }) => (
             key={person._id}
             person={person}
             company={companies[person.companyId]}
+            deletePeople={deletePeople}
             {...params}
           />
         ))}

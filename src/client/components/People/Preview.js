@@ -113,7 +113,6 @@ const enhance = withStateHandlers(
   {
     handleMouseLeave: () => () => ({ showActions: false }),
     handleMouseEnter: () => () => ({ showActions: true }),
-    handleDeletePeople: ({ deletePeople, _id }) => () => deletePeople(_id),
   },
 );
 
