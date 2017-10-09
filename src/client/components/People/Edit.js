@@ -138,13 +138,14 @@ export default compose(
         firstName,
         type,
         lastName,
-        notes,
+        notes = '',
         phones = [],
         prefix,
         tags = [],
         roles = [],
         jobType,
         email,
+        _id,
       },
       { props },
     ) => {
@@ -163,6 +164,7 @@ export default compose(
         prefix,
         tags: isEmpty(tags) ? map(tag => tag.value, tags) : [],
         roles: isEmpty(roles) ? map(role => role.value, roles) : [],
+        _id,
       };
       updatePeople(newPeople);
       history.goBack();
