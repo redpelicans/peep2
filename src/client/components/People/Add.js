@@ -117,12 +117,9 @@ Add.propTypes = {
 
 const actions = { addPeople };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-const mapStateToProps = state => ({
-  companies: getVisibleCompanies(state),
-});
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(null, mapDispatchToProps),
   withFormik({
     handleSubmit: (
       {
@@ -137,6 +134,7 @@ export default compose(
         roles = [],
         jobType,
         email,
+        companyId,
       },
       { props },
     ) => {
@@ -156,6 +154,7 @@ export default compose(
         prefix,
         tags: map(tag => tag.value, tags),
         roles: map(role => role.value, roles),
+        companyId,
       };
       addPeople(newPeople);
       history.goBack();

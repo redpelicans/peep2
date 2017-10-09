@@ -14,6 +14,7 @@ const fields = {
   type: {
     label: 'Type',
     domainValues: [
+      { id: '', value: 'none' },
       { id: 'client', value: 'Client' },
       { id: 'partner', value: 'Partner' },
       { id: 'tenant', value: 'Tenant' },

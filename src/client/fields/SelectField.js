@@ -265,6 +265,6 @@ export const CompaniesSelectField = compose(
   propTransformer(
     'companies',
     'domainValues',
-    map(company => ({ id: company.name, value: company.name })),
+    map(company => ({ id: company._id, value: company.name })),
   ),
 )(SelectField);

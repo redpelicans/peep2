@@ -126,7 +126,6 @@ const mapStateToProps = (state, props) => {
   }
   return {
     people: getPerson(state, id),
-    companies: getCompanies(state),
   };
 };
 
@@ -157,7 +156,6 @@ export default compose(
         lastName,
         email,
         jobType,
-        name: `${firstName} ${lastName}`,
         note: notes,
         phones: isEmpty(phones)
           ? map(phone => ({ label: phone.type, number: phone.number }), phones)
@@ -172,12 +170,7 @@ export default compose(
     validationSchema: getValidationSchema(),
     mapPropsToValues: ({ people = {}, companies = {} }) => ({
       ...people,
-      phones: isEmpty(people.phones)
-        ? people.phones.map(phone => ({
-            type: phone.label,
-            number: phone.number,
-          }))
-        : [],
+      phones: isEmpty(people.phones) ? people.phones : [],
       color: people.avatar ? people.avatar.color : '',
       company: companies[people.companyId]
         ? companies[people.companyId].name
