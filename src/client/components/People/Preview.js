@@ -12,6 +12,7 @@ import {
   NameLink,
   CompanyLink,
   Actions,
+  ModalConfirmation,
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
@@ -45,6 +46,9 @@ export const Preview = ({
   company = {},
   onTagClick,
   deletePeople,
+  isDeleteDialogOpen,
+  showDialog,
+  hideDialog,
 }) => {
   const handleClick = tag => onTagClick(`#${tag}`);
   return (
@@ -54,6 +58,12 @@ export const Preview = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <ModalConfirmation
+        isOpen={isDeleteDialogOpen}
+        title="Would you like to delete this people?"
+        reject={() => hideDialog()}
+        accept={() => deletePeople(_id)}
+      />
       <TitleRow>
         <Avatar
           name={name}
@@ -77,7 +87,7 @@ export const Preview = ({
             <StyledButton
               className="pt-small pt-button"
               iconName="pt-icon-trash"
-              onClick={() => deletePeople(_id)}
+              onClick={() => showDialog()}
             />
           </Actions>
         )}
@@ -103,15 +113,21 @@ Preview.propTypes = {
   company: PropTypes.object,
   onTagClick: PropTypes.func.isRequired,
   deletePeople: PropTypes.func.isRequired,
+  showDialog: PropTypes.func.isRequired,
+  hideDialog: PropTypes.func.isRequired,
+  isDeleteDialogOpen: PropTypes.bool.isRequired,
 };
 
 const enhance = withStateHandlers(
   {
     showActions: false,
+    isDeleteDialogOpen: false,
   },
   {
     handleMouseLeave: () => () => ({ showActions: false }),
     handleMouseEnter: () => () => ({ showActions: true }),
+    showDialog: () => () => ({ isDeleteDialogOpen: true }),
+    hideDialog: () => () => ({ isDeleteDialogOpen: false }),
   },
 );
 
