@@ -103,7 +103,6 @@ Preview.propTypes = {
   company: PropTypes.object,
   onTagClick: PropTypes.func.isRequired,
   deletePeople: PropTypes.func.isRequired,
-  handleDeletePeople: PropTypes.func.isRequired,
 };
 
 const enhance = withStateHandlers(
