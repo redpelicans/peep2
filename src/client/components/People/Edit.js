@@ -138,10 +138,10 @@ export default compose(
         type,
         lastName,
         notes = '',
-        phones = [],
+        phones,
         prefix,
-        tags = [],
-        roles = [],
+        tags,
+        roles,
         jobType,
         email,
         companyId,
@@ -173,16 +173,22 @@ export default compose(
     validationSchema: getValidationSchema(),
     mapPropsToValues: ({ people = {}, companies = {} }) => ({
       ...people,
-      phones: map(
-        phone => ({ type: phone.label, number: phone.number }),
-        people.phones,
-      ),
+      phones: people.phones
+        ? map(
+            phone => ({ type: phone.label, number: phone.number }),
+            people.phones,
+          )
+        : [],
       color: people.avatar ? people.avatar.color : '',
       company: companies[people.companyId]
         ? companies[people.companyId].name
         : '',
-      roles: map(role => ({ value: role, label: role }), people.roles),
-      tags: map(tag => ({ value: tag, label: tag }), people.tags),
+      roles: people.roles
+        ? map(role => ({ value: role, label: role }), people.roles)
+        : [],
+      tags: people.tags
+        ? map(tag => ({ value: tag, label: tag }), people.tags)
+        : [],
     }),
   }),
   withState('isCancelDialogOpen', 'showCancelDialog', false),
