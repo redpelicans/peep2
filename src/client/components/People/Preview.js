@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { isEmpty, map } from 'ramda';
 import styled from 'styled-components';
 import { withStateHandlers } from 'recompose';
+import { Button } from '@blueprintjs/core';
 import {
   LinkButton,
   PreviewContainer,
@@ -16,6 +17,8 @@ import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
+
+const StyledButton = styled(Button)`margin-left: 10px;`;
 
 export const TitleRow = styled.div`
   display: flex;
@@ -41,7 +44,7 @@ export const Preview = ({
   person: { _id, name, avatar, tags = [] },
   company = {},
   onTagClick,
-  handleDeletePeople,
+  deletePeople,
 }) => {
   const handleClick = tag => onTagClick(`#${tag}`);
   return (
@@ -71,9 +74,10 @@ export const Preview = ({
               className="pt-small pt-button"
               iconName="pt-icon-edit"
             />
-            <Icons
-              className="pt-icon-standard pt-icon-trash"
-              onClick={() => handleDeletePeople(_id)}
+            <StyledButton
+              className="pt-small pt-button"
+              iconName="pt-icon-trash"
+              onClick={() => deletePeople(_id)}
             />
           </Actions>
         )}
