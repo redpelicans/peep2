@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { withFormik } from 'formik';
 import { getPerson } from '../../selectors/people';
-import { getCompanies } from '../../selectors/companies';
 import { getPathByName } from '../../routes';
 import { getValidationSchema } from '../../forms/peoples';
 import { updatePeople } from '../../actions/people';
@@ -139,10 +138,10 @@ export default compose(
         type,
         lastName,
         notes = '',
-        phones,
+        phones = [],
         prefix,
         tags = [],
-        roles,
+        roles = [],
         jobType,
         email,
         companyId,
