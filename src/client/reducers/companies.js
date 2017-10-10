@@ -1,4 +1,4 @@
-import { compose, fromPairs, map } from 'ramda';
+import { compose, fromPairs, map, omit } from 'ramda';
 import { format } from 'date-fns';
 import {
   FILTER_COMPANY_LIST,
@@ -8,6 +8,7 @@ import {
   COMPANY_UPDATED,
   COMPANIES_LOADED,
   TOGGLE_PREFERRED_FILTER,
+  COMPANY_DELETED,
 } from '../actions/companies';
 
 const formatString = 'MM/DD/YYYY';
@@ -64,6 +65,8 @@ const companies = (state = initialState, action) => {
           [action.payload._id]: make(action.payload),
         },
       };
+    case COMPANY_DELETED:
+      return { ...state, data: omit([action.payload._id])(state.data) };
     default:
       return state;
   }
