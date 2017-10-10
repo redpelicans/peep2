@@ -23,10 +23,6 @@ const phoneSchema = Yup.object().shape({
   number: Yup.string().required(),
 });
 
-const avatarSchema = Yup.object().shape({
-  color: Yup.string().required(),
-});
-
 const addSchema = Yup.object().shape({
   prefix: Yup.string()
     .oneOf(['Mr', 'Mrs'])
@@ -47,7 +43,10 @@ const addSchema = Yup.object().shape({
   tags: Yup.array().of(Yup.string()),
   skills: Yup.array().of(Yup.string()),
   roles: Yup.array().of(Yup.string()),
-  avatar: Yup.object().shape(avatarSchema),
+  avatar: Yup.object().shape({
+    color: Yup.string().required(),
+  }),
+  note: Yup.string(),
 });
 
 const inMaker = input => {
@@ -66,7 +65,7 @@ const inMaker = input => {
     newPerson.phones = R.compose(
       R.filter(p => p.number),
       R.map(p => R.pick(pttrs, p)),
-    )(data.phones);
+    )(input.phones);
   }
   if (input.tags) {
     newPerson.tags = R.compose(
@@ -76,12 +75,11 @@ const inMaker = input => {
       R.map(t => uppercamelcase(t)),
     )(input.tags);
   }
-  if (data.roles) {
+  if (input.roles) {
     newPerson.roles = R.compose(
       R.sortBy(R.identity),
       R.uniq,
       R.filter(R.identity),
-      R.map(t => uppercamelcase(t)),
     )(input.roles);
   }
   return newPerson;
@@ -89,13 +87,10 @@ const inMaker = input => {
 
 export const people = {
   load() {
-    return Person.loadAll().then(p =>
-      Preference.spread('person', this.user, p),
-    );
+    return Person.loadAll();
   },
 
   add(person) {
-    const isPreferred = Boolean(person.preferred);
     const noteContent = person.note;
     const newPerson = inMaker(person);
     newPerson.createdAt = new Date();
@@ -108,12 +103,8 @@ export const people = {
 
     return insertOne(newPerson)
       .then(loadOne)
-      .then(updatePreference)
       .then(createNote)
-      .then(({ entity: addedPerson }) => {
-        addedPerson.preferred = isPreferred;
-        return addedPerson;
-      });
+      .then(({ entity }) => entity);
   },
 
   update(person) {
