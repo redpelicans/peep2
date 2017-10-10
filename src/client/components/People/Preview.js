@@ -67,7 +67,7 @@ export const Preview = ({
       <TitleRow>
         <Avatar
           name={name}
-          color={avatar.color}
+          color={avatar ? avatar.color : ''}
           size="MEDIUM"
           to={getPathByName('person', _id)}
         />
