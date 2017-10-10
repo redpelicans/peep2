@@ -55,7 +55,6 @@ const fields = {
       { id: 'developer', value: 'Developer' },
       { id: 'manager', value: 'Manager' },
       { id: 'sales', value: 'Sales' },
-      { id: 'business Manager', value: 'Business Manager' },
     ],
     required: true,
     component: SelectField,
