@@ -48,7 +48,7 @@ export const Preview = ({
   showActions,
   company: { _id, name, avatar, tags = [] },
   filterCompanyList,
-  deleteCompany = () => {},
+  deleteCompany,
   isDeleteDialogOpen,
   showDialog,
   hideDialog,
@@ -63,7 +63,7 @@ export const Preview = ({
     >
       <ModalConfirmation
         isOpen={isDeleteDialogOpen}
-        title="Would you like to delete this people?"
+        title="Would you like to delete this company?"
         reject={() => hideDialog()}
         accept={() => deleteCompany(_id)}
       />

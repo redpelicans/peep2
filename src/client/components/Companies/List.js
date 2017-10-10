@@ -34,7 +34,7 @@ const sizes = [
   { mq: '2535px', columns: 8, gutter: 10 },
 ];
 
-export const List = ({ companies, ...params }) => (
+export const List = ({ companies, deleteCompany, ...params }) => (
   <StyledContainer>
     {isEmpty(companies) ? (
       <EmptySearch>
@@ -44,7 +44,12 @@ export const List = ({ companies, ...params }) => (
     ) : (
       <MasonryLayout id="companies" sizes={sizes}>
         {companies.map(company => (
-          <Preview key={company._id} company={company} {...params} />
+          <Preview
+            key={company._id}
+            company={company}
+            deleteCompany={deleteCompany}
+            {...params}
+          />
         ))}
       </MasonryLayout>
     )}
@@ -54,6 +59,7 @@ export const List = ({ companies, ...params }) => (
 List.propTypes = {
   companies: PropTypes.array.isRequired,
   filterCompanyList: PropTypes.func.isRequired,
+  deleteCompany: PropTypes.func.isRequired,
 };
 
 export default List;
