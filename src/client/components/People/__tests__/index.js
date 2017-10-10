@@ -3,14 +3,75 @@ import should from 'should';
 import { shallow } from 'enzyme';
 import Avatar from '../../Avatar';
 import List from '../List';
-import { Form, FormElem } from '../Add';
-import { Formik } from 'formik';
-import { Tags, Tag, Actions, PreviewContainer, Container } from '../../widgets';
+import {
+  Tags,
+  Tag,
+  Actions,
+  PreviewContainer,
+  ModalConfirmation,
+  Container,
+} from '../../widgets';
 import enhancedPreview, { TitleRow, Preview, StyledInfos } from '../Preview';
-import { Dialog, Button } from '@blueprintjs/core';
+import { Header, HeaderLeft, HeaderRight } from '../../Header';
+import AddOrEdit from '../AddOrEdit';
+import { StyledContainer, Add } from '../Add';
 import { Edit } from '../Edit';
+import { People } from '../index';
 
 const { describe, it } = global;
+
+describe('Index component', () => {
+  it('should render a Container', () => {
+    const wrapper = shallow(
+      <People
+        people={[]}
+        tags={[]}
+        companies={{}}
+        onTagClick={() => {}}
+        filter=""
+        deletePeople={() => {}}
+        onFilterChange={() => {}}
+        sort={{}}
+        sortPeopleList={() => {}}
+      />,
+    );
+    should(wrapper.find(Container)).have.length(1);
+  });
+  it('should render a Header', () => {
+    const wrapper = shallow(
+      <People
+        people={[]}
+        tags={[]}
+        companies={{}}
+        onTagClick={() => {}}
+        filter=""
+        deletePeople={() => {}}
+        onFilterChange={() => {}}
+        sort={{}}
+        sortPeopleList={() => {}}
+      />,
+    );
+    should(wrapper.find(Header)).have.length(1);
+    should(wrapper.find(HeaderLeft)).have.length(1);
+    should(wrapper.find(HeaderRight)).have.length(1);
+  });
+  it('should render a List', () => {
+    const wrapper = shallow(
+      <People
+        people={[]}
+        tags={[]}
+        companies={{}}
+        onTagClick={() => {}}
+        filter=""
+        deletePeople={() => {}}
+        onFilterChange={() => {}}
+        sort={{}}
+        sortPeopleList={() => {}}
+      />,
+    );
+    should(wrapper.find(List)).have.length(1);
+  });
+});
 
 describe('List component', () => {
   it('should not render anything', () => {
@@ -168,5 +229,133 @@ describe('Preview component', () => {
     should(wrapper.find(TitleRow)).have.length(1);
     should(wrapper.find(Avatar)).have.length(1);
     should(wrapper.find(StyledInfos)).have.length(1);
+  });
+});
+
+describe('Add component', () => {
+  it('should render a StyledContainer div', () => {
+    const wrapper = shallow(
+      <Add
+        isSubmitting={() => {}}
+        isValid={true}
+        handleReset={() => {}}
+        handleSubmit={() => {}}
+        dirty={true}
+        values={{}}
+        setFieldTouched={() => {}}
+        setFieldValue={() => {}}
+        showCancelDialog={() => {}}
+        isCancelDialogOpen={false}
+        cancel={() => {}}
+        requestCancel={() => {}}
+      />,
+    );
+    should(wrapper.find(StyledContainer)).have.length(1);
+    should(wrapper.find(Header)).have.length(1);
+    should(wrapper.find(HeaderLeft)).have.length(1);
+    should(wrapper.find(HeaderRight)).have.length(1);
+  });
+  it('should render a ModalConfirmation', () => {
+    const wrapper = shallow(
+      <Add
+        isSubmitting={() => {}}
+        isValid={true}
+        handleReset={() => {}}
+        handleSubmit={() => {}}
+        dirty={true}
+        values={{}}
+        setFieldTouched={() => {}}
+        setFieldValue={() => {}}
+        showCancelDialog={() => {}}
+        isCancelDialogOpen={true}
+        cancel={() => {}}
+        requestCancel={() => {}}
+      />,
+    );
+    should(wrapper.find(ModalConfirmation)).have.length(1);
+  });
+  it('should render a AddOrEdit', () => {
+    const wrapper = shallow(
+      <Add
+        isSubmitting={() => {}}
+        isValid={true}
+        handleReset={() => {}}
+        handleSubmit={() => {}}
+        dirty={true}
+        values={{}}
+        setFieldTouched={() => {}}
+        setFieldValue={() => {}}
+        showCancelDialog={() => {}}
+        isCancelDialogOpen={true}
+        cancel={() => {}}
+        requestCancel={() => {}}
+      />,
+    );
+    should(wrapper.find(AddOrEdit)).have.length(1);
+  });
+});
+
+describe('Editcomponent', () => {
+  it('should render a Header', () => {
+    const wrapper = shallow(
+      <Edit
+        isSubmitting={() => {}}
+        isValid={true}
+        handleReset={() => {}}
+        handleSubmit={() => {}}
+        dirty={true}
+        values={{}}
+        setFieldTouched={() => {}}
+        setFieldValue={() => {}}
+        people={{}}
+        showCancelDialog={() => {}}
+        isCancelDialogOpen={false}
+        cancel={() => {}}
+        requestCancel={() => {}}
+      />,
+    );
+    should(wrapper.find(Header)).have.length(1);
+    should(wrapper.find(HeaderLeft)).have.length(1);
+    should(wrapper.find(HeaderRight)).have.length(1);
+  });
+  it('should render a ModalConfirmation', () => {
+    const wrapper = shallow(
+      <Edit
+        isSubmitting={() => {}}
+        isValid={true}
+        handleReset={() => {}}
+        handleSubmit={() => {}}
+        dirty={true}
+        values={{}}
+        people={{}}
+        setFieldTouched={() => {}}
+        setFieldValue={() => {}}
+        showCancelDialog={() => {}}
+        isCancelDialogOpen={true}
+        cancel={() => {}}
+        requestCancel={() => {}}
+      />,
+    );
+    should(wrapper.find(ModalConfirmation)).have.length(1);
+  });
+  it('should render a AddOrEdit', () => {
+    const wrapper = shallow(
+      <Edit
+        isSubmitting={() => {}}
+        isValid={true}
+        handleReset={() => {}}
+        handleSubmit={() => {}}
+        dirty={true}
+        values={{}}
+        people={{}}
+        setFieldTouched={() => {}}
+        setFieldValue={() => {}}
+        showCancelDialog={() => {}}
+        isCancelDialogOpen={true}
+        cancel={() => {}}
+        requestCancel={() => {}}
+      />,
+    );
+    should(wrapper.find(AddOrEdit)).have.length(1);
   });
 });

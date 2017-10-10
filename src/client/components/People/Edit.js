@@ -24,7 +24,7 @@ import AddOrEdit from './AddOrEdit';
 
 const StyledContainer = styled(Container)`min-width: 300px;`;
 
-export const Add = ({
+export const Edit = ({
   values,
   isSubmitting,
   dirty,
@@ -100,7 +100,7 @@ export const Add = ({
   </StyledContainer>
 );
 
-Add.propTypes = {
+Edit.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   isValid: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
@@ -201,4 +201,4 @@ export default compose(
     toggleDialog: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),
   }),
-)(Add);
+)(Edit);

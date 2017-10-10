@@ -20,7 +20,7 @@ import {
 } from '../widgets';
 import AddOrEdit from './AddOrEdit';
 
-const StyledContainer = styled(Container)`min-width: 300px;`;
+export const StyledContainer = styled(Container)`min-width: 300px;`;
 
 export const Add = ({
   values,
