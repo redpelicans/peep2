@@ -1,4 +1,22 @@
-import Joi from 'joi';
+import Yup from 'yup';
+import { ObjectId } from 'mongobless';
+
+const ObjectSchema = Yup.object;
+export class ObjectIdSchemaType extends ObjectSchema {
+  constructor() {
+    super();
+    this.withMutation(() => {
+      this.transform(function(value, originalvalue) {
+        try {
+          return ObjectId(originalvalue);
+        } catch (err) {
+          return originalvalue;
+        }
+      });
+      this.typeError("'_id' must be an ObjectID");
+    });
+  }
+}
 
 export const formatOutput = maker => ctx => {
   const { output } = ctx;
@@ -12,13 +30,9 @@ export const formatInput = maker => ctx => {
 
 export const validate = schema => ctx => {
   const { input } = ctx;
-  const promise = new Promise((resolve, reject) => {
-    Joi.validate(input, schema, (err, value) => {
-      if (err) return reject(err);
-      resolve(ctx);
-    });
-  });
-  return promise;
+  return schema
+    .validate(input, { strict: false })
+    .then(request => ({ ...ctx, input: request }));
 };
 
 export const checkUser = () => ctx => {

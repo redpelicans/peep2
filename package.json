@@ -34,7 +34,6 @@
     "history": "^4.7.2",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
-    "joi": "^11.1.1",
     "moment": "^2.18.1",
     "mongobless": "^2.1.1",
     "mongodb": "^2.2.31",
