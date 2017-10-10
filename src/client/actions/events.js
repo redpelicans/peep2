@@ -14,8 +14,8 @@ export const loadEvents = ({ from, to }) => dispatch => {
   dispatch({ type: LOAD_EVENTS, payload, replyTo: EVENTS_LOADED });
 };
 
-const minValue = (a, b) => (a ? (a < b ? a : b) : b);
-const maxValue = (a, b) => (a ? (b > a ? b : a) : b);
+export const minValue = (a, b) => (a ? (a < b ? a : b) : b);
+export const maxValue = (a, b) => (a ? (b > a ? b : a) : b);
 
 export const loadEventGroup = ({ groupId }) => dispatch => {
   const payload = { groupId };

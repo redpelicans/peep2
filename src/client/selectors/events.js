@@ -38,9 +38,9 @@ const hashByWorkerAndDate = (acc, event) => {
   };
 };
 
-const belongsToPeriod = (date, monthDate) =>
+export const belongsToPeriod = (date, monthDate) =>
   isWithinRange(date, startOfMonth(monthDate), endOfMonth(monthDate));
-const eventsByWorkerDate = curry((date, events) =>
+export const eventsByWorkerDate = curry((date, events) =>
   compose(
     reduce(hashByWorkerAndDate, {}),
     values,
@@ -67,7 +67,7 @@ export const getWorkerEventsByDate = (workerId, groupId) =>
     )(events),
   );
 
-const eventGroup = id => events => {
+export const eventGroup = id => events => {
   const evts = compose(
     sortBy(prop('from')),
     filter(e => e.groupId === id),
