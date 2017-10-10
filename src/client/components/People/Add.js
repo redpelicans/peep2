@@ -8,9 +8,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { withFormik } from 'formik';
-import { getVisibleCompanies } from '../../selectors/companies';
 import { getValidationSchema, defaultValues } from '../../forms/peoples';
 import { addPeople } from '../../actions/people';
+import { Prompt } from 'react-router';
 import {
   Spacer,
   Title,
@@ -20,7 +20,7 @@ import {
 } from '../widgets';
 import AddOrEdit from './AddOrEdit';
 
-const StyledContainer = styled(Container)`min-width: 300px;`;
+export const StyledContainer = styled(Container)`min-width: 300px;`;
 
 export const Add = ({
   values,
@@ -38,6 +38,10 @@ export const Add = ({
   ...props
 }) => (
   <StyledContainer>
+    <Prompt
+      when={!isCancelDialogOpen && dirty && !isSubmitting}
+      message="Would you like to cancel this form ?"
+    />
     <ModalConfirmation
       isOpen={isCancelDialogOpen}
       title="Would you like to cancel this form ?"
@@ -112,12 +116,9 @@ Add.propTypes = {
 
 const actions = { addPeople };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
-const mapStateToProps = state => ({
-  companies: getVisibleCompanies(state),
-});
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(null, mapDispatchToProps),
   withFormik({
     handleSubmit: (
       {
@@ -132,6 +133,7 @@ export default compose(
         roles = [],
         jobType,
         email,
+        companyId,
       },
       { props },
     ) => {
@@ -151,6 +153,7 @@ export default compose(
         prefix,
         tags: map(tag => tag.value, tags),
         roles: map(role => role.value, roles),
+        companyId,
       };
       addPeople(newPeople);
       history.goBack();

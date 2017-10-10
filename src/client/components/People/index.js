@@ -29,7 +29,7 @@ const sortTypes = [
   { key: 'updatedAt', label: 'Sort by updated date' },
 ];
 
-const People = ({
+export const People = ({
   people,
   tags,
   companies,

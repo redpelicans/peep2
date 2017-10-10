@@ -84,9 +84,9 @@ const AddOrEditForm = ({
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
-      {values.types === 'Worker' ? (
+      {values.type === 'worker' ? (
         <StyledFormField
-          field={getField('company')}
+          field={getField('companyId')}
           values={values}
           touched={touched}
           value="redpelicans"
@@ -97,7 +97,7 @@ const AddOrEditForm = ({
         />
       ) : (
         <StyledFormField
-          field={getField('company')}
+          field={getField('companyId')}
           values={values}
           touched={touched}
           errors={errors}

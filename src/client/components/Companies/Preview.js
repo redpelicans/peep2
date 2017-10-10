@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { isEmpty, map } from 'ramda';
 import { withStateHandlers } from 'recompose';
 import styled from 'styled-components';
-import { Colors } from '@blueprintjs/core';
+import { Colors, Button } from '@blueprintjs/core';
 import {
   LinkButton,
   PreviewContainer,
@@ -11,11 +11,14 @@ import {
   Tags,
   NameLink,
   Actions,
+  ModalConfirmation,
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
 const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
+
+const StyledButton = styled(Button)`margin-left: 10px;`;
 
 export const Title = styled.p`
   text-transform: capitalize;
@@ -45,6 +48,10 @@ export const Preview = ({
   showActions,
   company: { _id, name, avatar, tags = [] },
   filterCompanyList,
+  deleteCompany = () => {},
+  isDeleteDialogOpen,
+  showDialog,
+  hideDialog,
 }) => {
   const handleClick = tag => filterCompanyList(`#${tag}`);
   return (
@@ -54,6 +61,12 @@ export const Preview = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <ModalConfirmation
+        isOpen={isDeleteDialogOpen}
+        title="Would you like to delete this people?"
+        reject={() => hideDialog()}
+        accept={() => deleteCompany(_id)}
+      />
       <TitleRow>
         {avatar && (
           <Avatar
@@ -73,7 +86,11 @@ export const Preview = ({
               className="pt-small pt-button"
               iconName="pt-icon-edit"
             />
-            <Icons className="pt-icon-standard pt-icon-trash" />
+            <StyledButton
+              className="pt-small pt-button"
+              iconName="pt-icon-trash"
+              onClick={() => showDialog()}
+            />
           </Actions>
         )}
       </TitleRow>
@@ -96,15 +113,22 @@ Preview.propTypes = {
   showActions: PropTypes.bool,
   company: PropTypes.object.isRequired,
   filterCompanyList: PropTypes.func.isRequired,
+  deleteCompany: PropTypes.func.isRequired,
+  showDialog: PropTypes.func.isRequired,
+  hideDialog: PropTypes.func.isRequired,
+  isDeleteDialogOpen: PropTypes.bool.isRequired,
 };
 
 const enhance = withStateHandlers(
   {
     showActions: false,
+    isDeleteDialogOpen: false,
   },
   {
     handleMouseLeave: () => () => ({ showActions: false }),
     handleMouseEnter: () => () => ({ showActions: true }),
+    showDialog: () => () => ({ isDeleteDialogOpen: true }),
+    hideDialog: () => () => ({ isDeleteDialogOpen: false }),
   },
 );
 

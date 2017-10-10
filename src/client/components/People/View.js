@@ -199,7 +199,7 @@ const PersonInfos = ({ person = {} }) => {
             {map(
               phone => (
                 <PhoneField
-                  key={phone.label}
+                  key={phone.number}
                   label={phone.label}
                   number={phone.number}
                 />

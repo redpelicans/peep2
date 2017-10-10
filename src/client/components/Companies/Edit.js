@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
-import { compose, map, isEmpty } from 'ramda';
+import { compose, map } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
@@ -12,6 +12,7 @@ import { getCompany } from '../../selectors/companies';
 import { getPathByName } from '../../routes';
 import { getValidationSchema } from '../../forms/companies';
 import { updateCompany } from '../../actions/companies';
+import { Prompt } from 'react-router';
 import {
   Spacer,
   Title,
@@ -38,6 +39,10 @@ export const Add = ({
   ...props
 }) => (
   <StyledContainer>
+    <Prompt
+      when={!isCancelDialogOpen && dirty && !isSubmitting}
+      message="Would you like to cancel this form ?"
+    />
     <ModalConfirmation
       isOpen={isCancelDialogOpen}
       title="Would you like to cancel this form ?"
@@ -130,7 +135,7 @@ export default compose(
       {
         avatar,
         name,
-        note,
+        note = '',
         tags,
         type,
         website,
@@ -138,6 +143,7 @@ export default compose(
         street,
         country,
         city,
+        _id,
       },
       { props },
     ) => {
@@ -147,9 +153,10 @@ export default compose(
         avatar,
         name,
         note,
-        tags: isEmpty(tags) ? map(tag => tag.value, tags) : [],
+        tags: map(tag => tag.value, tags),
         website,
         type,
+        _id,
       };
       updateCompany(newCompany);
       history.goBack();
@@ -161,6 +168,9 @@ export default compose(
       zipcode: company.address.zipcode ? company.address.zipcode : '',
       city: company.address.city ? company.address.city : '',
       country: company.address.country ? company.address.country : '',
+      tags: company.tags
+        ? map(tag => ({ value: tag, label: tag }), company.tags)
+        : [],
     }),
   }),
   withState('isCancelDialogOpen', 'showCancelDialog', false),

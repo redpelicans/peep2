@@ -61,7 +61,7 @@ const fields = {
     component: SelectField,
     validate: Yup.string(),
   },
-  company: {
+  companyId: {
     label: 'Company',
     required: true,
     component: CompaniesSelectField,
@@ -80,9 +80,9 @@ const fields = {
     label: 'Roles',
     component: MultiSelectField,
     domainValues: [
-      { id: 'Admin', value: 'Admin' },
-      { id: 'Edit', value: 'Edit' },
-      { id: 'Access', value: 'Access' },
+      { id: 'admin', value: 'Admin' },
+      { id: 'edit', value: 'Edit' },
+      { id: 'access', value: 'Access' },
     ],
   },
   notes: {

@@ -12,6 +12,7 @@ import { getPerson } from '../../selectors/people';
 import { getPathByName } from '../../routes';
 import { getValidationSchema } from '../../forms/peoples';
 import { updatePeople } from '../../actions/people';
+import { Prompt } from 'react-router';
 import {
   Spacer,
   Title,
@@ -23,7 +24,7 @@ import AddOrEdit from './AddOrEdit';
 
 const StyledContainer = styled(Container)`min-width: 300px;`;
 
-export const Add = ({
+export const Edit = ({
   values,
   isSubmitting,
   dirty,
@@ -38,6 +39,10 @@ export const Add = ({
   ...props
 }) => (
   <StyledContainer>
+    <Prompt
+      when={!isCancelDialogOpen && dirty && !isSubmitting}
+      message="Would you like to cancel this form ?"
+    />
     <ModalConfirmation
       isOpen={isCancelDialogOpen}
       title="Would you like to cancel this form ?"
@@ -95,7 +100,7 @@ export const Add = ({
   </StyledContainer>
 );
 
-Add.propTypes = {
+Edit.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   isValid: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
@@ -132,13 +137,15 @@ export default compose(
         firstName,
         type,
         lastName,
-        notes,
-        phones = [],
+        notes = '',
+        phones,
         prefix,
-        tags = [],
-        roles = [],
+        tags,
+        roles,
         jobType,
         email,
+        companyId,
+        _id,
       },
       { props },
     ) => {
@@ -150,29 +157,38 @@ export default compose(
         lastName,
         email,
         jobType,
-        name: `${firstName} ${lastName}`,
         note: notes,
-        phones: isEmpty(phones)
-          ? map(phone => ({ label: phone.type, number: phone.number }), phones)
-          : [],
         prefix,
-        tags: isEmpty(tags) ? map(tag => tag.value, tags) : [],
-        roles: isEmpty(roles) ? map(role => role.value, roles) : [],
+        phones: isEmpty(phones)
+          ? []
+          : map(phone => ({ label: phone.type, number: phone.number }), phones),
+        tags: map(tag => tag.value, tags),
+        roles: map(role => role.value, roles),
+        companyId,
+        _id,
       };
       updatePeople(newPeople);
       history.goBack();
     },
     validationSchema: getValidationSchema(),
-    mapPropsToValues: ({ people = {} }) => ({
+    mapPropsToValues: ({ people = {}, companies = {} }) => ({
       ...people,
-      phones: isEmpty(people.phones)
-        ? people.phones.map(phone => ({
-            type: phone.label,
-            number: phone.number,
-          }))
+      phones: people.phones
+        ? map(
+            phone => ({ type: phone.label, number: phone.number }),
+            people.phones,
+          )
         : [],
       color: people.avatar ? people.avatar.color : '',
-      company: people.companyId,
+      company: companies[people.companyId]
+        ? companies[people.companyId].name
+        : '',
+      roles: people.roles
+        ? map(role => ({ value: role, label: role }), people.roles)
+        : [],
+      tags: people.tags
+        ? map(tag => ({ value: tag, label: tag }), people.tags)
+        : [],
     }),
   }),
   withState('isCancelDialogOpen', 'showCancelDialog', false),
@@ -185,4 +201,4 @@ export default compose(
     toggleDialog: ({ showDialog }) => () =>
       showDialog(isDialogOpen => !isDialogOpen),
   }),
-)(Add);
+)(Edit);
