@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
-import { getVisibleCompanies } from '../selectors/companies';
+import { getCompanies } from '../selectors/companies';
+import { values } from 'ramda';
 
 const mapStateToProps = (state, props) => ({
   ...props,
-  companies: getVisibleCompanies(state),
+  companies: values(getCompanies(state)),
 });
 const withCompanies = Component => connect(mapStateToProps)(Component);
 
