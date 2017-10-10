@@ -60,7 +60,7 @@ const updateEventGroupSchema = Yup.object().shape({
   type: Yup.string()
     .oneOf(['vacation', 'sickLeaveDay'])
     .required(),
-  workerId: Yup.string().required(),
+  workerId: new ObjectIdSchemaType().required(),
   events: Yup.array()
     .of(addEventSchema)
     .required(),

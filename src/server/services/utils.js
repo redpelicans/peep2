@@ -1,20 +1,24 @@
 import Yup from 'yup';
-import { ObjectId } from 'mongobless';
+import { ObjectID } from 'mongodb';
 
-const ObjectSchema = Yup.object;
+const ObjectSchema = Yup.mixed;
 export class ObjectIdSchemaType extends ObjectSchema {
   constructor() {
     super();
     this.withMutation(() => {
       this.transform(function(value, originalvalue) {
         try {
-          return ObjectId(originalvalue);
+          return new ObjectID(originalvalue);
         } catch (err) {
           return originalvalue;
         }
       });
-      this.typeError("'_id' must be an ObjectID");
+      this.typeError('must be an ObjectID');
     });
+  }
+
+  _typeCheck(value) {
+    return ObjectID.isValid(value);
   }
 }
 

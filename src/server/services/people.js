@@ -25,10 +25,15 @@ const phoneSchema = Yup.object().shape({
 
 const addSchema = Yup.object().shape({
   prefix: Yup.string()
+    .trim()
     .oneOf(['Mr', 'Mrs'])
     .required(),
-  firstName: Yup.string().required(),
-  lastName: Yup.string().required(),
+  firstName: Yup.string()
+    .trim()
+    .required(),
+  lastName: Yup.string()
+    .trim()
+    .required(),
   type: Yup.string()
     .oneOf(['client', 'worker', 'contact'])
     .required(),
@@ -47,6 +52,16 @@ const addSchema = Yup.object().shape({
     color: Yup.string().required(),
   }),
   note: Yup.string(),
+});
+
+const updateSchema = addSchema.concat(
+  Yup.object().shape({
+    _id: new ObjectIdSchemaType().required(),
+  }),
+);
+
+const deleteSchema = Yup.object().shape({
+  _id: new ObjectIdSchemaType().required(),
 });
 
 const inMaker = input => {
@@ -73,6 +88,7 @@ const inMaker = input => {
       R.uniq,
       R.filter(R.identity),
       R.map(t => uppercamelcase(t)),
+      R.map(R.trim),
     )(input.tags);
   }
   if (input.roles) {
@@ -80,6 +96,7 @@ const inMaker = input => {
       R.sortBy(R.identity),
       R.uniq,
       R.filter(R.identity),
+      R.map(R.trim),
     )(input.roles);
   }
   return newPerson;
@@ -91,6 +108,7 @@ export const people = {
   },
 
   add(person) {
+    console.dir(person, { depth: null });
     const noteContent = person.note;
     const newPerson = inMaker(person);
     newPerson.createdAt = new Date();
@@ -108,67 +126,32 @@ export const people = {
   },
 
   update(person) {
-    const isPreferred = Boolean(person.preferred);
+    console.dir(person, { depth: null });
     const newVersion = inMaker(person);
-    newVersion._id = ObjectId(person._id);
-    const loadOne = ({ _id: id }) => Person.loadOne(id);
+    const loadOne = ({ _id }) => Person.loadOne(_id);
     const update = nextVersion => previousVersion => {
       nextVersion.updatedAt = new Date();
       return Person.collection
         .updateOne({ _id: previousVersion._id }, { $set: nextVersion })
         .then(() => ({ _id: previousVersion._id }));
     };
-    const updatePreference = p =>
-      Preference.update('person', this.user, isPreferred, p);
 
     return loadOne(newVersion)
       .then(update(newVersion))
-      .then(loadOne)
-      .then(updatePreference)
-      .then(updatedPerson => {
-        updatedPerson.preferred = isPreferred;
-        return updatedPerson;
-      });
+      .then(loadOne);
   },
 
-  updateTags({ _id, tags }) {
-    const id = ObjectId(_id);
-    const newTags = inMaker({ tags });
-    const loadOne = id => Person.loadOne(id);
-    const updateTags = (id, tags) =>
-      Person.collection
-        .updateOne({ _id: id }, { $set: { tags } })
-        .then(() => id);
-    return updateTags(id, newTags).then(loadOne);
-  },
-
-  setPreferred({ _id, preferred }) {
-    const loadOne = id => Person.loadOne(id);
-    const updatePreference = person =>
-      Preference.update('person', this.user, preferred, person);
-
-    return loadOne(_id)
-      .then(updatePreference)
-      .then(person => {
-        person.updatedAt = new Date();
-        person.preferred = preferred;
-        return person;
-      });
-  },
-
-  del(id) {
+  del({ _id }) {
     const deleteOne = () =>
       Person.collection.updateOne(
-        { _id: ObjectId(id) },
+        { _id },
         { $set: { updatedAt: new Date(), isDeleted: true } },
       );
-    const deletePreference = () => Preference.delete(this.user, id);
-    const deleteNotes = () => Note.deleteForEntity(id);
+    const deleteNotes = () => Note.deleteForEntity(_id);
 
     return deleteOne()
-      .then(deletePreference)
       .then(deleteNotes)
-      .then(id => ({ _id: id }));
+      .then(() => ({ _id }));
   },
 
   checkEmailUniqueness(email) {
@@ -204,14 +187,14 @@ const init = evtx => {
     .before({
       all: [checkUser()],
       add: [validate(addSchema)],
+      update: [validate(updateSchema)],
+      del: [validate(deleteSchema)],
     })
     .after({
       load: [formatOutput(outMakerMany)],
-      loadOne: [formatOutput(outMaker)],
       add: [formatOutput(outMaker), emitEvent('person:added')],
-      del: [emitEvent('person:deleted')],
       update: [formatOutput(outMaker), emitEvent('person:updated')],
-      updateTags: [formatOutput(outMaker), emitEvent('person:updated')],
+      del: [emitEvent('person:deleted')],
     });
 
   loginfo('people service registered');
