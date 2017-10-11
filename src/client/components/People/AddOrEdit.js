@@ -89,7 +89,6 @@ const AddOrEditForm = ({
           field={getField('companyId')}
           values={values}
           touched={touched}
-          value="redpelicans"
           disabled={true}
           errors={errors}
           setFieldTouched={setFieldTouched}
