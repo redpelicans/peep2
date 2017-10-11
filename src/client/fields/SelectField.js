@@ -56,6 +56,9 @@ const SelectCreatableStyled = styled(Select.Creatable)`
     background-color: ${Colors.DARK_GRAY4};
     border: 0;
   }
+  & .Select.is-disabled > .Select-control {
+    background-color: ${Colors.DARK_GRAY4} !important;
+  }
 `;
 
 const SelectStyled = styled(Select)`
@@ -100,6 +103,9 @@ const SelectStyled = styled(Select)`
     background-color: ${Colors.DARK_GRAY4};
     border: 0;
   }
+  & .Select.is-disabled > .Select-control {
+    background-color: ${Colors.DARK_GRAY4} !important;
+  }
 `;
 
 export const SelectField = ({
@@ -117,6 +123,10 @@ export const SelectField = ({
     if (!e) {
       setFieldValue(name, '');
       return;
+    }
+    if (name === 'type' && e.value === 'worker') {
+      setFieldTouched('companyId', true);
+      setFieldValue('companyId', '566abdf896de2706000c9481');
     }
     const newValue = e.value;
     setFieldTouched(name, newValue !== value);

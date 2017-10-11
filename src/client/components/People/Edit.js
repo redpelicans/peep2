@@ -10,7 +10,7 @@ import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { withFormik } from 'formik';
 import { getPerson } from '../../selectors/people';
 import { getPathByName } from '../../routes';
-import { getValidationSchema } from '../../forms/peoples';
+import { getValidationSchema } from '../../forms/people';
 import { updatePeople } from '../../actions/people';
 import { Prompt } from 'react-router';
 import {

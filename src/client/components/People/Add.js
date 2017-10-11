@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { withFormik } from 'formik';
-import { getValidationSchema, defaultValues } from '../../forms/peoples';
+import { getValidationSchema, defaultValues } from '../../forms/people';
 import { addPeople } from '../../actions/people';
 import { Prompt } from 'react-router';
 import {
