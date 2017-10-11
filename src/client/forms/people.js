@@ -86,7 +86,7 @@ const fields = {
       { id: 'access', value: 'Access' },
     ],
   },
-  notes: {
+  note: {
     label: 'Notes',
     component: MarkDownField,
   },
@@ -98,5 +98,5 @@ const fields = {
 
 export const defaultValues = getDefaultValues(fields);
 export const getField = getOneField(fields);
-export const getValidationSchema = () =>
-  Yup.object().shape(getOneValidationSchema(fields));
+export const getValidationSchema = extend =>
+  Yup.object().shape(getOneValidationSchema(fields, extend));
