@@ -1,6 +1,6 @@
 import should from 'should';
 import reducer from '../../reducers';
-import { configureStore } from './utils';
+import { configureStore } from '../utils';
 import { DATE_CHANGE, changeDate } from '../agenda';
 
 describe('Action:agenda', () => {

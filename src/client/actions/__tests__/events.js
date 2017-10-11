@@ -2,7 +2,7 @@ import should from 'should';
 import MockedSocket from 'socket.io-mock';
 import { socketIoMiddleWare } from '../../middlewares';
 import reducer from '../../reducers';
-import { configureStore } from './utils';
+import { configureStore } from '../utils';
 import {
   loadEvents,
   minValue,
