@@ -8,6 +8,7 @@ import {
   getFilter,
   getSort,
   getGroupedTagsByCount,
+  getGroupedTypesByCount,
 } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import List from './List';
@@ -20,6 +21,7 @@ import {
   LinkButton,
   SortMenu,
   TagsMenu,
+  TypesMenu,
 } from '../widgets';
 import { onTagClick, deletePeople, sortPeopleList } from '../../actions/people';
 
@@ -38,6 +40,7 @@ export const People = ({
   filter = '',
   deletePeople,
   sort,
+  types,
   sortPeopleList,
 }) => (
   <Container>
@@ -53,11 +56,13 @@ export const People = ({
           onChange={onFilterChange}
           resetValue={() => onTagClick('')}
         />
-        <Spacer />
+        <Spacer size="5" />
         <TagsMenu tags={tags} onClick={onTagClick} filter={filter} />
-        <Spacer />
+        <Spacer size="5" />
+        <TypesMenu types={types} onClick={onTagClick} filter={filter} />
+        <Spacer size="5" />
         <SortMenu sortTypes={sortTypes} onClick={sortPeopleList} sort={sort} />
-        <Spacer />
+        <Spacer size="5" />
         <LinkButton to="/people/add" iconName="plus" />
       </HeaderRight>
     </Header>
@@ -80,11 +85,13 @@ People.propTypes = {
   onFilterChange: PropTypes.func.isRequired,
   sort: PropTypes.object,
   sortPeopleList: PropTypes.func.isRequired,
+  types: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
   people: getVisiblePeople(state),
   tags: getGroupedTagsByCount(state),
+  types: getGroupedTypesByCount(state),
   companies: getCompanies(state),
   filter: getFilter(state),
   sort: getSort(state),
