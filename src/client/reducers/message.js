@@ -21,7 +21,7 @@ const message = (state = { id: 0 }, action) => {
       return {
         id: state.id + 1,
         type: SUCCESS,
-        icon: 'home',
+        icon: 'pt-icon-home',
         message: `Company '${name}' added`,
         authorId,
       };
@@ -31,7 +31,7 @@ const message = (state = { id: 0 }, action) => {
       return {
         id: state.id + 1,
         type: SUCCESS,
-        icon: 'home',
+        icon: 'pt-icon-home',
         message: `Company '${name}' updated`,
         authorId,
       };
@@ -41,7 +41,7 @@ const message = (state = { id: 0 }, action) => {
       return {
         id: state.id + 1,
         type: SUCCESS,
-        icon: 'team',
+        icon: 'pt-icon-people',
         message: `People '${name}' added`,
         authorId,
       };
@@ -51,7 +51,7 @@ const message = (state = { id: 0 }, action) => {
       return {
         id: state.id + 1,
         type: SUCCESS,
-        icon: 'team',
+        icon: 'pt-icon-people',
         message: `People '${name}' updated`,
         authorId,
       };

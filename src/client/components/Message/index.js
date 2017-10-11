@@ -16,8 +16,12 @@ class Message extends React.Component {
       const { message: { type, message, description } } = nextProps;
       const alert = (
         <div>
-          <h5>{message}</h5>
-          <p>{description}</p>
+          <p>
+            <span>{message}</span>
+          </p>
+          <p>
+            <span>{description}</span>
+          </p>
         </div>
       );
       const iconName = this.getIcon(type, icon);
