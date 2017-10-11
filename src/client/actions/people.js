@@ -47,7 +47,7 @@ export const updatePeople = people => dispatch => {
 export const deletePeople = id => dispatch => {
   dispatch({
     type: DELETE_PEOPLE,
-    payload: id,
+    payload: { _id: id },
     replyTo: PEOPLE_DELETED,
   });
 };

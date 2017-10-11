@@ -23,15 +23,15 @@ import {
 } from 'ramda';
 import { createSelector } from 'reselect';
 import { isWorker } from '../utils/people';
+import { getCompanies } from './companies';
+import { getNotes } from './notes';
 
 export const getFilter = state => state.people.filter || '';
 export const getSort = state => state.people.sort;
 export const getPeople = state => state.people.data;
 export const getPerson = (state, id) => state.people.data[id];
-const getPreferredFilter = state => state.people.preferredFilter;
-const getCompanies = state => state.companies.data;
-const getNotes = state => state.notes.data;
 const getCompanyId = (state, props) => props.match.params.id;
+const getPreferredFilter = state => state.people.preferredFilter;
 
 export const getPersonNotes = (state, props) => {
   const notes = getNotes(state);

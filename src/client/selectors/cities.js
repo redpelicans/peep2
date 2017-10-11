@@ -1,19 +1,31 @@
-import R from 'ramda';
+import {
+  path,
+  map,
+  filter,
+  compose,
+  sortBy,
+  toLower,
+  uniqBy,
+  values,
+  not,
+  isNil,
+} from 'ramda';
 import { createSelector } from 'reselect';
 
-const getCompanies = state => state.companies.data;
+export const getCompanies = state => state.companies.data;
 
-const extractCities = R.map(R.path(['address', 'city']));
-const filterUndefined = R.filter(R.compose(R.not, R.isNil));
+export const extractCities = map(path(['address', 'city']));
+export const filterUndefined = filter(compose(not, isNil));
 
-const getCities = createSelector(
+export const getCities = createSelector(
   [getCompanies],
-  R.compose(
-    R.sortBy(R.toLower),
-    R.uniqBy(R.toLower),
+  compose(
+    sortBy(toLower),
+    uniqBy(toLower),
     filterUndefined,
     extractCities,
-    R.values),
+    values,
+  ),
 );
 
 export default getCities;

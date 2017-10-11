@@ -7,19 +7,25 @@ import {
   loadPeople,
   onTagClick,
   sortPeopleList,
+  addPeople,
+  updatePeople,
+  deletePeople,
+  PEOPLE_DELETED,
+  PEOPLE_UPDATED,
+  PEOPLE_ADDED,
   PEOPLE_LOADED,
   SORT_PEOPLE_LIST,
   FILTER_PEOPLE_LIST,
 } from '../people';
 
 describe('Action:people', () => {
-  test('Should load people', done => {
+  it('Should load people', done => {
     const socket = new MockedSocket();
-    const DATA = [{ _id: 1 }, { _id: 2 }];
+    const DATA = [{ _id: 1 }, { _id: 2 }, { _id: 3 }];
     const hook = {
       [PEOPLE_LOADED]: getState => {
         const { people: { data } } = getState();
-        expect(data).toEqual(data);
+        data.should.have.size(3);
         done();
       },
     };
@@ -33,6 +39,97 @@ describe('Action:people', () => {
       });
     });
     store.dispatch(loadPeople());
+  });
+  it('Should not load people', done => {
+    const socket = new MockedSocket();
+    const DATA = [];
+    const hook = {
+      [PEOPLE_LOADED]: getState => {
+        const { people: { data } } = getState();
+        data.should.have.size(0);
+        done();
+      },
+    };
+    const store = configureStore(reducer, {}, hook, [
+      socketIoMiddleWare(socket.socketClient),
+    ]);
+    socket.on('action', action => {
+      socket.emit('action', {
+        type: action.replyTo,
+        payload: DATA,
+      });
+    });
+    store.dispatch(loadPeople());
+  });
+  it('Should add a person', done => {
+    const socket = new MockedSocket();
+    const _id = 123;
+    const firstname = 'test';
+    const DATA = { _id, firstname };
+    const hook = {
+      [PEOPLE_ADDED]: getState => {
+        const { people: { data } } = getState();
+        should(data[_id].firstname).eql(firstname);
+        done();
+      },
+    };
+    const store = configureStore(reducer, {}, hook, [
+      socketIoMiddleWare(socket.socketClient),
+    ]);
+    socket.on('action', action => {
+      socket.emit('action', {
+        type: action.replyTo,
+        payload: DATA,
+      });
+    });
+    store.dispatch(addPeople(DATA));
+  });
+  it('Should update a person', done => {
+    const socket = new MockedSocket();
+    const _id = 123;
+    const firstname = 'test2';
+    const DATA = { _id, firstname };
+    const hook = {
+      [PEOPLE_UPDATED]: getState => {
+        const { people: { data } } = getState();
+        console.log(data);
+        should(data[_id].firstname).eql(firstname);
+        done();
+      },
+    };
+    const store = configureStore(reducer, {}, hook, [
+      socketIoMiddleWare(socket.socketClient),
+    ]);
+    socket.on('action', action => {
+      socket.emit('action', {
+        type: action.replyTo,
+        payload: DATA,
+      });
+    });
+    store.dispatch(updatePeople(DATA));
+  });
+  it('Should delete a person', done => {
+    const socket = new MockedSocket();
+    const _id = 123;
+    const firstname = 'test';
+    const DATA = { _id, firstname };
+    const hook = {
+      [PEOPLE_DELETED]: getState => {
+        const { people: { data } } = getState();
+        data.should.not.containEql({ _id, firstname });
+        done();
+      },
+    };
+    const store = configureStore(reducer, {}, hook, [
+      socketIoMiddleWare(socket.socketClient),
+    ]);
+    socket.on('action', action => {
+      socket.emit('action', {
+        type: action.replyTo,
+        payload: DATA,
+      });
+    });
+    store.dispatch(deletePeople(DATA));
   });
 
   it('Should change the filter', done => {

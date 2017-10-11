@@ -3,9 +3,10 @@
 import debug from 'debug';
 import { ObjectId } from 'mongobless';
 import R from 'ramda';
-import Joi from 'joi';
+import Yup from 'yup';
 import { Event } from '../models';
 import {
+  ObjectIdSchemaType,
   validate,
   emitEvent,
   checkUser,
@@ -16,58 +17,54 @@ import {
 const loginfo = debug('peep:evtx');
 const SERVICE_NAME = 'events';
 
-const loadSchema = Joi.object().keys({
-  from: Joi.date().optional(),
-  to: Joi.date().optional(),
-  groupId: Joi.string().optional(),
+const loadSchema = Yup.object().shape({
+  from: Yup.date(),
+  to: Yup.date(),
+  groupId: new ObjectIdSchemaType(),
 });
 
-const addEventSchema = Joi.object().keys({
-  from: Joi.date().required(),
-  to: Joi.date().required(),
-  value: Joi.number().required(),
-  period: Joi.string().valid(['AM', 'PM', 'DAY']),
+const addEventSchema = Yup.object().shape({
+  from: Yup.date().required(),
+  to: Yup.date().required(),
+  value: Yup.number().required(),
+  period: Yup.string().oneOf(['AM', 'PM', 'DAY']),
 });
 
-const delEventGroupSchema = Joi.object().keys({
-  groupId: Joi.string()
-    .regex(/^[0-9a-fA-F]{24}$/, 'valid ObjectId')
-    .required(),
+const delEventGroupSchema = Yup.object().shape({
+  groupId: new ObjectIdSchemaType().required(),
 });
 
-const addEventGroupSchema = Joi.object().keys({
-  from: Joi.date().required(),
-  to: Joi.date().required(),
-  status: Joi.string()
-    .valid(['TBV', 'V'])
+const addEventGroupSchema = Yup.object().shape({
+  from: Yup.date().required(),
+  to: Yup.date().required(),
+  status: Yup.string()
+    .oneOf(['TBV', 'V'])
     .required(),
-  type: Joi.string()
-    .valid(['vacation', 'sickLeaveDay'])
+  type: Yup.string()
+    .oneOf(['vacation', 'sickLeaveDay'])
     .required(),
-  workerId: Joi.string().required(),
-  events: Joi.array()
-    .items(addEventSchema)
+  workerId: new ObjectIdSchemaType().required(),
+  events: Yup.array()
+    .of(addEventSchema)
     .required(),
-  description: Joi.string(),
+  description: Yup.string(),
 });
 
-const updateEventGroupSchema = Joi.object().keys({
-  groupId: Joi.string()
-    .regex(/^[0-9a-fA-F]{24}$/, 'valid ObjectId')
+const updateEventGroupSchema = Yup.object().shape({
+  groupId: new ObjectIdSchemaType().required(),
+  from: Yup.date().required(),
+  to: Yup.date().required(),
+  status: Yup.string()
+    .oneOf(['TBV', 'V'])
     .required(),
-  from: Joi.date().required(),
-  to: Joi.date().required(),
-  status: Joi.string()
-    .valid(['TBV', 'V'])
+  type: Yup.string()
+    .oneOf(['vacation', 'sickLeaveDay'])
     .required(),
-  type: Joi.string()
-    .valid(['vacation', 'sickLeaveDay'])
+  workerId: new ObjectIdSchemaType().required(),
+  events: Yup.array()
+    .of(addEventSchema)
     .required(),
-  workerId: Joi.string().required(),
-  events: Joi.array()
-    .items(addEventSchema)
-    .required(),
-  description: Joi.string(),
+  description: Yup.string(),
 });
 
 const makeEventsFromGroup = ({
@@ -88,7 +85,7 @@ const makeEventsFromGroup = ({
         to: evt.to,
         status,
         type,
-        workerId: ObjectId(workerId),
+        workerId,
         description,
         unit: evt.unit,
         value: evt.value,
@@ -101,81 +98,48 @@ const makeEventsFromGroup = ({
 export const events = {
   load({ from, to, groupId } = {}) {
     const query = {};
-    if (from) query.to = { $gte: from.toISOString() };
-    if (to) query.from = { $lte: to.toISOString() };
-    try {
-      if (groupId) query.groupId = ObjectId(groupId);
-      return Event.loadAll(query);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    if (from) query.to = { $gte: from };
+    if (to) query.from = { $lte: to };
+    if (groupId) query.groupId = groupId;
+    return Event.loadAll(query);
   },
 
-  delEventGroup({ groupId: id }) {
-    try {
-      const groupId = ObjectId(id);
-      const deleteAll = () => Event.collection.remove({ groupId });
-      const loadEventGroup = () => Event.loadAll({ groupId });
-      return loadEventGroup().then(events => {
-        return deleteAll().then(() => R.pluck('_id', events));
-      });
-    } catch (err) {
-      return Promise.reject(err);
-    }
+  delEventGroup({ groupId }) {
+    const deleteAll = () => Event.collection.remove({ groupId });
+    const loadEventGroup = () => Event.loadAll({ groupId });
+    return loadEventGroup().then(events =>
+      deleteAll().then(() => R.pluck('_id', events)),
+    );
   },
 
   addEventGroup(eventGroup) {
-    try {
-      const events = makeEventsFromGroup(eventGroup);
-      const insertMany = events =>
-        Event.collection.insertMany(events).then(R.prop('insertedIds'));
-      const loadAll = ids => Event.loadAll({ _id: { $in: ids } });
-      return insertMany(events).then(loadAll);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const events = makeEventsFromGroup(eventGroup);
+    const insertMany = events =>
+      Event.collection.insertMany(events).then(R.prop('insertedIds'));
+    const loadAll = ids => Event.loadAll({ _id: { $in: ids } });
+    return insertMany(events).then(loadAll);
   },
 
   updateEventGroup(eventGroup) {
-    try {
-      const { groupId: id, type, workerId: worker, status } = eventGroup;
-      const groupId = ObjectId(id);
-      const workerId = ObjectId(worker);
-      const deleteAll = () => Event.collection.remove({ groupId });
-      const loadEventGroup = () => Event.loadAll({ groupId });
-      const loadAll = ids => Event.loadAll({ _id: { $in: ids } });
-      const insertAll = (previousEvents, nextEventGroup) => {
-        const { events } = nextEventGroup;
-        const newEvents = R.map(
-          e => ({ ...e, groupId, workerId, status, type }),
-          events,
-        );
-        return Event.collection
-          .insertMany(newEvents)
-          .then(R.prop('insertedIds'));
-      };
-      return loadEventGroup().then(previousEvents => {
-        return deleteAll()
-          .then(() => insertAll(previousEvents, eventGroup))
-          .then(loadAll);
-      });
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const { groupId, type, workerId, status } = eventGroup;
+    const deleteAll = () => Event.collection.remove({ groupId });
+    const loadEventGroup = () => Event.loadAll({ groupId });
+    const loadAll = ids => Event.loadAll({ _id: { $in: ids } });
+    const insertAll = (previousEvents, nextEventGroup) => {
+      const { events } = nextEventGroup;
+      const newEvents = R.map(
+        e => ({ ...e, groupId, workerId, status, type }),
+        events,
+      );
+      return Event.collection.insertMany(newEvents).then(R.prop('insertedIds'));
+    };
+    return loadEventGroup().then(previousEvents => {
+      return deleteAll()
+        .then(() => insertAll(previousEvents, eventGroup))
+        .then(loadAll);
+    });
   },
 };
-
-export const inLoadMaker = ({ from, to, ...props }) => ({
-  ...props,
-  from: from && new Date(from),
-  to: to && new Date(to),
-});
-
-export const inAddMaker = ({ from, to, ...props }) => ({
-  ...props,
-  from: from && new Date(from),
-  to: to && new Date(to),
-});
 
 export const outMaker = event => event;
 export const outMakerMany = R.map(outMaker);
@@ -186,8 +150,8 @@ const init = evtx => {
     .service(SERVICE_NAME)
     .before({
       all: [checkUser()],
-      load: [formatInput(inLoadMaker), validate(loadSchema)],
-      addEventGroup: [formatInput(inAddMaker), validate(addEventGroupSchema)],
+      load: [validate(loadSchema)],
+      addEventGroup: [validate(addEventGroupSchema)],
       updateEventGroup: [validate(updateEventGroupSchema)],
       delEventGroup: [validate(delEventGroupSchema)],
     })

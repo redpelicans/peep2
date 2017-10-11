@@ -10,12 +10,12 @@ export const EVENTS_ADDED = 'events:added';
 export const EVENTS_DELETED = 'events:deleted';
 
 export const loadEvents = ({ from, to }) => dispatch => {
-  const payload = { from: from && +from, to: to && +to };
+  const payload = { from, to };
   dispatch({ type: LOAD_EVENTS, payload, replyTo: EVENTS_LOADED });
 };
 
-const minValue = (a, b) => (a ? (a < b ? a : b) : b);
-const maxValue = (a, b) => (a ? (b > a ? b : a) : b);
+export const minValue = (a, b) => (a ? (a < b ? a : b) : b);
+export const maxValue = (a, b) => (a ? (b > a ? b : a) : b);
 
 export const loadEventGroup = ({ groupId }) => dispatch => {
   const payload = { groupId };
@@ -32,7 +32,7 @@ export const loadEventGroup = ({ groupId }) => dispatch => {
     );
     dispatch({
       type: LOAD_EVENTS,
-      payload: { from: +startOfMonth(from), to: +endOfMonth(to) },
+      payload: { from: startOfMonth(from), to: endOfMonth(to) },
       callback: getEvents,
     });
   };
