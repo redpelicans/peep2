@@ -56,6 +56,9 @@ const SelectCreatableStyled = styled(Select.Creatable)`
     background-color: ${Colors.DARK_GRAY4};
     border: 0;
   }
+  & .Select.is-disabled > .Select-control {
+    background-color: ${Colors.DARK_GRAY4} !important;
+  }
 `;
 
 const SelectStyled = styled(Select)`
@@ -101,7 +104,7 @@ const SelectStyled = styled(Select)`
     border: 0;
   }
   & .Select.is-disabled > .Select-control {
-    background-color: ${Colors.DARK_GRAY4};
+    background-color: ${Colors.DARK_GRAY4} !important;
   }
 `;
 
