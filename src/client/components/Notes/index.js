@@ -63,7 +63,7 @@ const Notes = ({
 };
 
 Notes.propTypes = {
-  notes: PropTypes.array.isRequired,
+  notes: PropTypes.array,
   filter: PropTypes.string,
   companies: PropTypes.object.isRequired,
   people: PropTypes.object.isRequired,

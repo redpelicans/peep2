@@ -141,6 +141,9 @@ describe('Preview component', () => {
         onTagClick={() => {}}
         deletePeople={() => {}}
         handleDeletePeople={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(Tags)).have.length(0);
@@ -162,6 +165,9 @@ describe('Preview component', () => {
         onTagClick={() => {}}
         deletePeople={() => {}}
         handleDeletePeople={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(Tags)).have.length(1);
@@ -183,6 +189,9 @@ describe('Preview component', () => {
         onTagClick={() => {}}
         deletePeople={() => {}}
         handleDeletePeople={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(Actions)).have.length(0);
@@ -203,6 +212,9 @@ describe('Preview component', () => {
         onTagClick={() => {}}
         deletePeople={() => {}}
         handleDeletePeople={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(Actions)).have.length(1);
@@ -223,6 +235,9 @@ describe('Preview component', () => {
         onTagClick={() => {}}
         deletePeople={() => {}}
         handleDeletePeople={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(PreviewContainer)).have.length(1);
@@ -236,7 +251,7 @@ describe('Add component', () => {
   it('should render a StyledContainer div', () => {
     const wrapper = shallow(
       <Add
-        isSubmitting={() => {}}
+        isSubmitting={false}
         isValid={true}
         handleReset={() => {}}
         handleSubmit={() => {}}
@@ -258,7 +273,7 @@ describe('Add component', () => {
   it('should render a ModalConfirmation', () => {
     const wrapper = shallow(
       <Add
-        isSubmitting={() => {}}
+        isSubmitting={false}
         isValid={true}
         handleReset={() => {}}
         handleSubmit={() => {}}
@@ -277,7 +292,7 @@ describe('Add component', () => {
   it('should render a AddOrEdit', () => {
     const wrapper = shallow(
       <Add
-        isSubmitting={() => {}}
+        isSubmitting={false}
         isValid={true}
         handleReset={() => {}}
         handleSubmit={() => {}}
@@ -299,7 +314,7 @@ describe('Editcomponent', () => {
   it('should render a Header', () => {
     const wrapper = shallow(
       <Edit
-        isSubmitting={() => {}}
+        isSubmitting={false}
         isValid={true}
         handleReset={() => {}}
         handleSubmit={() => {}}
@@ -321,7 +336,7 @@ describe('Editcomponent', () => {
   it('should render a ModalConfirmation', () => {
     const wrapper = shallow(
       <Edit
-        isSubmitting={() => {}}
+        isSubmitting={false}
         isValid={true}
         handleReset={() => {}}
         handleSubmit={() => {}}
@@ -341,7 +356,7 @@ describe('Editcomponent', () => {
   it('should render a AddOrEdit', () => {
     const wrapper = shallow(
       <Edit
-        isSubmitting={() => {}}
+        isSubmitting={false}
         isValid={true}
         handleReset={() => {}}
         handleSubmit={() => {}}

@@ -1,4 +1,5 @@
 import should from 'should';
+import { values } from 'ramda';
 import {
   getFilter,
   getNotes,
@@ -90,7 +91,7 @@ describe('Selectors:notes', () => {
       { content: '4' },
       { content: '5' },
     ];
-    const filtered = doFilter(filter, notes);
+    const filtered = doFilter(filter, values)(notes);
     should(filtered.length).eql(1);
   });
   it('doFilter should return an array of length 0', () => {
@@ -100,9 +101,8 @@ describe('Selectors:notes', () => {
       { content: '2' },
       { content: '3' },
       { content: '4' },
-      { content: '5' },
     ];
-    const filtered = doFilter(filter, notes);
+    const filtered = doFilter(filter, values)(notes);
     should(filtered.length).eql(0);
   });
   it('doFilter should return an array of length 5', () => {
@@ -114,12 +114,16 @@ describe('Selectors:notes', () => {
       { content: '1' },
       { content: '1' },
     ];
-    const filtered = doFilter(filter, notes);
+    const filtered = doFilter(filter, values)(notes);
     should(filtered.length).eql(5);
   });
   it('getVisibleNotes array should have a length of 5', () => {
     const state = {
       notes: {
+        sort: {
+          by: 'createdAt',
+          order: 'asc',
+        },
         filter: '1',
         data: [
           { content: '1' },
@@ -136,6 +140,10 @@ describe('Selectors:notes', () => {
   it('getVisibleNotes should be equal to expected array', () => {
     const state = {
       notes: {
+        sort: {
+          by: 'createdAt',
+          order: 'desc',
+        },
         filter: '1',
         data: [
           { content: '1' },
@@ -149,5 +157,41 @@ describe('Selectors:notes', () => {
     const visibleNotes = getVisibleNotes(state);
     const expected = [{ content: '1' }];
     should(visibleNotes).eql(expected);
+  });
+  test('Should get sorted notes data by createdAt', () => {
+    const state = {
+      notes: {
+        filter: '',
+        sort: {
+          by: 'createdAt',
+          order: 'asc',
+        },
+        data: [
+          { _id: 1, content: '', createdAt: '2016-03-01T00:00:00.000Z' },
+          { _id: 2, content: '', createdAt: '2016-02-01T00:00:00.000Z' },
+        ],
+      },
+    };
+    const result = getVisibleNotes(state);
+    const expected = [
+      { _id: 2, content: '', createdAt: '2016-02-01T00:00:00.000Z' },
+      { _id: 1, content: '', createdAt: '2016-03-01T00:00:00.000Z' },
+    ];
+    expect(result).toEqual(expected);
+  });
+  test('Should get sorted notes data equal empty array', () => {
+    const state = {
+      notes: {
+        filter: '',
+        sort: {
+          by: 'createdAt',
+          order: 'asc',
+        },
+        data: [],
+      },
+    };
+    const result = getVisibleNotes(state);
+    const expected = [];
+    expect(result).toEqual(expected);
   });
 });
