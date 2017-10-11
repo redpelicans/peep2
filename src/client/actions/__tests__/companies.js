@@ -47,7 +47,7 @@ describe('Action:companies', () => {
     const hook = {
       [COMPANY_ADDED]: getState => {
         const { companies: { data } } = getState();
-        should(data[_id].name).eql(name);
+        if (data[_id]) should(data[_id].name).eql(name);
         done();
       },
     };
@@ -70,7 +70,7 @@ describe('Action:companies', () => {
     const hook = {
       [COMPANY_UPDATED]: getState => {
         const { companies: { data } } = getState();
-        should(data[_id].name).eql(name);
+        if (data[_id]) should(data[_id].name).eql(name);
         done();
       },
     };
@@ -93,7 +93,7 @@ describe('Action:companies', () => {
     const hook = {
       [COMPANY_UPDATED]: getState => {
         const { companies: { data } } = getState();
-        should(data[_id].name).eql(name);
+        if (data[_id]) should(data[_id].name).eql(name);
         done();
       },
     };
@@ -113,8 +113,8 @@ describe('Action:companies', () => {
     const FILTER = 'filter';
     const hook = {
       [FILTER_COMPANY_LIST]: getState => {
-        const { companies } = getState();
-        should(companies.filter).eql(FILTER);
+        const { companies: { filter } } = getState();
+        should(filter).eql(FILTER);
         done();
       },
     };
@@ -125,8 +125,8 @@ describe('Action:companies', () => {
     const NAME = 'name';
     const hook = {
       [SORT_COMPANY_LIST]: getState => {
-        const { companies } = getState();
-        should(companies.sort.by).eql(NAME);
+        const { companies: { sort: { by } } } = getState();
+        should(by).eql(NAME);
         done();
       },
     };
@@ -135,11 +135,11 @@ describe('Action:companies', () => {
   });
   it('Order should be eql to asc', done => {
     const NAME = 'name';
-    const ASC = 'asc';
+    const DESC = 'desc';
     const hook = {
       [SORT_COMPANY_LIST]: getState => {
-        const { companies } = getState();
-        should(companies.sort.order).eql(ASC);
+        const { companies: { sort: { order } } } = getState();
+        should(order).eql(DESC);
         done();
       },
     };
@@ -148,14 +148,14 @@ describe('Action:companies', () => {
   });
   it('Order should be eql to desc', done => {
     const NAME = 'name';
-    const DESC = 'desc';
+    const ASC = 'asc';
     let count = 0;
     const hook = {
       [SORT_COMPANY_LIST]: getState => {
-        const { companies } = getState();
         count++;
         if (count === 2) {
-          should(companies.sort.order).eql(DESC);
+          const { companies: { sort: { order } } } = getState();
+          should(order).eql(ASC);
           done();
         }
       },

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { compose, withHandlers, lifecycle } from 'recompose';
+import { compose, withHandlers } from 'recompose';
 import {
   getVisiblePeople,
   getFilter,
@@ -93,19 +93,11 @@ const mapStateToProps = state => ({
 const actions = { onTagClick, deletePeople, sortPeopleList };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-const componentLifecycle = {
-  componentWillMount() {
-    const { sortPeopleList } = this.props;
-    sortPeopleList('name', true);
-  },
-};
-
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     onFilterChange: ({ onTagClick }) => event => onTagClick(event.target.value),
   }),
-  lifecycle(componentLifecycle),
 );
 
 export default enhance(People);

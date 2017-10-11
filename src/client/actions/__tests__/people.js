@@ -164,29 +164,29 @@ describe('Action:people', () => {
     const store = configureStore(reducer, {}, hook);
     store.dispatch(sortPeopleList(NAME));
   });
-  it('Order should be eql to asc', done => {
+  it('Order should be eql to desc', done => {
     const NAME = 'name';
-    const ASC = 'asc';
+    const DESC = 'desc';
     const hook = {
       [SORT_PEOPLE_LIST]: getState => {
         const { people: { sort: { order } } } = getState();
-        should(order).eql(ASC);
+        should(order).eql(DESC);
         done();
       },
     };
     const store = configureStore(reducer, {}, hook);
     store.dispatch(sortPeopleList(NAME));
   });
-  it('Order should be eql to desc', done => {
+  it('Order should be eql to asc', done => {
     const NAME = 'name';
-    const DESC = 'desc';
+    const ASC = 'asc';
     let count = 0;
     const hook = {
       [SORT_PEOPLE_LIST]: getState => {
-        const { people: { sort: { order } } } = getState();
         count++;
         if (count === 2) {
-          should(order).eql(DESC);
+          const { people: { sort: { order } } } = getState();
+          should(order).eql(ASC);
           done();
         }
       },
