@@ -9,7 +9,6 @@ import {
   getSort,
   getGroupedTagsByCount,
 } from '../../selectors/companies';
-import { deleteCompany } from '../../actions/companies';
 import { List } from './List';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import {
@@ -26,6 +25,7 @@ import {
   togglePreferred,
   filterCompanyList,
   sortCompanyList,
+  deleteCompany,
 } from '../../actions/companies';
 import { getPathByName } from '../../routes';
 
