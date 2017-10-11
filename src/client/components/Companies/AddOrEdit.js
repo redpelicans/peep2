@@ -103,7 +103,7 @@ const AddOrEditForm = ({
         creatable={true}
       />
       <StyledFormField
-        field={getField('notes')}
+        field={getField('note')}
         values={values}
         errors={errors}
         touched={touched}

@@ -8,6 +8,7 @@ import R from 'ramda';
 import { ObjectId } from 'mongobless';
 import { Person, Preference, Note } from '../models';
 import {
+  emitNoteEvent,
   checkUser,
   emitEvent,
   formatOutput,
@@ -108,7 +109,6 @@ export const people = {
   },
 
   add(person) {
-    console.dir(person, { depth: null });
     const noteContent = person.note;
     const newPerson = inMaker(person);
     newPerson.createdAt = new Date();
@@ -190,7 +190,11 @@ const init = evtx => {
     })
     .after({
       load: [formatOutput(outMakerMany)],
-      add: [formatOutput(outMaker), emitEvent('person:added')],
+      add: [
+        formatOutput(outMaker),
+        emitEvent('person:added'),
+        emitNoteEvent('note:added'),
+      ],
       update: [formatOutput(outMaker), emitEvent('person:updated')],
       del: [emitEvent('person:deleted')],
     });

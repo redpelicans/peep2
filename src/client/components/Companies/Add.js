@@ -130,7 +130,7 @@ export default compose(
         street,
         country,
         city,
-        notes = '',
+        note,
         color,
       },
       { props },
@@ -143,7 +143,7 @@ export default compose(
         tags: map(tag => tag.value, tags),
         website,
         address: { street, city, zipcode, country },
-        notes,
+        note,
       };
       addCompany(newCompany);
       history.goBack();
