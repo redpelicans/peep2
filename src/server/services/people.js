@@ -115,8 +115,6 @@ export const people = {
     const insertOne = p =>
       Person.collection.insertOne(p).then(R.prop('insertedId'));
     const loadOne = id => Person.loadOne(id);
-    const updatePreference = p =>
-      Preference.update('person', this.user, isPreferred, p);
     const createNote = p => Note.create(noteContent, this.user, p);
 
     return insertOne(newPerson)

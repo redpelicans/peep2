@@ -9,7 +9,7 @@ import { emitEvent, checkUser, formatOutput } from './utils';
 
 const loginfo = debug('peep:evtx');
 const SERVICE_NAME = 'companies';
-export const inMaker = (company) => {
+export const inMaker = company => {
   const attrs = ['name', 'type', 'preferred', 'website'];
   const newCompany = R.pick(attrs, company);
   if (company.address) {
@@ -23,7 +23,12 @@ export const inMaker = (company) => {
   }
 
   if (company.tags) {
-    newCompany.tags = R.compose(R.sortBy(R.identity), R.uniq, R.filter(R.identity), R.map(t => uppercamelcase(t)))(company.tags);
+    newCompany.tags = R.compose(
+      R.sortBy(R.identity),
+      R.uniq,
+      R.filter(R.identity),
+      R.map(t => uppercamelcase(t)),
+    )(company.tags);
   }
 
   if (newCompany.type) newCompany.type = newCompany.type.toLowerCase();
@@ -36,33 +41,28 @@ export const emitNoteEvent = name => ctx => {
 
   const { output: { note } } = ctx;
   if (note) {
-    ctx.evtx.service('notes').emit(name, { ...ctx, message: { broadcastAll: true, replyTo: name }, output: note });
+    ctx.evtx
+      .service('notes')
+      .emit(name, {
+        ...ctx,
+        message: { broadcastAll: true, replyTo: name },
+        output: note,
+      });
   }
   return Promise.resolve(ctx);
 };
 
 export const company = {
   load() {
-    return Company.loadAll().then(companies => Preference.spread('company', this.user, companies));
+    return Company.loadAll().then(companies =>
+      Preference.spread('company', this.user, companies),
+    );
   },
 
   loadOne(id) {
-    return Company
-      .loadOne(id)
+    return Company.loadOne(id)
       .then(company => Preference.spread('company', this.user, [company]))
       .then(companies => companies[0]);
-  },
-
-  setPreferred({ _id, preferred }) {
-    const loadOne = id => Company.loadOne(id);
-    const updatePreference = company => Preference.update('company', this.user, preferred, company);
-
-    return loadOne(ObjectId(_id))
-      .then(updatePreference)
-      .then((company) => {
-        company.preferred = preferred;
-        return company;
-      });
   },
 
   update(company) {
@@ -70,17 +70,20 @@ export const company = {
     const newVersion = inMaker(company);
     newVersion._id = ObjectId(company._id);
     const loadOne = ({ _id: id }) => Company.loadOne(id);
-    const update = nextVersion => (previousVersion) => {
+    const update = nextVersion => previousVersion => {
       nextVersion.updatedAt = new Date();
-      return Company.collection.updateOne({ _id: previousVersion._id }, { $set: nextVersion }).then(() => ({ _id: previousVersion._id }));
+      return Company.collection
+        .updateOne({ _id: previousVersion._id }, { $set: nextVersion })
+        .then(() => ({ _id: previousVersion._id }));
     };
-    const updatePreference = company => Preference.update('company', this.user, isPreferred, company);
+    const updatePreference = company =>
+      Preference.update('company', this.user, isPreferred, company);
 
     return loadOne(newVersion)
       .then(update(newVersion))
       .then(loadOne)
       .then(updatePreference)
-      .then((company) => {
+      .then(company => {
         company.preferred = isPreferred;
         return company;
       });
@@ -91,9 +94,11 @@ export const company = {
     const noteContent = company.note;
     const newCompany = inMaker(company);
     newCompany.createdAt = new Date();
-    const insertOne = company => Company.collection.insertOne(company).then(R.prop('insertedId'));
+    const insertOne = company =>
+      Company.collection.insertOne(company).then(R.prop('insertedId'));
     const loadOne = id => Company.loadOne(id);
-    const updatePreference = company => Preference.update('company', this.user, isPreferred, company);
+    const updatePreference = company =>
+      Preference.update('company', this.user, isPreferred, company);
     const createNote = company => Note.create(noteContent, this.user, company);
 
     return insertOne(newCompany)
@@ -108,7 +113,11 @@ export const company = {
   },
 
   del(id) {
-    const deleteOne = () => Company.collection.updateOne({ _id: ObjectId(id) }, { $set: { updatedAt: new Date(), isDeleted: true } });
+    const deleteOne = () =>
+      Company.collection.updateOne(
+        { _id: ObjectId(id) },
+        { $set: { updatedAt: new Date(), isDeleted: true } },
+      );
     const deletePreference = () => Preference.delete(this.user, id);
     const deleteNotes = () => Note.deleteForEntity(id);
 
@@ -119,21 +128,26 @@ export const company = {
   },
 };
 
-export const outMaker = (company) => {
+export const outMaker = company => {
   company.createdAt = company.createdAt || new Date(1967, 9, 1);
   return company;
 };
 
 export const outMakerMany = R.map(outMaker);
 
-const init = (evtx) => {
+const init = evtx => {
   evtx.use(SERVICE_NAME, company);
-  evtx.service(SERVICE_NAME)
+  evtx
+    .service(SERVICE_NAME)
     .before({ all: [checkUser()] })
     .after({
       load: [formatOutput(outMakerMany)],
       loadOne: [formatOutput(outMaker)],
-      add: [formatOutput(outMaker), emitEvent('company:added'), emitNoteEvent('note:added')],
+      add: [
+        formatOutput(outMaker),
+        emitEvent('company:added'),
+        emitNoteEvent('note:added'),
+      ],
       del: [emitEvent('company:deleted')],
       update: [formatOutput(outMaker), emitEvent('company:updated')],
       setPreferred: [emitEvent('company:setPreferred')],
