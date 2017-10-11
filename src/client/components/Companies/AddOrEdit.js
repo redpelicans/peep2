@@ -32,6 +32,7 @@ const AddOrEditForm = ({
   errors,
   setFieldTouched,
   setFieldValue,
+  type,
 }) => {
   return (
     <CompagnyForm id="addCompany" onSubmit={handleSubmit}>
@@ -102,19 +103,22 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
         creatable={true}
       />
-      <StyledFormField
-        field={getField('notes')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
+      {type === 'add' && (
+        <StyledFormField
+          field={getField('notes')}
+          values={values}
+          errors={errors}
+          touched={touched}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+        />
+      )}
     </CompagnyForm>
   );
 };
 
 AddOrEditForm.propTypes = {
+  type: PropTypes.string.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   values: PropTypes.object.isRequired,
   setFieldTouched: PropTypes.func.isRequired,

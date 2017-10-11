@@ -33,6 +33,7 @@ const AddOrEditForm = ({
   errors,
   setFieldTouched,
   setFieldValue,
+  type,
 }) => {
   return (
     <PeopleForm id="peopleForm" onSubmit={handleSubmit}>
@@ -130,14 +131,16 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
         multi={true}
       />
-      <StyledFormField
-        field={getField('notes')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
+      {type === 'add' && (
+        <StyledFormField
+          field={getField('notes')}
+          values={values}
+          errors={errors}
+          touched={touched}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+        />
+      )}
     </PeopleForm>
   );
 };
@@ -149,6 +152,7 @@ AddOrEditForm.propTypes = {
   setFieldValue: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   touched: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default AddOrEditForm;
