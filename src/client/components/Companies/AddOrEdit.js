@@ -13,16 +13,16 @@ const CompagnyForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'Type' 'Name' 'Website' 'Zipcode' 'Street' 'Country'
-    'City' 'Tags' 'Note';
+  grid-template-areas: 'type' 'name' 'website' 'zipcode' 'street' 'country'
+    'city' 'tags' 'notes';
   @media (min-width: 700px) {
-    grid-template-areas: 'Type Name Website' 'Zipcode Street Street'
-      'Country City City' 'Tags Tags Tags' 'Note Note Note';
+    grid-template-areas: 'type name website' 'zipcode street street'
+      'country city city' 'tags tags tags' 'notes notes notes';
   }
 `;
 
 const StyledFormField = styled(FormField)`
-  grid-area: ${({ field }) => field.label};
+  grid-area: ${({ field }) => field.name};
 `;
 
 const AddOrEditForm = ({
