@@ -1,20 +1,8 @@
-import {
-  slice,
-  head,
-  last,
-  isEmpty,
-  compose,
-  reduce,
-  map,
-  prop,
-  propEq,
-  identity,
-  filter,
-  sortBy,
-  pick,
-} from 'ramda';
+import { compose, reduce, map, propEq, identity, filter, isEmpty } from 'ramda';
 import {
   addHours,
+  addDays,
+  subDays,
   isSameDay,
   eachDay,
   startOfDay,
@@ -61,10 +49,38 @@ const isDayFull = events => periodSlot(events)[EVENT_DAY];
 const isMorningFree = events => !periodSlot(events)[EVENT_AM];
 const isAfternoonFree = events => !periodSlot(events)[EVENT_PM];
 
-const availableSlot = (events, calendar, event) => {
+const nextHalfDay = date => {
+  if (isMidDay(date)) return [addDays(startOfDay(date), 0.5), endOfDay(date)];
+  return [
+    startOfDay(addDays(date, 1)),
+    addDays(startOfDay(addDays(date, 1)), 0.5),
+  ];
+};
+
+const previsousHalfDay = date => {
+  if (isMidDay(date)) return [startOfDay(date), addDays(startOfDay(date), 0.5)];
+  return [
+    addDays(startOfDay(subDays(date, 1)), 0.5),
+    endOfDay(subDays(date, 1)),
+  ];
+};
+
+export const isNextHalfDayFree = (events, date) => {
+  const [from, to] = nextHalfDay(date);
+  const days = freeEventsFromPeriod({ from, to, events, includeWeekEnd: true });
+  return !isEmpty(days);
+};
+
+export const isPreviousHalfDayFree = (events, date) => {
+  const [from, to] = previsousHalfDay(date);
+  const days = freeEventsFromPeriod({ from, to, events, includeWeekEnd: true });
+  return !isEmpty(days);
+};
+
+const availableSlot = (events, calendar, includeWeekEnd = false, event) => {
   const date = event.from;
   const dayEvents = events[dmy(date)];
-  if (!isWorkingDay(calendar, date)) return;
+  if (!includeWeekEnd && !isWorkingDay(calendar, date)) return;
   if (isDayFree(dayEvents)) return event;
   if (isDayFull(dayEvents)) return;
   if (isMorningEvent(event) && isMorningFree(dayEvents)) return event;
@@ -80,6 +96,7 @@ export const freeEventsFromPeriod = ({
   to,
   events = {},
   calendar = {},
+  includeWeekEnd,
 }) => {
   const requestedEvents = [];
   if (isSameDay(from, to)) {
@@ -98,8 +115,7 @@ export const freeEventsFromPeriod = ({
   }
   const availableEvents = compose(
     filter(identity),
-    map(e => availableSlot(events, calendar, e)),
+    map(e => availableSlot(events, calendar, includeWeekEnd, e)),
   )(requestedEvents);
-  console.log(from, to);
   return availableEvents;
 };

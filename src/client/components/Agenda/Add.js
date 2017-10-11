@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { withFormik } from 'formik';
 import { getCalendar } from '../../selectors/calendar';
 import { addEventGroup } from '../../actions/events';
-import { getWorker, getWorkers } from '../../selectors/people';
+import { getWorker } from '../../selectors/people';
 import { getWorkerEventsByDate } from '../../selectors/events';
 import { Container, Title, Spacer, ModalConfirmation } from '../widgets';
 import { defaultValues, getValidationSchema } from '../../forms/events';
@@ -31,7 +31,6 @@ const Add = ({
   isCancelDialogOpen,
   showCancelDialog,
   isSubmitting,
-  isValid,
   handleReset,
   handleSubmit,
   dirty,
@@ -104,7 +103,7 @@ const Add = ({
 
 Add.propTypes = {
   period: PropTypes.array.isRequired,
-  worker: PropTypes.object.isRequired,
+  worker: PropTypes.object,
   calendar: PropTypes.object,
   events: PropTypes.object,
   cancel: PropTypes.func.isRequired,
@@ -112,7 +111,6 @@ Add.propTypes = {
   showCancelDialog: PropTypes.func.isRequired,
   isCancelDialogOpen: PropTypes.bool.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
-  isValid: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   dirty: PropTypes.bool.isRequired,

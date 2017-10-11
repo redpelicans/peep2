@@ -93,13 +93,18 @@ const Day = ({ events, calendar, ...props }) => {
 Day.propTypes = {
   date: PropTypes.object.isRequired,
   events: PropTypes.array,
-  calendar: PropTypes.object,
+  calendar: PropTypes.object.isRequired,
+};
+
+const getSelectDaybackground = ({ selected, type, isWorkingDay }) => {
+  if (!selected) return workingDayBackground;
+  if (!isWorkingDay) return selectedBackground;
+  return type === 'vacation' ? vacationDayBackground : sickLeaveDayBackground;
 };
 
 const StyledHalfDaySelected = styled.div`
   grid-column: ${({ period }) => period};
-  background-color: ${({ selected }) =>
-    selected ? selectedBackground : workingDayBackground};
+  background: ${getSelectDaybackground};
 `;
 
 const StyledSelectedDay = styled.div`
@@ -116,11 +121,13 @@ const betweenDates = (startPeriod, endPeriod, from, to) => {
   return startPeriod >= from && endPeriod <= to;
 };
 
-const SelectedDay = ({ date, from, to }) => {
+const SelectedDay = ({ date, from, to, type, isWorkingDay }) => {
   return (
     <StyledSelectedDay>
       <StyledHalfDaySelected
         period={EVENT_AM}
+        type={type}
+        isWorkingDay={isWorkingDay}
         selected={betweenDates(
           startOfDay(date),
           subHours(endOfDay(date), 12),
@@ -130,6 +137,8 @@ const SelectedDay = ({ date, from, to }) => {
       />
       <StyledHalfDaySelected
         period={EVENT_PM}
+        type={type}
+        isWorkingDay={isWorkingDay}
         selected={betweenDates(addHours(date, 12), endOfDay(date), from, to)}
       />
     </StyledSelectedDay>
@@ -140,6 +149,8 @@ SelectedDay.propTypes = {
   date: PropTypes.object.isRequired,
   from: PropTypes.object,
   to: PropTypes.object,
+  type: PropTypes.string.isRequired,
+  isWorkingDay: PropTypes.bool.isRequired,
 };
 
 const getDateEvents = (date, events) => path([dmy(date)], events);
@@ -153,6 +164,7 @@ const WorkerCalendar = ({
   events,
   worker,
   className,
+  type,
 }) => {
   if (!worker) return null;
   const days = eachDay(startDate, endDate);
@@ -162,7 +174,16 @@ const WorkerCalendar = ({
   );
   const fakeHeader = <div key={-1} />;
   const selectedDays = map(
-    d => <SelectedDay key={dmy(d)} date={d} from={from} to={to} />,
+    d => (
+      <SelectedDay
+        type={type}
+        isWorkingDay={isWorkingDay(calendar, d)}
+        key={dmy(d)}
+        date={d}
+        from={from}
+        to={to}
+      />
+    ),
     days,
   );
 
@@ -199,6 +220,7 @@ WorkerCalendar.propTypes = {
   events: PropTypes.object,
   worker: PropTypes.object,
   className: PropTypes.string,
+  type: PropTypes.string.isRequired,
 };
 
 export default WorkerCalendar;

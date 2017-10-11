@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { identity, omit } from 'ramda';
 
 export const propTransformer = (src, target, fn = identity) => Component => {
