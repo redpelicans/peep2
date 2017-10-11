@@ -1,5 +1,7 @@
-import { map } from 'ramda';
+import { map, filter, indexOf } from 'ramda';
 import {
+  NOTES_DELETED,
+  NOTE_ADDED,
   NOTES_LOADED,
   FILTER_NOTES_LIST,
   SORT_NOTES_LIST,
@@ -25,6 +27,19 @@ const initialState = {
 
 const notes = (state = initialState, action) => {
   switch (action.type) {
+    case NOTES_DELETED:
+      return {
+        ...state,
+        data: filter(
+          note => indexOf(note._id, action.payload) === -1,
+          state.data,
+        ),
+      };
+    case NOTE_ADDED:
+      return {
+        ...state,
+        data: [...state.data, make(action.payload)],
+      };
     case NOTES_LOADED:
       return { ...state, data: makeAll(action.payload) };
     case FILTER_NOTES_LIST:

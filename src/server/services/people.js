@@ -8,6 +8,8 @@ import R from 'ramda';
 import { ObjectId } from 'mongobless';
 import { Person, Preference, Note } from '../models';
 import {
+  emitNotesDeleted,
+  emitNoteEvent,
   checkUser,
   emitEvent,
   formatOutput,
@@ -65,7 +67,7 @@ const deleteSchema = Yup.object().shape({
 });
 
 const inMaker = input => {
-  const newPerson = { ...input };
+  const newPerson = R.omit(['note'], input);
   if (input.type !== 'worker') newPerson.roles = undefined;
   if (input.type === 'worker' && input.skills) {
     newPerson.skills = R.compose(
@@ -107,27 +109,30 @@ export const people = {
     return Person.loadAll();
   },
 
-  add(person) {
-    console.dir(person, { depth: null });
-    const noteContent = person.note;
-    const newPerson = inMaker(person);
+  loadOne(id) {
+    return Person.loadOne(id);
+  },
+
+  add(input) {
+    const noteContent = input.note;
+    const newPerson = inMaker(input);
     newPerson.createdAt = new Date();
     const insertOne = p =>
       Person.collection.insertOne(p).then(R.prop('insertedId'));
     const loadOne = id => Person.loadOne(id);
-    const updatePreference = p =>
-      Preference.update('person', this.user, isPreferred, p);
-    const createNote = p => Note.create(noteContent, this.user, p);
+    const createNote = person => Note.create(noteContent, this.user, person);
 
     return insertOne(newPerson)
       .then(loadOne)
       .then(createNote)
-      .then(({ entity }) => entity);
+      .then(({ note, entity }) => {
+        entity.note = note;
+        return entity;
+      });
   },
 
-  update(person) {
-    console.dir(person, { depth: null });
-    const newVersion = inMaker(person);
+  update(input) {
+    const newVersion = inMaker(input);
     const loadOne = ({ _id }) => Person.loadOne(_id);
     const update = nextVersion => previousVersion => {
       nextVersion.updatedAt = new Date();
@@ -192,9 +197,13 @@ const init = evtx => {
     })
     .after({
       load: [formatOutput(outMakerMany)],
-      add: [formatOutput(outMaker), emitEvent('person:added')],
+      add: [
+        formatOutput(outMaker),
+        emitEvent('person:added'),
+        emitNoteEvent('note:added'),
+      ],
       update: [formatOutput(outMaker), emitEvent('person:updated')],
-      del: [emitEvent('person:deleted')],
+      del: [emitEvent('person:deleted'), emitNotesDeleted()],
     });
 
   loginfo('people service registered');

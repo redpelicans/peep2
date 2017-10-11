@@ -91,6 +91,7 @@ export const Edit = ({
       </HeaderRight>
     </Header>
     <AddOrEdit
+      type="edit"
       handleSubmit={handleSubmit}
       values={values}
       setFieldTouched={setFieldTouched}

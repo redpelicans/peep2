@@ -91,6 +91,7 @@ export const Add = ({
       </HeaderRight>
     </Header>
     <AddOrEdit
+      type="edit"
       handleSubmit={handleSubmit}
       values={values}
       setFieldTouched={setFieldTouched}
@@ -135,7 +136,7 @@ export default compose(
       {
         color,
         name,
-        note = '',
+        note,
         tags,
         type,
         website,

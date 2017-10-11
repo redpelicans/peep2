@@ -1,27 +1,45 @@
 import debug from 'debug';
 import R from 'ramda';
-import moment from 'moment';
+import Yup from 'yup';
 import { ObjectId } from 'mongobless';
 import { Note } from '../models';
-import { emitEvent, formatOutput } from './utils';
+import {
+  checkUser,
+  validate,
+  ObjectIdSchemaType,
+  emitEvent,
+  formatOutput,
+} from './utils';
 
 const loginfo = debug('peep:evtx');
 const SERVICE_NAME = 'notes';
 
-const outMaker = (note) => note;
+const addSchema = Yup.object().shape({
+  content: Yup.string().required(),
+  entityId: new ObjectIdSchemaType(),
+  entityType: Yup.string()
+    .nullable()
+    .oneOf(['person', 'company', 'mission'])
+    .required(),
+  dueDate: Yup.date(),
+  //assigneesIds: Yup.array.of(new ObjectIdSchemaType()),
+});
+
+const updateSchema = addSchema.concat(
+  Yup.object().shape({
+    _id: new ObjectIdSchemaType().required(),
+  }),
+);
+
+const deleteSchema = Yup.object().shape({
+  _id: new ObjectIdSchemaType().required(),
+});
+
+const outMaker = note => note;
 export const outMakerMany = R.map(outMaker);
 
-const inMaker = (data) => {
-  const attrs = ['content', 'entityType', 'assigneesIds', 'notification', 'status'];
-  const res = R.pick(attrs, data);
-  if (data.dueDate) res.dueDate = moment(data.dueDate).toDate();
-  if (data.entityId) {
-    res.entityId = ObjectId(data.entityId);
-  } else {
-    res.entityId = undefined;
-    res.entityType = undefined;
-  }
-  return res;
+const inMaker = input => {
+  return input;
 };
 
 export const notes = {
@@ -29,29 +47,35 @@ export const notes = {
     return Note.loadAll();
   },
 
-  del(id) {
-    const deleteOne = () => Note.collection.updateOne({ _id: id }, { $set: { updatedAt: new Date(), isDeleted: true } });
-    return deleteOne().then(() => ({ _id: id }));
+  del({ _id }) {
+    const deleteOne = () =>
+      Note.collection.updateOne(
+        { _id },
+        { $set: { updatedAt: new Date(), isDeleted: true } },
+      );
+    return deleteOne().then(() => ({ _id }));
   },
 
   add(note) {
     const newNote = inMaker(note);
     newNote.authorId = this.user._id;
     const loadOne = id => Note.loadOne(id);
-    const insertOne = p => Note.collection.insertOne(p).then(R.prop('insertedId'));
+    const insertOne = p =>
+      Note.collection.insertOne(p).then(R.prop('insertedId'));
     return insertOne(newNote).then(loadOne);
   },
 
   update(note) {
     const newVersion = inMaker(note);
     newVersion.authorId = this.user._id;
-    newVersion._id = ObjectId(note._id);
-    const loadOne = ({ _id: id }) => Note.loadOne(id);
-    const update = nextVersion => previousVersion => Note.collection.updateOne(
-      { _id: previousVersion._id },
-      { $set: { ...nextVersion, updatedAt: new Date() } },
-    )
-      .then(() => ({ _id: previousVersion._id }));
+    const loadOne = ({ _id }) => Note.loadOne(_id);
+    const update = nextVersion => previousVersion =>
+      Note.collection
+        .updateOne(
+          { _id: previousVersion._id },
+          { $set: { ...nextVersion, updatedAt: new Date() } },
+        )
+        .then(() => ({ _id: previousVersion._id }));
 
     return loadOne(newVersion)
       .then(update(newVersion))
@@ -59,9 +83,16 @@ export const notes = {
   },
 };
 
-const init = (evtx) => {
+const init = evtx => {
   evtx.use(SERVICE_NAME, notes);
-  evtx.service(SERVICE_NAME)
+  evtx
+    .service(SERVICE_NAME)
+    .before({
+      all: [checkUser()],
+      add: [validate(addSchema)],
+      update: [validate(updateSchema)],
+      del: [validate(deleteSchema)],
+    })
     .after({
       load: [formatOutput(outMakerMany)],
       loadOne: [formatOutput(outMaker)],
@@ -69,7 +100,6 @@ const init = (evtx) => {
       del: [emitEvent('note:deleted')],
       update: [formatOutput(outMaker), emitEvent('note:updated')],
     });
-
 
   loginfo('notes service registered');
 };
