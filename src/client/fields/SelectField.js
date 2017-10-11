@@ -103,8 +103,8 @@ const SelectStyled = styled(Select)`
     background-color: ${Colors.DARK_GRAY4};
     border: 0;
   }
-  & .Select.is-disabled > .Select-control {
-    background-color: ${Colors.DARK_GRAY4} !important;
+  & .is-disabled > .Select-control {
+    background-color: red !important;
   }
 `;
 
