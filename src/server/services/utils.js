@@ -1,5 +1,7 @@
 import Yup from 'yup';
+import R from 'ramda';
 import { ObjectID } from 'mongodb';
+import { Note } from '../models';
 
 const ObjectSchema = Yup.mixed;
 export class ObjectIdSchemaType extends ObjectSchema {
@@ -58,5 +60,19 @@ export const emitNoteEvent = name => ctx => {
       output: note,
     });
   }
+  return Promise.resolve(ctx);
+};
+
+export const emitNotesDeleted = () => ctx => {
+  const { output: { _id } } = ctx;
+  const name = 'notes:deleted';
+  Note.loadAll({ entityId: _id, isDeleted: true }).then(notes => {
+    if (!notes.length) return;
+    ctx.evtx.service('notes').emit(name, {
+      ...ctx,
+      message: { broadcastAll: true, replyTo: name },
+      output: R.pluck('_id', notes),
+    });
+  });
   return Promise.resolve(ctx);
 };

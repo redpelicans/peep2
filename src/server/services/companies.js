@@ -8,6 +8,7 @@ import R from 'ramda';
 import { Company, Preference, Note } from '../models';
 import {
   emitNoteEvent,
+  emitNotesDeleted,
   validate,
   ObjectIdSchemaType,
   emitEvent,
@@ -48,7 +49,7 @@ const updateSchema = addSchema.concat(
 );
 
 export const inMaker = input => {
-  const newCompany = { ...input };
+  const newCompany = R.omit(['note'], input);
   if (input.tags) {
     newCompany.tags = R.compose(
       R.sortBy(R.identity),
@@ -62,17 +63,15 @@ export const inMaker = input => {
 
 export const company = {
   load() {
-    return Company.loadAll().then(companies =>
-      Preference.spread('company', this.user, companies),
-    );
+    return Company.loadAll();
   },
 
   loadOne(id) {
     return Company.loadOne(id);
   },
 
-  update(company) {
-    const newVersion = inMaker(company);
+  update(input) {
+    const newVersion = inMaker(input);
     const loadOne = ({ _id }) => Company.loadOne(_id);
     const update = nextVersion => previousVersion => {
       nextVersion.updatedAt = new Date();
@@ -85,9 +84,9 @@ export const company = {
       .then(loadOne);
   },
 
-  add(company) {
-    const noteContent = company.note;
-    const newCompany = inMaker(company);
+  add(input) {
+    const noteContent = input.note;
+    const newCompany = inMaker(input);
     newCompany.createdAt = new Date();
     const insertOne = company =>
       Company.collection.insertOne(company).then(R.prop('insertedId'));
@@ -142,12 +141,8 @@ const init = evtx => {
         emitEvent('company:added'),
         emitNoteEvent('note:added'),
       ],
-      del: [emitEvent('company:deleted')],
-      update: [
-        formatOutput(outMaker),
-        emitEvent('company:updated'),
-        emitNoteEvent('note:added'),
-      ],
+      del: [emitEvent('company:deleted'), emitNotesDeleted()],
+      update: [formatOutput(outMaker), emitEvent('company:updated')],
     });
 
   loginfo('companies service registered');
