@@ -65,12 +65,14 @@ export const Preview = ({
         accept={() => deletePeople(_id)}
       />
       <TitleRow>
-        <Avatar
-          name={name}
-          color={avatar ? avatar.color : ''}
-          size="MEDIUM"
-          to={getPathByName('person', _id)}
-        />
+        {avatar && (
+          <Avatar
+            name={name}
+            color={avatar.color}
+            size="MEDIUM"
+            to={getPathByName('person', _id)}
+          />
+        )}
         <StyledInfos>
           <NameLink to={getPathByName('person', _id)}>{name}</NameLink>
           <CompanyLink to={getPathByName('company', company._id)}>
