@@ -67,6 +67,10 @@ export const company = {
     );
   },
 
+  loadOne(id) {
+    return Company.loadOne(id);
+  },
+
   update(company) {
     const newVersion = inMaker(company);
     const loadOne = ({ _id }) => Company.loadOne(_id);
@@ -139,8 +143,11 @@ const init = evtx => {
         emitNoteEvent('note:added'),
       ],
       del: [emitEvent('company:deleted')],
-      update: [formatOutput(outMaker), emitEvent('company:updated')],
-      setPreferred: [emitEvent('company:setPreferred')],
+      update: [
+        formatOutput(outMaker),
+        emitEvent('company:updated'),
+        emitNoteEvent('note:added'),
+      ],
     });
 
   loginfo('companies service registered');

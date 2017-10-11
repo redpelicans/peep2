@@ -99,7 +99,7 @@ class Reactor {
   initCompanies() {
     const { evtx } = this;
     const pushPreferredEvent = (
-      { socket, user, output: company, message: { replyTo } },
+      { locals: { socket }, user, output: company, message: { replyTo } },
       targetUser,
       targetSocket,
     ) => {
@@ -108,7 +108,7 @@ class Reactor {
       if (user.equals(targetUser)) return targetSocket.emit('action', action);
     };
     const pushEvent = (
-      { socket, user, output: company, message: { replyTo } },
+      { locals: { socket }, user, output: company, message: { replyTo } },
       targetUser,
       targetSocket,
     ) => {
@@ -134,7 +134,7 @@ class Reactor {
   initPeople() {
     const { evtx } = this;
     const pushEvent = (
-      { socket, user, output: person, message: { replyTo } },
+      { locals: { socket }, user, output: person, message: { replyTo } },
       targetUser,
       targetSocket,
     ) => {
@@ -157,7 +157,7 @@ class Reactor {
   initNotes() {
     const { evtx } = this;
     const pushEvent = (
-      { socket, output: note, message: { broadcastAll, replyTo } },
+      { locals: { socket }, output: note, message: { broadcastAll, replyTo } },
       targetUser,
       targetSocket,
     ) => {

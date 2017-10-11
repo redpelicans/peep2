@@ -108,6 +108,10 @@ export const people = {
     return Person.loadAll();
   },
 
+  loadOne(id) {
+    return Person.loadOne(id);
+  },
+
   add(person) {
     const noteContent = person.note;
     const newPerson = inMaker(person);
