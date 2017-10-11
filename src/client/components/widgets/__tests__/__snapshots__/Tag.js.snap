@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Tag /> should render a <Tag /> 1`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <div
+    className="sc-bdVaJa fCQYUD"
+/>,
+  "nodes": Array [
+    <div
+      className="sc-bdVaJa fCQYUD"
+/>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_context": Object {},
+    "_element": <styled.div />,
+    "_instance": StyledComponent {
+      "attrs": Object {},
+      "context": Object {},
+      "props": Object {},
+      "refs": Object {},
+      "state": Object {
+        "generatedClassName": "fCQYUD",
+        "theme": null,
+      },
+      "unsubscribeId": -1,
+      "updater": Updater {
+        "_renderer": [Circular],
+      },
+    },
+    "_newState": Object {
+      "generatedClassName": "fCQYUD",
+      "theme": null,
+    },
+    "_rendered": <div
+      className="sc-bdVaJa fCQYUD"
+/>,
+    "_rendering": false,
+    "_updater": Updater {
+      "_renderer": [Circular],
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <styled.div />,
+}
+`;

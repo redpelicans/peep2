@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NameLink /> should render an <NameLink /> 1`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <Link
+    className="sc-bdVaJa foEiOL"
+    replace={false}
+/>,
+  "nodes": Array [
+    <Link
+      className="sc-bdVaJa foEiOL"
+      replace={false}
+/>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_context": Object {},
+    "_element": <Styled(Link) />,
+    "_instance": StyledComponent {
+      "attrs": Object {},
+      "context": Object {},
+      "props": Object {},
+      "refs": Object {},
+      "state": Object {
+        "generatedClassName": "foEiOL",
+        "theme": null,
+      },
+      "unsubscribeId": -1,
+      "updater": Updater {
+        "_renderer": [Circular],
+      },
+    },
+    "_newState": Object {
+      "generatedClassName": "foEiOL",
+      "theme": null,
+    },
+    "_rendered": <Link
+      className="sc-bdVaJa foEiOL"
+      replace={false}
+/>,
+    "_rendering": false,
+    "_updater": Updater {
+      "_renderer": [Circular],
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <Styled(Link) />,
+}
+`;

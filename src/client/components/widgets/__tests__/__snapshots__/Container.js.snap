@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Container /> should render a <Container /> 1`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <div
+    className="sc-bdVaJa bYUhim"
+/>,
+  "nodes": Array [
+    <div
+      className="sc-bdVaJa bYUhim"
+/>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_context": Object {},
+    "_element": <styled.div />,
+    "_instance": StyledComponent {
+      "attrs": Object {},
+      "context": Object {},
+      "props": Object {},
+      "refs": Object {},
+      "state": Object {
+        "generatedClassName": "bYUhim",
+        "theme": null,
+      },
+      "unsubscribeId": -1,
+      "updater": Updater {
+        "_renderer": [Circular],
+      },
+    },
+    "_newState": Object {
+      "generatedClassName": "bYUhim",
+      "theme": null,
+    },
+    "_rendered": <div
+      className="sc-bdVaJa bYUhim"
+/>,
+    "_rendering": false,
+    "_updater": Updater {
+      "_renderer": [Circular],
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <styled.div />,
+}
+`;
