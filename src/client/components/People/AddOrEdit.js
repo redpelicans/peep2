@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormField } from '../../fields';
-import { getField } from '../../forms/peoples';
+import { getField } from '../../forms/people';
 
 const PeopleForm = styled.form`
   display: grid;
@@ -89,7 +89,6 @@ const AddOrEditForm = ({
           field={getField('companyId')}
           values={values}
           touched={touched}
-          value="redpelicans"
           disabled={true}
           errors={errors}
           setFieldTouched={setFieldTouched}
