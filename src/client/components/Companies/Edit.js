@@ -136,7 +136,7 @@ export default compose(
       {
         color,
         name,
-        note = '',
+        note,
         tags,
         type,
         website,

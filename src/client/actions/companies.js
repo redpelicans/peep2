@@ -23,37 +23,37 @@ export const loadCompanies = () => (dispatch, getState) => {
   }
 };
 
-export const addCompany = company => dispatch => {
-  dispatch({
+export const addCompany = company => {
+  return {
     type: ADD_COMPANY,
     payload: company,
     replyTo: COMPANY_ADDED,
-  });
+  };
 };
 
-export const updateCompany = company => dispatch => {
-  dispatch({
+export const updateCompany = company => {
+  return {
     type: UPDATE_COMPANY,
     payload: company,
     replyTo: COMPANY_UPDATED,
-  });
+  };
 };
 
-export const deleteCompany = id => dispatch => {
-  dispatch({
+export const deleteCompany = id => {
+  return {
     type: DELETE_COMPANY,
-    payload: id,
+    payload: { _id: id },
     replyTo: COMPANY_DELETED,
-  });
+  };
 };
 
-export const togglePreferred = company => dispatch => {
+export const togglePreferred = company => {
   const { _id, preferred } = company;
-  dispatch({
+  return {
     type: SET_PREFERRED_COMPANY,
     replyTo: COMPANY_UPDATED,
     payload: { _id, preferred: !preferred },
-  });
+  };
 };
 
 export const togglePreferredFilter = () => ({ type: TOGGLE_PREFERRED_FILTER });

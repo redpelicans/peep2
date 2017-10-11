@@ -14,10 +14,8 @@ const fields = {
   type: {
     label: 'Type',
     domainValues: [
-      { id: '', value: 'none' },
       { id: 'client', value: 'Client' },
       { id: 'partner', value: 'Partner' },
-      { id: 'tenant', value: 'Tenant' },
     ],
     required: true,
     component: SelectField,
@@ -31,31 +29,26 @@ const fields = {
   },
   website: {
     label: 'Website',
-    required: true,
     component: InputField,
     validate: Yup.string(),
   },
   street: {
     label: 'Street',
-    required: true,
     component: InputField,
     validate: Yup.string(),
   },
   zipcode: {
     label: 'Zipcode',
-    required: true,
     component: InputField,
     validate: Yup.string(),
   },
   city: {
     label: 'City',
-    required: true,
     component: CitiesSelectField,
     validate: Yup.string(),
   },
   country: {
     label: 'Country',
-    required: true,
     component: CountriesSelectField,
     validate: Yup.string(),
   },
@@ -63,7 +56,7 @@ const fields = {
     label: 'Tags',
     component: TagsSelectField,
   },
-  notes: {
+  note: {
     label: 'Note',
     component: MarkDownField,
   },
