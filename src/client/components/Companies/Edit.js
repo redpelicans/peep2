@@ -54,7 +54,7 @@ export const Add = ({
         <Spacer size={15} />
         <AvatarSelector
           formId="addCompany"
-          color={values.avatar ? values.avatar.color : ''}
+          color={values.color}
           name={values.name}
           lastName={values.lastName}
           setFieldTouched={setFieldTouched}
@@ -133,7 +133,7 @@ export default compose(
   withFormik({
     handleSubmit: (
       {
-        avatar,
+        color,
         name,
         note = '',
         tags,
@@ -150,7 +150,7 @@ export default compose(
       const { updateCompany, history } = props;
       const newCompany = {
         address: { street, zipcode, city, country },
-        avatar,
+        avatar: { color },
         name,
         note,
         tags: map(tag => tag.value, tags),
@@ -164,6 +164,7 @@ export default compose(
     validationSchema: getValidationSchema(),
     mapPropsToValues: ({ company = { address: {} } }) => ({
       ...company,
+      color: company.avatar ? company.avatar.color : '',
       street: company.address.street ? company.address.street : '',
       zipcode: company.address.zipcode ? company.address.zipcode : '',
       city: company.address.city ? company.address.city : '',

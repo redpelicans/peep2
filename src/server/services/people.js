@@ -1,160 +1,205 @@
 /* eslint-disable no-param-reassign, no-shadow */
 
 import debug from 'debug';
+import Yup from 'yup';
 import moment from 'moment';
 import uppercamelcase from 'uppercamelcase';
 import R from 'ramda';
 import { ObjectId } from 'mongobless';
 import { Person, Preference, Note } from '../models';
-import { emitEvent, formatOutput } from './utils';
+import {
+  checkUser,
+  emitEvent,
+  formatOutput,
+  ObjectIdSchemaType,
+  validate,
+} from './utils';
 
 const loginfo = debug('peep:evtx');
 const SERVICE_NAME = 'people';
-const inMaker = (data) => {
-  const attrs = ['_id', 'prefix', 'firstName', 'lastName', 'type', 'jobType', 'jobDescription', 'department', 'roles', 'email', 'birthdate'];
-  const res = R.pick(attrs, data);
-  if (data.companyId) res.companyId = ObjectId(data.companyId);
-  if (res.type !== 'worker') res.roles = undefined;
-  if (res.type === 'worker' && data.skills) {
-    res.skills = R.compose(R.sortBy(R.identity), R.uniq, R.filter(R.identity), R.map(t => uppercamelcase(t)))(data.skills);
+
+const phoneSchema = Yup.object().shape({
+  label: Yup.string().required(),
+  number: Yup.string().required(),
+});
+
+const addSchema = Yup.object().shape({
+  prefix: Yup.string()
+    .trim()
+    .oneOf(['Mr', 'Mrs'])
+    .required(),
+  firstName: Yup.string()
+    .trim()
+    .required(),
+  lastName: Yup.string()
+    .trim()
+    .required(),
+  type: Yup.string()
+    .oneOf(['client', 'worker', 'contact'])
+    .required(),
+  email: Yup.string()
+    .email()
+    .required(),
+  jobType: Yup.string()
+    .oneOf(['designer', 'developer', 'manager', 'sales'])
+    .required(),
+  companyId: new ObjectIdSchemaType().required(),
+  phones: Yup.array().of(phoneSchema),
+  tags: Yup.array().of(Yup.string()),
+  skills: Yup.array().of(Yup.string()),
+  roles: Yup.array().of(Yup.string()),
+  avatar: Yup.object().shape({
+    color: Yup.string().required(),
+  }),
+  note: Yup.string(),
+});
+
+const updateSchema = addSchema.concat(
+  Yup.object().shape({
+    _id: new ObjectIdSchemaType().required(),
+  }),
+);
+
+const deleteSchema = Yup.object().shape({
+  _id: new ObjectIdSchemaType().required(),
+});
+
+const inMaker = input => {
+  const newPerson = { ...input };
+  if (input.type !== 'worker') newPerson.roles = undefined;
+  if (input.type === 'worker' && input.skills) {
+    newPerson.skills = R.compose(
+      R.sortBy(R.identity),
+      R.uniq,
+      R.filter(R.identity),
+      R.map(t => uppercamelcase(t)),
+    )(input.skills);
   }
-  if (data.phones) {
+  if (input.phones) {
     const pttrs = ['label', 'number'];
-    res.phones = R.compose(R.filter(p => p.number), R.map(p => R.pick(pttrs, p)))(data.phones);
+    newPerson.phones = R.compose(
+      R.filter(p => p.number),
+      R.map(p => R.pick(pttrs, p)),
+    )(input.phones);
   }
-  if (data.avatar) {
-    const avttrs = ['src', 'url', 'color', 'type'];
-    res.avatar = R.pick(avttrs, data.avatar);
+  if (input.tags) {
+    newPerson.tags = R.compose(
+      R.sortBy(R.identity),
+      R.uniq,
+      R.filter(R.identity),
+      R.map(t => uppercamelcase(t)),
+      R.map(R.trim),
+    )(input.tags);
   }
-  if (data.tags) {
-    res.tags = R.compose(R.sortBy(R.identity), R.uniq, R.filter(R.identity), R.map(t => uppercamelcase(t)))(data.tags);
+  if (input.roles) {
+    newPerson.roles = R.compose(
+      R.sortBy(R.identity),
+      R.uniq,
+      R.filter(R.identity),
+      R.map(R.trim),
+    )(input.roles);
   }
-  if (data.roles) {
-    res.roles = R.compose(R.sortBy(R.identity), R.uniq, R.filter(R.identity), R.map(t => uppercamelcase(t)))(data.roles);
-  }
-  return res;
+  return newPerson;
 };
 
 export const people = {
   load() {
-    return Person.loadAll().then(p => Preference.spread('person', this.user, p));
+    return Person.loadAll();
   },
-
-  loadOne(id) {
-    return Person
-      .loadOne(id)
-      .then(person => Preference.spread('person', this.user, [person]))
-      .then(people => people[0]);
-  },
-
 
   add(person) {
-    const isPreferred = Boolean(person.preferred);
+    console.dir(person, { depth: null });
     const noteContent = person.note;
     const newPerson = inMaker(person);
     newPerson.createdAt = new Date();
-    const insertOne = p => Person.collection.insertOne(p).then(R.prop('insertedId'));
+    const insertOne = p =>
+      Person.collection.insertOne(p).then(R.prop('insertedId'));
     const loadOne = id => Person.loadOne(id);
-    const updatePreference = p => Preference.update('person', this.user, isPreferred, p);
+    const updatePreference = p =>
+      Preference.update('person', this.user, isPreferred, p);
     const createNote = p => Note.create(noteContent, this.user, p);
 
     return insertOne(newPerson)
       .then(loadOne)
-      .then(updatePreference)
       .then(createNote)
-      .then(({ entity: addedPerson }) => {
-        addedPerson.preferred = isPreferred;
-        return addedPerson;
-      });
+      .then(({ entity }) => entity);
   },
 
   update(person) {
-    const isPreferred = Boolean(person.preferred);
+    console.dir(person, { depth: null });
     const newVersion = inMaker(person);
-    newVersion._id = ObjectId(person._id);
-    const loadOne = ({ _id: id }) => Person.loadOne(id);
-    const update = nextVersion => (previousVersion) => {
+    const loadOne = ({ _id }) => Person.loadOne(_id);
+    const update = nextVersion => previousVersion => {
       nextVersion.updatedAt = new Date();
-      return Person.collection.updateOne({ _id: previousVersion._id }, { $set: nextVersion }).then(() => ({ _id: previousVersion._id }));
+      return Person.collection
+        .updateOne({ _id: previousVersion._id }, { $set: nextVersion })
+        .then(() => ({ _id: previousVersion._id }));
     };
-    const updatePreference = p => Preference.update('person', this.user, isPreferred, p);
 
     return loadOne(newVersion)
       .then(update(newVersion))
-      .then(loadOne)
-      .then(updatePreference)
-      .then((updatedPerson) => {
-        updatedPerson.preferred = isPreferred;
-        return updatedPerson;
-      });
+      .then(loadOne);
   },
 
-  updateTags({ _id, tags }) {
-    const id = ObjectId(_id);
-    const newTags = inMaker({ tags });
-    const loadOne = id => Person.loadOne(id);
-    const updateTags = (id, tags) => Person.collection.updateOne({ _id: id }, { $set: { tags } }).then(() => id);
-    return updateTags(id, newTags).then(loadOne);
-  },
-
-  setPreferred({ _id, preferred }) {
-    const loadOne = id => Person.loadOne(id);
-    const updatePreference = person => Preference.update('person', this.user, preferred, person);
-
-    return loadOne(_id)
-      .then(updatePreference)
-      .then((person) => {
-        person.updatedAt = new Date();
-        person.preferred = preferred;
-        return person;
-      });
-  },
-
-  del(id) {
-    const deleteOne = () => Person.collection.updateOne({ _id: ObjectId(id) }, { $set: { updatedAt: new Date(), isDeleted: true } });
-    const deletePreference = () => Preference.delete(this.user, id);
-    const deleteNotes = () => Note.deleteForEntity(id);
+  del({ _id }) {
+    const deleteOne = () =>
+      Person.collection.updateOne(
+        { _id },
+        { $set: { updatedAt: new Date(), isDeleted: true } },
+      );
+    const deleteNotes = () => Note.deleteForEntity(_id);
 
     return deleteOne()
-      .then(deletePreference)
       .then(deleteNotes)
-      .then(id => ({ _id: id }));
+      .then(() => ({ _id }));
   },
 
   checkEmailUniqueness(email) {
     const emailToCheck = email.trim();
-    return Person.loadByEmail(emailToCheck, { _id: 1 })
-      .then((person) => ({ email: emailToCheck, ok: !person }));
+    return Person.loadByEmail(emailToCheck, { _id: 1 }).then(person => ({
+      email: emailToCheck,
+      ok: !person,
+    }));
   },
-
 };
 
-
-const outMaker = (person) => {
+const outMaker = person => {
   person.name = person.fullName();
-  if (!person.updatedAt && moment.duration(moment() - person.createdAt).asHours() < 2) person.isNew = true;
-  else if (person.updatedAt && moment.duration(moment() - person.updatedAt).asHours() < 1) person.isUpdated = true;
+  if (
+    !person.updatedAt &&
+    moment.duration(moment() - person.createdAt).asHours() < 2
+  )
+    person.isNew = true;
+  else if (
+    person.updatedAt &&
+    moment.duration(moment() - person.updatedAt).asHours() < 1
+  )
+    person.isUpdated = true;
   return person;
 };
 
 export const outMakerMany = R.map(outMaker);
 
-const init = (evtx) => {
+const init = evtx => {
   evtx.use(SERVICE_NAME, people);
-  evtx.service(SERVICE_NAME)
+  evtx
+    .service(SERVICE_NAME)
+    .before({
+      all: [checkUser()],
+      add: [validate(addSchema)],
+      update: [validate(updateSchema)],
+      del: [validate(deleteSchema)],
+    })
     .after({
       load: [formatOutput(outMakerMany)],
-      loadOne: [formatOutput(outMaker)],
       add: [formatOutput(outMaker), emitEvent('person:added')],
-      del: [emitEvent('person:deleted')],
       update: [formatOutput(outMaker), emitEvent('person:updated')],
-      updateTags: [formatOutput(outMaker), emitEvent('person:updated')],
+      del: [emitEvent('person:deleted')],
     });
 
   loginfo('people service registered');
 };
 
 export default init;
-
 
 /* eslint-disable no-param-reassign, no-shadow */

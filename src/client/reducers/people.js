@@ -72,7 +72,7 @@ const people = (state = initialState, action) => {
         },
       };
     case PEOPLE_DELETED:
-      return { data: omit([action.payload._id])(state.data) };
+      return { ...state, data: omit([action.payload._id])(state.data) };
     default:
       return state;
   }

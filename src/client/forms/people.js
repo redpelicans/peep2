@@ -14,6 +14,7 @@ import { randomColor } from '../utils/colors';
 const fields = {
   prefix: {
     label: 'Prefix',
+    defaultValue: 'Mr',
     domainValues: [{ id: 'Mr', value: 'Mr' }, { id: 'Mrs', value: 'Mrs' }],
     required: true,
     component: SelectField,
@@ -33,6 +34,7 @@ const fields = {
   },
   type: {
     label: 'Types',
+    defaultValue: 'contact',
     domainValues: [
       { id: 'client', value: 'Client' },
       { id: 'worker', value: 'Worker' },
@@ -55,7 +57,6 @@ const fields = {
       { id: 'developer', value: 'Developer' },
       { id: 'manager', value: 'Manager' },
       { id: 'sales', value: 'Sales' },
-      { id: 'business Manager', value: 'Business Manager' },
     ],
     required: true,
     component: SelectField,

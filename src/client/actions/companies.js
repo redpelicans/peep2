@@ -10,6 +10,8 @@ export const FILTER_COMPANY_LIST = 'filter:company:list';
 export const TOGGLE_PREFERRED_FILTER = 'toggle:preferred:companies';
 export const SET_PREFERRED_COMPANY = 'EvtX:Server:companies:setPreferred';
 export const SORT_COMPANY_LIST = 'sort:company:list';
+export const DELETE_COMPANY = 'EvtX:Server:companies:del';
+export const COMPANY_DELETED = 'companies:deleted';
 
 export const loadCompanies = () => (dispatch, getState) => {
   const { companies } = getState();
@@ -34,6 +36,14 @@ export const updateCompany = company => dispatch => {
     type: UPDATE_COMPANY,
     payload: company,
     replyTo: COMPANY_UPDATED,
+  });
+};
+
+export const deleteCompany = id => dispatch => {
+  dispatch({
+    type: DELETE_COMPANY,
+    payload: id,
+    replyTo: COMPANY_DELETED,
   });
 };
 

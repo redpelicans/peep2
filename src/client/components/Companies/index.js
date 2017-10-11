@@ -9,6 +9,7 @@ import {
   getSort,
   getGroupedTagsByCount,
 } from '../../selectors/companies';
+import { deleteCompany } from '../../actions/companies';
 import { List } from './List';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import {
@@ -42,6 +43,7 @@ export const Companies = ({
   filterCompanyList,
   handleFilterChange,
   tags,
+  deleteCompany,
 }) => (
   <Container>
     <Header>
@@ -64,7 +66,11 @@ export const Companies = ({
         <LinkButton to={getPathByName('addCompany')} iconName="plus" />
       </HeaderRight>
     </Header>
-    <List companies={companies} filterCompanyList={filterCompanyList} />
+    <List
+      companies={companies}
+      filterCompanyList={filterCompanyList}
+      deleteCompany={deleteCompany}
+    />
   </Container>
 );
 
@@ -76,6 +82,7 @@ Companies.propTypes = {
   sortCompanyList: PropTypes.func.isRequired,
   sort: PropTypes.object,
   handleFilterChange: PropTypes.func.isRequired,
+  deleteCompany: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -90,6 +97,7 @@ const actions = {
   sortCompanyList,
   togglePreferred,
   togglePreferredFilter,
+  deleteCompany,
 };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
