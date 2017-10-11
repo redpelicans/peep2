@@ -4,7 +4,7 @@ import { Button } from '@blueprintjs/core';
 import { compose, withHandlers } from 'recompose';
 import { withRouter } from 'react-router';
 
-const LinkButton = ({ iconName, className, handleClick }) => (
+export const LinkButton = ({ iconName, className, handleClick }) => (
   <Button iconName={iconName} onClick={handleClick} className={className} />
 );
 
