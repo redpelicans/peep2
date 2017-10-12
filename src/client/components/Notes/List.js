@@ -20,7 +20,7 @@ const sizes = [
   { mq: '1700px', columns: 5, gutter: 10 },
 ];
 
-export const List = ({ notes, people, findEntity }) => (
+export const List = ({ notes, people, findEntity, deleteNote }) => (
   <StyledContainer>
     {isEmpty(notes) ? (
       <EmptySearch>
@@ -35,6 +35,7 @@ export const List = ({ notes, people, findEntity }) => (
             note={note}
             person={people[note.authorId]}
             entity={findEntity(note.entityType, note.entityId)}
+            deleteNote={deleteNote}
           />
         ))}
       </MasonryLayout>
@@ -47,6 +48,7 @@ List.propTypes = {
   people: PropTypes.object.isRequired,
   companies: PropTypes.object.isRequired,
   findEntity: PropTypes.func.isRequired,
+  deleteNote: PropTypes.func.isRequired,
 };
 
 const enhance = withHandlers({

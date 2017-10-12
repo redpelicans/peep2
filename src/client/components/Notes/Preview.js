@@ -57,6 +57,7 @@ export const Preview = ({
   showDialog,
   hideDialog,
   isDeleteDialogOpen,
+  deleteNote,
 }) => (
   <PreviewContainer
     className="pt-card pt-elevation-0 pt-interactive"
@@ -68,7 +69,7 @@ export const Preview = ({
       isOpen={isDeleteDialogOpen}
       title="Would you like to delete this company?"
       reject={() => hideDialog()}
-      accept={() => console.log('delete Note')}
+      accept={() => deleteNote(note._id)}
     />
     {showActions && (
       <Actions>
@@ -98,6 +99,7 @@ Preview.propTypes = {
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
+  deleteNote: PropTypes.func.isRequired,
 };
 
 const enhance = withStateHandlers(
