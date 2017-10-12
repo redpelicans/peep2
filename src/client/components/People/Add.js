@@ -22,7 +22,7 @@ import AddOrEdit from './AddOrEdit';
 
 export const StyledContainer = styled(Container)`min-width: 300px;`;
 
-const Add = compose(
+export const Add = compose(
   withState('isCancelDialogOpen', 'showCancelDialog', false),
   withHandlers({
     cancel: ({ history }) => () => history.goBack(),

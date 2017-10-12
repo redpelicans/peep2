@@ -266,10 +266,6 @@ describe('Add component', () => {
         values={{}}
         setFieldTouched={() => {}}
         setFieldValue={() => {}}
-        showCancelDialog={() => {}}
-        isCancelDialogOpen={true}
-        cancel={() => {}}
-        requestCancel={() => {}}
       />,
     );
     should(wrapper.find(ModalConfirmation)).have.length(1);
@@ -285,10 +281,6 @@ describe('Add component', () => {
         values={{}}
         setFieldTouched={() => {}}
         setFieldValue={() => {}}
-        showCancelDialog={() => {}}
-        isCancelDialogOpen={true}
-        cancel={() => {}}
-        requestCancel={() => {}}
       />,
     );
     should(wrapper.find(AddOrEdit)).have.length(1);
@@ -308,10 +300,6 @@ describe('Editcomponent', () => {
         setFieldTouched={() => {}}
         setFieldValue={() => {}}
         people={{}}
-        showCancelDialog={() => {}}
-        isCancelDialogOpen={false}
-        cancel={() => {}}
-        requestCancel={() => {}}
       />,
     );
     should(wrapper.find(Header)).have.length(1);
