@@ -78,8 +78,6 @@ const AddOrEditForm = ({
   errors,
 }) => {
   const [from, to] = values['period'];
-  console.log('--------AddOrEditForm');
-  console.log(from, to);
   const newEvents = freeEventsFromPeriod({ from, to, events, calendar });
   const daysCount = compose(sum, pluck('value'))(newEvents);
   return (

@@ -121,14 +121,14 @@ export const events = {
   },
 
   updateEventGroup(eventGroup) {
-    const { groupId, type, workerId, status } = eventGroup;
+    const { groupId, type, workerId, status, description } = eventGroup;
     const deleteAll = () => Event.collection.remove({ groupId });
     const loadEventGroup = () => Event.loadAll({ groupId });
     const loadAll = ids => Event.loadAll({ _id: { $in: ids } });
     const insertAll = (previousEvents, nextEventGroup) => {
       const { events } = nextEventGroup;
       const newEvents = R.map(
-        e => ({ ...e, groupId, workerId, status, type }),
+        e => ({ ...e, groupId, workerId, status, type, description }),
         events,
       );
       return Event.collection.insertMany(newEvents).then(R.prop('insertedIds'));
