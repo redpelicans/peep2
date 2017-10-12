@@ -143,6 +143,7 @@ class Reactor {
     };
     evtx.service('companies').on('company:added', this.broadcast(pushEvent));
     evtx.service('companies').on('company:updated', this.broadcast(pushEvent));
+    evtx.service('companies').on('company:deleted', this.broadcast(pushEvent));
     evtx
       .service('companies')
       .on('company:setPreferred', this.broadcast(pushPreferredEvent));
@@ -169,6 +170,7 @@ class Reactor {
     };
     evtx.service('people').on('person:added', this.broadcast(pushEvent));
     evtx.service('people').on('person:updated', this.broadcast(pushEvent));
+    evtx.service('people').on('person:deleted', this.broadcast(pushEvent));
   }
 
   initNotes() {
