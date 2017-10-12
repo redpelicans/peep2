@@ -12,23 +12,19 @@ import {
   NameLink,
   Actions,
   ModalConfirmation,
+  Spacer,
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
-const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
-
-const StyledButton = styled(Button)`margin-left: 10px;`;
-
-export const Title = styled.p`
+export const Title = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-transform: capitalize;
   font-size: 1em;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   margin: 0;
   margin-left: 15px;
   color: ${Colors.LIGHT_GRAY5};
-  font-weight: bold;
 `;
 
 const TitleRow = styled.div`
@@ -81,12 +77,13 @@ export const Preview = ({
         </Title>
         {showActions && (
           <Actions>
-            <StyledLinkButton
+            <LinkButton
               to={getPathByName('editCompany', _id)}
               className="pt-small pt-button"
               iconName="pt-icon-edit"
             />
-            <StyledButton
+            <Spacer size="5" />
+            <Button
               className="pt-small pt-button"
               iconName="pt-icon-trash"
               onClick={() => showDialog()}

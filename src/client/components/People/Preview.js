@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { isEmpty, map } from 'ramda';
-import styled from 'styled-components';
 import { withStateHandlers } from 'recompose';
+import styled from 'styled-components';
 import { Button } from '@blueprintjs/core';
 import {
   LinkButton,
@@ -13,13 +13,10 @@ import {
   CompanyLink,
   Actions,
   ModalConfirmation,
+  Spacer,
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
-
-const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
-
-const StyledButton = styled(Button)`margin-left: 10px;`;
 
 export const TitleRow = styled.div`
   display: flex;
@@ -27,6 +24,7 @@ export const TitleRow = styled.div`
 `;
 
 export const StyledInfos = styled.div`
+  overflow: hidden;
   display: flex;
   margin-left: 15px;
   flex-direction: column;
@@ -81,12 +79,13 @@ export const Preview = ({
         </StyledInfos>
         {showActions && (
           <Actions>
-            <StyledLinkButton
+            <LinkButton
               to={getPathByName('editPerson', _id)}
               className="pt-small pt-button"
               iconName="pt-icon-edit"
             />
-            <StyledButton
+            <Spacer size="5" />
+            <Button
               className="pt-small pt-button"
               iconName="pt-icon-trash"
               onClick={() => showDialog()}

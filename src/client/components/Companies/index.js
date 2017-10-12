@@ -60,9 +60,9 @@ export const Companies = ({
         />
         <Spacer />
         <TagsMenu tags={tags} onClick={filterCompanyList} filter={filter} />
-        <Spacer size="10" />
+        <Spacer size="5" />
         <SortMenu sortTypes={sortTypes} onClick={sortCompanyList} sort={sort} />
-        <Spacer size="10" />
+        <Spacer size="5" />
         <LinkButton to={getPathByName('addCompany')} iconName="plus" />
       </HeaderRight>
     </Header>
@@ -99,6 +99,7 @@ const actions = {
   togglePreferredFilter,
   deleteCompany,
 };
+
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
