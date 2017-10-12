@@ -47,7 +47,7 @@ const addEventGroupSchema = Yup.object().shape({
   events: Yup.array()
     .of(addEventSchema)
     .required(),
-  description: Yup.string(),
+  description: Yup.string().nullable(),
 });
 
 const updateEventGroupSchema = Yup.object().shape({
@@ -64,7 +64,7 @@ const updateEventGroupSchema = Yup.object().shape({
   events: Yup.array()
     .of(addEventSchema)
     .required(),
-  description: Yup.string(),
+  description: Yup.string().nullable(),
 });
 
 const makeEventsFromGroup = ({
@@ -148,13 +148,11 @@ export const outMakerMany = R.map(outMaker);
 const emitUpdateEvent = () => ctx => {
   const { output: { previousEvents = [], nextEvents = [] } } = ctx;
   const name = 'events:deleted';
-  ctx.evtx
-    .service('events')
-    .emit(name, {
-      ...ctx,
-      message: { replyTo: name },
-      output: R.pluck('_id', previousEvents),
-    });
+  ctx.evtx.service('events').emit(name, {
+    ...ctx,
+    message: { replyTo: name },
+    output: R.pluck('_id', previousEvents),
+  });
   return Promise.resolve({ ...ctx, output: nextEvents });
 };
 
