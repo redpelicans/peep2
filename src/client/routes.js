@@ -13,6 +13,7 @@ import CompanyView from './components/Companies/View';
 import EditCompany from './components/Companies/Edit';
 import EditPerson from './components/People/Edit';
 import EditNote from './components/Notes/Edit';
+import AddNotes from './components/Notes/Add';
 import NotFound from './components/NotFound';
 
 const routes = {
@@ -95,6 +96,12 @@ const routes = {
     exact: true,
     auth: true,
     component: Notes,
+  },
+  addNotes: {
+    path: '/notes/add',
+    exact: true,
+    auth: true,
+    component: AddNotes,
   },
   editNote: {
     path: '/note/edit/:id',
