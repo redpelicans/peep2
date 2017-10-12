@@ -52,8 +52,8 @@ export const deletePeople = id => dispatch => {
   });
 };
 
-export const checkEmail = email => dispatch => {
-  // if (!email) return Promise.reject(new Error('Email cannot be null'));
+export const checkEmail = ({ previous, next: email } = {}) => dispatch => {
+  if (previous === email) return Promise.resolve(true);
   const promise = new Promise(resolve => {
     const callback = (err, res) => {
       return resolve(!err && res.ok);

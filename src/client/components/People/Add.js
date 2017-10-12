@@ -124,17 +124,20 @@ Add.propTypes = {
   setFieldValue: PropTypes.func.isRequired,
 };
 
-const actions = { addPeople, checkEmail };
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+const actions = { addPeople };
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators(actions, dispatch),
+  dispatch,
+});
 
-const FormikAdd = ({ checkEmail, ...props }) => (
+const FormikAdd = ({ dispatch, ...props }) => (
   <Formik
     initialValues={defaultValues}
     validationSchema={getValidationSchema({
       email: {
         name: 'isUniq',
         message: 'Email already exists',
-        test: checkEmail,
+        test: email => dispatch(checkEmail({ next: email })),
       },
     })}
     onSubmit={({
@@ -177,8 +180,8 @@ const FormikAdd = ({ checkEmail, ...props }) => (
 );
 
 FormikAdd.propTypes = {
-  checkEmail: PropTypes.func.isRequired,
   addPeople: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 export default connect(null, mapDispatchToProps)(FormikAdd);
