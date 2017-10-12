@@ -1,4 +1,4 @@
-import { map, omit } from 'ramda';
+import { map, filter, indexOf } from 'ramda';
 import { format } from 'date-fns';
 import {
   NOTES_DELETED,
@@ -49,7 +49,13 @@ const notes = (state = initialState, action) => {
       return { ...state, sort: { by: action.sortBy, order: newOrder } };
     }
     case NOTES_DELETED:
-      return { ...state, data: omit([action.payload._id])(state.data) };
+      return {
+        ...state,
+        data: filter(
+          note => indexOf(note._id, action.payload._id) === -1,
+          state.data,
+        ),
+      };
     default:
       return state;
   }
