@@ -14,10 +14,10 @@ const CompagnyForm = styled.form`
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
   grid-template-areas: 'type' 'name' 'website' 'zipcode' 'street' 'country'
-    'city' 'tags' 'notes';
+    'city' 'tags' 'note';
   @media (min-width: 700px) {
     grid-template-areas: 'type name website' 'zipcode street street'
-      'country city city' 'tags tags tags' 'notes notes notes';
+      'country city city' 'tags tags tags' 'note note note';
   }
 `;
 
@@ -105,7 +105,7 @@ const AddOrEditForm = ({
       />
       {type === 'add' && (
         <StyledFormField
-          field={getField('notes')}
+          field={getField('note')}
           values={values}
           errors={errors}
           touched={touched}

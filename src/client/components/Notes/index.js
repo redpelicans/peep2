@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
 import styled from 'styled-components';
-import { filterNotesList, sortNotesList } from '../../actions/notes';
+import {
+  filterNotesList,
+  sortNotesList,
+  deleteNote,
+} from '../../actions/notes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import {
   Container,
@@ -35,6 +39,7 @@ const Notes = ({
   people,
   sort,
   filter = '',
+  deleteNote,
 }) => {
   if (!notes || !people || !companies) return null;
   return (
@@ -57,7 +62,12 @@ const Notes = ({
           <StyledLinkButton to="/notes/add" iconName="plus" />
         </HeaderRight>
       </Header>
-      <List notes={notes} companies={companies} people={people} />
+      <List
+        notes={notes}
+        companies={companies}
+        people={people}
+        deleteNote={deleteNote}
+      />
     </Container>
   );
 };
@@ -71,6 +81,7 @@ Notes.propTypes = {
   sortNotesList: PropTypes.func.isRequired,
   handleFilterChange: PropTypes.func.isRequired,
   sort: PropTypes.object.isRequired,
+  deleteNote: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -81,7 +92,7 @@ const mapStateToProps = state => ({
   sort: getSort(state),
 });
 
-const actions = { filterNotesList, sortNotesList };
+const actions = { filterNotesList, sortNotesList, deleteNote };
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 

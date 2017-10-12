@@ -14,11 +14,11 @@ const PeopleForm = styled.form`
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
   grid-template-areas: 'prefix' 'firstName' 'lastName' 'type' 'email' 'jobType'
-    'companyId' 'phones' 'tags' 'roles' 'notes';
+    'companyId' 'phones' 'tags' 'roles' 'note';
   @media (min-width: 700px) {
     grid-template-areas: 'prefix firstName lastName' 'type email jobType'
       'companyId companyId companyId' 'phones phones phones' 'tags tags tags'
-      'roles roles roles' 'notes notes notes';
+      'roles roles roles' 'note note note';
   }
 `;
 
@@ -133,7 +133,7 @@ const AddOrEditForm = ({
       />
       {type === 'add' && (
         <StyledFormField
-          field={getField('notes')}
+          field={getField('note')}
           values={values}
           errors={errors}
           touched={touched}
