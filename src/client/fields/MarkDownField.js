@@ -90,7 +90,7 @@ export class MarkDownField extends Component {
             <TextAreaStyled
               name={name}
               className="pt-input pt-fill"
-              value={value}
+              value={value || ''}
               onChange={handleChange}
               dir="auto"
               {...props}
