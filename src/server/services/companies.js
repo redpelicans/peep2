@@ -48,7 +48,7 @@ const updateSchema = addSchema.concat(
   }),
 );
 
-export const inMaker = input => {
+export const inMaker = (author, input) => {
   const newCompany = R.omit(['note'], input);
   if (input.tags) {
     newCompany.tags = R.compose(
@@ -58,6 +58,7 @@ export const inMaker = input => {
       R.map(t => uppercamelcase(t)),
     )(input.tags);
   }
+  newCompany.authorId = author._id;
   return newCompany;
 };
 
@@ -71,7 +72,8 @@ export const company = {
   },
 
   update(input) {
-    const newVersion = inMaker(input);
+    const { user: author } = this;
+    const newVersion = inMaker(author, input);
     const loadOne = ({ _id }) => Company.loadOne(_id);
     const update = nextVersion => previousVersion => {
       nextVersion.updatedAt = new Date();
@@ -86,12 +88,13 @@ export const company = {
 
   add(input) {
     const noteContent = input.note;
-    const newCompany = inMaker(input);
+    const { user: author } = this;
+    const newCompany = inMaker(author, input);
     newCompany.createdAt = new Date();
     const insertOne = company =>
       Company.collection.insertOne(company).then(R.prop('insertedId'));
     const loadOne = id => Company.loadOne(id);
-    const createNote = company => Note.create(noteContent, this.user, company);
+    const createNote = company => Note.create(noteContent, author, company);
 
     return insertOne(newCompany)
       .then(loadOne)
@@ -103,6 +106,7 @@ export const company = {
   },
 
   del({ _id }) {
+    const { user: author } = this;
     const deleteOne = () =>
       Company.collection.updateOne(
         { _id },
@@ -112,7 +116,7 @@ export const company = {
 
     return deleteOne()
       .then(deleteNotes)
-      .then(() => ({ _id }));
+      .then(() => ({ _id, authorId: author._id }));
   },
 };
 

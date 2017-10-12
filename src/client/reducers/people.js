@@ -1,5 +1,4 @@
 import { compose, fromPairs, map, omit } from 'ramda';
-import { format } from 'date-fns';
 import {
   PEOPLE_LOADED,
   FILTER_PEOPLE_LIST,
@@ -11,20 +10,15 @@ import {
   SORT_PEOPLE_LIST,
 } from '../actions/people';
 
-const formatString = 'MM/DD/YYYY';
-
 const make = person => {
   const { firstName, lastName } = person;
   const updatedPerson = {
     ...person,
     name: `${firstName} ${lastName}`,
     typeName: 'person',
-    createdAt: person.createdAt
-      ? format(person.createdAt, formatString)
-      : undefined,
+    createdAt: person.createdAt ? person.createdAt : undefined,
   };
-  if (person.updatedAt)
-    updatedPerson.updatedAt = format(Date.now(), formatString);
+  if (person.updatedAt) updatedPerson.updatedAt = person.updatedAt;
   return updatedPerson;
 };
 
@@ -32,7 +26,7 @@ const makeAll = compose(fromPairs, map(o => [o._id, make(o)]));
 
 const initialState = {
   data: {},
-  sort: { by: '', order: '' },
+  sort: { by: 'name', order: 'asc' },
   filter: '',
 };
 
@@ -42,10 +36,7 @@ const people = (state = initialState, action) => {
       return { ...state, preferredFilter: !state.preferredFilter };
     case SORT_PEOPLE_LIST: {
       const { by, order } = state.sort;
-      const newOrder =
-        by === action.sortBy && order === 'asc' && !action.revertOrder
-          ? 'desc'
-          : 'asc';
+      const newOrder = by === action.sortBy && order === 'asc' ? 'desc' : 'asc';
       return { ...state, sort: { by: action.sortBy, order: newOrder } };
     }
     case FILTER_PEOPLE_LIST:

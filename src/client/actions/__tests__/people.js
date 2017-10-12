@@ -1,7 +1,7 @@
 import should from 'should';
 import MockedSocket from 'socket.io-mock';
 import reducer from '../../reducers';
-import { configureStore } from './utils';
+import { configureStore } from '../utils';
 import { socketIoMiddleWare } from '../../middlewares';
 import {
   loadPeople,
@@ -64,12 +64,15 @@ describe('Action:people', () => {
   it('Should add a person', done => {
     const socket = new MockedSocket();
     const _id = 123;
-    const firstname = 'test';
-    const DATA = { _id, firstname };
+    const expectedFirstname = 'test2';
+    const DATA = { _id, firstname: expectedFirstname };
     const hook = {
       [PEOPLE_ADDED]: getState => {
         const { people: { data } } = getState();
-        should(data[_id].firstname).eql(firstname);
+        if (data[_id]) {
+          const { firstname } = data[_id];
+          should(firstname).eql(expectedFirstname);
+        }
         done();
       },
     };
@@ -87,13 +90,15 @@ describe('Action:people', () => {
   it('Should update a person', done => {
     const socket = new MockedSocket();
     const _id = 123;
-    const firstname = 'test2';
-    const DATA = { _id, firstname };
+    const expectedFirstname = 'test2';
+    const DATA = { _id, firstname: expectedFirstname };
     const hook = {
       [PEOPLE_UPDATED]: getState => {
         const { people: { data } } = getState();
-        console.log(data);
-        should(data[_id].firstname).eql(firstname);
+        if (data[_id]) {
+          const { firstname } = data[_id];
+          should(firstname).eql(expectedFirstname);
+        }
         done();
       },
     };
@@ -111,12 +116,15 @@ describe('Action:people', () => {
   it('Should delete a person', done => {
     const socket = new MockedSocket();
     const _id = 123;
-    const firstname = 'test';
-    const DATA = { _id, firstname };
+    const expectedFirstname = 'test2';
+    const DATA = { _id, firstname: expectedFirstname };
     const hook = {
       [PEOPLE_DELETED]: getState => {
         const { people: { data } } = getState();
-        data.should.not.containEql({ _id, firstname });
+        if (data[_id]) {
+          const { firstname } = data[_id];
+          should(firstname).eql(expectedFirstname);
+        }
         done();
       },
     };
@@ -136,8 +144,8 @@ describe('Action:people', () => {
     const FILTER = 'filter';
     const hook = {
       [FILTER_PEOPLE_LIST]: getState => {
-        const { people } = getState();
-        should(people.filter).eql(FILTER);
+        const { people: { filter } } = getState();
+        should(filter).eql(FILTER);
         done();
       },
     };
@@ -148,21 +156,8 @@ describe('Action:people', () => {
     const NAME = 'name';
     const hook = {
       [SORT_PEOPLE_LIST]: getState => {
-        const { people } = getState();
-        should(people.sort.by).eql(NAME);
-        done();
-      },
-    };
-    const store = configureStore(reducer, {}, hook);
-    store.dispatch(sortPeopleList(NAME));
-  });
-  it('Order should be eql to asc', done => {
-    const NAME = 'name';
-    const ASC = 'asc';
-    const hook = {
-      [SORT_PEOPLE_LIST]: getState => {
-        const { people } = getState();
-        should(people.sort.order).eql(ASC);
+        const { people: { sort: { by } } } = getState();
+        should(by).eql(NAME);
         done();
       },
     };
@@ -172,13 +167,26 @@ describe('Action:people', () => {
   it('Order should be eql to desc', done => {
     const NAME = 'name';
     const DESC = 'desc';
+    const hook = {
+      [SORT_PEOPLE_LIST]: getState => {
+        const { people: { sort: { order } } } = getState();
+        should(order).eql(DESC);
+        done();
+      },
+    };
+    const store = configureStore(reducer, {}, hook);
+    store.dispatch(sortPeopleList(NAME));
+  });
+  it('Order should be eql to asc', done => {
+    const NAME = 'name';
+    const ASC = 'asc';
     let count = 0;
     const hook = {
       [SORT_PEOPLE_LIST]: getState => {
-        const { people } = getState();
         count++;
         if (count === 2) {
-          should(people.sort.order).eql(DESC);
+          const { people: { sort: { order } } } = getState();
+          should(order).eql(ASC);
           done();
         }
       },

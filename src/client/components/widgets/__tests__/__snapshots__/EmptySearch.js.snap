@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmptySearch /> should render an <EmptySearch /> 1`] = `
+ShallowWrapper {
+  "complexSelector": ComplexSelector {
+    "buildPredicate": [Function],
+    "childrenOfNode": [Function],
+    "findWhereUnwrapped": [Function],
+  },
+  "length": 1,
+  "node": <span
+    className="sc-bdVaJa iejKxA"
+/>,
+  "nodes": Array [
+    <span
+      className="sc-bdVaJa iejKxA"
+/>,
+  ],
+  "options": Object {},
+  "renderer": ReactShallowRenderer {
+    "_context": Object {},
+    "_element": <styled.span />,
+    "_instance": StyledComponent {
+      "attrs": Object {},
+      "context": Object {},
+      "props": Object {},
+      "refs": Object {},
+      "state": Object {
+        "generatedClassName": "iejKxA",
+        "theme": null,
+      },
+      "unsubscribeId": -1,
+      "updater": Updater {
+        "_renderer": [Circular],
+      },
+    },
+    "_newState": Object {
+      "generatedClassName": "iejKxA",
+      "theme": null,
+    },
+    "_rendered": <span
+      className="sc-bdVaJa iejKxA"
+/>,
+    "_rendering": false,
+    "_updater": Updater {
+      "_renderer": [Circular],
+    },
+    "getRenderOutput": [Function],
+    "render": [Function],
+  },
+  "root": [Circular],
+  "unrendered": <styled.span />,
+}
+`;

@@ -3,6 +3,7 @@ import { loadPeople } from './people';
 import { loadNotes } from './notes';
 import { loadCalendar } from './calendar';
 
+const PEEP_TOKEN = 'peepToken';
 export const LOGIN_REQUEST = 'EvtX:Server:auth:login';
 export const CHECK_TOKEN = 'EvtX:Server:auth:checkToken';
 export const USER_LOGGED = 'auth:logged';
@@ -21,7 +22,7 @@ export const checkToken = callback => ({
 });
 
 export const userLogged = (user, token) => dispatch => {
-  localStorage.setItem('peepToken', token);
+  localStorage.setItem(PEEP_TOKEN, token);
   dispatch({ type: USER_LOGGED, payload: { user, token } });
   dispatch(loadCompanies());
   dispatch(loadPeople());
@@ -30,7 +31,7 @@ export const userLogged = (user, token) => dispatch => {
 };
 
 export const logout = () => dispatch => {
-  localStorage.removeItem('peepToken');
+  localStorage.removeItem(PEEP_TOKEN);
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_LOGGED_OUT });
 };

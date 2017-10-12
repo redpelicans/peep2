@@ -5,8 +5,7 @@ const extendWithRequired = ({ label, required }) => rule =>
   required ? rule.required(`'${label}' is required!`) : rule;
 const extendWithDomainValues = ({ domainValues }) => rule =>
   domainValues ? rule.oneOf(getDomainIds(domainValues)) : rule;
-const extendWithValidateRule = fn => rule =>
-  fn ? rule.test({ name: 'asyncValidate', test: fn.validate }) : rule;
+const extendWithValidateRule = test => rule => (test ? rule.test(test) : rule);
 const makeValidationRule = (name, field, extend = {}) => {
   const { validate } = field;
   if (!validate) return;

@@ -1,5 +1,4 @@
 import { compose, fromPairs, map, omit } from 'ramda';
-import { format } from 'date-fns';
 import {
   FILTER_COMPANY_LIST,
   SORT_COMPANY_LIST,
@@ -11,25 +10,20 @@ import {
   COMPANY_DELETED,
 } from '../actions/companies';
 
-const formatString = 'MM/DD/YYYY';
-
 const make = company => {
   const updatedCompany = {
     ...company,
     typeName: 'company',
-    createdAt: company.createdAt
-      ? format(company.createdAt, formatString)
-      : undefined,
+    createdAt: company.createdAt ? company.createdAt : undefined,
   };
-  if (company.updatedAt)
-    updatedCompany.updatedAt = format(Date.now(), formatString);
+  if (company.updatedAt) updatedCompany.updatedAt = company.updatedAt;
   return updatedCompany;
 };
 const makeAll = compose(fromPairs, map(c => [c._id, make(c)]));
 
 const initialState = {
   data: {},
-  sort: { by: '', order: '' },
+  sort: { by: 'name', order: 'asc' },
   filter: '',
 };
 

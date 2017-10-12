@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { compose, withStateHandlers } from 'recompose';
 import { isEmpty, map, find, propEq } from 'ramda';
-import { Colors } from '@blueprintjs/core';
+import { Colors, Button } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { deleteNote } from '../../actions/notes';
+import { deleteNote, deletePeople } from '../../actions/notes';
+
 import {
   Title,
   Container,
@@ -20,6 +22,7 @@ import {
   Tag,
   Spacer,
   Dates,
+  ModalConfirmation,
 } from '../widgets';
 import NotesView from './NotesView';
 
@@ -240,6 +243,10 @@ const Person = ({
   history,
   match: { params: { id } },
   deleteNote,
+  deletePeople,
+  isDeleteDialogOpen,
+  showDialog,
+  hideDialog,
 }) => {
   const person = people[id];
   if (!person || !companies) return null;
@@ -247,6 +254,15 @@ const Person = ({
   person.company = company ? company.name : '';
   return (
     <Container>
+      <ModalConfirmation
+        isOpen={isDeleteDialogOpen}
+        title="Would you like to delete this person?"
+        reject={() => hideDialog()}
+        accept={() => {
+          deletePeople(id);
+          history.goBack();
+        }}
+      />
       <Header>
         <HeaderLeft>
           <GoBack history={history} />
@@ -256,6 +272,12 @@ const Person = ({
           <Title title={`${person.name}`} />
         </HeaderLeft>
         <HeaderRight>
+          <Button
+            iconName="pt-icon-trash"
+            className="pt-button pt-large"
+            onClick={() => showDialog()}
+          />
+          <Spacer />
           <LinkButton
             to={getPathByName('editPerson', id)}
             iconName="pt-icon-edit"
@@ -274,6 +296,10 @@ Person.propTypes = {
   match: PropTypes.object,
   history: PropTypes.object,
   deleteNote: PropTypes.func.isRequired,
+  deletePeople: PropTypes.func.isRequired,
+  isDeleteDialogOpen: PropTypes.bool.isRequired,
+  showDialog: PropTypes.func.isRequired,
+  hideDialog: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -281,7 +307,20 @@ const mapStateToProps = state => ({
   companies: getCompanies(state),
 });
 
-const actions = { getPeople, deleteNote };
+const actions = { getPeople, deletePeople, deleteNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Person);
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withStateHandlers(
+    {
+      isDeleteDialogOpen: false,
+    },
+    {
+      showDialog: () => () => ({ isDeleteDialogOpen: true }),
+      hideDialog: () => () => ({ isDeleteDialogOpen: false }),
+    },
+  ),
+);
+
+export default enhance(Person);

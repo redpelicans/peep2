@@ -66,7 +66,7 @@ const deleteSchema = Yup.object().shape({
   _id: new ObjectIdSchemaType().required(),
 });
 
-const inMaker = input => {
+const inMaker = (author, input) => {
   const newPerson = R.omit(['note'], input);
   if (input.type !== 'worker') newPerson.roles = undefined;
   if (input.type === 'worker' && input.skills) {
@@ -101,6 +101,7 @@ const inMaker = input => {
       R.map(R.trim),
     )(input.roles);
   }
+  newPerson.authorId = author._id;
   return newPerson;
 };
 
@@ -115,12 +116,13 @@ export const people = {
 
   add(input) {
     const noteContent = input.note;
-    const newPerson = inMaker(input);
+    const { user: author } = this;
+    const newPerson = inMaker(author, input);
     newPerson.createdAt = new Date();
     const insertOne = p =>
       Person.collection.insertOne(p).then(R.prop('insertedId'));
     const loadOne = id => Person.loadOne(id);
-    const createNote = person => Note.create(noteContent, this.user, person);
+    const createNote = person => Note.create(noteContent, author, person);
 
     return insertOne(newPerson)
       .then(loadOne)
@@ -132,7 +134,8 @@ export const people = {
   },
 
   update(input) {
-    const newVersion = inMaker(input);
+    const { user: author } = this;
+    const newVersion = inMaker(author, input);
     const loadOne = ({ _id }) => Person.loadOne(_id);
     const update = nextVersion => previousVersion => {
       nextVersion.updatedAt = new Date();
@@ -147,6 +150,7 @@ export const people = {
   },
 
   del({ _id }) {
+    const { user: author } = this;
     const deleteOne = () =>
       Person.collection.updateOne(
         { _id },
@@ -156,7 +160,7 @@ export const people = {
 
     return deleteOne()
       .then(deleteNotes)
-      .then(() => ({ _id }));
+      .then(() => ({ _id, authorId: author._id }));
   },
 
   checkEmailUniqueness(email) {

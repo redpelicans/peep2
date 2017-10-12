@@ -73,7 +73,7 @@ export const Edit = compose(
             setFieldValue={setFieldValue}
           />
           <Spacer />
-          <Title title={'Edit People'} />
+          <Title title={'Edit Person'} />
         </HeaderLeft>
         <HeaderRight>
           <Button
@@ -123,47 +123,57 @@ Edit.propTypes = {
   values: PropTypes.object.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
-  people: PropTypes.object,
+  person: PropTypes.object,
 };
 
-const actions = { updatePeople, checkEmail };
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+const actions = { updatePeople };
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators(actions, dispatch),
+  dispatch,
+});
 const mapStateToProps = (state, props) => {
   const { match: { params: { id } = {} }, history } = props;
   if (getPerson(state, id) === undefined) {
     history.push(getPathByName('notfound'));
   }
   return {
-    people: getPerson(state, id),
+    person: getPerson(state, id),
   };
 };
 
 const FormikEdit = ({
   updatePeople,
-  checkEmail,
-  people = {},
+  person = {},
   history,
+  dispatch,
   ...props
 }) => (
   <Formik
     initialValues={{
-      ...people,
-      phones: people.phones
+      ...person,
+      phones: person.phones
         ? map(
             phone => ({ type: phone.label, number: phone.number }),
-            people.phones,
+            person.phones,
           )
         : [],
-      color: people.avatar ? people.avatar.color : '',
-      company: people.companyId,
-      roles: people.roles
-        ? map(role => ({ value: role, label: role }), people.roles)
+      color: person.avatar ? person.avatar.color : '',
+      company: person.companyId,
+      roles: person.roles
+        ? map(role => ({ value: role, label: role }), person.roles)
         : [],
-      tags: people.tags
-        ? map(tag => ({ value: tag, label: tag }), people.tags)
+      tags: person.tags
+        ? map(tag => ({ value: tag, label: tag }), person.tags)
         : [],
     }}
-    validationSchema={getValidationSchema({ email: { validate: checkEmail } })}
+    validationSchema={getValidationSchema({
+      email: {
+        name: 'isUniq',
+        message: 'Email already exists',
+        test: email =>
+          dispatch(checkEmail({ previous: person.email, next: email })),
+      },
+    })}
     onSubmit={({
       color,
       firstName,
@@ -206,9 +216,9 @@ const FormikEdit = ({
 );
 
 FormikEdit.propTypes = {
-  checkEmail: PropTypes.func.isRequired,
   updatePeople: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  people: PropTypes.object,
+  person: PropTypes.object,
+  dispatch: PropTypes.func.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FormikEdit);

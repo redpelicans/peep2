@@ -1,5 +1,4 @@
 import { map, filter, indexOf } from 'ramda';
-import { format } from 'date-fns';
 import {
   NOTES_DELETED,
   NOTE_ADDED,
@@ -8,19 +7,13 @@ import {
   SORT_NOTES_LIST,
 } from '../actions/notes';
 
-const formatString = 'dddd, MMMM Do YYYY';
-
 const make = note => {
   const updatedNote = {
     ...note,
     typeName: 'note',
-    createdAt: note.createdAt
-      ? format(note.createdAt, formatString)
-      : undefined,
+    createdAt: note.createdAt ? note.createdAt : undefined,
   };
-  updatedNote.updatedAt = note.updatedAt
-    ? format(note.updatedAt, formatString)
-    : format(note.createdAt, formatString);
+  updatedNote.updatedAt = note.updatedAt ? note.updatedAt : note.createdAt;
   return updatedNote;
 };
 
@@ -28,7 +21,7 @@ const makeAll = map(n => make(n));
 
 const initialState = {
   data: [],
-  sort: { by: '', order: '' },
+  sort: { by: 'createdAt', order: 'desc' },
   filter: '',
 };
 

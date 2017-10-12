@@ -52,13 +52,11 @@ export const deletePeople = id => dispatch => {
   });
 };
 
-export const checkEmail = email => dispatch => {
-  if (!email) return Promise.reject(new Error('Email cannot be null'));
-  const promise = new Promise((resolve, reject) => {
+export const checkEmail = ({ previous, next: email } = {}) => dispatch => {
+  if (previous === email) return Promise.resolve(true);
+  const promise = new Promise(resolve => {
     const callback = (err, res) => {
-      if (err) return reject(err);
-      if (!res.ok) return reject(new Error('Email is not uniq'));
-      return resolve(res.email);
+      return resolve(!err && res.ok);
     };
     const action = {
       type: CHECK_EMAIL,
@@ -81,10 +79,9 @@ export const onPreferredClick = person => dispatch => {
 
 export const togglePreferredFilter = () => ({ type: TOGGLE_PREFERRED_FILTER });
 
-export const sortPeopleList = (sortBy, revertOrder) => ({
+export const sortPeopleList = sortBy => ({
   type: SORT_PEOPLE_LIST,
   sortBy,
-  revertOrder,
 });
 
 export const onTagClick = filter => ({

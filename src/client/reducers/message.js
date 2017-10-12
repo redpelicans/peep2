@@ -17,43 +17,51 @@ const message = (state = { id: 0 }, action) => {
         ...payload,
       };
     case COMPANY_ADDED: {
-      const { name, authorId } = payload;
+      const { name, authorId, _id } = payload;
       return {
         id: state.id + 1,
         type: SUCCESS,
         icon: 'pt-icon-home',
         message: `Company '${name}' added`,
         authorId,
+        entityId: _id,
+        actionType: type,
       };
     }
     case COMPANY_UPDATED: {
-      const { name, authorId } = payload;
+      const { name, authorId, _id } = payload;
       return {
         id: state.id + 1,
         type: SUCCESS,
         icon: 'pt-icon-home',
         message: `Company '${name}' updated`,
         authorId,
+        entityId: _id,
+        actionType: type,
       };
     }
     case PEOPLE_ADDED: {
-      const { name, authorId } = payload;
+      const { name, authorId, _id } = payload;
       return {
         id: state.id + 1,
         type: SUCCESS,
         icon: 'pt-icon-people',
         message: `People '${name}' added`,
         authorId,
+        entityId: _id,
+        actionType: type,
       };
     }
     case PEOPLE_UPDATED: {
-      const { name, authorId } = payload;
+      const { name, authorId, _id } = payload;
       return {
         id: state.id + 1,
         type: SUCCESS,
         icon: 'pt-icon-people',
         message: `People '${name}' updated`,
         authorId,
+        entityId: _id,
+        actionType: type,
       };
     }
     default:
