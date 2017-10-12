@@ -48,8 +48,8 @@ const doSort = ({ by, order }) =>
 const regexp = filter => new RegExp(filter, 'i');
 const getTagsPredicate = filter => ({ tags = [] }) =>
   match(regexp(filter.slice(1)), tags.join(' ')).length;
-const getTypesPredicate = filter => ({ types = [] }) =>
-  match(regexp(filter.slice(1)), types.join(' ')).length;
+const getTypesPredicate = filter => ({ type = '' }) =>
+  match(regexp(filter.substring(1)), type).length;
 const getNamePredicate = filter => ({ name, companyName }) => {
   const matchName = match(regexp(filter), name);
   const matchCompanyName =
