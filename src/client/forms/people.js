@@ -87,7 +87,7 @@ const fields = {
     ],
   },
   note: {
-    label: 'Notes',
+    label: 'Note',
     component: MarkDownField,
   },
   color: {

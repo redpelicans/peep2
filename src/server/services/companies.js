@@ -7,7 +7,7 @@ import uppercamelcase from 'uppercamelcase';
 import R from 'ramda';
 import { Company, Preference, Note } from '../models';
 import {
-  emitNoteEvent,
+  emitAddNoteEvent,
   emitNotesDeleted,
   validate,
   ObjectIdSchemaType,
@@ -98,11 +98,7 @@ export const company = {
 
     return insertOne(newCompany)
       .then(loadOne)
-      .then(createNote)
-      .then(({ note, entity: addedCompany }) => {
-        addedCompany.note = note;
-        return addedCompany;
-      });
+      .then(createNote);
   },
 
   del({ _id }) {
@@ -141,9 +137,9 @@ const init = evtx => {
       load: [formatOutput(outMakerMany)],
       loadOne: [formatOutput(outMaker)],
       add: [
+        emitAddNoteEvent(),
         formatOutput(outMaker),
         emitEvent('company:added'),
-        emitNoteEvent('note:added'),
       ],
       del: [emitEvent('company:deleted'), emitNotesDeleted()],
       update: [formatOutput(outMaker), emitEvent('company:updated')],

@@ -51,6 +51,21 @@ export const emitEvent = name => ctx => {
   return Promise.resolve(ctx);
 };
 
+export const emitAddNoteEvent = () => ctx => {
+  const { output: { note, entity } } = ctx;
+  const name = 'note:added';
+  if (note) {
+    ctx.evtx
+      .service('notes')
+      .emit(name, {
+        ...ctx,
+        message: { broadcastAll: true, replyTo: name },
+        output: note,
+      });
+  }
+  return Promise.resolve({ ...ctx, output: entity });
+};
+
 export const emitNoteEvent = name => ctx => {
   const { output: { note } } = ctx;
   if (note) {

@@ -59,6 +59,7 @@ export const notes = {
   add(note) {
     const newNote = inMaker(note);
     newNote.authorId = this.user._id;
+    newNote.createdAt = new Date();
     const loadOne = id => Note.loadOne(id);
     const insertOne = p =>
       Note.collection.insertOne(p).then(R.prop('insertedId'));
@@ -68,6 +69,7 @@ export const notes = {
   update(note) {
     const newVersion = inMaker(note);
     newVersion.authorId = this.user._id;
+    newNote.updatedAt = new Date();
     const loadOne = ({ _id }) => Note.loadOne(_id);
     const update = nextVersion => previousVersion =>
       Note.collection
