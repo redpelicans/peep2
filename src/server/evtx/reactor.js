@@ -59,6 +59,7 @@ class Reactor {
     this.initCompanies();
     this.initPeople();
     this.initNotes();
+    this.initWorkersEvents();
   }
 
   whoswho() {
@@ -94,6 +95,22 @@ class Reactor {
         });
       });
     };
+  }
+
+  initWorkersEvents() {
+    const { evtx } = this;
+    const pushEvent = (
+      { locals: { socket }, output, message: { replyTo } },
+      targetUser,
+      targetSocket,
+    ) => {
+      const action = makeOutput(output, replyTo);
+      if (targetSocket === socket) return;
+      targetSocket.emit('action', action);
+    };
+    evtx.service('events').on('events:added', this.broadcast(pushEvent));
+    evtx.service('events').on('events:updated', this.broadcast(pushEvent));
+    evtx.service('events').on('events:deleted', this.broadcast(pushEvent));
   }
 
   initCompanies() {

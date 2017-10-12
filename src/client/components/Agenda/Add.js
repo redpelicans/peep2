@@ -91,7 +91,6 @@ const Add = ({
           minDate={minDate}
           maxDate={maxDate}
           calendar={calendar}
-          event={event}
           events={events}
           handleSubmit={handleSubmit}
           {...props}

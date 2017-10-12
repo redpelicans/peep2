@@ -136,13 +136,27 @@ export const events = {
     return loadEventGroup().then(previousEvents => {
       return deleteAll()
         .then(() => insertAll(previousEvents, eventGroup))
-        .then(loadAll);
+        .then(loadAll)
+        .then(nextEvents => ({ previousEvents, nextEvents }));
     });
   },
 };
 
 export const outMaker = event => event;
 export const outMakerMany = R.map(outMaker);
+
+const emitUpdateEvent = () => ctx => {
+  const { output: { previousEvents = [], nextEvents = [] } } = ctx;
+  const name = 'events:deleted';
+  ctx.evtx
+    .service('events')
+    .emit(name, {
+      ...ctx,
+      message: { replyTo: name },
+      output: R.pluck('_id', previousEvents),
+    });
+  return Promise.resolve({ ...ctx, output: nextEvents });
+};
 
 const init = evtx => {
   evtx.use(SERVICE_NAME, events);
@@ -157,7 +171,9 @@ const init = evtx => {
     })
     .after({
       load: [formatOutput(outMakerMany)],
-      addEventGroup: [formatOutput(outMakerMany)],
+      addEventGroup: [formatOutput(outMakerMany), emitEvent('events:added')],
+      updateEventGroup: [emitUpdateEvent(), emitEvent('events:added')],
+      delEventGroup: [emitEvent('events:deleted')],
     });
 
   loginfo('events service registered');
