@@ -13,7 +13,11 @@ const { describe, it } = global;
 describe('List component', () => {
   it('should not render anything', () => {
     const wrapper = shallow(
-      <List companies={[]} filterCompanyList={() => {}} />,
+      <List
+        companies={[]}
+        filterCompanyList={() => {}}
+        deleteCompany={() => {}}
+      />,
     );
     should(wrapper.find(enhancedPreview)).have.length(0);
   });
@@ -35,6 +39,7 @@ describe('List component', () => {
           },
         ]}
         filterCompanyList={() => {}}
+        deleteCompany={() => {}}
       />,
     );
     should(wrapper.find(enhancedPreview)).have.length(3);
@@ -53,6 +58,10 @@ describe('Preview component', () => {
           tags: [],
         }}
         filterCompanyList={() => {}}
+        deleteCompany={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(Tags)).have.length(0);
@@ -70,6 +79,10 @@ describe('Preview component', () => {
           tags: ['0', '1', '2', '3', '4'],
         }}
         filterCompanyList={() => {}}
+        deleteCompany={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(Tags)).have.length(1);
@@ -87,6 +100,10 @@ describe('Preview component', () => {
         }}
         showActions={true}
         filterCompanyList={() => {}}
+        deleteCompany={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(Actions)).have.length(1);
@@ -103,6 +120,10 @@ describe('Preview component', () => {
         }}
         showActions={false}
         filterCompanyList={() => {}}
+        deleteCompany={() => {}}
+        hideDialog={() => {}}
+        showDialog={() => {}}
+        isDeleteDialogOpen={false}
       />,
     );
     should(wrapper.find(Actions)).have.length(0);

@@ -1,7 +1,7 @@
 import should from 'should';
 import MockedSocket from 'socket.io-mock';
 import reducer from '../../reducers';
-import { configureStore } from './utils';
+import { configureStore } from '../utils';
 import { socketIoMiddleWare } from '../../middlewares';
 import { loadCalendar, CALENDAR_LOADED, LOAD_CALENDAR } from '../calendar';
 

@@ -79,10 +79,9 @@ export const onPreferredClick = person => dispatch => {
 
 export const togglePreferredFilter = () => ({ type: TOGGLE_PREFERRED_FILTER });
 
-export const sortPeopleList = (sortBy, revertOrder) => ({
+export const sortPeopleList = sortBy => ({
   type: SORT_PEOPLE_LIST,
   sortBy,
-  revertOrder,
 });
 
 export const onTagClick = filter => ({

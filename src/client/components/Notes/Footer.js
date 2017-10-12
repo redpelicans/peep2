@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@blueprintjs/core';
 import styled from 'styled-components';
+import { format } from 'date-fns';
 import { NameLink } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
@@ -38,24 +39,25 @@ const StyledCreatedAt = styled.span`
 `;
 
 const Footer = ({ note, person, entity }) => {
-  if (!person || !entity || !note) return null;
+  if (!note) return null;
   return (
     <StyledFooter>
-      {entity.avatar && (
-        <Avatar
-          name={entity.name}
-          size="MEDIUM"
-          to={getPathByName(entity.typeName, entity._id)}
-          {...entity.avatar}
-        />
-      )}
+      {entity &&
+        entity.avatar && (
+          <Avatar
+            name={entity.name}
+            size="MEDIUM"
+            to={getPathByName(entity.typeName, entity._id)}
+            {...entity.avatar}
+          />
+        )}
       <StyledMain>
         <StyledName>
           <Icon
             iconName={entityIcon[note.entityType]}
             style={{ marginRight: '4px' }}
           />
-          {entity.typeName ? (
+          {entity && entity.typeName ? (
             <NameLink to={getPathByName(entity.typeName, entity._id)}>
               {entity.name}
             </NameLink>
@@ -63,16 +65,21 @@ const Footer = ({ note, person, entity }) => {
             entity.name
           )}
         </StyledName>
-        <StyledCreatedAt>{note.createdAt}</StyledCreatedAt>
+        {note.createdAt && (
+          <StyledCreatedAt>
+            {format(note.createdAt, 'dddd, MMMM Do YYYY')}
+          </StyledCreatedAt>
+        )}
       </StyledMain>
-      {person.avatar && (
-        <Avatar
-          name={person.name}
-          size="SMALL"
-          to={getPathByName('person', person._id)}
-          {...person.avatar}
-        />
-      )}
+      {person &&
+        person.avatar && (
+          <Avatar
+            name={person.name}
+            size="SMALL"
+            to={getPathByName('person', person._id)}
+            {...person.avatar}
+          />
+        )}
     </StyledFooter>
   );
 };

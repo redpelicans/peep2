@@ -48,6 +48,8 @@ const doSort = ({ by, order }) =>
 const regexp = filter => new RegExp(filter, 'i');
 const getTagsPredicate = filter => ({ tags = [] }) =>
   match(regexp(filter.slice(1)), tags.join(' ')).length;
+const getTypesPredicate = filter => ({ types = [] }) =>
+  match(regexp(filter.slice(1)), types.join(' ')).length;
 const getNamePredicate = filter => ({ name, companyName }) => {
   const matchName = match(regexp(filter), name);
   const matchCompanyName =
@@ -58,8 +60,16 @@ const getNamePredicate = filter => ({ name, companyName }) => {
 };
 const getPreferredPredicate = filter => ({ preferred }) =>
   !filter || !!preferred === !!filter;
-const getPredicate = filter =>
-  filter[0] === '#' ? getTagsPredicate(filter) : getNamePredicate(filter);
+const getPredicate = filter => {
+  switch (filter[0]) {
+    case '#':
+      return getTagsPredicate(filter);
+    case '~':
+      return getTypesPredicate(filter);
+    default:
+      return getNamePredicate(filter);
+  }
+};
 const getPredicates = filter => compose(map(getPredicate), split(' '))(filter);
 const doFilter = (pfilter, preferredFilter) =>
   filter(
@@ -104,6 +114,25 @@ export const getWorkers = createSelector([getPeople], people =>
 export const getSortedWorkers = attr =>
   createSelector(getWorkers, compose(sortBy(prop(attr)), values));
 
+const groupPersonTypes = (acc, person) => {
+  const type = person.type || '';
+  return {
+    ...acc,
+    [type]: { label: type, count: pathOr(0, [type, 'count'], acc) + 1 },
+  };
+};
+
+const typesFirstLevelReducer = reduce(
+  (acc, person) => groupPersonTypes(acc, person),
+  {},
+);
+const sortTypes = sort(descend(prop('count')));
+
+const getTypesUnsorted = compose(typesFirstLevelReducer, values);
+const groupTypes = compose(sortTypes, values, getTypesUnsorted);
+
+export const getGroupedTypesByCount = createSelector(getPeople, groupTypes);
+
 const groupPersonTags = (acc, person) => {
   const tags = person.tags || [];
   return reduce(
@@ -116,13 +145,13 @@ const groupPersonTags = (acc, person) => {
   );
 };
 
-const firstLevelReducer = reduce(
+const tagsFirstLevelReducer = reduce(
   (acc, person) => groupPersonTags(acc, person),
   {},
 );
 const sortTag = sort(descend(prop('count')));
 
-const getTagsUnsorted = compose(firstLevelReducer, values);
+const getTagsUnsorted = compose(tagsFirstLevelReducer, values);
 const groupTags = compose(sortTag, values, getTagsUnsorted);
 
 export const getGroupedTagsByCount = createSelector(getPeople, groupTags);
