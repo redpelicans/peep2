@@ -7,6 +7,7 @@ import PeriodPicker from './PeriodPicker';
 import { getField } from '../../forms/events';
 import { FormField } from '../../fields';
 import WorkerCalendar from './Calendar/Worker';
+import { ViewField } from '../widgets';
 
 const StyledForm = styled.div`
   display: flex;
@@ -46,6 +47,9 @@ const StyledFormField = styled(FormField)`
   justify-content: center;
   grid-area: ${({ field }) => field.name};
 `;
+
+const StyledViewField = styled(ViewField)`grid-area: ${({ name }) => name};`;
+
 const StyledValueUnit = styled.div`
   grid-area: valueUnit;
   display: flex;
@@ -106,13 +110,7 @@ const AddOrEditForm = ({
               events={events}
             />
           )}
-        <StyledFormField
-          field={getField('workerId')}
-          values={values}
-          touched={touched}
-          setFieldValue={setFieldValue}
-          setFieldTouched={setFieldTouched}
-        />
+        <StyledViewField name="workerId" label="Worker" value={worker.name} />
 
         <ValueUnit
           name="valueUnit"
