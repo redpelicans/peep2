@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { map, isEmpty } from 'ramda';
-import { withHandlers, compose } from 'recompose';
+import { map } from 'ramda';
+import { Button } from '@blueprintjs/core';
+import { withHandlers, compose, withStateHandlers } from 'recompose';
+import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import MasonryLayout from '../widgets/MasonryLayout';
 import Preview from '../Notes/Preview';
 import { getPeople, getPersonNotes } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
+import ModalAddNote from '../widgets/ModalAddNote';
+import { addNote } from '../../actions/notes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -23,13 +27,48 @@ const StyledWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledLabel = styled.span`margin-bottom: 10px;`;
+const StyledButton = styled(Button)`
+  margin-left: 10px;
+  width: 35px;
+`;
 
-const NotesView = ({ findEntity, notes, people, entityType, entityId }) => {
-  if (isEmpty(notes)) return null;
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+`;
+
+const NotesView = ({
+  findEntity,
+  notes,
+  people,
+  entityType,
+  entityId,
+  deleteNote,
+  isModalOpen,
+  showModal,
+  hideModal,
+  addNote,
+}) => {
   return (
     <StyledWrapper>
-      <StyledLabel>Notes</StyledLabel>
+      <ModalAddNote
+        isOpen={isModalOpen}
+        title="Would you like to delete this people?"
+        reject={() => hideModal()}
+        accept={value => {
+          hideModal(), addNote(entityId, value, 'person');
+        }}
+      />
+      <TitleContainer>
+        <span>Notes</span>
+        <StyledButton
+          className="pt-small pt-button"
+          iconName="pt-icon-plus"
+          onClick={() => showModal()}
+        />
+      </TitleContainer>
       <MasonryLayout id="notes" sizes={sizes}>
         {map(
           note => (
@@ -38,6 +77,7 @@ const NotesView = ({ findEntity, notes, people, entityType, entityId }) => {
               note={note}
               person={people[note.authorId]}
               entity={findEntity(entityType, entityId)}
+              deleteNote={deleteNote}
             />
           ),
           notes,
@@ -54,7 +94,15 @@ NotesView.propTypes = {
   entityId: PropTypes.string,
   entityType: PropTypes.string,
   findEntity: PropTypes.func.isRequired,
+  deleteNote: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
+  hideModal: PropTypes.func.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
+  addNote: PropTypes.func.isRequired,
 };
+
+const actions = { addNote };
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const mapStateToProps = (state, props) => ({
   people: getPeople(state),
@@ -63,7 +111,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const enhance = compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
     findEntity: ({ companies, people }) => (entityType, entityId) => {
       if (!people || !companies) return null;
@@ -72,6 +120,15 @@ const enhance = compose(
       return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
     },
   }),
+  withStateHandlers(
+    {
+      isModalOpen: false,
+    },
+    {
+      showModal: () => () => ({ isModalOpen: true }),
+      hideModal: () => () => ({ isModalOpen: false }),
+    },
+  ),
 );
 
 export default enhance(NotesView);

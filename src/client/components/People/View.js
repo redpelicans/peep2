@@ -11,7 +11,8 @@ import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { deletePeople } from '../../actions/people';
+import { deleteNote, deletePeople } from '../../actions/notes';
+
 import {
   Title,
   Container,
@@ -137,7 +138,7 @@ const StyledLink = styled.a`
   font-style: normal !important;
 `;
 
-const PersonInfos = ({ person = {} }) => {
+const PersonInfos = ({ person = {}, deleteNote }) => {
   const {
     _id,
     prefix,
@@ -216,13 +217,14 @@ const PersonInfos = ({ person = {} }) => {
       {!isEmpty(tags) && <ViewFieldArray label="Tags" items={tags} />}
       {roles === null ||
         (!isEmpty(roles) && <ViewFieldArray label="Roles" items={roles} />)}
-      <NotesView entityType="person" entityId={_id} />
+      <NotesView entityType="person" entityId={_id} deleteNote={deleteNote} />
     </StyledWrapper>
   );
 };
 
 PersonInfos.propTypes = {
   person: PropTypes.object,
+  deleteNote: PropTypes.func.isRequired,
 };
 
 const GoBack = ({ history }) => (
@@ -240,6 +242,7 @@ const Person = ({
   companies = {},
   history,
   match: { params: { id } },
+  deleteNote,
   deletePeople,
   isDeleteDialogOpen,
   showDialog,
@@ -282,7 +285,7 @@ const Person = ({
           />
         </HeaderRight>
       </Header>
-      <PersonInfos person={person} />
+      <PersonInfos person={person} deleteNote={deleteNote} />
     </Container>
   );
 };
@@ -292,6 +295,7 @@ Person.propTypes = {
   companies: PropTypes.object,
   match: PropTypes.object,
   history: PropTypes.object,
+  deleteNote: PropTypes.func.isRequired,
   deletePeople: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   showDialog: PropTypes.func.isRequired,
@@ -303,7 +307,7 @@ const mapStateToProps = state => ({
   companies: getCompanies(state),
 });
 
-const actions = { getPeople, deletePeople };
+const actions = { getPeople, deletePeople, deleteNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
