@@ -93,11 +93,18 @@ const PeriodPicker = ({
     <StyledPeriod>
       <StyledPicker>
         {map(makeButton, buttons)}
-        <StyledDate name="from"> {format(from, 'dddd Do of MMMM')} </StyledDate>
+        {from && (
+          <StyledDate name="from">
+            {' '}
+            {format(from, 'dddd Do of MMMM')}{' '}
+          </StyledDate>
+        )}
         <StyledIcon name="arrow">
           <span className="pt-icon-arrow-right" />
         </StyledIcon>
-        <StyledDate name="to"> {format(to, 'dddd Do of MMMM')} </StyledDate>
+        {to && (
+          <StyledDate name="to"> {format(to, 'dddd Do of MMMM')} </StyledDate>
+        )}
       </StyledPicker>
     </StyledPeriod>
   );

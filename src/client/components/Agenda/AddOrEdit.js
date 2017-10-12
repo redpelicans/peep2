@@ -78,6 +78,8 @@ const AddOrEditForm = ({
   errors,
 }) => {
   const [from, to] = values['period'];
+  console.log('--------AddOrEditForm');
+  console.log(from, to);
   const newEvents = freeEventsFromPeriod({ from, to, events, calendar });
   const daysCount = compose(sum, pluck('value'))(newEvents);
   return (
@@ -93,16 +95,19 @@ const AddOrEditForm = ({
           calendar={calendar}
           type={values['type']}
         />
-        <PeriodPicker
-          field={getField('period')}
-          from={from}
-          to={to}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
-          minDate={minDate}
-          maxDate={maxDate}
-          events={events}
-        />
+        {from &&
+          to && (
+            <PeriodPicker
+              field={getField('period')}
+              from={from}
+              to={to}
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+              minDate={minDate}
+              maxDate={maxDate}
+              events={events}
+            />
+          )}
         <StyledFormField
           field={getField('workerId')}
           values={values}
