@@ -163,7 +163,13 @@ const FormikEdit = ({
         ? map(tag => ({ value: tag, label: tag }), people.tags)
         : [],
     }}
-    validationSchema={getValidationSchema({ email: { validate: checkEmail } })}
+    validationSchema={getValidationSchema({
+      email: {
+        name: 'isUniq',
+        message: 'Email already exists',
+        test: checkEmail,
+      },
+    })}
     onSubmit={({
       color,
       firstName,

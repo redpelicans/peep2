@@ -130,7 +130,13 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 const FormikAdd = ({ checkEmail, ...props }) => (
   <Formik
     initialValues={defaultValues}
-    validationSchema={getValidationSchema({ email: { validate: checkEmail } })}
+    validationSchema={getValidationSchema({
+      email: {
+        name: 'isUniq',
+        message: 'Email already exists',
+        test: checkEmail,
+      },
+    })}
     onSubmit={({
       color,
       firstName,
