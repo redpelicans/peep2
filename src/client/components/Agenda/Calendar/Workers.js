@@ -30,12 +30,7 @@ import {
 import Avatar, { SMALL } from '../../Avatar';
 import { getPathByName } from '../../../routes';
 import { fullName, isAdmin, isEqual } from '../../../utils/people';
-import {
-  EVENT_DAY,
-  EVENT_AM,
-  EVENT_PM,
-  isVacation,
-} from '../../../utils/events';
+import { EVENT_DAY, isVacation } from '../../../utils/events';
 import {
   vacationDayBackground,
   sickLeaveDayBackground,

@@ -53,12 +53,10 @@ export const deletePeople = id => dispatch => {
 };
 
 export const checkEmail = email => dispatch => {
-  if (!email) return Promise.reject(new Error('Email cannot be null'));
-  const promise = new Promise((resolve, reject) => {
+  // if (!email) return Promise.reject(new Error('Email cannot be null'));
+  const promise = new Promise(resolve => {
     const callback = (err, res) => {
-      if (err) return reject(err);
-      if (!res.ok) return reject(new Error('Email is not uniq'));
-      return resolve(res.email);
+      return resolve(!err && res.ok);
     };
     const action = {
       type: CHECK_EMAIL,

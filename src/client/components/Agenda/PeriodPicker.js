@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { format, addDays, subDays } from 'date-fns';
 import { Button } from '@blueprintjs/core';
+import { isPreviousHalfDayFree, isNextHalfDayFree } from '../../utils/events';
 
 const StyledPeriod = styled.div`
   justify-content: center;
@@ -48,6 +49,7 @@ const PeriodPicker = ({
   maxDate,
   setFieldTouched,
   setFieldValue,
+  events,
 }) => {
   const subFrom = () => {
     setFieldTouched('period', true);
@@ -73,9 +75,19 @@ const PeriodPicker = ({
   );
   const buttons = [
     ['addFrom', 'pt-icon-minus', addFrom, addDays(from, 0.5) < to],
-    ['subFrom', 'pt-icon-plus', subFrom, from > minDate],
+    [
+      'subFrom',
+      'pt-icon-plus',
+      subFrom,
+      from > minDate && isPreviousHalfDayFree(events, from),
+    ],
     ['subTo', 'pt-icon-minus', subTo, to > addDays(from, 0.5)],
-    ['addTo', 'pt-icon-plus', addTo, to < maxDate],
+    [
+      'addTo',
+      'pt-icon-plus',
+      addTo,
+      to < maxDate && isNextHalfDayFree(events, to),
+    ],
   ];
   return (
     <StyledPeriod>
@@ -98,6 +110,7 @@ PeriodPicker.propTypes = {
   maxDate: PropTypes.object.isRequired,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
+  events: PropTypes.object,
 };
 
 export default PeriodPicker;

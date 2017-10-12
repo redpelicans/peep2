@@ -7,9 +7,9 @@ import { compose, map } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { withFormik } from 'formik';
+import { Formik } from 'formik';
 import { getValidationSchema, defaultValues } from '../../forms/people';
-import { addPeople } from '../../actions/people';
+import { addPeople, checkEmail } from '../../actions/people';
 import { Prompt } from 'react-router';
 import {
   Spacer,
@@ -22,82 +22,95 @@ import AddOrEdit from './AddOrEdit';
 
 export const StyledContainer = styled(Container)`min-width: 300px;`;
 
-export const Add = ({
-  values,
-  isSubmitting,
-  isValid,
-  dirty,
-  handleSubmit,
-  handleReset,
-  setFieldTouched,
-  setFieldValue,
-  isCancelDialogOpen,
-  showCancelDialog,
-  cancel,
-  requestCancel,
-  ...props
-}) => (
-  <StyledContainer>
-    <Prompt
-      when={!isCancelDialogOpen && dirty && !isSubmitting}
-      message="Would you like to cancel this form ?"
-    />
-    <ModalConfirmation
-      isOpen={isCancelDialogOpen}
-      title="Would you like to cancel this form ?"
-      reject={() => showCancelDialog(false)}
-      accept={cancel}
-    />
-    <Header>
-      <HeaderLeft>
-        <Spacer size={15} />
-        <AvatarSelector
-          formId="peopleForm"
-          color={values.color}
-          name={values.firstName}
-          lastName={values.lastName}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
-        />
-        <Spacer />
-        <Title title={'Add People'} />
-      </HeaderLeft>
-      <HeaderRight>
-        <Button
-          form="peopleForm"
-          type="submit"
-          disabled={isSubmitting || !isValid || !dirty}
-          className="pt-intent-success pt-large"
-        >
-          Create
-        </Button>
-        <Spacer />
-        <Button
-          onClick={requestCancel(dirty)}
-          className="pt-intent-warning pt-large"
-        >
-          Cancel
-        </Button>
-        <Spacer />
-        <Button
-          className="pt-intent-danger pt-large"
-          onClick={handleReset}
-          disabled={!dirty || isSubmitting}
-        >
-          Reset
-        </Button>
-        <Spacer size={20} />
-      </HeaderRight>
-    </Header>
-    <AddOrEdit
-      type="add"
-      handleSubmit={handleSubmit}
-      values={values}
-      setFieldTouched={setFieldTouched}
-      setFieldValue={setFieldValue}
-      {...props}
-    />
-  </StyledContainer>
+export const Add = compose(
+  withState('isCancelDialogOpen', 'showCancelDialog', false),
+  withHandlers({
+    cancel: ({ history }) => () => history.goBack(),
+    requestCancel: ({ history, showCancelDialog }) => dirty => () => {
+      if (!dirty) return history.goBack();
+      return showCancelDialog(true);
+    },
+    toggleDialog: ({ showDialog }) => () =>
+      showDialog(isDialogOpen => !isDialogOpen),
+  }),
+)(
+  ({
+    values,
+    isSubmitting,
+    isValid,
+    dirty,
+    handleSubmit,
+    handleReset,
+    setFieldTouched,
+    setFieldValue,
+    isCancelDialogOpen,
+    showCancelDialog,
+    cancel,
+    requestCancel,
+    ...props
+  }) => (
+    <StyledContainer>
+      <Prompt
+        when={!isCancelDialogOpen && dirty && !isSubmitting}
+        message="Would you like to cancel this form ?"
+      />
+      <ModalConfirmation
+        isOpen={isCancelDialogOpen}
+        title="Would you like to cancel this form ?"
+        reject={() => showCancelDialog(false)}
+        accept={cancel}
+      />
+      <Header>
+        <HeaderLeft>
+          <Spacer size={15} />
+          <AvatarSelector
+            formId="peopleForm"
+            color={values.color}
+            name={values.firstName}
+            lastName={values.lastName}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <Spacer />
+          <Title title={'Add People'} />
+        </HeaderLeft>
+        <HeaderRight>
+          <Button
+            form="peopleForm"
+            type="submit"
+            disabled={isSubmitting || !isValid || !dirty}
+            className="pt-intent-success pt-large"
+          >
+            Create
+          </Button>
+          <Spacer />
+          <Button
+            onClick={requestCancel(dirty)}
+            className="pt-intent-warning pt-large"
+          >
+            Cancel
+          </Button>
+          <Spacer />
+          <Button
+            className="pt-intent-danger pt-large"
+            onClick={handleReset}
+            disabled={!dirty || isSubmitting}
+          >
+            Reset
+          </Button>
+          <Spacer size={20} />
+        </HeaderRight>
+      </Header>
+      <AddOrEdit
+        type="add"
+        handleSubmit={handleSubmit}
+        values={values}
+        setFieldTouched={setFieldTouched}
+        setFieldValue={setFieldValue}
+        {...props}
+      />
+    </StyledContainer>
+  ),
 );
 
 Add.propTypes = {
@@ -109,35 +122,35 @@ Add.propTypes = {
   values: PropTypes.object.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
-  showCancelDialog: PropTypes.func.isRequired,
-  isCancelDialogOpen: PropTypes.bool.isRequired,
-  cancel: PropTypes.func.isRequired,
-  requestCancel: PropTypes.func.isRequired,
 };
 
-const actions = { addPeople };
+const actions = { addPeople, checkEmail };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export default compose(
-  connect(null, mapDispatchToProps),
-  withFormik({
-    handleSubmit: (
-      {
-        color,
-        firstName,
-        type,
-        lastName,
-        notes,
-        phones = [],
-        prefix,
-        tags = [],
-        roles = [],
-        jobType,
-        email,
-        companyId,
+const FormikAdd = ({ checkEmail, ...props }) => (
+  <Formik
+    initialValues={defaultValues}
+    validationSchema={getValidationSchema({
+      email: {
+        name: 'isUniq',
+        message: 'Email already exists',
+        test: checkEmail,
       },
-      { props },
-    ) => {
+    })}
+    onSubmit={({
+      color,
+      firstName,
+      type,
+      lastName,
+      notes,
+      phones = [],
+      prefix,
+      tags = [],
+      roles = [],
+      jobType,
+      email,
+      companyId,
+    }) => {
       const { addPeople, history } = props;
       const newPeople = {
         avatar: { color },
@@ -158,20 +171,14 @@ export default compose(
       };
       addPeople(newPeople);
       history.goBack();
-    },
-    validationSchema: getValidationSchema(),
-    mapPropsToValues: () => ({
-      ...defaultValues,
-    }),
-  }),
-  withState('isCancelDialogOpen', 'showCancelDialog', false),
-  withHandlers({
-    cancel: ({ history }) => () => history.goBack(),
-    requestCancel: ({ history, showCancelDialog }) => dirty => () => {
-      if (!dirty) return history.goBack();
-      return showCancelDialog(true);
-    },
-    toggleDialog: ({ showDialog }) => () =>
-      showDialog(isDialogOpen => !isDialogOpen),
-  }),
-)(Add);
+    }}
+    render={({ ...others }) => <Add {...props} {...others} />}
+  />
+);
+
+FormikAdd.propTypes = {
+  checkEmail: PropTypes.func.isRequired,
+  addPeople: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+};
+export default connect(null, mapDispatchToProps)(FormikAdd);

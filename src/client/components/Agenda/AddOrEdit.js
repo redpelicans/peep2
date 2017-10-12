@@ -96,6 +96,7 @@ const AddOrEditForm = ({
           events={events}
           worker={worker}
           calendar={calendar}
+          type={values['type']}
         />
         <PeriodPicker
           field={getField('period')}
@@ -105,6 +106,7 @@ const AddOrEditForm = ({
           setFieldValue={setFieldValue}
           minDate={minDate}
           maxDate={maxDate}
+          events={events}
         />
         <StyledFormField
           field={getField('workerId')}
