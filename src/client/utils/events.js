@@ -32,7 +32,8 @@ const FullDayEvent = date => ({
 });
 const AMDayEvent = date => ({
   from: startOfDay(date),
-  to: addHours(startOfDay(date), 12),
+  //to: addHours(startOfDay(date), 12),
+  to: subDays(endOfDay(date), 0.5),
   period: EVENT_AM,
   value: 0.5,
 });

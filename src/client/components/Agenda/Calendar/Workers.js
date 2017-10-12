@@ -180,10 +180,10 @@ const enhanceWorkingDay = compose(
       e.preventDefault();
       e.stopPropagation();
     },
-    handleMouseEnter: ({ extendPeriod, worker, date }) => e => {
-      extendPeriod && extendPeriod(worker, date);
+    handleMouseEnter: ({ extendPeriod, worker, date, selected }) => e => {
+      extendPeriod && extendPeriod(worker, date, selected);
       e.preventDefault();
-      e.stopPropagation();
+      // e.stopPropagation();
     },
     handleClick: ({ editEvent }) => event => e => {
       editEvent && editEvent(event);
@@ -202,6 +202,7 @@ const WorkingDay = enhanceWorkingDay(
     handleMouseUp,
     handleMouseDown,
     handleClick,
+    endPeriod,
   }) => {
     const props =
       (!readOnly && {
@@ -213,7 +214,14 @@ const WorkingDay = enhanceWorkingDay(
     const dayEvents =
       events &&
       map(
-        evt => <Event key={evt._id} event={evt} onClick={handleClick(evt)} />,
+        evt => (
+          <Event
+            key={evt._id}
+            event={evt}
+            endPeriod={endPeriod}
+            onClick={handleClick(evt)}
+          />
+        ),
         events,
       );
     return (
@@ -235,6 +243,7 @@ WorkingDay.propTypes = {
   startPeriod: PropTypes.func,
   selectPeriod: PropTypes.func,
   extendPeriod: PropTypes.func,
+  endPeriod: PropTypes.func,
   editEvent: PropTypes.func,
 };
 
@@ -251,13 +260,16 @@ const StyledEvent = styled.div`
     event.period === EVENT_DAY ? 'span 2' : event.period};
 `;
 
-const Event = ({ event, onClick }) => {
+const Event = ({ event, endPeriod, onClick }) => {
   return (
     <StyledEvent
       event={event}
       onClick={onClick}
-      onMouseUp={e => e.stopPropagation()}
-      onMouseEnter={e => e.stopPropagation()}
+      onMouseUp={e => e.preventDefault()}
+      onMouseEnter={e => {
+        e.stopPropagation();
+        endPeriod();
+      }}
       onMouseDown={e => e.stopPropagation()}
     />
   );
@@ -266,6 +278,7 @@ const Event = ({ event, onClick }) => {
 Event.propTypes = {
   event: PropTypes.object.isRequired,
   onClick: PropTypes.func,
+  endPeriod: PropTypes.func,
 };
 
 const Day = ({ calendar, currentWorker, user, events, from, to, ...props }) => {
@@ -322,9 +335,17 @@ class WorkersCalendar extends Component {
     });
   };
 
-  extendPeriod = (worker, date) => {
+  extendPeriod = (worker, date, force = false) => {
     const { from, selecting } = this.state;
-    if (from && selecting) this.setState({ to: date });
+    if (!selecting && force)
+      this.setState({ selecting: true }, () => {
+        if (from) this.setState({ to: date });
+      });
+    else if (from && selecting) this.setState({ to: date });
+  };
+
+  endPeriod = (worker, date) => {
+    this.setState({ selecting: false });
   };
 
   render() {
@@ -357,6 +378,7 @@ class WorkersCalendar extends Component {
             startPeriod={this.startPeriod}
             selectPeriod={this.selectPeriod}
             extendPeriod={this.extendPeriod}
+            endPeriod={this.endPeriod}
             editEvent={editEvent}
           />
         ),

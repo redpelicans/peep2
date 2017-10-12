@@ -78,12 +78,7 @@ const AddOrEditForm = ({
   errors,
 }) => {
   const [from, to] = values['period'];
-  const newEvents = freeEventsFromPeriod({
-    from,
-    to,
-    events,
-    calendar,
-  });
+  const newEvents = freeEventsFromPeriod({ from, to, events, calendar });
   const daysCount = compose(sum, pluck('value'))(newEvents);
   return (
     <StyledForm>
