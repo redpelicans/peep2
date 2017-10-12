@@ -145,7 +145,7 @@ const FormikAdd = ({ dispatch, ...props }) => (
       firstName,
       type,
       lastName,
-      notes,
+      note,
       phones = [],
       prefix,
       tags = [],
@@ -162,7 +162,7 @@ const FormikAdd = ({ dispatch, ...props }) => (
         lastName,
         email,
         jobType,
-        note: notes,
+        note,
         phones: map(
           phone => ({ label: phone.type, number: phone.number }),
           phones,

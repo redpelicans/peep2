@@ -47,7 +47,7 @@ const addEventGroupSchema = Yup.object().shape({
   events: Yup.array()
     .of(addEventSchema)
     .required(),
-  description: Yup.string(),
+  description: Yup.string().nullable(),
 });
 
 const updateEventGroupSchema = Yup.object().shape({
@@ -64,7 +64,7 @@ const updateEventGroupSchema = Yup.object().shape({
   events: Yup.array()
     .of(addEventSchema)
     .required(),
-  description: Yup.string(),
+  description: Yup.string().nullable(),
 });
 
 const makeEventsFromGroup = ({
@@ -121,14 +121,14 @@ export const events = {
   },
 
   updateEventGroup(eventGroup) {
-    const { groupId, type, workerId, status } = eventGroup;
+    const { groupId, type, workerId, status, description } = eventGroup;
     const deleteAll = () => Event.collection.remove({ groupId });
     const loadEventGroup = () => Event.loadAll({ groupId });
     const loadAll = ids => Event.loadAll({ _id: { $in: ids } });
     const insertAll = (previousEvents, nextEventGroup) => {
       const { events } = nextEventGroup;
       const newEvents = R.map(
-        e => ({ ...e, groupId, workerId, status, type }),
+        e => ({ ...e, groupId, workerId, status, type, description }),
         events,
       );
       return Event.collection.insertMany(newEvents).then(R.prop('insertedIds'));
@@ -136,13 +136,25 @@ export const events = {
     return loadEventGroup().then(previousEvents => {
       return deleteAll()
         .then(() => insertAll(previousEvents, eventGroup))
-        .then(loadAll);
+        .then(loadAll)
+        .then(nextEvents => ({ previousEvents, nextEvents }));
     });
   },
 };
 
 export const outMaker = event => event;
 export const outMakerMany = R.map(outMaker);
+
+const emitUpdateEvent = () => ctx => {
+  const { output: { previousEvents = [], nextEvents = [] } } = ctx;
+  const name = 'events:deleted';
+  ctx.evtx.service('events').emit(name, {
+    ...ctx,
+    message: { replyTo: name },
+    output: R.pluck('_id', previousEvents),
+  });
+  return Promise.resolve({ ...ctx, output: nextEvents });
+};
 
 const init = evtx => {
   evtx.use(SERVICE_NAME, events);
@@ -157,7 +169,9 @@ const init = evtx => {
     })
     .after({
       load: [formatOutput(outMakerMany)],
-      addEventGroup: [formatOutput(outMakerMany)],
+      addEventGroup: [formatOutput(outMakerMany), emitEvent('events:added')],
+      updateEventGroup: [emitUpdateEvent(), emitEvent('events:added')],
+      delEventGroup: [emitEvent('events:deleted')],
     });
 
   loginfo('events service registered');

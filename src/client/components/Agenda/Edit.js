@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
-import { withFormik } from 'formik';
+import { Formik } from 'formik';
 import {
   loadEventGroup,
   updateEventGroup,
@@ -24,104 +24,180 @@ import { freeEventsFromPeriod } from '../../utils/events';
 
 const StyledContainer = styled(Container)`min-width: 300px;`;
 
-const Edit = ({
-  dirty,
-  isCancelDialogOpen,
-  isDeleteDialogOpen,
-  cancel,
-  showCancelDialog,
-  showDeleteDialog,
-  requestDeleteEventGroup,
-  deleteEventGroup,
-  isSubmitting,
-  worker,
+const Edit = compose(
+  withState('isCancelDialogOpen', 'showCancelDialog', false),
+  withState('isDeleteDialogOpen', 'showDeleteDialog', false),
+  withHandlers({
+    cancel: ({ history }) => () => history.goBack(),
+    requestCancel: ({ history, showCancelDialog }) => dirty => () => {
+      if (!dirty) return history.goBack();
+      return showCancelDialog(true);
+    },
+    requestDeleteEventGroup: ({ showDeleteDialog }) => () =>
+      showDeleteDialog(true),
+    deleteEventGroup: ({
+      history,
+      delEventGroup,
+      showDeleteDialog,
+      event,
+    }) => () => {
+      showDeleteDialog(false);
+      delEventGroup(event);
+      history.goBack();
+    },
+  }),
+)(
+  ({
+    dirty,
+    isCancelDialogOpen,
+    isDeleteDialogOpen,
+    cancel,
+    showCancelDialog,
+    showDeleteDialog,
+    requestDeleteEventGroup,
+    deleteEventGroup,
+    isSubmitting,
+    worker,
+    event,
+    requestCancel,
+    events,
+    calendar,
+    ...props
+  }) => {
+    const calendarPeriod = [
+      startOfDay(subWeeks(event.from, 1)),
+      endOfDay(addWeeks(event.to, 1)),
+    ];
+    const [minDate, maxDate] = calendarPeriod;
+    return (
+      <StyledContainer>
+        <div>
+          <ModalConfirmation
+            isOpen={isDeleteDialogOpen}
+            title="Would you like to delete this event group ?"
+            reject={() => showDeleteDialog(false)}
+            accept={deleteEventGroup}
+          />
+          <ModalConfirmation
+            isOpen={isCancelDialogOpen}
+            title="Would you like to cancel this form ?"
+            reject={() => showCancelDialog(false)}
+            accept={cancel}
+          />
+          <Header>
+            <HeaderLeft>
+              <div className="pt-icon-standard pt-icon-calendar" />
+              <Spacer />
+              <Title>Edit Event</Title>
+            </HeaderLeft>
+            <HeaderRight>
+              <Button
+                form="AddOrEdit"
+                type="submit"
+                disabled={isSubmitting || !dirty}
+                className="pt-intent-success pt-large"
+              >
+                Update
+              </Button>
+              <Spacer />
+              <Button
+                className="pt-intent-danger pt-large"
+                onClick={requestDeleteEventGroup}
+              >
+                Delete
+              </Button>
+              <Spacer />
+              <Button
+                onClick={requestCancel(dirty)}
+                className="pt-intent-warning pt-large"
+              >
+                Cancel
+              </Button>
+              <Spacer />
+            </HeaderRight>
+          </Header>
+          <AddOrEdit
+            worker={worker}
+            minDate={minDate}
+            maxDate={maxDate}
+            calendar={calendar}
+            events={events}
+            {...props}
+          />
+        </div>
+      </StyledContainer>
+    );
+  },
+);
+
+Edit.propTypes = {
+  event: PropTypes.object.isRequired,
+  calendar: PropTypes.object,
+  events: PropTypes.object,
+  worker: PropTypes.object.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  dirty: PropTypes.bool.isRequired,
+};
+
+const FormikEdit = ({
   event,
-  requestCancel,
+  worker,
+  history,
+  updateEventGroup,
   events,
   calendar,
   ...props
 }) => {
-  if (!event) return null;
-  const calendarPeriod = [
-    startOfDay(subWeeks(event.from, 1)),
-    endOfDay(addWeeks(event.to, 1)),
-  ];
-  const [minDate, maxDate] = calendarPeriod;
+  if (!event || !worker) return <div />;
   return (
-    <StyledContainer>
-      <div>
-        <ModalConfirmation
-          isOpen={isDeleteDialogOpen}
-          title="Would you like to delete this event group ?"
-          reject={() => showDeleteDialog(false)}
-          accept={deleteEventGroup}
-        />
-        <ModalConfirmation
-          isOpen={isCancelDialogOpen}
-          title="Would you like to cancel this form ?"
-          reject={() => showCancelDialog(false)}
-          accept={cancel}
-        />
-        <Header>
-          <HeaderLeft>
-            <div className="pt-icon-standard pt-icon-calendar" />
-            <Spacer />
-            <Title>Edit Event</Title>
-          </HeaderLeft>
-          <HeaderRight>
-            <Button
-              form="AddOrEdit"
-              type="submit"
-              disabled={isSubmitting || !dirty}
-              className="pt-intent-success pt-large"
-            >
-              Update
-            </Button>
-            <Spacer />
-            <Button
-              className="pt-intent-danger pt-large"
-              onClick={requestDeleteEventGroup}
-            >
-              Delete
-            </Button>
-            <Spacer />
-            <Button
-              onClick={requestCancel(dirty)}
-              className="pt-intent-warning pt-large"
-            >
-              Cancel
-            </Button>
-            <Spacer />
-          </HeaderRight>
-        </Header>
-        <AddOrEdit
+    <Formik
+      initialValues={{
+        ...pick(['status', 'type', 'description'], event),
+        period: [event.from, event.to],
+        workerId: prop('_id', worker),
+      }}
+      validationSchema={getValidationSchema()}
+      onSubmit={({ type, workerId, status, period, description }) => {
+        const [from, to] = period;
+        const newEvents = freeEventsFromPeriod({ from, to, events, calendar });
+        updateEventGroup({
+          previous: event,
+          next: {
+            type,
+            workerId,
+            status,
+            from,
+            to,
+            description,
+            events: newEvents,
+          },
+        });
+        history.goBack();
+      }}
+      render={({ ...others }) => (
+        <Edit
+          event={event}
           worker={worker}
-          minDate={minDate}
-          maxDate={maxDate}
           calendar={calendar}
           events={events}
+          history={history}
           {...props}
+          {...others}
         />
-      </div>
-    </StyledContainer>
+      )}
+    />
   );
 };
 
-Edit.propTypes = {
-  requestCancel: PropTypes.func.isRequired,
-  cancel: PropTypes.func.isRequired,
+FormikEdit.propTypes = {
   event: PropTypes.object,
   calendar: PropTypes.object,
   events: PropTypes.object,
   worker: PropTypes.object,
-  showCancelDialog: PropTypes.func.isRequired,
-  showDeleteDialog: PropTypes.func.isRequired,
-  requestDeleteEventGroup: PropTypes.func.isRequired,
-  deleteEventGroup: PropTypes.func.isRequired,
-  isCancelDialogOpen: PropTypes.bool.isRequired,
-  isDeleteDialogOpen: PropTypes.bool.isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
-  dirty: PropTypes.bool.isRequired,
+  loadEventGroup: PropTypes.func.isRequired,
+  updateEventGroup: PropTypes.func.isRequired,
+  delEventGroup: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state, props) => {
@@ -150,54 +226,4 @@ const componentLifecycle = {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle(componentLifecycle),
-  withFormik({
-    handleSubmit: (
-      { type, workerId, status, period, description },
-      { props },
-    ) => {
-      const { event, calendar, events, updateEventGroup, history } = props;
-      const [from, to] = period;
-      const newEvents = freeEventsFromPeriod({ from, to, events, calendar });
-      updateEventGroup({
-        previous: event,
-        next: {
-          type,
-          workerId,
-          status,
-          from,
-          to,
-          description,
-          events: newEvents,
-        },
-      });
-      history.goBack();
-    },
-    validationSchema: getValidationSchema(),
-    mapPropsToValues: ({ event = {}, worker = {} }) => ({
-      ...pick(['status', 'type', 'description'], event),
-      period: [event.from, event.to],
-      workerId: prop('_id', worker),
-    }),
-  }),
-  withState('isCancelDialogOpen', 'showCancelDialog', false),
-  withState('isDeleteDialogOpen', 'showDeleteDialog', false),
-  withHandlers({
-    cancel: ({ history }) => () => history.goBack(),
-    requestCancel: ({ history, showCancelDialog }) => dirty => () => {
-      if (!dirty) return history.goBack();
-      return showCancelDialog(true);
-    },
-    requestDeleteEventGroup: ({ showDeleteDialog }) => () =>
-      showDeleteDialog(true),
-    deleteEventGroup: ({
-      history,
-      delEventGroup,
-      showDeleteDialog,
-      event,
-    }) => () => {
-      showDeleteDialog(false);
-      delEventGroup(event);
-      history.goBack();
-    },
-  }),
-)(Edit);
+)(FormikEdit);

@@ -59,6 +59,7 @@ class Reactor {
     this.initCompanies();
     this.initPeople();
     this.initNotes();
+    this.initWorkersEvents();
   }
 
   whoswho() {
@@ -96,6 +97,22 @@ class Reactor {
     };
   }
 
+  initWorkersEvents() {
+    const { evtx } = this;
+    const pushEvent = (
+      { locals: { socket }, output, message: { replyTo } },
+      targetUser,
+      targetSocket,
+    ) => {
+      const action = makeOutput(output, replyTo);
+      if (targetSocket === socket) return;
+      targetSocket.emit('action', action);
+    };
+    evtx.service('events').on('events:added', this.broadcast(pushEvent));
+    evtx.service('events').on('events:updated', this.broadcast(pushEvent));
+    evtx.service('events').on('events:deleted', this.broadcast(pushEvent));
+  }
+
   initCompanies() {
     const { evtx } = this;
     const pushPreferredEvent = (
@@ -126,6 +143,7 @@ class Reactor {
     };
     evtx.service('companies').on('company:added', this.broadcast(pushEvent));
     evtx.service('companies').on('company:updated', this.broadcast(pushEvent));
+    evtx.service('companies').on('company:deleted', this.broadcast(pushEvent));
     evtx
       .service('companies')
       .on('company:setPreferred', this.broadcast(pushPreferredEvent));
@@ -152,6 +170,7 @@ class Reactor {
     };
     evtx.service('people').on('person:added', this.broadcast(pushEvent));
     evtx.service('people').on('person:updated', this.broadcast(pushEvent));
+    evtx.service('people').on('person:deleted', this.broadcast(pushEvent));
   }
 
   initNotes() {
@@ -167,7 +186,7 @@ class Reactor {
     };
     evtx.service('notes').on('note:added', this.broadcast(pushEvent));
     evtx.service('notes').on('note:updated', this.broadcast(pushEvent));
-    evtx.service('notes').on('notes:deleted', this.broadcast(pushEvent));
+    evtx.service('notes').on('note:deleted', this.broadcast(pushEvent));
   }
 
   initAuth() {

@@ -46,7 +46,7 @@ const fields = {
   description: {
     label: 'Description',
     component: MarkDownField,
-    validate: Yup.string(),
+    validate: Yup.string().nullable(),
   },
 };
 

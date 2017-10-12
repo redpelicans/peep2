@@ -78,7 +78,7 @@ export const eventGroup = id => events => {
     groupId: id,
     from: head(evts).from,
     to: last(evts).to,
-    ...pick(['workerId', 'type', 'status'], head(evts)),
+    ...pick(['workerId', 'type', 'status', 'description'], head(evts)),
   };
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { prop, compose } from 'ramda';
+import { head, last, prop, compose } from 'ramda';
 import { startOfDay, endOfDay, addWeeks, subWeeks } from 'date-fns';
 import { withState, withHandlers, lifecycle } from 'recompose';
 import styled from 'styled-components';
@@ -91,7 +91,6 @@ const Add = ({
           minDate={minDate}
           maxDate={maxDate}
           calendar={calendar}
-          event={event}
           events={events}
           handleSubmit={handleSubmit}
           {...props}
@@ -118,11 +117,20 @@ Add.propTypes = {
 
 const mapStateToProps = (state, { history }) => {
   const { location: { state: { from, to, workerId } } = {} } = history;
+  const calendar = getCalendar(state);
+  const events = getWorkerEventsByDate(workerId)(state);
+  const newEvents = freeEventsFromPeriod({
+    from: startOfDay(from),
+    to: endOfDay(to),
+    events,
+    calendar,
+  });
+
   return {
-    calendar: getCalendar(state),
+    calendar,
+    events,
     worker: getWorker(workerId)(state),
-    events: getWorkerEventsByDate(workerId)(state),
-    period: [startOfDay(from), endOfDay(to)],
+    period: [head(newEvents).from, last(newEvents).to],
   };
 };
 

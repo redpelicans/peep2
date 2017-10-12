@@ -9,7 +9,7 @@ import { ObjectId } from 'mongobless';
 import { Person, Preference, Note } from '../models';
 import {
   emitNotesDeleted,
-  emitNoteEvent,
+  emitAddNoteEvent,
   checkUser,
   emitEvent,
   formatOutput,
@@ -126,11 +126,7 @@ export const people = {
 
     return insertOne(newPerson)
       .then(loadOne)
-      .then(createNote)
-      .then(({ note, entity }) => {
-        entity.note = note;
-        return entity;
-      });
+      .then(createNote);
   },
 
   update(input) {
@@ -202,9 +198,9 @@ const init = evtx => {
     .after({
       load: [formatOutput(outMakerMany)],
       add: [
+        emitAddNoteEvent(),
         formatOutput(outMaker),
         emitEvent('person:added'),
-        emitNoteEvent('note:added'),
       ],
       update: [formatOutput(outMaker), emitEvent('person:updated')],
       del: [emitEvent('person:deleted'), emitNotesDeleted()],

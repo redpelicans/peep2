@@ -163,8 +163,8 @@ SpareDay.propTypes = {
 };
 
 const StyledWorkingDay = styled(StyledDay)`
-  background-color: ${({ selected }) =>
-    selected ? Colors.GREEN5 : workingDayBackground};
+  background-color: ${({ isSelected }) =>
+    isSelected ? Colors.GREEN5 : workingDayBackground};
 `;
 
 const enhanceWorkingDay = compose(
@@ -180,10 +180,10 @@ const enhanceWorkingDay = compose(
       e.preventDefault();
       e.stopPropagation();
     },
-    handleMouseEnter: ({ extendPeriod, worker, date }) => e => {
-      extendPeriod && extendPeriod(worker, date);
+    handleMouseEnter: ({ extendPeriod, worker, date, isSelected }) => e => {
+      extendPeriod && extendPeriod(worker, date, isSelected);
       e.preventDefault();
-      e.stopPropagation();
+      // e.stopPropagation();
     },
     handleClick: ({ editEvent }) => event => e => {
       editEvent && editEvent(event);
@@ -195,13 +195,14 @@ const enhanceWorkingDay = compose(
 
 const WorkingDay = enhanceWorkingDay(
   ({
-    selected,
+    isSelected,
     events,
     readOnly,
     handleMouseEnter,
     handleMouseUp,
     handleMouseDown,
     handleClick,
+    endPeriod,
   }) => {
     const props =
       (!readOnly && {
@@ -213,12 +214,19 @@ const WorkingDay = enhanceWorkingDay(
     const dayEvents =
       events &&
       map(
-        evt => <Event key={evt._id} event={evt} onClick={handleClick(evt)} />,
+        evt => (
+          <Event
+            key={evt._id}
+            event={evt}
+            endPeriod={endPeriod}
+            onClick={handleClick(evt)}
+          />
+        ),
         events,
       );
     return (
       <StyledWorkingDay
-        selected={selected}
+        isSelected={isSelected}
         onMouseUp={handleMouseUp}
         {...props}
       >
@@ -230,11 +238,12 @@ const WorkingDay = enhanceWorkingDay(
 
 WorkingDay.propTypes = {
   events: PropTypes.array,
-  selected: PropTypes.bool,
+  isSelected: PropTypes.bool,
   readOnly: PropTypes.bool,
   startPeriod: PropTypes.func,
   selectPeriod: PropTypes.func,
   extendPeriod: PropTypes.func,
+  endPeriod: PropTypes.func,
   editEvent: PropTypes.func,
 };
 
@@ -251,13 +260,16 @@ const StyledEvent = styled.div`
     event.period === EVENT_DAY ? 'span 2' : event.period};
 `;
 
-const Event = ({ event, onClick }) => {
+const Event = ({ event, endPeriod, onClick }) => {
   return (
     <StyledEvent
       event={event}
       onClick={onClick}
-      onMouseUp={e => e.stopPropagation()}
-      onMouseEnter={e => e.stopPropagation()}
+      onMouseUp={e => e.preventDefault()}
+      onMouseEnter={e => {
+        e.stopPropagation();
+        endPeriod();
+      }}
       onMouseDown={e => e.stopPropagation()}
     />
   );
@@ -266,25 +278,33 @@ const Event = ({ event, onClick }) => {
 Event.propTypes = {
   event: PropTypes.object.isRequired,
   onClick: PropTypes.func,
+  endPeriod: PropTypes.func,
 };
 
-const Day = ({ calendar, currentWorker, user, events, from, to, ...props }) => {
+const dayShouldUpdate = (props, nextProps) => {
+  return (
+    props.isSelected !== nextProps.isSelected ||
+    props.events !== nextProps.events
+  );
+};
+
+const Day = shouldUpdate(
+  dayShouldUpdate,
+)(({ isSelected, calendar, user, events, ...props }) => {
   const { date, worker, selectPeriod } = props;
-  const selected =
-    betweenDates(date, from, to) && isEqual(currentWorker, worker);
   const isAWorkingDay = isWorkingDay(calendar, date);
   if (isAWorkingDay) {
     const newProps =
       user && (isAdmin(user) || isEqual(user, worker))
-        ? { selected, events, ...props }
-        : { selected, events, readOnly: true, ...props };
+        ? { isSelected, events, ...props }
+        : { isSelected, events, readOnly: true, ...props };
     return <WorkingDay {...newProps} />;
   }
   const spareDay = getCalendarDay(calendar, date);
   return (
     <SpareDay day={spareDay} selectPeriod={selectPeriod} events={events} />
   );
-};
+});
 
 Day.propTypes = {
   date: PropTypes.object.isRequired,
@@ -292,10 +312,8 @@ Day.propTypes = {
   events: PropTypes.array,
   user: PropTypes.object,
   calendar: PropTypes.object,
-  from: PropTypes.object,
-  to: PropTypes.object,
-  currentWorker: PropTypes.object,
   selectPeriod: PropTypes.func,
+  isSelected: PropTypes.bool.isRequired,
 };
 
 const getWorkerDateEvents = (worker, date, events) =>
@@ -322,9 +340,17 @@ class WorkersCalendar extends Component {
     });
   };
 
-  extendPeriod = (worker, date) => {
+  extendPeriod = (worker, date, force = false) => {
     const { from, selecting } = this.state;
-    if (from && selecting) this.setState({ to: date });
+    if (!selecting && force)
+      this.setState({ selecting: true }, () => {
+        if (from) this.setState({ to: date });
+      });
+    else if (from && selecting) this.setState({ to: date });
+  };
+
+  endPeriod = (worker, date) => {
+    this.setState({ selecting: false });
   };
 
   render() {
@@ -342,26 +368,26 @@ class WorkersCalendar extends Component {
     const daysRow = [monthHeader, ...daysheader];
     const workersMonth = map(worker => {
       const workerHeader = <WorkerHeader key={worker._id} worker={worker} />;
-      const workerMonth = map(
-        d => (
+      const workerMonth = map(d => {
+        const isSelected =
+          betweenDates(d, from, to) && isEqual(currentWorker, worker);
+        return (
           <Day
             key={dmy(d)}
             date={d}
             calendar={calendar}
             worker={worker}
             user={user}
-            from={from}
-            currentWorker={currentWorker}
             events={getWorkerDateEvents(worker, d, events)}
-            to={to}
             startPeriod={this.startPeriod}
             selectPeriod={this.selectPeriod}
             extendPeriod={this.extendPeriod}
+            endPeriod={this.endPeriod}
             editEvent={editEvent}
+            isSelected={isSelected}
           />
-        ),
-        days,
-      );
+        );
+      }, days);
       return [workerHeader, ...workerMonth];
     }, workers);
 

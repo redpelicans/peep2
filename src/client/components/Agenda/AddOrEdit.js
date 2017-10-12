@@ -7,6 +7,7 @@ import PeriodPicker from './PeriodPicker';
 import { getField } from '../../forms/events';
 import { FormField } from '../../fields';
 import WorkerCalendar from './Calendar/Worker';
+import { ViewField } from '../widgets';
 
 const StyledForm = styled.div`
   display: flex;
@@ -46,6 +47,9 @@ const StyledFormField = styled(FormField)`
   justify-content: center;
   grid-area: ${({ field }) => field.name};
 `;
+
+const StyledViewField = styled(ViewField)`grid-area: ${({ name }) => name};`;
+
 const StyledValueUnit = styled.div`
   grid-area: valueUnit;
   display: flex;
@@ -78,12 +82,7 @@ const AddOrEditForm = ({
   errors,
 }) => {
   const [from, to] = values['period'];
-  const newEvents = freeEventsFromPeriod({
-    from,
-    to,
-    events,
-    calendar,
-  });
+  const newEvents = freeEventsFromPeriod({ from, to, events, calendar });
   const daysCount = compose(sum, pluck('value'))(newEvents);
   return (
     <StyledForm>
@@ -98,23 +97,20 @@ const AddOrEditForm = ({
           calendar={calendar}
           type={values['type']}
         />
-        <PeriodPicker
-          field={getField('period')}
-          from={from}
-          to={to}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
-          minDate={minDate}
-          maxDate={maxDate}
-          events={events}
-        />
-        <StyledFormField
-          field={getField('workerId')}
-          values={values}
-          touched={touched}
-          setFieldValue={setFieldValue}
-          setFieldTouched={setFieldTouched}
-        />
+        {from &&
+          to && (
+            <PeriodPicker
+              field={getField('period')}
+              from={from}
+              to={to}
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+              minDate={minDate}
+              maxDate={maxDate}
+              events={events}
+            />
+          )}
+        <StyledViewField name="workerId" label="Worker" value={worker.name} />
 
         <ValueUnit
           name="valueUnit"

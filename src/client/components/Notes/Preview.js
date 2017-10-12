@@ -67,7 +67,7 @@ export const Preview = ({
   >
     <ModalConfirmation
       isOpen={isDeleteDialogOpen}
-      title="Would you like to delete this company?"
+      title="Would you like to delete this note?"
       reject={() => hideDialog()}
       accept={() => deleteNote(note._id)}
     />
