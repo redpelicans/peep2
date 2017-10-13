@@ -33,9 +33,11 @@ export const Icons = styled.div`
   color: rgb(68, 86, 99);
 `;
 
+const StyledMarkdownConvertor = styled(MarkdownConvertor)`overflow: hidden;`;
+
 export const CardContent = ({ note, person, entity }) => (
   <div>
-    <MarkdownConvertor>{note.content}</MarkdownConvertor>
+    <StyledMarkdownConvertor>{note.content}</StyledMarkdownConvertor>
     <StyledFooterLine />
     <Footer note={note} person={person} entity={entity} />
   </div>

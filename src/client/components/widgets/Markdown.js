@@ -8,6 +8,8 @@ import { themeColors } from '../../utils/colors';
 const convertor = new Remarkable('full');
 
 const StyledMarkdown = styled.div`
+  text-overflow: ellipsis;
+  text-align: justify;
   ol,
   ul {
     list-style: circle;
@@ -25,19 +27,29 @@ const StyledMarkdown = styled.div`
   }
 `;
 
-export const MarkdownConvertor = ({ children }) => (
+export const MarkdownConvertor = ({ children, className }) => (
   <StyledMarkdown
+    className={className}
     dangerouslySetInnerHTML={{ __html: convertor.render(children) }} // eslint-disable-line
   />
 );
 
 MarkdownConvertor.propTypes = {
   children: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export const MarkdownSwitch = ({ onChange }) => (
   <div>
-    <span style={{ color: themeColors.secondary, fontSize: '0.9em', marginRight: '8px' }}>preview</span>
+    <span
+      style={{
+        color: themeColors.secondary,
+        fontSize: '0.9em',
+        marginRight: '8px',
+      }}
+    >
+      preview
+    </span>
     <Switch size="small" onChange={onChange} />
   </div>
 );
@@ -57,7 +69,14 @@ export class MarkdownTextarea extends React.Component {
   getWriter = () => {
     const { props } = this;
     const localValue = this.state.value;
-    return <Input {...props} type="textarea" value={localValue} onChange={this.handleChange} />;
+    return (
+      <Input
+        {...props}
+        type="textarea"
+        value={localValue}
+        onChange={this.handleChange}
+      />
+    );
   };
 
   getReader = () => {
@@ -78,7 +97,8 @@ export class MarkdownTextarea extends React.Component {
     if (onChange) onChange(event);
   };
 
-  handleMarkdownSwitch = () => this.setState({ showMarkdown: !this.state.showMarkdown });
+  handleMarkdownSwitch = () =>
+    this.setState({ showMarkdown: !this.state.showMarkdown });
 
   render() {
     return (

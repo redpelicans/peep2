@@ -8,12 +8,16 @@ import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
 export const StyledFooter = styled.div`
-  display: flex;
+  display: grid;
+  grid-gap: 10px;
   align-items: center;
-  justify-content: space-between;
+  grid-template-columns: repeat(5, [col] 18%);
+  justify-content: center;
 `;
 
 const StyledMain = styled.div`
+  align-items: center;
+  grid-column: col 2 / span 3;
   display: flex;
   flex-direction: column;
 `;
@@ -38,19 +42,33 @@ const StyledCreatedAt = styled.span`
   font-size: 0.8em;
 `;
 
+const StyledEntity = styled.div`
+  display: flex;
+  justify-content: center;
+  grid-column: col 1;
+`;
+
+const StyledAuthor = styled.div`
+  display: flex;
+  justify-content: center;
+  grid-column: col 5;
+`;
+
 const Footer = ({ note, person, entity }) => {
   if (!note) return null;
   return (
     <StyledFooter>
-      {entity &&
-        entity.avatar && (
-          <Avatar
-            name={entity.name}
-            size="MEDIUM"
-            to={getPathByName(entity.typeName, entity._id)}
-            {...entity.avatar}
-          />
-        )}
+      <StyledEntity>
+        {entity &&
+          entity.avatar && (
+            <Avatar
+              name={entity.name}
+              size="MEDIUM"
+              to={getPathByName(entity.typeName, entity._id)}
+              {...entity.avatar}
+            />
+          )}
+      </StyledEntity>
       <StyledMain>
         <StyledName>
           <Icon
@@ -71,15 +89,17 @@ const Footer = ({ note, person, entity }) => {
           </StyledCreatedAt>
         )}
       </StyledMain>
-      {person &&
-        person.avatar && (
-          <Avatar
-            name={person.name}
-            size="SMALL"
-            to={getPathByName('person', person._id)}
-            {...person.avatar}
-          />
-        )}
+      <StyledAuthor>
+        {person &&
+          person.avatar && (
+            <Avatar
+              name={person.name}
+              size="SMALL"
+              to={getPathByName('person', person._id)}
+              {...person.avatar}
+            />
+          )}
+      </StyledAuthor>
     </StyledFooter>
   );
 };
