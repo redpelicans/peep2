@@ -24,7 +24,8 @@
   line-height: 38px;
 }
 
-.Select--multi .Select-value, .Select--multi.is-disabled .Select-value {
+.Select--multi .Select-value,
+.Select--multi.is-disabled .Select-value {
   font-size: 14px;
   line-height: 23px;
 }
