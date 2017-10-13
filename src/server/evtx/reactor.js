@@ -187,6 +187,7 @@ class Reactor {
     evtx.service('notes').on('note:added', this.broadcast(pushEvent));
     evtx.service('notes').on('note:updated', this.broadcast(pushEvent));
     evtx.service('notes').on('note:deleted', this.broadcast(pushEvent));
+    evtx.service('notes').on('notes:deleted', this.broadcast(pushEvent));
   }
 
   initAuth() {
