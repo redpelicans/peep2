@@ -5,7 +5,9 @@ export const FILTER_NOTES_LIST = 'filter:notes:list';
 export const SORT_NOTES_LIST = 'sort:notes:list';
 export const DELETE_NOTE = 'EvtX:Server:notes:del';
 export const NOTES_DELETED = 'notes:deleted';
-export const ADD_NOTES = 'EvtX:Server:notes:add';
+export const ADD_NOTE = 'EvtX:Server:notes:add';
+export const NOTE_UPDATED = 'note:updated';
+export const UPDATE_NOTE = 'EvtX:Server:notes:update';
 
 export const filterNotesList = filter => ({
   type: FILTER_NOTES_LIST,
@@ -34,8 +36,16 @@ export const deleteNote = id => dispatch => {
 
 export const addNote = (id, note, entityType) => dispatch => {
   dispatch({
-    type: ADD_NOTES,
+    type: ADD_NOTE,
     payload: { entityType, entityId: id, content: note },
     replyTo: NOTE_ADDED,
+  });
+};
+
+export const updateNote = (id, note, entityType) => dispatch => {
+  dispatch({
+    type: UPDATE_NOTE,
+    payload: { entityType, _id: id, content: note, newNote: '' },
+    replyTo: NOTE_UPDATED,
   });
 };
