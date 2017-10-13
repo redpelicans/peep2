@@ -21,6 +21,7 @@ const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
 const StyledButton = styled(Button)`margin-left: 10px;`;
 
 export const Title = styled.p`
+  overflow: hidden;
   text-transform: capitalize;
   font-size: 1em;
   white-space: nowrap;

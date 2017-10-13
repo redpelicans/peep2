@@ -1,6 +1,7 @@
-import { map, filter, indexOf } from 'ramda';
+import { compose, fromPairs, omit, map, filter, indexOf } from 'ramda';
 import {
   NOTES_DELETED,
+  NOTE_DELETED,
   NOTE_ADDED,
   NOTE_UPDATED,
   NOTES_LOADED,
@@ -12,16 +13,14 @@ const make = note => {
   const updatedNote = {
     ...note,
     typeName: 'note',
-    createdAt: note.createdAt ? note.createdAt : undefined,
   };
-  updatedNote.updatedAt = note.updatedAt ? note.updatedAt : note.createdAt;
   return updatedNote;
 };
 
-const makeAll = map(n => make(n));
+const makeAll = compose(fromPairs, map(o => [o._id, make(o)]));
 
 const initialState = {
-  data: [],
+  data: {},
   sort: { by: 'createdAt', order: 'desc' },
   filter: '',
 };
@@ -31,7 +30,7 @@ const notes = (state = initialState, action) => {
     case NOTE_ADDED:
       return {
         ...state,
-        data: [...state.data, make(action.payload)],
+        data: { ...state.data, [action.payload._id]: make(action.payload) },
       };
     case NOTE_UPDATED:
       return {
@@ -47,14 +46,10 @@ const notes = (state = initialState, action) => {
       const newOrder = by === action.sortBy && order === 'asc' ? 'desc' : 'asc';
       return { ...state, sort: { by: action.sortBy, order: newOrder } };
     }
+    case NOTE_DELETED:
+      return { ...state, data: omit([action.payload._id], state.data) };
     case NOTES_DELETED:
-      return {
-        ...state,
-        data: filter(
-          note => indexOf(note._id, action.payload._id) === -1,
-          state.data,
-        ),
-      };
+      return { ...state, data: omit(action.payload, state.data) };
     default:
       return state;
   }
