@@ -1,4 +1,5 @@
 import {
+  propEq,
   filter,
   isEmpty,
   match,
@@ -39,3 +40,6 @@ export const getVisibleNotes = createSelector(
     return filterAndSort(filter, sort, notes);
   },
 );
+
+export const getEntityNotes = id =>
+  createSelector(getNotes, filter(propEq('entityId', id)));
