@@ -30,6 +30,7 @@ export const StyledInfos = styled.div`
   display: flex;
   margin-left: 15px;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const Icons = styled.div`
