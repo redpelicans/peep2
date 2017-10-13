@@ -69,7 +69,7 @@ export const notes = {
   update(note) {
     const newVersion = inMaker(note);
     newVersion.authorId = this.user._id;
-    newNote.updatedAt = new Date();
+    newVersion.updatedAt = new Date();
     const loadOne = ({ _id }) => Note.loadOne(_id);
     const update = nextVersion => previousVersion =>
       Note.collection
