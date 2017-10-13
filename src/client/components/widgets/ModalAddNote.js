@@ -76,7 +76,10 @@ const ModalConfirmation = ({
           Cancel
         </Button>
         <Button
-          onClick={() => accept(value)}
+          onClick={() => {
+            handleChangeValue({ target: { value: '' } });
+            accept(value);
+          }}
           className="pt-intent-success pt-large"
         >
           Add
