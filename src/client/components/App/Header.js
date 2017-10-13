@@ -7,6 +7,7 @@ import { Tabs2, Tab2 } from '@blueprintjs/core';
 import { getRouteByName, getRouteByPath, defaultRoute } from '../../routes';
 import UserButton from './User';
 import { NavBar, NavBarLeft, NavBarRight } from './NavBar';
+import { Spacer } from '../widgets';
 
 const Logo = styled.i`
   color: #cd4436;
@@ -67,8 +68,7 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
           </Tabs2>
           <span className="pt-navbar-divider" />
           <UserButton user={user} logout={logout} />
-          <button className="pt-button pt-minimal pt-icon-notifications" />
-          <button className="pt-button pt-minimal pt-icon-cog" />
+          <Spacer />
         </NavBarRight>
       </NavBar>
     </div>
