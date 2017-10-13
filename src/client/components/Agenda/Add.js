@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { withFormik } from 'formik';
+import { Prompt } from 'react-router';
 import { getCalendar } from '../../selectors/calendar';
 import { addEventGroup } from '../../actions/events';
 import { getWorker } from '../../selectors/people';
@@ -46,6 +47,10 @@ const Add = ({
   return (
     <StyledContainer>
       <div>
+        <Prompt
+          when={!isCancelDialogOpen && dirty && !isSubmitting}
+          message="Would you like to cancel this form ?"
+        />
         <ModalConfirmation
           isOpen={isCancelDialogOpen}
           title="Would you like to cancel this form ?"

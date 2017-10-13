@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-//  background: linear-gradient( to right, rgba(48, 64, 77, 0.5), rgba(48, 64, 77, 1)
+// background: radial-gradient( circle at top right, rgba(48, 64, 77, 1), rgba(48, 64, 77, 0.3));
 const Actions = styled.div`
   display: flex;
   flex-direction: row;
@@ -8,16 +8,10 @@ const Actions = styled.div`
   align-items: flex-start;
   right: 10px;
   top: 0px;
-  left: 0px;
-  height: 100%;
-  width: 100%;
+  right: 0px;
   z-index: 5;
   position: absolute;
-  background: radial-gradient(
-    circle at top right,
-    rgba(48, 64, 77, 1),
-    rgba(48, 64, 77, 0.3)
-  );
+  background: rgba(48, 64, 77, 1);
 `;
 
 export default Actions;
