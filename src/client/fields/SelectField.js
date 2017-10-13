@@ -14,99 +14,11 @@ import Select from 'react-select';
 import { fullName } from '../utils/people';
 import { Colors } from '@blueprintjs/core';
 
-const SelectCreatableStyled = styled(Select.Creatable)`
-  &.Select--multi {
-    .Select-value {
-      display: inline-flex;
-      align-items: center;
-      color: ${Colors.WHITE};
-      background-color: ${Colors.DARK_GRAY4};
-    }
-  }
-  & .is-searchable.is-open > .Select-control {
-    background-color: ${Colors.DARK_GRAY4};
-  }
-  & .Select-control {
-    border-radius: 2px;
-    border: 1px solid ${Colors.DARK_GRAY3};
-    background-color: ${Colors.DARK_GRAY4};
-    color: ${Colors.WHITE};
-  }
-  & .is-open > .Select-value {
-    background-color: red !important;
-  }
-  & .Select-clear-zone:hover {
-    color: ${Colors.RED3};
-  }
-  & .Select-value-label {
-    color: white !important;
-  }
-  & .Select-menu-outer {
-    border: 0;
-    background-color: ${Colors.DARK_GRAY5};
-  }
-  & .Select-option {
-    box-sizing: none;
-    background-color: ${Colors.DARK_GRAY4};
-    color: ${Colors.LIGHT_GRAY4};
-  }
-  & .Select-placeholder {
-    font-size: smaller;
-    color: ${Colors.WHITE};
-    background-color: ${Colors.DARK_GRAY4};
-    border: 0;
-  }
-  & .Select.is-disabled > .Select-control {
-    background-color: ${Colors.DARK_GRAY4} !important;
-  }
-`;
+import './react-select.css';
+import './react-select-override.css';
 
-const SelectStyled = styled(Select)`
-  &.Select--multi {
-    .Select-value {
-      display: inline-flex;
-      align-items: center;
-      color: ${Colors.WHITE};
-      background-color: ${Colors.DARK_GRAY4};
-    }
-  }
-  & .is-searchable.is-open > .Select-control {
-    background-color: ${Colors.DARK_GRAY4};
-  }
-  & .Select-control {
-    border-radius: 2px;
-    border: 1px solid ${Colors.DARK_GRAY3};
-    background-color: ${Colors.DARK_GRAY4};
-    color: ${Colors.WHITE};
-  }
-  & .is-open > .Select-value {
-    background-color: red !important;
-  }
-  & .Select-clear-zone:hover {
-    color: ${Colors.RED3};
-  }
-  & .Select-value-label {
-    color: white !important;
-  }
-  & .Select-menu-outer {
-    border: 0;
-    background-color: ${Colors.DARK_GRAY5};
-  }
-  & .Select-option {
-    box-sizing: none;
-    background-color: ${Colors.DARK_GRAY4};
-    color: ${Colors.LIGHT_GRAY4};
-  }
-  & .Select-placeholder {
-    font-size: smaller;
-    color: ${Colors.WHITE};
-    background-color: ${Colors.DARK_GRAY4};
-    border: 0;
-  }
-  & .is-disabled > .Select-control {
-    background-color: red !important;
-  }
-`;
+const SelectCreatableStyled = styled(Select.Creatable)``;
+const SelectStyled = styled(Select)``;
 
 export const SelectField = ({
   name,
