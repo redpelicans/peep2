@@ -11,7 +11,7 @@ export const StyledFooter = styled.div`
   display: grid;
   grid-gap: 10px;
   align-items: center;
-  grid-template-columns: repeat(5, [col] 18%);
+  grid-template-columns: repeat(5, [col] 1fr);
   justify-content: center;
 `;
 
@@ -25,10 +25,9 @@ const StyledMain = styled.div`
 const StyledName = styled.div`
   font-size: 1rem;
   font-weight: bold;
-  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  max-width: 200px;
+  max-width: 190px;
 `;
 
 const entityIcon = {
@@ -43,6 +42,7 @@ const StyledCreatedAt = styled.span`
 `;
 
 const StyledEntity = styled.div`
+  padding-right: 2px;
   display: flex;
   justify-content: center;
   grid-column: col 1;

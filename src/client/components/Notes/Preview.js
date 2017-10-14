@@ -73,6 +73,7 @@ export const Preview = ({
     onMouseOver={handleMouseEnter}
     onMouseEnter={handleMouseEnter}
     onMouseLeave={handleMouseLeave}
+    showActions={showActions}
   >
     <ModalConfirmation
       isOpen={isDeleteDialogOpen}
