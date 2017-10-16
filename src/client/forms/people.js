@@ -64,7 +64,7 @@ const fields = {
   },
   companyId: {
     label: 'Company',
-    required: true,
+    required: false,
     component: CompaniesSelectField,
     validate: Yup.string(),
   },

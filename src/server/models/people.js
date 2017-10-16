@@ -32,6 +32,7 @@ class Person {
 
   hasSomeRoles(roles = []) {
     if (!roles.length) return true;
+    if (!this.roles) return false;
     return R.intersection(roles, this.roles).length !== 0;
   }
 

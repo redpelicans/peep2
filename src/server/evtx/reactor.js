@@ -197,7 +197,7 @@ class Reactor {
       loginfo(`user '${user.email}' logged in.`);
     });
     evtx.service('auth').on('auth:logout', ({ socket, user }) => {
-      loginfo(`user '${user.email}' logged out.`);
+      if (user) loginfo(`user '${user.email}' logged out.`);
       delete this.conx[socket.id];
     });
   }

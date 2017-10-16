@@ -16,9 +16,16 @@ import {
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
-const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+`;
 
-const StyledButton = styled(Button)`margin-left: 10px;`;
+const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
+`;
 
 export const Title = styled.p`
   overflow: hidden;
@@ -62,6 +69,20 @@ export const Preview = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {showActions && (
+        <Actions>
+          <StyledLinkButton
+            to={getPathByName('editCompany', _id)}
+            className="pt-small pt-button pt-intent-warning"
+            iconName="pt-icon-edit"
+          />
+          <StyledButton
+            className="pt-small pt-button pt-intent-danger"
+            iconName="pt-icon-trash"
+            onClick={() => showDialog()}
+          />
+        </Actions>
+      )}
       <ModalConfirmation
         isOpen={isDeleteDialogOpen}
         title="Would you like to delete this company?"
@@ -80,20 +101,6 @@ export const Preview = ({
         <Title>
           <NameLink to={getPathByName('company', _id)}>{name}</NameLink>
         </Title>
-        {showActions && (
-          <Actions>
-            <StyledLinkButton
-              to={getPathByName('editCompany', _id)}
-              className="pt-small pt-button"
-              iconName="pt-icon-edit"
-            />
-            <StyledButton
-              className="pt-small pt-button"
-              iconName="pt-icon-trash"
-              onClick={() => showDialog()}
-            />
-          </Actions>
-        )}
       </TitleRow>
       {!isEmpty(tags) && (
         <Tags>

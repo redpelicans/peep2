@@ -17,9 +17,16 @@ import {
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
-const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+`;
 
-const StyledButton = styled(Button)`margin-left: 10px;`;
+const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
+`;
 
 export const TitleRow = styled.div`
   display: flex;
@@ -84,11 +91,11 @@ export const Preview = ({
           <Actions>
             <StyledLinkButton
               to={getPathByName('editPerson', _id)}
-              className="pt-small pt-button"
+              className="pt-small pt-button pt-intent-warning"
               iconName="pt-icon-edit"
             />
             <StyledButton
-              className="pt-small pt-button"
+              className="pt-small pt-button pt-intent-danger"
               iconName="pt-icon-trash"
               onClick={() => showDialog()}
             />

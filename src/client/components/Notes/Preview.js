@@ -8,7 +8,10 @@ import { Button } from '@blueprintjs/core';
 import ModalNote from '../widgets/ModalNote';
 import { PreviewContainer, Actions, ModalConfirmation } from '../widgets';
 
-const StyledButton = styled(Button)`margin-left: 10px;`;
+const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
+`;
 
 export const StyledNoteWrap = styled.div`
   margin: 0 auto;
@@ -63,6 +66,7 @@ export const Preview = ({
     onMouseOver={handleMouseEnter}
     onMouseEnter={handleMouseEnter}
     onMouseLeave={handleMouseLeave}
+    showActions={showActions}
   >
     <ModalNote
       isOpen={isModalOpen}
@@ -90,7 +94,7 @@ export const Preview = ({
           onClick={() => showModal()}
         />
         <StyledButton
-          className="pt-small pt-button"
+          className="pt-small pt-button pt-intent-danger"
           iconName="pt-icon-trash"
           onClick={() => showDialog()}
         />
