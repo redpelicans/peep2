@@ -187,6 +187,7 @@ class Reactor {
     evtx.service('notes').on('note:added', this.broadcast(pushEvent));
     evtx.service('notes').on('note:updated', this.broadcast(pushEvent));
     evtx.service('notes').on('note:deleted', this.broadcast(pushEvent));
+    evtx.service('notes').on('notes:deleted', this.broadcast(pushEvent));
   }
 
   initAuth() {
@@ -196,7 +197,7 @@ class Reactor {
       loginfo(`user '${user.email}' logged in.`);
     });
     evtx.service('auth').on('auth:logout', ({ socket, user }) => {
-      loginfo(`user '${user.email}' logged out.`);
+      if (user) loginfo(`user '${user.email}' logged out.`);
       delete this.conx[socket.id];
     });
   }

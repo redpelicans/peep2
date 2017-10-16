@@ -1,4 +1,5 @@
 import {
+  propEq,
   filter,
   isEmpty,
   match,
@@ -27,10 +28,10 @@ export const doFilter = nfilter =>
 
 export const getFilter = state => state.notes.filter || '';
 export const getSort = state => state.notes.sort;
-export const getNotes = state => state.notes.data;
+export const getNotes = state => values(state.notes.data);
 
 const filterAndSort = (filter, sort, notes) =>
-  compose(doSort(sort), doFilter(filter), values)(notes);
+  compose(doSort(sort), doFilter(filter))(notes);
 
 export const getVisibleNotes = createSelector(
   [getFilter, getSort, getNotes],
@@ -39,3 +40,6 @@ export const getVisibleNotes = createSelector(
     return filterAndSort(filter, sort, notes);
   },
 );
+
+export const getEntityNotes = id =>
+  createSelector(getNotes, filter(propEq('entityId', id)));

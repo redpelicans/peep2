@@ -8,7 +8,8 @@ import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import MasonryLayout from '../widgets/MasonryLayout';
 import Preview from '../Notes/Preview';
-import { getPeople, getPersonNotes } from '../../selectors/people';
+import { getPeople } from '../../selectors/people';
+import { getEntityNotes } from '../../selectors/notes';
 import { getCompanies } from '../../selectors/companies';
 import ModalAddNote from '../widgets/ModalAddNote';
 import { addNote } from '../../actions/notes';
@@ -104,10 +105,10 @@ NotesView.propTypes = {
 const actions = { addNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state, { entityId }) => ({
   people: getPeople(state),
   companies: getCompanies(state),
-  notes: getPersonNotes(state, props),
+  notes: getEntityNotes(entityId)(state),
 });
 
 const enhance = compose(

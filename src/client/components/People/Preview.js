@@ -28,6 +28,7 @@ export const StyledInfos = styled.div`
   display: flex;
   margin-left: 15px;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const Icons = styled.div`
@@ -81,7 +82,7 @@ export const Preview = ({
           <Actions>
             <LinkButton
               to={getPathByName('editPerson', _id)}
-              className="pt-small pt-button"
+              className="pt-small pt-button pt-intent-warning"
               iconName="pt-icon-edit"
             />
             <Spacer size="5" />

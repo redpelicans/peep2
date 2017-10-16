@@ -12,14 +12,23 @@ import {
   NameLink,
   Actions,
   ModalConfirmation,
-  Spacer,
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
-export const Title = styled.div`
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+`;
+
+const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
+`;
+
+export const Title = styled.p`
   overflow: hidden;
-  text-overflow: ellipsis;
   text-transform: capitalize;
   font-size: 1em;
   margin: 0;
@@ -57,6 +66,20 @@ export const Preview = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {showActions && (
+        <Actions>
+          <StyledLinkButton
+            to={getPathByName('editCompany', _id)}
+            className="pt-small pt-button pt-intent-warning"
+            iconName="pt-icon-edit"
+          />
+          <StyledButton
+            className="pt-small pt-button pt-intent-danger"
+            iconName="pt-icon-trash"
+            onClick={() => showDialog()}
+          />
+        </Actions>
+      )}
       <ModalConfirmation
         isOpen={isDeleteDialogOpen}
         title="Would you like to delete this company?"
@@ -75,21 +98,6 @@ export const Preview = ({
         <Title>
           <NameLink to={getPathByName('company', _id)}>{name}</NameLink>
         </Title>
-        {showActions && (
-          <Actions>
-            <LinkButton
-              to={getPathByName('editCompany', _id)}
-              className="pt-small pt-button"
-              iconName="pt-icon-edit"
-            />
-            <Spacer size="5" />
-            <Button
-              className="pt-small pt-button"
-              iconName="pt-icon-trash"
-              onClick={() => showDialog()}
-            />
-          </Actions>
-        )}
       </TitleRow>
       {!isEmpty(tags) && (
         <Tags>

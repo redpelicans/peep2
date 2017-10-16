@@ -7,7 +7,8 @@ import styled from 'styled-components';
 import MasonryLayout from '../widgets/MasonryLayout';
 import Preview from '../Notes/Preview';
 import { getPeople } from '../../selectors/people';
-import { getCompanies, getCompanyNotes } from '../../selectors/companies';
+import { getCompanies } from '../../selectors/companies';
+import { getEntityNotes } from '../../selectors/notes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -56,8 +57,8 @@ NotesView.propTypes = {
   findEntity: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, props) => ({
-  notes: getCompanyNotes(state, props),
+const mapStateToProps = (state, { entityId }) => ({
+  notes: getEntityNotes(entityId)(state),
   people: getPeople(state),
   companies: getCompanies(state),
 });

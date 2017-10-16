@@ -13,9 +13,16 @@ import {
 } from '../widgets';
 import { getPathByName } from '../../routes';
 
-const StyledLinkButton = styled(LinkButton)`margin-left: 10px;`;
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+`;
 
-const StyledButton = styled(Button)`margin-left: 10px;`;
+const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
+`;
 
 export const StyledNoteWrap = styled.div`
   margin: 0 auto;
@@ -33,9 +40,11 @@ export const Icons = styled.div`
   color: rgb(68, 86, 99);
 `;
 
+const StyledMarkdownConvertor = styled(MarkdownConvertor)`overflow: hidden;`;
+
 export const CardContent = ({ note, person, entity }) => (
   <div>
-    <MarkdownConvertor>{note.content}</MarkdownConvertor>
+    <StyledMarkdownConvertor>{note.content}</StyledMarkdownConvertor>
     <StyledFooterLine />
     <Footer note={note} person={person} entity={entity} />
   </div>
@@ -64,6 +73,7 @@ export const Preview = ({
     onMouseOver={handleMouseEnter}
     onMouseEnter={handleMouseEnter}
     onMouseLeave={handleMouseLeave}
+    showActions={showActions}
   >
     <ModalConfirmation
       isOpen={isDeleteDialogOpen}
@@ -75,11 +85,11 @@ export const Preview = ({
       <Actions>
         <StyledLinkButton
           to={getPathByName('editNote', note._id)}
-          className="pt-small pt-button"
+          className="pt-small pt-button pt-intent-warning"
           iconName="pt-icon-edit"
         />
         <StyledButton
-          className="pt-small pt-button"
+          className="pt-small pt-button pt-intent-danger"
           iconName="pt-icon-trash"
           onClick={() => showDialog()}
         />

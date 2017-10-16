@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { Button } from '@blueprintjs/core';
 import { bindActionCreators } from 'redux';
 import { Formik } from 'formik';
+import { Prompt } from 'react-router';
 import {
   loadEventGroup,
   updateEventGroup,
@@ -72,6 +73,11 @@ const Edit = compose(
     return (
       <StyledContainer>
         <div>
+          <Prompt
+            when={!isCancelDialogOpen && dirty && !isSubmitting}
+            message="Would you like to cancel this form ?"
+          />
+
           <ModalConfirmation
             isOpen={isDeleteDialogOpen}
             title="Would you like to delete this event group ?"

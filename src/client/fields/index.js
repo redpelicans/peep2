@@ -15,14 +15,15 @@ export const FormField = ({
     'domainValues' in field
       ? { ...props, domainValues: field.domainValues }
       : props;
+  const value = 'value' in props ? props.value : values[field.name];
   return (
     <div className={className}>
       <field.component
         name={field.name}
         label={'label' in props ? props.label : field.label}
-        value={'value' in props ? props.value : values[field.name]}
+        value={value}
         error={(errors && touched[field.name] && errors[field.name]) || null}
-        required={!!field.required}
+        required={!value && !!field.required}
         {...newProps}
       />
     </div>

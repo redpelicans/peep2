@@ -24,7 +24,6 @@ import {
 import { createSelector } from 'reselect';
 import { isWorker } from '../utils/people';
 import { getCompanies } from './companies';
-import { getNotes } from './notes';
 
 export const getFilter = state => state.people.filter || '';
 export const getSort = state => state.people.sort;
@@ -32,12 +31,6 @@ export const getPeople = state => state.people.data;
 export const getPerson = (state, id) => state.people.data[id];
 const getCompanyId = (state, props) => props.match.params.id;
 const getPreferredFilter = state => state.people.preferredFilter;
-
-export const getPersonNotes = (state, props) => {
-  const notes = getNotes(state);
-  if (isEmpty(notes)) return null;
-  return filter(note => note.entityId === props.entityId, notes);
-};
 
 const sortByProp = pprop =>
   sortBy(compose(ifElse(is(String), toLower, identity), prop(pprop)));
@@ -127,8 +120,6 @@ const groupPersonTypes = (acc, person) => {
     [type]: { label: type, count: pathOr(0, [type, 'count'], acc) + 1 },
   };
 };
-
-const firstLevelReducer = fn => reduce((acc, item) => fn(acc, item), {});
 
 const typesFirstLevelReducer = reduce(
   (acc, person) => groupPersonTypes(acc, person),
