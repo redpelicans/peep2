@@ -163,6 +163,81 @@ const StyledContainer = styled.div`
   flex-direction: column;
 `;
 
+const EntityMessage = ({
+  history,
+  entityName,
+  content,
+  entityAvatar,
+  entityPath,
+  authorAvatar,
+  authorName,
+  authorPath,
+}) => (
+  <StyledContainer>
+    <StyledWrapper>
+      <span>{`${entityName}${content}`}</span>
+      <StyledFooterLine />
+      <StyledFooter>
+        {entityAvatar && (
+          <div onClick={() => entityPath && history.push(entityPath)}>
+            <StyledAvatar
+              name={entityName}
+              color={entityAvatar.color}
+              size="MEDIUM"
+            />
+          </div>
+        )}
+        <StyledMain>
+          <StyledName>
+            <Icon iconName={ICON_PEOPLE} style={{ marginRight: '4px' }} />
+            {authorName}
+          </StyledName>
+        </StyledMain>
+        {authorAvatar && (
+          <div onClick={() => authorPath && history.push(authorPath)}>
+            <StyledAvatar
+              name={authorName}
+              color={authorAvatar.color}
+              size="SMALL"
+            />
+          </div>
+        )}
+      </StyledFooter>
+    </StyledWrapper>
+  </StyledContainer>
+);
+
+EntityMessage.propTypes = {
+  history: PropTypes.object,
+  entityName: PropTypes.string,
+  entityAvatar: PropTypes.objet,
+  entityPath: PropTypes.string,
+  authorName: PropTypes.string,
+  authorAvatar: PropTypes.object,
+  authorPath: PropTypes.string,
+  content: PropTypes.string,
+};
+
+const AlertErrMessage = ({ label, description }) => (
+  <StyledWrapper>
+    <div>{label}</div>
+    <span>{description}</span>
+  </StyledWrapper>
+);
+
+AlertErrMessage.propTypes = {
+  label: PropTypes.string,
+  description: PropTypes.string,
+};
+
+const EvtxErrMessage = ({ message }) => (
+  <StyledWrapper>{message}</StyledWrapper>
+);
+
+EvtxErrMessage.propTypes = {
+  message: PropTypes.string.isRequired,
+};
+
 const ToastView = (type, toast, history) => {
   if (toast === null) return null;
   const {
@@ -185,48 +260,21 @@ const ToastView = (type, toast, history) => {
     case PEOPLE_UPDATED:
     case PEOPLE_DELETED:
       return (
-        <StyledContainer>
-          <StyledWrapper>
-            <span>{`${entityName}${content}`}</span>
-            <StyledFooterLine />
-            <StyledFooter>
-              {entityAvatar && (
-                <a onClick={() => (entityPath ? history.push(entityPath) : {})}>
-                  <StyledAvatar
-                    name={entityName}
-                    color={entityAvatar.color}
-                    size="MEDIUM"
-                  />
-                </a>
-              )}
-              <StyledMain>
-                <StyledName>
-                  <Icon iconName={ICON_PEOPLE} style={{ marginRight: '4px' }} />
-                  {authorName}
-                </StyledName>
-              </StyledMain>
-              {authorAvatar && (
-                <a onClick={() => (authorPath ? history.push(authorPath) : {})}>
-                  <StyledAvatar
-                    name={authorName}
-                    color={authorAvatar.color}
-                    size="SMALL"
-                  />
-                </a>
-              )}
-            </StyledFooter>
-          </StyledWrapper>
-        </StyledContainer>
+        <EntityMessage
+          history={history}
+          authorAvatar={authorAvatar}
+          authorName={authorName}
+          authorPath={authorPath}
+          content={content}
+          entityAvatar={entityAvatar}
+          entityName={entityName}
+          entityPath={entityPath}
+        />
       );
     case ALERT:
-      return (
-        <StyledWrapper>
-          <div>{label}</div>
-          <span>{description}</span>
-        </StyledWrapper>
-      );
+      return <AlertErrMessage label={label} description={description} />;
     case EVTX_ERROR:
-      return <StyledWrapper>{message}</StyledWrapper>;
+      return <EvtxErrMessage message={message} />;
     default:
       return null;
   }
