@@ -31,12 +31,9 @@ export const Title = styled.p`
   overflow: hidden;
   text-transform: capitalize;
   font-size: 1em;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   margin: 0;
   margin-left: 15px;
   color: ${Colors.LIGHT_GRAY5};
-  font-weight: bold;
 `;
 
 const TitleRow = styled.div`

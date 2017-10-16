@@ -9,6 +9,7 @@ import {
   getSort,
   getGroupedTagsByCount,
   getGroupedTypesByCount,
+  getGroupedRolesByCount,
 } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import List from './List';
@@ -20,8 +21,7 @@ import {
   Title,
   LinkButton,
   SortMenu,
-  TagsMenu,
-  TypesMenu,
+  FilterMenu,
 } from '../widgets';
 import { onTagClick, deletePeople, sortPeopleList } from '../../actions/people';
 
@@ -42,6 +42,7 @@ export const People = ({
   sort,
   types,
   sortPeopleList,
+  roles,
 }) => (
   <Container>
     <Header>
@@ -57,9 +58,29 @@ export const People = ({
           resetValue={() => onTagClick('')}
         />
         <Spacer size="5" />
-        <TagsMenu tags={tags} onClick={onTagClick} filter={filter} />
+        <FilterMenu
+          items={roles}
+          identifier="&"
+          title="Roles"
+          onClick={onTagClick}
+          filter={filter}
+        />
         <Spacer size="5" />
-        <TypesMenu types={types} onClick={onTagClick} filter={filter} />
+        <FilterMenu
+          items={tags}
+          identifier="#"
+          title="Tags"
+          onClick={onTagClick}
+          filter={filter}
+        />
+        <Spacer size="5" />
+        <FilterMenu
+          items={types}
+          identifier="~"
+          title="Types"
+          onClick={onTagClick}
+          filter={filter}
+        />
         <Spacer size="5" />
         <SortMenu sortTypes={sortTypes} onClick={sortPeopleList} sort={sort} />
         <Spacer size="5" />
@@ -78,6 +99,7 @@ export const People = ({
 People.propTypes = {
   people: PropTypes.array.isRequired,
   tags: PropTypes.array,
+  roles: PropTypes.array,
   companies: PropTypes.object.isRequired,
   onTagClick: PropTypes.func.isRequired,
   filter: PropTypes.string,
@@ -92,6 +114,7 @@ const mapStateToProps = state => ({
   people: getVisiblePeople(state),
   tags: getGroupedTagsByCount(state),
   types: getGroupedTypesByCount(state),
+  roles: getGroupedRolesByCount(state),
   companies: getCompanies(state),
   filter: getFilter(state),
   sort: getSort(state),

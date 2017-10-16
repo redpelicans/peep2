@@ -1,6 +1,15 @@
-import { ALERT, DANGER, SUCCESS, EVTX_ERROR } from '../actions/message';
-import { COMPANY_ADDED, COMPANY_UPDATED } from '../actions/companies';
-import { PEOPLE_ADDED, PEOPLE_UPDATED } from '../actions/people';
+import { COMPANY, PERSON } from '../utils';
+import { ALERT, DANGER, EVTX_ERROR } from '../actions/message';
+import {
+  COMPANY_ADDED,
+  COMPANY_DELETED,
+  COMPANY_UPDATED,
+} from '../actions/companies';
+import {
+  PEOPLE_ADDED,
+  PEOPLE_DELETED,
+  PEOPLE_UPDATED,
+} from '../actions/people';
 
 const message = (state = { id: 0 }, action) => {
   const { type, payload } = action;
@@ -10,58 +19,77 @@ const message = (state = { id: 0 }, action) => {
         id: state.id + 1,
         type: DANGER,
         message: action.message,
+        actionType: type,
       };
-    case ALERT:
+    case ALERT: {
+      const { message, description } = payload;
       return {
         id: state.id + 1,
-        ...payload,
+        actionType: type,
+        label: message,
+        description,
       };
+    }
     case COMPANY_ADDED: {
-      const { name, authorId, _id } = payload;
+      const { authorId, _id } = payload;
       return {
         id: state.id + 1,
-        type: SUCCESS,
-        icon: 'pt-icon-home',
-        message: `Company '${name}' added`,
         authorId,
         entityId: _id,
         actionType: type,
+        entityType: COMPANY,
       };
     }
     case COMPANY_UPDATED: {
-      const { name, authorId, _id } = payload;
+      const { authorId, _id } = payload;
       return {
         id: state.id + 1,
-        type: SUCCESS,
-        icon: 'pt-icon-home',
-        message: `Company '${name}' updated`,
         authorId,
         entityId: _id,
         actionType: type,
+        entityType: COMPANY,
+      };
+    }
+    case COMPANY_DELETED: {
+      const { name, authorId, _id } = payload;
+      return {
+        id: state.id + 1,
+        authorId,
+        entityId: _id,
+        actionType: type,
+        name,
+        entityType: COMPANY,
       };
     }
     case PEOPLE_ADDED: {
-      const { name, authorId, _id } = payload;
+      const { authorId, _id } = payload;
       return {
         id: state.id + 1,
-        type: SUCCESS,
-        icon: 'pt-icon-people',
-        message: `People '${name}' added`,
         authorId,
         entityId: _id,
         actionType: type,
+        entityType: PERSON,
       };
     }
     case PEOPLE_UPDATED: {
-      const { name, authorId, _id } = payload;
+      const { authorId, _id } = payload;
       return {
         id: state.id + 1,
-        type: SUCCESS,
-        icon: 'pt-icon-people',
-        message: `People '${name}' updated`,
         authorId,
         entityId: _id,
         actionType: type,
+        entityType: PERSON,
+      };
+    }
+    case PEOPLE_DELETED: {
+      const { name, authorId, _id } = payload;
+      return {
+        id: state.id + 1,
+        authorId,
+        entityId: _id,
+        actionType: type,
+        name,
+        entityType: PERSON,
       };
     }
     default:

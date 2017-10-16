@@ -16,14 +16,12 @@ import NameLink from './NameLink';
 import CompanyLink from './CompanyLink';
 import Actions from './Actions';
 import ViewField from './ViewField';
-import TagsMenu from './TagsMenu';
-import TypesMenu from './TypesMenu';
+import FilterMenu from './FilterMenu';
 import Dates from './Dates';
 
 export {
+  FilterMenu,
   Dates,
-  TypesMenu,
-  TagsMenu,
   ViewField,
   Actions,
   NameLink,

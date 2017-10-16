@@ -213,17 +213,12 @@ const WorkingDay = enhanceWorkingDay(
       {};
     const dayEvents =
       events &&
-      map(
-        evt => (
-          <Event
-            key={evt._id}
-            event={evt}
-            endPeriod={endPeriod}
-            onClick={handleClick(evt)}
-          />
-        ),
-        events,
-      );
+      map(evt => {
+        const props = !readOnly ? { onClick: handleClick(evt) } : { readOnly };
+        return (
+          <Event key={evt._id} event={evt} endPeriod={endPeriod} {...props} />
+        );
+      }, events);
     return (
       <StyledWorkingDay
         isSelected={isSelected}
@@ -255,15 +250,16 @@ const betweenDates = (date, first, last) => {
 const StyledEvent = styled.div`
   background: ${({ event }) =>
     isVacation(event) ? vacationDayBackground : sickLeaveDayBackground};
-  cursor: pointer;
+  cursor: ${({ readOnly }) => (readOnly ? 'default' : 'pointer')};
   grid-column: ${({ event }) =>
     event.period === EVENT_DAY ? 'span 2' : event.period};
 `;
 
-const Event = ({ event, endPeriod, onClick }) => {
+const Event = ({ event, endPeriod, onClick, readOnly }) => {
   return (
     <StyledEvent
       event={event}
+      readOnly={readOnly}
       onClick={onClick}
       onMouseUp={e => e.preventDefault()}
       onMouseEnter={e => {
@@ -279,8 +275,8 @@ Event.propTypes = {
   event: PropTypes.object.isRequired,
   onClick: PropTypes.func,
   endPeriod: PropTypes.func,
+  readOnly: PropTypes.bool,
 };
-
 const dayShouldUpdate = (props, nextProps) => {
   return (
     props.isSelected !== nextProps.isSelected ||

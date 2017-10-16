@@ -69,23 +69,6 @@ describe('Selectors:companies', () => {
     const filter = getFilter(state);
     should(filter).eql({ test });
   });
-  it('Should get an empty notes', () => {
-    const state = {
-      notes: {
-        data: {},
-      },
-    };
-    const notes = getNotes(state);
-    notes.should.be.empty();
-  });
-  it('Should get a non-empty notes', () => {
-    const test = 'test';
-    const state = {
-      notes: { data: { test } },
-    };
-    const notes = getNotes(state);
-    should(notes).eql({ test });
-  });
   it('Should get an empty company', () => {
     const id = '1';
     const state = {
