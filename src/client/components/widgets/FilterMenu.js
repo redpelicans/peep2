@@ -5,15 +5,27 @@ import { Menu, MenuItem, PopoverInteractionKind } from '@blueprintjs/core';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const StyledTag = styled.div`
+const StyledItem = styled.div`
   display: flex;
+  width: 100%;
+  overflow: hidden;
   justify-content: space-between;
 `;
+
+const StyledMenu = styled(Menu)`max-width: 180px;`;
+
+const StyledItemLabel = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 85%;
+`;
+
+const StyledItemCount = styled.span`width: auto;`;
 
 const ItemsMenu = ({ items, identifier, onClick, filter }) => {
   const handleClick = item => onClick(`${identifier}${item}`);
   return (
-    <Menu>
+    <StyledMenu>
       {map(
         item =>
           filter === `${identifier}${item.label}` ? (
@@ -22,10 +34,10 @@ const ItemsMenu = ({ items, identifier, onClick, filter }) => {
               iconName="pt-icon-small-tick"
               disabled
               text={
-                <StyledTag>
-                  <span>{item.label}</span>
-                  <span>{item.count}</span>
-                </StyledTag>
+                <StyledItem>
+                  <StyledItemLabel>{item.label}</StyledItemLabel>
+                  <StyledItemCount>{item.count}</StyledItemCount>
+                </StyledItem>
               }
               onClick={() => handleClick(item.label)}
             />
@@ -33,17 +45,17 @@ const ItemsMenu = ({ items, identifier, onClick, filter }) => {
             <MenuItem
               key={item.label}
               text={
-                <StyledTag>
-                  <span>{item.label}</span>
-                  <span>{item.count}</span>
-                </StyledTag>
+                <StyledItem>
+                  <StyledItemLabel>{item.label}</StyledItemLabel>
+                  <StyledItemCount>{item.count}</StyledItemCount>
+                </StyledItem>
               }
               onClick={() => handleClick(item.label)}
             />
           ),
         items,
       )}
-    </Menu>
+    </StyledMenu>
   );
 };
 
