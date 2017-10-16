@@ -11,3 +11,5 @@ notifications:
       redpelicans:xCuMR4Ld1A0cSDdgpgYtJvrW#schooljs
       redpelicans:xCuMR4Ld1A0cSDdgpgYtJvrW#ci
 services: mongodb
+after_success:
+  - codecov

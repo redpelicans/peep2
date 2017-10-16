@@ -1,17 +1,15 @@
 import debug from 'debug';
 import evtX from 'evtx';
 import initServices from '../services';
-import initReactor from './reactor';
+import initRestApi from '../restApi';
 
 const loginfo = debug('peep:evtx');
-const init = (ctx) => {
+const init = ctx => {
   const { io, config } = ctx;
   const evtx = evtX(config).configure(initServices);
-  return initReactor(evtx, io).then(() => {
-    loginfo('EvtX setup.');
-    return { ...ctx, evtx };
-  });
+  const restApi = evtX(config).configure(initRestApi);
+  loginfo('EvtX setup.');
+  return { ...ctx, evtx, restApi };
 };
-
 
 export default init;

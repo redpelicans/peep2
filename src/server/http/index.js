@@ -6,25 +6,29 @@ import favicon from 'serve-favicon';
 import compression from 'compression';
 import logger from 'morgan-debug';
 import errors from './middlewares/errors';
+import requestConnector from './rest';
 
 const loginfo = debug('peep:http');
-const getUrl = (server) => `http://${server.address().address}:${server.address().port}`;
-const init = (ctx) => {
-  const { config } = ctx;
+const getUrl = server =>
+  `http://${server.address().address}:${server.address().port}`;
+const init = ctx => {
+  const { restApi, config } = ctx;
   const { publicPath, buildPath, server: { host, port } } = config;
   const app = express();
   const httpServer = http.createServer(app);
 
-  const promise = new Promise((resolve) => {
+  const promise = new Promise(resolve => {
     app
       .use(compression())
       .use(favicon(path.join(publicPath, '/favicon.ico')))
       .use('/public', express.static(publicPath))
       .use('/build', express.static(buildPath))
+      .use('/static', express.static(path.join(buildPath, '/static')))
       .use('/ping', (req, res) => res.json({ ping: 'pong' }))
-      .use(logger('dev', 'peep:http'))
+      .use('/status', requestConnector('status', restApi))
+      .use(logger('peep:http', 'dev'))
       .use(errors)
-      .use((req, res) => res.redirect('/public/index.html'));
+      .use((req, res) => res.redirect('/build/index.html'));
 
     httpServer.listen(port, host, () => {
       // app.config = config;

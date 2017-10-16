@@ -7,7 +7,7 @@ const status = {
     return Promise.resolve(data);
   },
 };
-const init = (evtx) => {
+const init = evtx => {
   evtx.use(SERVICE_NAME, status);
   evtx.service(SERVICE_NAME);
   loginfo('status service registered');
