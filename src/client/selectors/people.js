@@ -19,7 +19,7 @@ import {
   reduce,
   descend,
   pathOr,
-  isEmpty,
+  propOr,
 } from 'ramda';
 import { createSelector } from 'reselect';
 import { isWorker } from '../utils/people';
@@ -79,8 +79,12 @@ const doFilter = (pfilter, preferredFilter) =>
   );
 const filterAndSort = (filter, sort, preferredFilter, people) =>
   compose(doSort(sort), doFilter(filter, preferredFilter), values)(people);
-const getCompanyName = companies => prop(['companyId', 'name'])(companies);
-const peopleWithCompanyName = companies =>
+export const getCompanyName = (companies, person) => {
+  const companyId = prop('companyId', person);
+  const company = companies[companyId];
+  return company ? propOr('', 'name')(company) : '';
+};
+export const peopleWithCompanyName = companies =>
   map(person => ({
     ...person,
     companyName: getCompanyName(companies, person),
