@@ -1,4 +1,4 @@
-import { compose, fromPairs, omit, map, filter, indexOf } from 'ramda';
+import { compose, fromPairs, omit, map } from 'ramda';
 import {
   NOTES_DELETED,
   NOTE_DELETED,
@@ -35,7 +35,7 @@ const notes = (state = initialState, action) => {
     case NOTE_UPDATED:
       return {
         ...state,
-        data: [...state.data, make(action.payload)],
+        data: { ...state.data, [action.payload._id]: make(action.payload) },
       };
     case NOTES_LOADED:
       return { ...state, data: makeAll(action.payload) };
