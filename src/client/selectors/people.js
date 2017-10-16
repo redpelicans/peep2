@@ -48,6 +48,10 @@ const doSort = ({ by, order }) =>
 const regexp = filter => new RegExp(filter, 'i');
 const getTagsPredicate = filter => ({ tags = [] }) =>
   match(regexp(filter.slice(1)), tags.join(' ')).length;
+const getRolesPredicate = filter => ({ roles = [] }) => {
+  if (roles === null) roles = [];
+  return match(regexp(filter.slice(1)), roles.join(' ')).length;
+};
 const getTypesPredicate = filter => ({ type = '' }) =>
   match(regexp(filter.substring(1)), type).length;
 const getNamePredicate = filter => ({ name, companyName }) => {
@@ -66,6 +70,8 @@ const getPredicate = filter => {
       return getTagsPredicate(filter);
     case '~':
       return getTypesPredicate(filter);
+    case '&':
+      return getRolesPredicate(filter);
     default:
       return getNamePredicate(filter);
   }
@@ -122,6 +128,8 @@ const groupPersonTypes = (acc, person) => {
   };
 };
 
+const firstLevelReducer = fn => reduce((acc, item) => fn(acc, item), {});
+
 const typesFirstLevelReducer = reduce(
   (acc, person) => groupPersonTypes(acc, person),
   {},
@@ -132,6 +140,29 @@ const getTypesUnsorted = compose(typesFirstLevelReducer, values);
 const groupTypes = compose(sortTypes, values, getTypesUnsorted);
 
 export const getGroupedTypesByCount = createSelector(getPeople, groupTypes);
+
+const groupPersonRoles = (acc, person) => {
+  const roles = person.roles || [];
+  return reduce(
+    (acc2, role) => ({
+      ...acc2,
+      [role]: { label: role, count: pathOr(0, [role, 'count'], acc) + 1 },
+    }),
+    acc,
+    roles,
+  );
+};
+
+const rolesFirstLevelReducer = reduce(
+  (acc, person) => groupPersonRoles(acc, person),
+  {},
+);
+const sortRoles = sort(descend(prop('count')));
+
+const getRolesUnsorted = compose(rolesFirstLevelReducer, values);
+const groupRoles = compose(sortRoles, values, getRolesUnsorted);
+
+export const getGroupedRolesByCount = createSelector(getPeople, groupRoles);
 
 const groupPersonTags = (acc, person) => {
   const tags = person.tags || [];
