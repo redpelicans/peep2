@@ -1,7 +1,10 @@
-import { getDay, format, eachDay, startOfMonth, endOfMonth } from "date-fns";
-import { filter } from "ramda";
+import { getDay, format, eachDay, startOfMonth, endOfMonth } from 'date-fns';
+import { filter } from 'ramda';
 
-export const dmy = date => date && format(date, "DDMMYY");
+export const COMPANY = 'company';
+export const PERSON = 'person';
+
+export const dmy = date => date && format(date, 'DDMMYY');
 export const isSunday = date => getDay(date) === 0;
 export const isSaturday = date => getDay(date) === 6;
 export const getCalendarDay = (calendar, date) => {

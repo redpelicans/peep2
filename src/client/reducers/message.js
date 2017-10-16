@@ -1,3 +1,4 @@
+import { COMPANY, PERSON } from '../utils';
 import { ALERT, DANGER, EVTX_ERROR } from '../actions/message';
 import {
   COMPANY_ADDED,
@@ -18,6 +19,7 @@ const message = (state = { id: 0 }, action) => {
         id: state.id + 1,
         type: DANGER,
         message: action.message,
+        actionType: type,
       };
     case ALERT: {
       const { message, description } = payload;
@@ -35,6 +37,7 @@ const message = (state = { id: 0 }, action) => {
         authorId,
         entityId: _id,
         actionType: type,
+        entityType: COMPANY,
       };
     }
     case COMPANY_UPDATED: {
@@ -44,6 +47,7 @@ const message = (state = { id: 0 }, action) => {
         authorId,
         entityId: _id,
         actionType: type,
+        entityType: COMPANY,
       };
     }
     case COMPANY_DELETED: {
@@ -54,6 +58,7 @@ const message = (state = { id: 0 }, action) => {
         entityId: _id,
         actionType: type,
         name,
+        entityType: COMPANY,
       };
     }
     case PEOPLE_ADDED: {
@@ -63,6 +68,7 @@ const message = (state = { id: 0 }, action) => {
         authorId,
         entityId: _id,
         actionType: type,
+        entityType: PERSON,
       };
     }
     case PEOPLE_UPDATED: {
@@ -72,6 +78,7 @@ const message = (state = { id: 0 }, action) => {
         authorId,
         entityId: _id,
         actionType: type,
+        entityType: PERSON,
       };
     }
     case PEOPLE_DELETED: {
@@ -82,6 +89,7 @@ const message = (state = { id: 0 }, action) => {
         entityId: _id,
         actionType: type,
         name,
+        entityType: PERSON,
       };
     }
     default:
