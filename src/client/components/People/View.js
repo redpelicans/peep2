@@ -8,10 +8,10 @@ import { isEmpty, map, find, propEq } from 'ramda';
 import { Colors, Button } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
-import { getPeople } from '../../selectors/people';
+import { getPeople, deletePeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { deleteNote, deletePeople } from '../../actions/notes';
+import { deleteNote } from '../../actions/notes';
 
 import {
   Title,

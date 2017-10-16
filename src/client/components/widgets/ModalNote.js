@@ -10,6 +10,8 @@ const TextAreaStyled = styled.textarea`
   min-width: 100%;
 `;
 
+const DialogStyled = styled(Dialog)`width: 90%;`;
+
 const MarkdownContainer = styled.div`
   background-color: ${Colors.DARK_GRAY3};
   padding: 25px;
@@ -47,7 +49,7 @@ const ModalNote = ({
   title,
   type,
 }) => (
-  <Dialog isOpen={isOpen} className="pt-dark">
+  <DialogStyled isOpen={isOpen} className="pt-dark">
     <div className="pt-dialog-body">
       <TextStyled>{title}</TextStyled>
       {displayTextArea && (
@@ -89,7 +91,7 @@ const ModalNote = ({
         </Button>
       </div>
     </div>
-  </Dialog>
+  </DialogStyled>
 );
 
 ModalNote.propTypes = {

@@ -8,6 +8,7 @@ import {
   filterNotesList,
   sortNotesList,
   deleteNote,
+  updateNote,
 } from '../../actions/notes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import {
@@ -67,6 +68,7 @@ const Notes = ({
         companies={companies}
         people={people}
         deleteNote={deleteNote}
+        updateNote={updateNote}
       />
     </Container>
   );
@@ -82,6 +84,7 @@ Notes.propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
   sort: PropTypes.object.isRequired,
   deleteNote: PropTypes.func.isRequired,
+  updateNote: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -92,7 +95,7 @@ const mapStateToProps = state => ({
   sort: getSort(state),
 });
 
-const actions = { filterNotesList, sortNotesList, deleteNote };
+const actions = { filterNotesList, sortNotesList, deleteNote, updateNote };
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 

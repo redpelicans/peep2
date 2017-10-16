@@ -37,6 +37,7 @@ const AddOrEditForm = ({
 }) => {
   return (
     <PeopleForm id="peopleForm" onSubmit={handleSubmit}>
+      {console.log('values: ', values)}
       <StyledFormField
         field={getField('prefix')}
         values={values}
@@ -101,6 +102,7 @@ const AddOrEditForm = ({
           values={values}
           touched={touched}
           errors={errors}
+          creatable={true}
           setFieldTouched={setFieldTouched}
           setFieldValue={setFieldValue}
         />
