@@ -100,10 +100,6 @@ describe('CardContent component', () => {
     const wrapper = shallow(<CardContent note={{}} person={{}} entity={{}} />);
     should(wrapper.find('div')).have.length(1);
   });
-  it('Should render a MarkdownConvertor component', () => {
-    const wrapper = shallow(<CardContent note={{}} person={{}} entity={{}} />);
-    should(wrapper.contains(<MarkdownConvertor />)).eql(true);
-  });
   it('Should render a StyledFooterLine component', () => {
     const wrapper = shallow(<CardContent note={{}} person={{}} entity={{}} />);
     should(wrapper.contains(<StyledFooterLine />)).eql(true);

@@ -19,14 +19,14 @@ describe('Selectors:notes', () => {
       },
     };
     const notesFromState = getNotes(state);
-    should(notesFromState).eql(notes);
+    should(notesFromState).eql([]);
   });
   it('Should get empty notes object', () => {
     const state = {
       notes: {},
     };
     const notesFromState = getNotes(state);
-    should(notesFromState).eql(undefined);
+    should(notesFromState).eql([]);
   });
   it('Should get the filter', () => {
     const filter = 'test';

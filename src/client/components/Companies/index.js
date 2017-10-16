@@ -18,7 +18,7 @@ import {
   Title,
   Spacer,
   LinkButton,
-  TagsMenu,
+  FilterMenu,
 } from '../widgets';
 import {
   togglePreferredFilter,
@@ -59,10 +59,16 @@ export const Companies = ({
           resetValue={() => filterCompanyList('')}
         />
         <Spacer />
-        <TagsMenu tags={tags} onClick={filterCompanyList} filter={filter} />
-        <Spacer size="10" />
+        <FilterMenu
+          items={tags}
+          title="Tags"
+          identifier="#"
+          onClick={filterCompanyList}
+          filter={filter}
+        />
+        <Spacer size="5" />
         <SortMenu sortTypes={sortTypes} onClick={sortCompanyList} sort={sort} />
-        <Spacer size="10" />
+        <Spacer size="5" />
         <LinkButton to={getPathByName('addCompany')} iconName="plus" />
       </HeaderRight>
     </Header>
@@ -99,6 +105,7 @@ const actions = {
   togglePreferredFilter,
   deleteCompany,
 };
+
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(

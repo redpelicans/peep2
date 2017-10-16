@@ -48,7 +48,11 @@ const DeleteButton = styled.span`
   color: ${Colors.RED5};
 `;
 
-const PhoneNumberText = styled.p`margin: 0;`;
+const PhoneNumberText = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+`;
 
 const InputStyled = styled.input`
   margin-top: -1px;
