@@ -11,8 +11,8 @@ import Preview from '../Notes/Preview';
 import { getPeople } from '../../selectors/people';
 import { getEntityNotes } from '../../selectors/notes';
 import { getCompanies } from '../../selectors/companies';
-import ModalAddNote from '../widgets/ModalAddNote';
-import { addNote } from '../../actions/notes';
+import ModalNote from '../widgets/ModalNote';
+import { addNote, updateNote } from '../../actions/notes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -51,16 +51,19 @@ const NotesView = ({
   showModal,
   hideModal,
   addNote,
+  updateNote,
 }) => {
   return (
     <StyledWrapper>
-      <ModalAddNote
+      <ModalNote
         isOpen={isModalOpen}
-        title="Would you like to delete this people?"
+        title="Add Note"
         reject={() => hideModal()}
+        defaultValue=""
         accept={value => {
           hideModal(), addNote(entityId, value, 'person');
         }}
+        type="Add"
       />
       <TitleContainer>
         <span>Notes</span>
@@ -79,6 +82,7 @@ const NotesView = ({
               person={people[note.authorId]}
               entity={findEntity(entityType, entityId)}
               deleteNote={deleteNote}
+              updateNote={updateNote}
             />
           ),
           notes,
@@ -100,9 +104,10 @@ NotesView.propTypes = {
   hideModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
   addNote: PropTypes.func.isRequired,
+  updateNote: PropTypes.func.isRequired,
 };
 
-const actions = { addNote };
+const actions = { addNote, updateNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const mapStateToProps = (state, { entityId }) => ({
