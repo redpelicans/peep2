@@ -1,7 +1,12 @@
 import Yup from 'yup';
 import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
 import { InputField } from '../fields';
-import { SelectField } from '../fields/SelectField';
+import {
+  SelectField,
+  WorkerSelectField,
+  CompaniesSelectField,
+} from '../fields/SelectField';
+import { DateField } from '../fields/DateField';
 import { MarkDownField } from '../fields/MarkDownField';
 
 const fields = {
@@ -11,7 +16,7 @@ const fields = {
   },
   dueDate: {
     label: 'Due Date',
-    component: InputField,
+    component: DateField,
   },
   delay: {
     label: 'Delay',
@@ -19,19 +24,39 @@ const fields = {
   },
   unit: {
     label: 'Unit',
-    component: InputField,
+    component: SelectField,
+    domainValues: [
+      { id: 'minute', value: 'Minute' },
+      { id: 'hour', value: 'Hour' },
+      { id: 'day', value: 'Day' },
+      { id: 'week', value: 'Week' },
+      { id: 'month', value: 'Month' },
+    ],
   },
   assignees: {
     label: 'Assignees',
-    component: InputField,
+    component: WorkerSelectField,
   },
   entityType: {
     label: 'EntityType',
-    component: InputField,
+    component: SelectField,
+    defaultValue: 'none',
+    domainValues: [
+      { id: 'none', value: '<None>' },
+      { id: 'company', value: 'Company' },
+      { id: 'mission', value: 'Mission' },
+      { id: 'person', value: 'Person' },
+    ],
   },
   entity: {
     label: 'Entity',
     component: InputField,
+  },
+  companyId: {
+    label: 'Company',
+    required: true,
+    component: CompaniesSelectField,
+    validate: Yup.string(),
   },
 };
 
