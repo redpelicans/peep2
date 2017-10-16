@@ -34,7 +34,7 @@ const TextStyled = styled.span`
   margin-bottom: 20px;
 `;
 
-const ModalConfirmation = ({
+const ModalNote = ({
   isOpen,
   accept,
   reject,
@@ -42,11 +42,14 @@ const ModalConfirmation = ({
   showTextArea,
   hideTextArea,
   value,
+  defaultValue,
   handleChangeValue,
+  title,
+  type,
 }) => (
   <Dialog isOpen={isOpen} className="pt-dark">
     <div className="pt-dialog-body">
-      <TextStyled>Add Note</TextStyled>
+      <TextStyled>{title}</TextStyled>
       {displayTextArea && (
         <TextAreaStyled
           name={name}
@@ -76,17 +79,20 @@ const ModalConfirmation = ({
           Cancel
         </Button>
         <Button
-          onClick={() => accept(value)}
+          onClick={() => {
+            handleChangeValue({ target: { value: '' } });
+            accept(value);
+          }}
           className="pt-intent-success pt-large"
         >
-          Add
+          {type}
         </Button>
       </div>
     </div>
   </Dialog>
 );
 
-ModalConfirmation.propTypes = {
+ModalNote.propTypes = {
   value: PropTypes.string.isRequired,
   isOpen: PropTypes.bool,
   accept: PropTypes.func.isRequired,
@@ -95,13 +101,16 @@ ModalConfirmation.propTypes = {
   showTextArea: PropTypes.func.isRequired,
   hideTextArea: PropTypes.func.isRequired,
   handleChangeValue: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string,
 };
 
 const enhance = withStateHandlers(
-  {
+  ({ defaultValue }) => ({
     displayTextArea: true,
-    value: '',
-  },
+    value: defaultValue,
+  }),
   {
     showTextArea: () => () => ({ displayTextArea: true }),
     hideTextArea: () => () => ({ displayTextArea: false }),
@@ -109,4 +118,4 @@ const enhance = withStateHandlers(
   },
 );
 
-export default enhance(ModalConfirmation);
+export default enhance(ModalNote);
