@@ -11,7 +11,8 @@ import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { deleteNote, deletePeople } from '../../actions/notes';
+import { deleteNote } from '../../actions/notes';
+import { deletePeople } from '../../actions/people';
 
 import {
   Title,

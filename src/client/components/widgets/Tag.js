@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { Colors } from '@blueprintjs/core';
 
 export const Tag = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: pointer;
   margin: 3px;
   background-color: ${Colors.DARK_GRAY5};

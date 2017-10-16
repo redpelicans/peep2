@@ -10,66 +10,76 @@ const StyledTag = styled.div`
   justify-content: space-between;
 `;
 
-const TagsMenu = ({ tags, onClick, filter }) => {
-  const handleClick = tag => onClick(`#${tag}`);
+const ItemsMenu = ({ items, identifier, onClick, filter }) => {
+  const handleClick = item => onClick(`${identifier}${item}`);
   return (
     <Menu>
       {map(
-        tag =>
-          filter === `#${tag.label}` ? (
+        item =>
+          filter === `${identifier}${item.label}` ? (
             <MenuItem
-              key={tag.label}
+              key={item.label}
               iconName="pt-icon-small-tick"
               disabled
               text={
                 <StyledTag>
-                  <span>{tag.label}</span>
-                  <span>{tag.count}</span>
+                  <span>{item.label}</span>
+                  <span>{item.count}</span>
                 </StyledTag>
               }
-              onClick={() => handleClick(tag.label)}
+              onClick={() => handleClick(item.label)}
             />
           ) : (
             <MenuItem
-              key={tag.label}
+              key={item.label}
               text={
                 <StyledTag>
-                  <span>{tag.label}</span>
-                  <span>{tag.count}</span>
+                  <span>{item.label}</span>
+                  <span>{item.count}</span>
                 </StyledTag>
               }
-              onClick={() => handleClick(tag.label)}
+              onClick={() => handleClick(item.label)}
             />
           ),
-        tags,
+        items,
       )}
     </Menu>
   );
 };
 
-TagsMenu.propTypes = {
-  tags: PropTypes.array,
+ItemsMenu.propTypes = {
+  items: PropTypes.array,
+  identifier: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   filter: PropTypes.string,
 };
 
-const TagsMenuWrapper = ({ tags, onClick, filter }) => (
+const ItemsMenuWrapper = ({ identifier, title, items, onClick, filter }) => (
   <Popover2
     placement="auto"
     interactionKind={PopoverInteractionKind.CLICK}
-    content={<TagsMenu tags={tags} onClick={onClick} filter={filter} />}
+    content={
+      <ItemsMenu
+        items={items}
+        identifier={identifier}
+        onClick={onClick}
+        filter={filter}
+      />
+    }
   >
     <button className="pt-button">
-      Tags
+      {title}
       <span className="pt-icon-standard pt-icon-caret-down pt-align-right" />
     </button>
   </Popover2>
 );
 
-TagsMenuWrapper.propTypes = {
-  tags: PropTypes.array,
+ItemsMenuWrapper.propTypes = {
+  items: PropTypes.array,
+  title: PropTypes.string.isRequired,
+  identifier: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   filter: PropTypes.string,
 };
 
-export default TagsMenuWrapper;
+export default ItemsMenuWrapper;

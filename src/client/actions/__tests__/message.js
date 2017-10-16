@@ -9,8 +9,7 @@ describe('Action:message', () => {
     const hook = {
       [ALERT]: getState => {
         const { message } = getState();
-        should(message.type).eql(TYPE);
-        should(message.message).eql(MESSAGE);
+        should(message.label).eql(MESSAGE);
         should(message.description).eql(DESCRIPTION);
         done();
       },

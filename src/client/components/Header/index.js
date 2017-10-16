@@ -9,6 +9,7 @@ export const StyledHeaderLeftElement = styled.div`
   align-items: center;
   margin-right: 25px;
   flex: 1;
+  overflow: hidden;
 `;
 
 export const StyledHeaderRightElement = styled.div`
