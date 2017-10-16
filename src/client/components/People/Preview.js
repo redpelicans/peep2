@@ -19,12 +19,15 @@ import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
 
 export const TitleRow = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: flex;
   align-items: center;
 `;
 
 export const StyledInfos = styled.div`
   overflow: hidden;
+  text-overflow: ellipsis;
   display: flex;
   margin-left: 15px;
   flex-direction: column;
