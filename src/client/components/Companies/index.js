@@ -18,7 +18,7 @@ import {
   Title,
   Spacer,
   LinkButton,
-  TagsMenu,
+  FilterMenu,
 } from '../widgets';
 import {
   togglePreferredFilter,
@@ -59,7 +59,13 @@ export const Companies = ({
           resetValue={() => filterCompanyList('')}
         />
         <Spacer />
-        <TagsMenu tags={tags} onClick={filterCompanyList} filter={filter} />
+        <FilterMenu
+          items={tags}
+          title="Tags"
+          identifier="#"
+          onClick={filterCompanyList}
+          filter={filter}
+        />
         <Spacer size="5" />
         <SortMenu sortTypes={sortTypes} onClick={sortCompanyList} sort={sort} />
         <Spacer size="5" />
