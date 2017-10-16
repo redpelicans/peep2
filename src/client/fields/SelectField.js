@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import 'react-select/dist/react-select.css';
 import { compose, map } from 'ramda';
 import { propTransformer } from '../hoc';
 import withWorkers from '../hoc/workers';
@@ -9,10 +10,8 @@ import withCountries from '../hoc/countries';
 import withTags from '../hoc/tags';
 import withCompanies from '../hoc/companies';
 import { Field } from '../fields';
-import 'react-select/dist/react-select.css';
 import Select from 'react-select';
 import { fullName } from '../utils/people';
-import { Colors } from '@blueprintjs/core';
 
 import './react-select.css';
 import './react-select-override.css';
@@ -29,6 +28,7 @@ export const SelectField = ({
   setFieldValue,
   domainValues,
   creatable = false,
+  clearable = false,
   ...props
 }) => {
   const handleChange = e => {
@@ -53,7 +53,7 @@ export const SelectField = ({
           id={label}
           options={getOptions(domainValues)}
           onChange={handleChange}
-          clearable={false}
+          clearable={clearable}
           value={value}
           name={label}
           {...props}
@@ -63,7 +63,7 @@ export const SelectField = ({
           placeholder={`Select ${label}...`}
           id={label}
           options={getOptions(domainValues)}
-          clearable={false}
+          clearable={clearable}
           onChange={handleChange}
           value={value}
           name={label}
@@ -84,6 +84,7 @@ SelectField.propTypes = {
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
   creatable: PropTypes.bool,
+  clearable: PropTypes.bool,
 };
 
 export const MultiSelectField = ({
@@ -95,6 +96,7 @@ export const MultiSelectField = ({
   setFieldValue,
   domainValues,
   creatable = false,
+  clearable = false,
   ...props
 }) => {
   const handleChange = e => {
@@ -111,7 +113,7 @@ export const MultiSelectField = ({
           id={label}
           multi={true}
           options={getOptions(domainValues)}
-          clearable={false}
+          clearable={clearable}
           onChange={handleChange}
           value={value}
           name={label}
@@ -123,7 +125,7 @@ export const MultiSelectField = ({
           id={label}
           multi={true}
           options={getOptions(domainValues)}
-          clearable={false}
+          clearable={clearable}
           onChange={handleChange}
           value={value}
           name={label}
@@ -144,6 +146,7 @@ MultiSelectField.propTypes = {
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
   creatable: PropTypes.bool,
+  clearable: PropTypes.bool,
 };
 
 export const WorkerSelectField = compose(

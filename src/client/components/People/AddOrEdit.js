@@ -101,6 +101,8 @@ const AddOrEditForm = ({
           values={values}
           touched={touched}
           errors={errors}
+          creatable={true}
+          clearable={true}
           setFieldTouched={setFieldTouched}
           setFieldValue={setFieldValue}
         />
