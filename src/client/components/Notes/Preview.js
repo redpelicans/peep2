@@ -6,7 +6,12 @@ import Footer from './Footer';
 import { MarkdownConvertor } from '../widgets/Markdown';
 import { Button } from '@blueprintjs/core';
 import ModalNote from '../widgets/ModalNote';
-import { PreviewContainer, Actions, ModalConfirmation } from '../widgets';
+import {
+  PreviewContainer,
+  Actions,
+  ModalConfirmation,
+  LinkButton,
+} from '../widgets';
 import { Auth } from '../../lib/kontrolo';
 import { getRouteAuthProps } from '../../routes';
 
@@ -84,7 +89,7 @@ export const Preview = ({
           <StyledButton
             className="pt-small pt-button pt-intent-warning"
             iconName="pt-icon-edit"
-            onClick={() => showModal()}
+            // onClick={() => showModal()}
           />
         </Auth>
         <Auth {...getRouteAuthProps('deleteNote')} context={{ note }}>

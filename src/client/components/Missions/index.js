@@ -2,8 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { compose } from 'recompose';
+import { compose, withHandlers } from 'recompose';
 
+import { getPeople } from '../../selectors/people';
+import { getCompanies } from '../../selectors/companies';
+import {
+  getFilter,
+  getSort,
+  getVisibleMissions,
+} from '../../selectors/missions';
+import {
+  deleteMission,
+  sortMissionsList,
+  filterMissionsList,
+} from '../../actions/missions';
 import { Header, HeaderRight, HeaderLeft } from '../Header';
 import {
   LinkButton,
@@ -13,6 +25,8 @@ import {
   Search,
   SortMenu,
 } from '../widgets';
+import { getPathByName } from '../../routes';
+import List from './List';
 
 const sortTypes = [
   { key: 'name', label: 'Sort by name' },
@@ -20,7 +34,17 @@ const sortTypes = [
   { key: 'updatedAt', label: 'Sort by updated date' },
 ];
 
-export const Missions = ({ missions, filter = '' }) => (
+export const Missions = ({
+  people,
+  companies,
+  missions,
+  filter,
+  sort,
+  deleteMission,
+  filterMissionsList,
+  onFilterChange,
+  sortMissionsList,
+}) => (
   <Container>
     <Header>
       <HeaderLeft>
@@ -29,28 +53,59 @@ export const Missions = ({ missions, filter = '' }) => (
         <Title title="Missions" />
       </HeaderLeft>
       <HeaderRight>
-        <Search filter={filter} onChange={filter} resetValue={() => filter} />
+        <Search
+          filter={filter}
+          onChange={onFilterChange}
+          resetValue={() => filterMissionsList('')}
+        />
         <Spacer />
-        <SortMenu sortTypes={sortTypes} onClick={filter} sort={filter} />
+        <SortMenu
+          sortTypes={sortTypes}
+          onClick={sortMissionsList}
+          sort={sort}
+        />
         <Spacer />
-        <LinkButton to="/missions/add" iconName="plus" />
+        <LinkButton to={getPathByName('addMission')} iconName="plus" />
       </HeaderRight>
     </Header>
+    <List
+      people={people}
+      companies={companies}
+      missions={missions}
+      deleteMission={deleteMission}
+    />
   </Container>
 );
 
 Missions.propTypes = {
-  missions: PropTypes.object.isRequired,
+  people: PropTypes.object,
+  companies: PropTypes.object,
+  missions: PropTypes.array,
   filter: PropTypes.string,
+  sort: PropTypes.object,
+  deleteMission: PropTypes.func.isRequired,
+  filterMissionsList: PropTypes.func.isRequired,
+  sortMissionsList: PropTypes.func.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  missions: {},
+  people: getPeople(state),
+  companies: getCompanies(state),
+  missions: getVisibleMissions(state),
+  filter: getFilter(state),
+  sort: getSort(state),
 });
 
-const actions = {};
+const actions = { deleteMission, sortMissionsList, filterMissionsList };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-const enhance = compose(connect(mapStateToProps, mapDispatchToProps));
+const enhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withHandlers({
+    onFilterChange: ({ filterMissionsList }) => event =>
+      filterMissionsList(event.target.value),
+  }),
+);
 
 export default enhance(Missions);
