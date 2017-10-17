@@ -141,8 +141,18 @@ const routes = {
     auth: true,
     component: Missions,
   },
-  addMission: {},
-  editMission: {},
+  addMission: {
+    path: '/missions/add',
+    exact: true,
+    auth: true,
+    component: Missions, // TO BE CHANGED,
+  },
+  editMission: {
+    path: '/mission/edit/:id',
+    exact: false,
+    auth: true,
+    component: Missions, // TO BE CHANGED,
+  },
   login: {
     path: '/login',
     exact: true,
