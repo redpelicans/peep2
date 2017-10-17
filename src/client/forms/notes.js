@@ -9,12 +9,13 @@ const fields = {
     label: 'Notes',
     component: MarkDownField,
     validate: Yup.string(),
+    required: true,
   },
   dueDate: {
     label: 'Due Date',
     component: DateField,
   },
-  assignees: {
+  assigneesIds: {
     label: 'Assignees',
     component: AssigneesSelectField,
   },

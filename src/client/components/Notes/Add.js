@@ -105,9 +105,12 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 export default compose(
   connect(null, mapDispatchToProps),
   withFormik({
-    handleSubmit: ({ note, assignees, entityType }, { props }) => {
+    handleSubmit: (
+      { entityType, entityId, note, dueDate, assigneesIds },
+      { props },
+    ) => {
       const { addNote, history } = props;
-      addNote(assignees, note, entityType);
+      addNote(entityId, note, entityType, dueDate, assigneesIds);
       history.goBack();
     },
     validationSchema: getValidationSchema(),

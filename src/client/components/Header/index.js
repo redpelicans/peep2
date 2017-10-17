@@ -28,7 +28,7 @@ export const StyledHeaderElement = styled.div`
   padding-bottom: 2em;
   padding-left: 1em;
   padding-right: 1em;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-wrap: wrap;
   border-bottom: 1.5px solid rgb(49, 65, 77);
   grid-row: 2;

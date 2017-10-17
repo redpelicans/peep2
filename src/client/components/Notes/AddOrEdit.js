@@ -7,7 +7,6 @@ import {
   PeopleSelectField,
   CompaniesSelectField,
 } from '../../fields/SelectField';
-import { InputField } from '../../fields';
 
 const CompagnyForm = styled.form`
   display: grid;
@@ -18,10 +17,10 @@ const CompagnyForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'entityType' 'entityId' 'note' 'dueDate' 'assignees';
+  grid-template-areas: 'entityType' 'entityId' 'note' 'dueDate' 'assigneesIds';
   @media (min-width: 700px) {
     grid-template-areas: 'entityType entityId entityId' 'note note note'
-      'dueDate assignees assignees';
+      'dueDate assigneesIds assigneesIds';
   }
 `;
 
@@ -43,7 +42,7 @@ const AddOrEditForm = ({
     } else if (value === 'company') {
       return CompaniesSelectField;
     } else {
-      return InputField;
+      return;
     }
   };
   return (
@@ -55,7 +54,6 @@ const AddOrEditForm = ({
         touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
-        required={true}
       />
       <StyledFormField
         field={getField('dueDate')}
@@ -66,7 +64,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('assignees')}
+        field={getField('assigneesIds')}
         values={values}
         errors={errors}
         touched={touched}
@@ -81,20 +79,22 @@ const AddOrEditForm = ({
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
-      <StyledFormField
-        field={{
-          ...getField('entityId'),
-          label: values.entityType,
-          component: getEntityIdComponent(values.entityType),
-          required: values.entityType !== 'none' ? true : false,
-        }}
-        values={values}
-        errors={errors}
-        touched={touched}
-        disabled={values.entityType === 'none' ? true : false}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
+      {values.entityType !== 'none' && (
+        <StyledFormField
+          field={{
+            ...getField('entityId'),
+            label: values.entityType,
+            component: getEntityIdComponent(values.entityType),
+            required: true,
+          }}
+          values={values}
+          errors={errors}
+          touched={touched}
+          disabled={values.entityType === 'none' ? true : false}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+        />
+      )}
     </CompagnyForm>
   );
 };
