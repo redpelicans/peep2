@@ -20,7 +20,7 @@ export class ObjectIdSchemaType extends ObjectSchema {
   }
 
   _typeCheck(value) {
-    return ObjectID.isValid(value);
+    return value ? ObjectID.isValid(value) : true;
   }
 }
 

@@ -13,7 +13,6 @@ import {
   CompanyLink,
   Actions,
   ModalConfirmation,
-  Spacer,
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';

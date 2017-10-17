@@ -11,7 +11,7 @@ WORKDIR /peep
 RUN git checkout develop
 RUN yarn
 RUN yarn build
-RUN yarn srv:run
+RUN yarn srv:dist
 
 EXPOSE 80
 CMD yarn srv:run

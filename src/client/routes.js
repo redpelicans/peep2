@@ -1,4 +1,13 @@
-import { compose, find, prop, reduce, toPairs } from 'ramda';
+import {
+  path,
+  filter,
+  pathOr,
+  compose,
+  find,
+  prop,
+  reduce,
+  toPairs,
+} from 'ramda';
 import Login from './components/Login';
 import Companies from './components/Companies';
 import People from './components/People';
@@ -16,6 +25,7 @@ import EditPerson from './components/People/Edit';
 import EditNote from './components/Notes/Edit';
 import AddNotes from './components/Notes/Add';
 import NotFound from './components/NotFound';
+import { ADMIN_ROLE } from './utils/people';
 
 const routes = {
   home: {
@@ -23,19 +33,21 @@ const routes = {
     component: Companies,
     exact: true,
     auth: true,
+    roles: [ADMIN_ROLE],
   },
   companies: {
     path: '/companies',
     component: Companies,
-    default: true,
     exact: true,
     auth: true,
+    roles: [ADMIN_ROLE],
   },
   addCompany: {
     path: '/companies/add',
     component: AddCompany,
     exact: true,
     auth: true,
+    roles: [ADMIN_ROLE],
   },
   company: {
     path: '/companies/:id',
@@ -48,12 +60,14 @@ const routes = {
     exact: true,
     auth: true,
     component: People,
+    roles: [ADMIN_ROLE],
   },
   addPeople: {
     path: '/people/add',
     exact: true,
     auth: true,
     component: AddPeople,
+    roles: [ADMIN_ROLE],
   },
   person: {
     path: '/people/:id',
@@ -66,18 +80,27 @@ const routes = {
     component: EditPerson,
     exact: false,
     auth: true,
+    roles: [ADMIN_ROLE],
+  },
+  deletePerson: {
+    roles: [ADMIN_ROLE],
   },
   editCompany: {
     path: '/company/edit/:id',
     component: EditCompany,
     exact: false,
     auth: true,
+    roles: [ADMIN_ROLE],
+  },
+  deleteCompany: {
+    roles: [ADMIN_ROLE],
   },
   agenda: {
     path: '/agenda',
     exact: true,
     auth: true,
     component: Agenda,
+    default: true,
   },
   addAgendaEvent: {
     path: '/agenda/addevent',
@@ -91,24 +114,26 @@ const routes = {
     auth: true,
     component: EditAgenda,
   },
-
   notes: {
     path: '/notes',
     exact: true,
     auth: true,
     component: Notes,
+    roles: [ADMIN_ROLE],
   },
   addNotes: {
     path: '/notes/add',
     exact: true,
     auth: true,
     component: AddNotes,
+    roles: [ADMIN_ROLE],
   },
   editNote: {
     path: '/note/edit/:id',
     exact: false,
     auth: true,
     component: EditNote,
+    roles: [ADMIN_ROLE],
   },
   missions: {
     path: '/missions',
@@ -133,6 +158,7 @@ const routes = {
 const exportedRoutes = compose(
   reduce((acc, [name, r]) => [...acc, { ...r, name }], []),
   toPairs,
+  filter(prop('path')),
 )(routes);
 export const defaultRoute = find(prop('default'), exportedRoutes);
 export const getRouteByName = name => routes[name];
@@ -142,4 +168,6 @@ export const getPathByName = (name, param) => {
   const path = prop('path', getRouteByName(name));
   return param ? `${path.replace(':id', param)}` : path;
 };
+export const getRouteRoles = name => path([name, 'roles'], routes);
+export const isAuthRequired = route => route && (route.auth || route.roles);
 export default exportedRoutes;

@@ -22,13 +22,16 @@ class App extends React.Component {
 
   render() {
     const { user, loginRequest } = this.props; // eslint-disable-line no-shadow
-    const responseGoogle = (res) => {
+    const responseGoogle = res => {
       if (!res.error) {
         console.log(`Signed in as ${res.getBasicProfile().getEmail()}`); // eslint-disable-line no-console
-        loginRequest({ email: res.getBasicProfile().getEmail(), idToken: res.getAuthResponse().id_token });
+        loginRequest({
+          email: res.getBasicProfile().getEmail(),
+          idToken: res.getAuthResponse().id_token,
+        });
       }
     };
-    if (user) return null;
+    if (user) return <div />;
     return (
       <Content>
         <GoogleLogin
