@@ -7,6 +7,8 @@ import { MarkdownConvertor } from '../widgets/Markdown';
 import { Button } from '@blueprintjs/core';
 import ModalNote from '../widgets/ModalNote';
 import { PreviewContainer, Actions, ModalConfirmation } from '../widgets';
+import { Auth } from '../../lib/kontrolo';
+import { getRouteAuthProps } from '../../routes';
 
 const StyledButton = styled(Button)`
   margin-right: 5px;
@@ -88,16 +90,20 @@ export const Preview = ({
     />
     {showActions && (
       <Actions>
-        <StyledButton
-          className="pt-small pt-button"
-          iconName="pt-icon-edit"
-          onClick={() => showModal()}
-        />
-        <StyledButton
-          className="pt-small pt-button pt-intent-danger"
-          iconName="pt-icon-trash"
-          onClick={() => showDialog()}
-        />
+        <Auth {...getRouteAuthProps('editNote')} context={{ note }}>
+          <StyledButton
+            className="pt-small pt-button pt-intent-warning"
+            iconName="pt-icon-edit"
+            onClick={() => showModal()}
+          />
+        </Auth>
+        <Auth {...getRouteAuthProps('deleteNote')} context={{ note }}>
+          <StyledButton
+            className="pt-small pt-button pt-intent-danger"
+            iconName="pt-icon-trash"
+            onClick={() => showDialog()}
+          />
+        </Auth>
       </Actions>
     )}
     <CardContent note={note} person={person} entity={entity} />

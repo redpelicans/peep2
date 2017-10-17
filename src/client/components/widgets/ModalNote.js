@@ -10,7 +10,7 @@ const TextAreaStyled = styled.textarea`
   min-width: 100%;
 `;
 
-const DialogStyled = styled(Dialog)`width: 90%;`;
+const DialogStyled = styled(Dialog)`width: 70%;`;
 
 const MarkdownContainer = styled.div`
   background-color: ${Colors.DARK_GRAY3};

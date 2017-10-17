@@ -66,7 +66,7 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
             <Tab2 id="agenda" title={Agenda} />
             {isAdmin(user) && <Tab2 id="companies" title={Companies} />}
             {isAdmin(user) && <Tab2 id="people" title={People} />}
-            {isAdmin(user) && <Tab2 id="notes" title={Notes} />}
+            <Tab2 id="notes" title={Notes} />
           </Tabs2>
           <span className="pt-navbar-divider" />
           <UserButton user={user} logout={logout} />

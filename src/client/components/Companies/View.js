@@ -26,7 +26,7 @@ import MasonryLayout from '../widgets/MasonryLayout';
 import { getPathByName } from '../../routes';
 import NotesView from './NotesView';
 import { Auth } from '../../lib/kontrolo';
-import { getRouteRoles } from '../../routes';
+import { getRouteAuthProps } from '../../routes';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -182,7 +182,7 @@ const Company = ({
           <Title title={`${company.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <Auth roles={getRouteRoles('deleteCompany')}>
+          <Auth {...getRouteAuthProps('deleteCompany')} context={{ company }}>
             <Button
               iconName="pt-icon-trash"
               className="pt-button pt-large"
@@ -190,7 +190,7 @@ const Company = ({
             />
           </Auth>
           <Spacer />
-          <Auth roles={getRouteRoles('editCompany')}>
+          <Auth {...getRouteAuthProps('editCompany')} context={{ company }}>
             <LinkButton
               to={getPathByName('editCompany', id)}
               iconName="pt-icon-edit"
