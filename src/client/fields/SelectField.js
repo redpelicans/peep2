@@ -34,6 +34,7 @@ export const SelectField = ({
 }) => {
   const handleChange = e => {
     if (!e) {
+      setFieldTouched(name, newValue !== value);
       setFieldValue(name, '');
       return;
     }
