@@ -10,6 +10,8 @@ const TextAreaStyled = styled.textarea`
   min-width: 100%;
 `;
 
+const DialogStyled = styled(Dialog)`width: 90%;`;
+
 const MarkdownContainer = styled.div`
   background-color: ${Colors.DARK_GRAY3};
   padding: 25px;
@@ -34,7 +36,7 @@ const TextStyled = styled.span`
   margin-bottom: 20px;
 `;
 
-const ModalConfirmation = ({
+const ModalNote = ({
   isOpen,
   accept,
   reject,
@@ -42,18 +44,21 @@ const ModalConfirmation = ({
   showTextArea,
   hideTextArea,
   value,
+  defaultValue,
   handleChangeValue,
+  title,
+  type,
 }) => (
-  <Dialog isOpen={isOpen} className="pt-dark">
+  <DialogStyled isOpen={isOpen} className="pt-dark">
     <div className="pt-dialog-body">
-      <TextStyled>Add Note</TextStyled>
+      <TextStyled>{title}</TextStyled>
       {displayTextArea && (
         <TextAreaStyled
           name={name}
           className="pt-input pt-fill"
           dir="auto"
-          value={value}
-          onChange={handleChangeValue}
+          defaultValue={defaultValue ? defaultValue : value}
+          onBlur={handleChangeValue}
         />
       )}
       {!displayTextArea && (
@@ -76,17 +81,21 @@ const ModalConfirmation = ({
           Cancel
         </Button>
         <Button
-          onClick={() => accept(value)}
+          onClick={() => {
+            handleChangeValue({ target: { value: '' } });
+            showTextArea();
+            accept(value);
+          }}
           className="pt-intent-success pt-large"
         >
-          Add
+          {type}
         </Button>
       </div>
     </div>
-  </Dialog>
+  </DialogStyled>
 );
 
-ModalConfirmation.propTypes = {
+ModalNote.propTypes = {
   value: PropTypes.string.isRequired,
   isOpen: PropTypes.bool,
   accept: PropTypes.func.isRequired,
@@ -95,13 +104,16 @@ ModalConfirmation.propTypes = {
   showTextArea: PropTypes.func.isRequired,
   hideTextArea: PropTypes.func.isRequired,
   handleChangeValue: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string,
 };
 
 const enhance = withStateHandlers(
-  {
+  ({ defaultValue }) => ({
     displayTextArea: true,
-    value: '',
-  },
+    value: defaultValue,
+  }),
   {
     showTextArea: () => () => ({ displayTextArea: true }),
     hideTextArea: () => () => ({ displayTextArea: false }),
@@ -109,4 +121,4 @@ const enhance = withStateHandlers(
   },
 );
 
-export default enhance(ModalConfirmation);
+export default enhance(ModalNote);

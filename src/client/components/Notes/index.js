@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
-import styled from 'styled-components';
 import {
   filterNotesList,
   sortNotesList,
   deleteNote,
+  updateNote,
 } from '../../actions/notes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import {
@@ -22,8 +22,6 @@ import List from './List';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { getFilter, getVisibleNotes, getSort } from '../../selectors/notes';
-
-const StyledLinkButton = styled(LinkButton)``;
 
 const sortTypes = [
   { key: 'createdAt', label: 'Sort by creation date' },
@@ -46,7 +44,7 @@ const Notes = ({
     <Container>
       <Header>
         <HeaderLeft>
-          <div className="pt-icon-standard pt-icon-home" />
+          <div className="pt-icon-standard pt-icon-document" />
           <Spacer />
           <Title title="Notes" />
         </HeaderLeft>
@@ -59,7 +57,7 @@ const Notes = ({
           <Spacer />
           <SortMenu sortTypes={sortTypes} onClick={sortNotesList} sort={sort} />
           <Spacer />
-          <StyledLinkButton to="/notes/add" iconName="plus" />
+          <LinkButton to="/notes/add" iconName="plus" />
         </HeaderRight>
       </Header>
       <List
@@ -67,6 +65,7 @@ const Notes = ({
         companies={companies}
         people={people}
         deleteNote={deleteNote}
+        updateNote={updateNote}
       />
     </Container>
   );
@@ -82,6 +81,7 @@ Notes.propTypes = {
   handleFilterChange: PropTypes.func.isRequired,
   sort: PropTypes.object.isRequired,
   deleteNote: PropTypes.func.isRequired,
+  updateNote: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -92,7 +92,7 @@ const mapStateToProps = state => ({
   sort: getSort(state),
 });
 
-const actions = { filterNotesList, sortNotesList, deleteNote };
+const actions = { filterNotesList, sortNotesList, deleteNote, updateNote };
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 

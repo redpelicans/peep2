@@ -1,6 +1,6 @@
 import debug from 'debug';
 import R from 'ramda';
-import Person from '../models/people';
+import Person from './models/people';
 
 const loginfo = debug('peep:reactor');
 
@@ -234,6 +234,10 @@ class Reactor {
   }
 }
 
-const init = (evtx, io) => Promise.resolve(new Reactor(evtx, io));
+const init = ctx => {
+  const { evtx, io } = ctx;
+  new Reactor(evtx, io);
+  return Promise.resolve(ctx);
+};
 
 export default init;

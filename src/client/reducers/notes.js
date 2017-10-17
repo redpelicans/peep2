@@ -1,8 +1,9 @@
-import { compose, fromPairs, omit, map, filter, indexOf } from 'ramda';
+import { compose, fromPairs, omit, map } from 'ramda';
 import {
   NOTES_DELETED,
   NOTE_DELETED,
   NOTE_ADDED,
+  NOTE_UPDATED,
   NOTES_LOADED,
   FILTER_NOTES_LIST,
   SORT_NOTES_LIST,
@@ -27,6 +28,11 @@ const initialState = {
 const notes = (state = initialState, action) => {
   switch (action.type) {
     case NOTE_ADDED:
+      return {
+        ...state,
+        data: { ...state.data, [action.payload._id]: make(action.payload) },
+      };
+    case NOTE_UPDATED:
       return {
         ...state,
         data: { ...state.data, [action.payload._id]: make(action.payload) },

@@ -39,7 +39,7 @@
     "moment": "^2.18.1",
     "mongobless": "^2.1.1",
     "mongodb": "^2.2.31",
-    "morgan": "^1.8.2",
+    "morgan": "^1.9.0",
     "morgan-debug": "^2.0.0",
     "njwt": "^0.4.0",
     "object-assign": "4.1.1",
@@ -95,7 +95,9 @@
     "bundle:analyse":
       "webpack-bundle-analyzer ./stats.json ./build --report --mode=static",
     "srv:dev":
-      "NODE_ENV=development DEBUG=peep*,evtx* nodemon --watch src/server --watch params --exec 'babel-node src/server'"
+      "NODE_ENV=development DEBUG=peep*,evtx* nodemon --watch src/server --watch params --exec 'babel-node src/server'",
+    "srv:dist": "NODE_ENV=production babel src --out-dir dist/",
+    "srv:run": "NODE_ENV=production DEBUG=peep*,evtx* node dist/server"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -137,6 +139,8 @@
   },
   "jest": {
     "verbose": true,
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
     "testPathIgnorePatterns": ["utils"],
     "collectCoverageFrom": ["src/**/*.{js,jsx}"],
     "setupFiles": ["<rootDir>/config/polyfills.js"],
