@@ -5,10 +5,21 @@ import { withStateHandlers } from 'recompose';
 import Footer from './Footer';
 import { MarkdownConvertor } from '../widgets/Markdown';
 import { Button } from '@blueprintjs/core';
-import ModalNote from '../widgets/ModalNote';
-import { PreviewContainer, Actions, ModalConfirmation } from '../widgets';
+import { getPathByName } from '../../routes';
+import {
+  PreviewContainer,
+  Actions,
+  ModalConfirmation,
+  LinkButton,
+} from '../widgets';
 
 const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
+`;
+
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
   margin-right: 5px;
   margin-top: 5px;
 `;
@@ -56,10 +67,6 @@ export const Preview = ({
   hideDialog,
   isDeleteDialogOpen,
   deleteNote,
-  isModalOpen,
-  showModal,
-  hideModal,
-  updateNote,
 }) => (
   <PreviewContainer
     className="pt-card pt-elevation-0 pt-interactive"
@@ -68,18 +75,6 @@ export const Preview = ({
     onMouseLeave={handleMouseLeave}
     showActions={showActions}
   >
-    <ModalNote
-      isOpen={isModalOpen}
-      title="Update Note"
-      value={note.content}
-      reject={() => hideModal()}
-      defaultValue={note.content}
-      accept={value => {
-        hideModal();
-        updateNote(note._id, value, 'person');
-      }}
-      type="Update"
-    />
     <ModalConfirmation
       isOpen={isDeleteDialogOpen}
       title="Would you like to delete this note?"
@@ -88,10 +83,10 @@ export const Preview = ({
     />
     {showActions && (
       <Actions>
-        <StyledButton
-          className="pt-small pt-button"
+        <StyledLinkButton
+          to={getPathByName('editNote', note._id)}
+          className="pt-small pt-button pt-intent-warning"
           iconName="pt-icon-edit"
-          onClick={() => showModal()}
         />
         <StyledButton
           className="pt-small pt-button pt-intent-danger"
@@ -115,25 +110,18 @@ Preview.propTypes = {
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   deleteNote: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired,
-  isModalOpen: PropTypes.bool.isRequired,
-  updateNote: PropTypes.func.isRequired,
 };
 
 const enhance = withStateHandlers(
   {
     showActions: false,
     isDeleteDialogOpen: false,
-    isModalOpen: false,
   },
   {
     handleMouseLeave: () => () => ({ showActions: false }),
     handleMouseEnter: () => () => ({ showActions: true }),
     showDialog: () => () => ({ isDeleteDialogOpen: true }),
     hideDialog: () => () => ({ isDeleteDialogOpen: false }),
-    showModal: () => () => ({ isModalOpen: true }),
-    hideModal: () => () => ({ isModalOpen: false }),
   },
 );
 

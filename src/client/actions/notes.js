@@ -35,10 +35,10 @@ export const deleteNote = id => dispatch => {
   });
 };
 
-export const addNote = (id, note, entityType) => dispatch => {
+export const addNote = (id, note, entityType, ...props) => dispatch => {
   dispatch({
     type: ADD_NOTE,
-    payload: { entityType, entityId: id, content: note },
+    payload: { entityType, entityId: id, content: note, ...props },
     replyTo: NOTE_ADDED,
   });
 };

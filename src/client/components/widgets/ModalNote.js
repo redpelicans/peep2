@@ -58,7 +58,7 @@ const ModalNote = ({
           className="pt-input pt-fill"
           dir="auto"
           defaultValue={defaultValue ? defaultValue : value}
-          onBlur={handleChangeValue}
+          onMouseLeave={handleChangeValue}
         />
       )}
       {!displayTextArea && (
@@ -86,6 +86,7 @@ const ModalNote = ({
             showTextArea();
             accept(value);
           }}
+          disabled={defaultValue === value}
           className="pt-intent-success pt-large"
         >
           {type}

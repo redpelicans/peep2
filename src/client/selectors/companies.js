@@ -20,7 +20,6 @@ import {
   sort,
   propEq,
   find,
-  isEmpty,
 } from 'ramda';
 import moment from 'moment';
 import { createSelector } from 'reselect';
