@@ -210,7 +210,7 @@ const EntityMessage = ({
 EntityMessage.propTypes = {
   history: PropTypes.object,
   entityName: PropTypes.string,
-  entityAvatar: PropTypes.objet,
+  entityAvatar: PropTypes.object,
   entityPath: PropTypes.string,
   authorName: PropTypes.string,
   authorAvatar: PropTypes.object,

@@ -13,7 +13,6 @@ import {
   CompanyLink,
   Actions,
   ModalConfirmation,
-  Spacer,
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
@@ -38,6 +37,17 @@ export const Icons = styled.div`
   margin-left: 5px;
   margin-right: 5px;
   color: rgb(68, 86, 99);
+`;
+
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+`;
+
+const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
 `;
 
 export const Preview = ({
@@ -83,14 +93,13 @@ export const Preview = ({
         </StyledInfos>
         {showActions && (
           <Actions>
-            <LinkButton
+            <StyledLinkButton
               to={getPathByName('editPerson', _id)}
               className="pt-small pt-button pt-intent-warning"
               iconName="pt-icon-edit"
             />
-            <Spacer size="5" />
-            <Button
-              className="pt-small pt-button"
+            <StyledButton
+              className="pt-small pt-button pt-intent-danger"
               iconName="pt-icon-trash"
               onClick={() => showDialog()}
             />

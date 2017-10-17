@@ -29,6 +29,9 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
     <span className={headerBtnClass('calendar', user)}>Agenda</span>
   );
   const Notes = <span className={headerBtnClass('document', user)}>Notes</span>;
+  const Missions = (
+    <span className={headerBtnClass('shopping-cart', user)}>Missions</span>
+  );
   const getRouteName = path => {
     const start = path.indexOf('/');
     const end =
@@ -67,6 +70,7 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
             {isAdmin(user) && <Tab2 id="companies" title={Companies} />}
             {isAdmin(user) && <Tab2 id="people" title={People} />}
             {isAdmin(user) && <Tab2 id="notes" title={Notes} />}
+            <Tab2 id="missions" title={Missions} />
           </Tabs2>
           <span className="pt-navbar-divider" />
           <UserButton user={user} logout={logout} />

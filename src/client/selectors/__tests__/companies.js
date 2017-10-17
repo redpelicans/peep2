@@ -1,9 +1,7 @@
 import should from 'should';
 import {
-  getTagsPredicate,
   regexp,
   getCompanies,
-  getNotes,
   getFilter,
   getSort,
   getCompany,

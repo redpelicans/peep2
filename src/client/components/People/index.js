@@ -47,7 +47,7 @@ export const People = ({
   <Container>
     <Header>
       <HeaderLeft>
-        <div className="pt-icon-standard pt-icon-home" />
+        <div className="pt-icon-standard pt-icon-people" />
         <Spacer />
         <Title title="People" />
       </HeaderLeft>

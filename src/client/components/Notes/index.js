@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
-import styled from 'styled-components';
 import {
   filterNotesList,
   sortNotesList,
@@ -23,8 +22,6 @@ import List from './List';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { getFilter, getVisibleNotes, getSort } from '../../selectors/notes';
-
-const StyledLinkButton = styled(LinkButton)``;
 
 const sortTypes = [
   { key: 'createdAt', label: 'Sort by creation date' },
@@ -47,7 +44,7 @@ const Notes = ({
     <Container>
       <Header>
         <HeaderLeft>
-          <div className="pt-icon-standard pt-icon-home" />
+          <div className="pt-icon-standard pt-icon-document" />
           <Spacer />
           <Title title="Notes" />
         </HeaderLeft>
@@ -60,7 +57,7 @@ const Notes = ({
           <Spacer />
           <SortMenu sortTypes={sortTypes} onClick={sortNotesList} sort={sort} />
           <Spacer />
-          <StyledLinkButton to="/notes/add" iconName="plus" />
+          <LinkButton to="/notes/add" iconName="plus" />
         </HeaderRight>
       </Header>
       <List

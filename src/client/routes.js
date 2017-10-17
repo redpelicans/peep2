@@ -14,6 +14,7 @@ import People from './components/People';
 import AddPeople from './components/People/Add';
 import Agenda from './components/Agenda';
 import Notes from './components/Notes';
+import Missions from './components/Missions';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
 import EditAgenda from './components/Agenda/Edit';
@@ -134,6 +135,14 @@ const routes = {
     component: EditNote,
     roles: [ADMIN_ROLE],
   },
+  missions: {
+    path: '/missions',
+    exact: true,
+    auth: true,
+    component: Missions,
+  },
+  addMission: {},
+  editMission: {},
   login: {
     path: '/login',
     exact: true,
