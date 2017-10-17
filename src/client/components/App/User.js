@@ -9,20 +9,19 @@ import Avatar from '../Avatar';
 
 const Layout = styled.div`
   display: grid;
-  grid-template-areas: "avatar" "email" "menu";
+  grid-template-areas: 'avatar' 'email' 'menu';
   justify-items: center;
+  padding: 10px;
 `;
 
-const StyledAvatar = styled(Avatar)`
-  margin: 10px;
-`;
+const StyledAvatar = styled(Avatar)`margin: 10px;`;
 
-const StyledEmail = styled.div`
-  font-size: 0.8em;
-`;
+const StyledEmail = styled.div`font-size: 0.8em;`;
 
 const UserButton = ({ user, logout }) => {
-  const btnClass = classNames('pt-button pt-minimal pt-icon-user', { 'pt-disabled': !user });
+  const btnClass = classNames('pt-button pt-minimal pt-icon-user', {
+    'pt-disabled': !user,
+  });
   if (!user) return <button className={btnClass} />;
   const fullName = join(' ', [user.firstName, user.lastName]);
   return (
@@ -33,11 +32,7 @@ const UserButton = ({ user, logout }) => {
         <StyledEmail>{user.email}</StyledEmail>
         <Menu>
           <MenuDivider />
-          <MenuItem
-            iconName="log-out"
-            onClick={logout}
-            text="Logout"
-          />
+          <MenuItem iconName="log-out" onClick={logout} text="Logout" />
         </Menu>
       </Layout>
     </Popover2>

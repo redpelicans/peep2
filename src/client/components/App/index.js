@@ -36,7 +36,7 @@ const StyledHeader = styled(Header)`
   box-shadow: inset 0 0 0 1px rgba(16, 22, 26, 0.2), 0 0 0 rgba(16, 22, 26, 0),
     0 1px 1px rgba(16, 22, 26, 0.4);
   color: #f5f8fa;
-  padding: 0 15px;
+  padding: 0 25px;
 `;
 
 const App = props => {

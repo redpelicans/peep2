@@ -29,6 +29,7 @@ export const doFilter = nfilter =>
 export const getFilter = state => state.notes.filter || '';
 export const getSort = state => state.notes.sort;
 export const getNotes = state => values(state.notes.data);
+export const getNote = (state, id) => state.notes.data[id];
 
 const filterAndSort = (filter, sort, notes) =>
   compose(doSort(sort), doFilter(filter))(notes);

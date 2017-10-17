@@ -10,7 +10,7 @@ const Container = styled.div`
   margin: 25px;
   margin-top: 40px;
   background-color: #394b59;
-  border-radius: 2px;
+  border-radius: 3px;
 `;
 
 export default Container;

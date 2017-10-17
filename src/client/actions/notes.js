@@ -35,18 +35,46 @@ export const deleteNote = id => dispatch => {
   });
 };
 
-export const addNote = (id, note, entityType) => dispatch => {
+export const addNote = (
+  id,
+  note,
+  entityType,
+  dueDate,
+  assigneesIds,
+  ...props
+) => dispatch => {
   dispatch({
     type: ADD_NOTE,
-    payload: { entityType, entityId: id, content: note },
+    payload: {
+      entityType,
+      entityId: id,
+      content: note,
+      dueDate,
+      assigneesIds,
+      ...props,
+    },
     replyTo: NOTE_ADDED,
   });
 };
 
-export const updateNote = (id, note, entityType) => dispatch => {
+export const updateNote = (
+  _id,
+  note,
+  entityType,
+  entityId,
+  dueDate,
+  assigneesIds,
+) => dispatch => {
   dispatch({
     type: UPDATE_NOTE,
-    payload: { entityType, _id: id, content: note, newNote: '' },
+    payload: {
+      _id,
+      content: note,
+      entityType,
+      entityId,
+      dueDate,
+      assigneesIds,
+    },
     replyTo: NOTE_UPDATED,
   });
 };

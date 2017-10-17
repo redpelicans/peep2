@@ -61,7 +61,7 @@ export class MarkDownField extends Component {
     };
 
     return (
-      <Field error={error} required={required}>
+      <Field error={error}>
         <div>
           <MarkDownLabel>
             <label className="pt-label">

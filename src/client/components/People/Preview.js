@@ -40,17 +40,6 @@ export const Icons = styled.div`
   color: rgb(68, 86, 99);
 `;
 
-const StyledLinkButton = styled(LinkButton)`
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 5px;
-`;
-
-const StyledButton = styled(Button)`
-  margin-right: 5px;
-  margin-top: 5px;
-`;
-
 export const Preview = ({
   handleMouseEnter,
   handleMouseLeave,
@@ -101,7 +90,6 @@ export const Preview = ({
                 iconName="pt-icon-edit"
               />
             </Auth>
-            <Spacer size="5" />
             <Auth {...getRouteAuthProps('deleteNote')} context={{ company }}>
               <Button
                 className="pt-small pt-button pt-intent-danger"

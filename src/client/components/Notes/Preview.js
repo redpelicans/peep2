@@ -15,6 +15,12 @@ const StyledButton = styled(Button)`
   margin-top: 5px;
 `;
 
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+`;
+
 export const StyledNoteWrap = styled.div`
   margin: 0 auto;
   width: 90%;
@@ -58,10 +64,6 @@ export const Preview = ({
   hideDialog,
   isDeleteDialogOpen,
   deleteNote,
-  isModalOpen,
-  showModal,
-  hideModal,
-  updateNote,
 }) => (
   <PreviewContainer
     className="pt-card pt-elevation-0 pt-interactive"
@@ -70,18 +72,6 @@ export const Preview = ({
     onMouseLeave={handleMouseLeave}
     showActions={showActions}
   >
-    <ModalNote
-      isOpen={isModalOpen}
-      title="Update Note"
-      value={note.content}
-      reject={() => hideModal()}
-      defaultValue={note.content}
-      accept={value => {
-        hideModal();
-        updateNote(note._id, value, 'person');
-      }}
-      type="Update"
-    />
     <ModalConfirmation
       isOpen={isDeleteDialogOpen}
       title="Would you like to delete this note?"
@@ -121,25 +111,18 @@ Preview.propTypes = {
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   deleteNote: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired,
-  isModalOpen: PropTypes.bool.isRequired,
-  updateNote: PropTypes.func.isRequired,
 };
 
 const enhance = withStateHandlers(
   {
     showActions: false,
     isDeleteDialogOpen: false,
-    isModalOpen: false,
   },
   {
     handleMouseLeave: () => () => ({ showActions: false }),
     handleMouseEnter: () => () => ({ showActions: true }),
     showDialog: () => () => ({ isDeleteDialogOpen: true }),
     hideDialog: () => () => ({ isDeleteDialogOpen: false }),
-    showModal: () => () => ({ isModalOpen: true }),
-    hideModal: () => () => ({ isModalOpen: false }),
   },
 );
 

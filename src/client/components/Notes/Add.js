@@ -7,18 +7,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withFormik } from 'formik';
 import { Prompt } from 'react-router';
-import { addCompany } from '../../actions/companies';
-import { compose, map } from 'ramda';
+import { addNote } from '../../actions/notes';
+import { compose } from 'ramda';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import { getValidationSchema, defaultValues } from '../../forms/companies';
+import { getValidationSchema, defaultValues } from '../../forms/notes';
 import AddOrEdit from './AddOrEdit';
-import {
-  Spacer,
-  Title,
-  Container,
-  AvatarSelector,
-  ModalConfirmation,
-} from '../widgets';
+import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
 
 const StyledContainer = styled(Container)`min-width: 300px;`;
 
@@ -51,15 +45,6 @@ export const Add = ({
     <Header>
       <HeaderLeft>
         <Spacer size={15} />
-        <AvatarSelector
-          formId="addNote"
-          color={values.color}
-          name={values.name}
-          lastName={values.lastName}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
-        />
-        <Spacer />
         <Title title={'Add Note'} />
       </HeaderLeft>
       <HeaderRight>
@@ -114,38 +99,18 @@ Add.propTypes = {
   requestCancel: PropTypes.func.isRequired,
 };
 
-const actions = { addCompany };
+const actions = { addNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default compose(
   connect(null, mapDispatchToProps),
   withFormik({
     handleSubmit: (
-      {
-        name,
-        type,
-        tags = [],
-        website,
-        zipcode,
-        street,
-        country,
-        city,
-        note,
-        color,
-      },
+      { entityType, entityId, note, dueDate, assigneesIds },
       { props },
     ) => {
-      const { addCompany, history } = props;
-      const newCompany = {
-        name,
-        avatar: { color },
-        type,
-        tags: map(tag => tag.value, tags),
-        website,
-        address: { street, city, zipcode, country },
-        note,
-      };
-      addCompany(newCompany);
+      const { addNote, history } = props;
+      addNote(entityId, note, entityType, dueDate, assigneesIds);
       history.goBack();
     },
     validationSchema: getValidationSchema(),
