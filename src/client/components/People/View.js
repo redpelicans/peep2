@@ -13,6 +13,8 @@ import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { deleteNote } from '../../actions/notes';
 import { deletePeople } from '../../actions/people';
+import { Auth } from '../../lib/kontrolo';
+import { getRouteRoles } from '../../routes';
 
 import {
   Title,
@@ -273,17 +275,21 @@ const Person = ({
           <Title title={`${person.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <Button
-            iconName="pt-icon-trash"
-            className="pt-button pt-large"
-            onClick={() => showDialog()}
-          />
+          <Auth roles={getRouteRoles('deletePerson')}>
+            <Button
+              iconName="pt-icon-trash"
+              className="pt-button pt-large"
+              onClick={() => showDialog()}
+            />
+          </Auth>
           <Spacer />
-          <LinkButton
-            to={getPathByName('editPerson', id)}
-            iconName="pt-icon-edit"
-            className="pt-button pt-large"
-          />
+          <Auth roles={getRouteRoles('editPerson')}>
+            <LinkButton
+              to={getPathByName('editPerson', id)}
+              iconName="pt-icon-edit"
+              className="pt-button pt-large"
+            />
+          </Auth>
         </HeaderRight>
       </Header>
       <PersonInfos person={person} deleteNote={deleteNote} />

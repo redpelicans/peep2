@@ -25,6 +25,8 @@ import { deletePeople, onTagClick } from '../../actions/people';
 import MasonryLayout from '../widgets/MasonryLayout';
 import { getPathByName } from '../../routes';
 import NotesView from './NotesView';
+import { Auth } from '../../lib/kontrolo';
+import { getRouteRoles } from '../../routes';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -180,17 +182,21 @@ const Company = ({
           <Title title={`${company.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <Button
-            iconName="pt-icon-trash"
-            className="pt-button pt-large"
-            onClick={() => showDialog()}
-          />
+          <Auth roles={getRouteRoles('deleteCompany')}>
+            <Button
+              iconName="pt-icon-trash"
+              className="pt-button pt-large"
+              onClick={() => showDialog()}
+            />
+          </Auth>
           <Spacer />
-          <LinkButton
-            to={getPathByName('editCompany', id)}
-            iconName="pt-icon-edit"
-            className="pt-button pt-large"
-          />
+          <Auth roles={getRouteRoles('editCompany')}>
+            <LinkButton
+              to={getPathByName('editCompany', id)}
+              iconName="pt-icon-edit"
+              className="pt-button pt-large"
+            />
+          </Auth>
         </HeaderRight>
       </Header>
       <CompanyInfos company={company} people={people} />

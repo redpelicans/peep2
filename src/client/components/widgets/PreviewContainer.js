@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components';
-import { Colors } from '@blueprintjs/core';
+import styled from 'styled-components';
 
 const PreviewContainer = styled.div`
   cursor: default !important;

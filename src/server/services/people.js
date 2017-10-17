@@ -45,7 +45,7 @@ const addSchema = Yup.object().shape({
   jobType: Yup.string()
     .oneOf(['designer', 'developer', 'manager', 'sales'])
     .required(),
-  companyId: new ObjectIdSchemaType().required(),
+  companyId: new ObjectIdSchemaType(),
   phones: Yup.array().of(phoneSchema),
   tags: Yup.array().of(Yup.string()),
   skills: Yup.array().of(Yup.string()),

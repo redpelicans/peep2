@@ -53,6 +53,7 @@ io.on('connect', () => {
         else {
           // eslint-disable-line no-console
           // eslint-disable-line no-console
+          // eslint-disable-line no-console
           store.dispatch(userLogged(user, token));
         }
         render(root, mountNode);

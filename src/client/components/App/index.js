@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import routes, { defaultRoute } from '../../routes';
+import routes, { defaultRoute, isAuthRequired } from '../../routes';
 import { logout } from '../../actions/login';
 import { Auth } from '../../lib/kontrolo';
 import Message from '../Message';
@@ -41,10 +41,9 @@ const StyledHeader = styled(Header)`
 
 const App = props => {
   const makeAuthRoute = route => props => {
-    // eslint-disable-line no-shadow
-    if (route.auth) {
+    if (isAuthRequired(route)) {
       return (
-        <Auth redirect>
+        <Auth redirect roles={route.roles}>
           <route.component {...props} />
         </Auth>
       );
