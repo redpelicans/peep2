@@ -11,8 +11,8 @@ export const hasSomeRoles = curry(
   (roles, user) =>
     !roles || (user && !isEmpty(intersection(roles, user.roles))),
 );
-export const hasAllRoles = curry((roles, user) =>
-  isEmpty(difference(roles || [], user.roles)),
+export const hasAllRoles = curry(
+  (roles, user) => user && isEmpty(difference(roles || [], user.roles)),
 );
 export const isAdmin = hasSomeRoles([ADMIN_ROLE]);
 export const isEqual = (person1, person2) => person1._id === person2._id;

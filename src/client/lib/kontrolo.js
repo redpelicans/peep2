@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { hasSomeRoles } from '../utils/people';
+import { getRouteRoles } from '../routes';
 
 class Kontrolo extends React.Component {
   constructor(props) {
@@ -20,6 +22,7 @@ class Kontrolo extends React.Component {
     return {
       isAuthorized: this.isAuthorized,
       redirect: this.redirect,
+      user: this.user,
     };
   }
 
@@ -35,6 +38,7 @@ class Kontrolo extends React.Component {
 
 Kontrolo.childContextTypes = {
   isAuthorized: PropTypes.func.isRequired,
+  user: PropTypes.object,
   redirect: PropTypes.func,
 };
 
@@ -51,27 +55,32 @@ const mapStateToProps = state => ({ state });
 
 export default withRouter(connect(mapStateToProps)(Kontrolo));
 
+export class Auth extends React.Component {
+  // eslint-disable-line react/no-multi-comp
+  isAuthorized() {
+    const { isAuthorized, user } = this.context;
+    const { roles } = this.props;
+    return isAuthorized() && hasSomeRoles(roles, user);
+  }
 
-export class Auth extends React.Component { // eslint-disable-line react/no-multi-comp
   componentWillMount() {
     const { redirect } = this.props;
-    const { isAuthorized, redirect: gotoAuth } = this.context;
-    if (!isAuthorized()) {
+    const { redirect: gotoAuth } = this.context;
+    if (!this.isAuthorized()) {
       if (redirect) return gotoAuth();
     }
   }
   componentWillUpdate() {
     const { redirect } = this.props;
-    const { isAuthorized, redirect: gotoAuth } = this.context;
-    if (!isAuthorized()) {
+    const { redirect: gotoAuth } = this.context;
+    if (!this.isAuthorized()) {
       if (redirect) return gotoAuth();
     }
   }
 
   render() {
     const { children } = this.props;
-    const { isAuthorized } = this.context;
-    if (!isAuthorized()) return null;
+    if (!this.isAuthorized()) return null;
     return React.Children.only(children);
   }
 }
@@ -79,11 +88,11 @@ export class Auth extends React.Component { // eslint-disable-line react/no-mult
 Auth.contextTypes = {
   isAuthorized: PropTypes.func.isRequired,
   redirect: PropTypes.func,
+  user: PropTypes.object,
 };
 
 Auth.propTypes = {
   children: PropTypes.element.isRequired,
   redirect: PropTypes.bool,
-  //  roles: PropTypes.array,
+  roles: PropTypes.array,
 };
-
