@@ -1,11 +1,5 @@
 import should from 'should';
-import {
-  getPeople,
-  getFilter,
-  getSort,
-  getCompanies,
-  getNotes,
-} from '../people';
+import { getPeople, getFilter, getSort } from '../people';
 
 describe('Selectors:people', () => {
   it('Should get an empty people object', () => {

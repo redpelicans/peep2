@@ -13,7 +13,6 @@ import {
   CompanyLink,
   Actions,
   ModalConfirmation,
-  Spacer,
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName, getRouteAuthProps } from '../../routes';
@@ -39,6 +38,17 @@ export const Icons = styled.div`
   margin-left: 5px;
   margin-right: 5px;
   color: rgb(68, 86, 99);
+`;
+
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+`;
+
+const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
 `;
 
 export const Preview = ({
