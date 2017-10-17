@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
@@ -62,7 +62,7 @@ export const Edit = compose(
         </HeaderLeft>
         <HeaderRight>
           <Button
-            form="noteForm"
+            form="addNote"
             type="submit"
             disabled={isSubmitting || !dirty}
             className="pt-intent-success pt-large"
@@ -134,10 +134,17 @@ const FormikEdit = ({ updateNote, note = {}, history, dispatch, ...props }) => (
       assignees: note.authorId,
       person: note.entityId,
       company: note.entityId,
+      dueDate: note.dueDate,
+      assigneesIds: note.assigneesIds
+        ? map(
+            assignee => ({ value: assignee, label: assignee }),
+            note.assigneesIds,
+          )
+        : [],
     }}
     validationSchema={getValidationSchema()}
-    onSubmit={({ note }) => {
-      updateNote(note);
+    onSubmit={({ _id, note, entityType, entityId, dueDate, assigneesIds }) => {
+      updateNote(_id, note, entityType, entityId, dueDate, assigneesIds);
       history.goBack();
     }}
     render={({ ...others }) => (

@@ -14,7 +14,6 @@ import { isAdmin } from '../../utils/people';
 const Logo = styled.i`
   color: #cd4436;
   margin-right: 10px;
-  margin-left: 10px;
   font-size: 1.2em;
 `;
 
