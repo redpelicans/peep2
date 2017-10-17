@@ -80,7 +80,7 @@ export const Missions = ({
 Missions.propTypes = {
   people: PropTypes.object,
   companies: PropTypes.object,
-  missions: PropTypes.object,
+  missions: PropTypes.array,
   filter: PropTypes.string,
   sort: PropTypes.object,
   deleteMission: PropTypes.func.isRequired,

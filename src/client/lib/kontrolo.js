@@ -1,4 +1,5 @@
 import React from 'react';
+import { compose, identity, filter, reduce } from 'ramda';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -59,8 +60,15 @@ export class Auth extends React.Component {
   // eslint-disable-line react/no-multi-comp
   isAuthorized() {
     const { isAuthorized, user } = this.context;
-    const { roles } = this.props;
-    return isAuthorized() && hasSomeRoles(roles, user);
+    const { roles, test, context } = this.props;
+    const predicates = [
+      isAuthorized,
+      roles && (() => hasSomeRoles(roles, user)),
+      test && (() => test({ ...context, user })),
+    ];
+    return compose(reduce((acc, p) => acc && p(), true), filter(identity))(
+      predicates,
+    );
   }
 
   componentWillMount() {
@@ -95,4 +103,6 @@ Auth.propTypes = {
   children: PropTypes.element.isRequired,
   redirect: PropTypes.bool,
   roles: PropTypes.array,
+  test: PropTypes.func,
+  context: PropTypes.object,
 };

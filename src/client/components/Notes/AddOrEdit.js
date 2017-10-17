@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormField } from '../../fields';
 import { getField } from '../../forms/notes';
+import {
+  PeopleSelectField,
+  CompaniesSelectField,
+} from '../../fields/SelectField';
 
 const CompagnyForm = styled.form`
   display: grid;
@@ -13,11 +17,10 @@ const CompagnyForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'note' 'dueDate' 'delay' 'unit' 'assignees' 'entityType'
-    'entity';
+  grid-template-areas: 'entityType' 'entityId' 'note' 'dueDate' 'assigneesIds';
   @media (min-width: 700px) {
-    grid-template-areas: 'note note note' 'dueDate delay unit'
-      'assignees assignees assignees' 'entityType entity entity';
+    grid-template-areas: 'entityType entityId entityId' 'note note note'
+      'dueDate assigneesIds assigneesIds';
   }
 `;
 
@@ -33,6 +36,15 @@ const AddOrEditForm = ({
   setFieldTouched,
   setFieldValue,
 }) => {
+  const getEntityIdComponent = value => {
+    if (value === 'person') {
+      return PeopleSelectField;
+    } else if (value === 'company') {
+      return CompaniesSelectField;
+    } else {
+      return;
+    }
+  };
   return (
     <CompagnyForm id="addNote" onSubmit={handleSubmit}>
       <StyledFormField
@@ -52,23 +64,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('delay')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('unit')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('assignees')}
+        field={getField('assigneesIds')}
         values={values}
         errors={errors}
         touched={touched}
@@ -83,23 +79,18 @@ const AddOrEditForm = ({
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
-      {values.entityType === 'none' && (
+      {values.entityType !== 'none' && (
         <StyledFormField
-          field={getField('entity')}
-          values={values}
-          errors={errors}
-          disabled={true}
-          touched={touched}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
-        />
-      )}
-      {values.entityType === 'company' && (
-        <StyledFormField
-          field={getField('companyId')}
+          field={{
+            ...getField('entityId'),
+            label: values.entityType,
+            component: getEntityIdComponent(values.entityType),
+            required: true,
+          }}
           values={values}
           errors={errors}
           touched={touched}
+          disabled={values.entityType === 'none' ? true : false}
           setFieldTouched={setFieldTouched}
           setFieldValue={setFieldValue}
         />

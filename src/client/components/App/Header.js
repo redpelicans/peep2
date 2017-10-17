@@ -14,7 +14,6 @@ import { isAdmin } from '../../utils/people';
 const Logo = styled.i`
   color: #cd4436;
   margin-right: 10px;
-  margin-left: 10px;
   font-size: 1.2em;
 `;
 
@@ -69,7 +68,7 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
             <Tab2 id="agenda" title={Agenda} />
             {isAdmin(user) && <Tab2 id="companies" title={Companies} />}
             {isAdmin(user) && <Tab2 id="people" title={People} />}
-            {isAdmin(user) && <Tab2 id="notes" title={Notes} />}
+            <Tab2 id="notes" title={Notes} />
             <Tab2 id="missions" title={Missions} />
           </Tabs2>
           <span className="pt-navbar-divider" />

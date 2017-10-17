@@ -10,7 +10,7 @@ const TextAreaStyled = styled.textarea`
   min-width: 100%;
 `;
 
-const DialogStyled = styled(Dialog)`width: 90%;`;
+const DialogStyled = styled(Dialog)`width: 70%;`;
 
 const MarkdownContainer = styled.div`
   background-color: ${Colors.DARK_GRAY3};
@@ -58,7 +58,7 @@ const ModalNote = ({
           className="pt-input pt-fill"
           dir="auto"
           defaultValue={defaultValue ? defaultValue : value}
-          onBlur={handleChangeValue}
+          onMouseLeave={handleChangeValue}
         />
       )}
       {!displayTextArea && (
@@ -86,6 +86,7 @@ const ModalNote = ({
             showTextArea();
             accept(value);
           }}
+          disabled={defaultValue === value}
           className="pt-intent-success pt-large"
         >
           {type}

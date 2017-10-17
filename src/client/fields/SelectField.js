@@ -8,6 +8,7 @@ import withWorkers from '../hoc/workers';
 import withCities from '../hoc/cities';
 import withCountries from '../hoc/countries';
 import withTags from '../hoc/tags';
+import withPeople from '../hoc/people';
 import withCompanies from '../hoc/companies';
 import { Field } from '../fields';
 import Select from 'react-select';
@@ -33,6 +34,7 @@ export const SelectField = ({
 }) => {
   const handleChange = e => {
     if (!e) {
+      setFieldTouched(name, newValue !== value);
       setFieldValue(name, '');
       return;
     }
@@ -155,6 +157,24 @@ export const WorkerSelectField = compose(
     'workers',
     'domainValues',
     map(worker => ({ id: worker._id, value: fullName(worker) })),
+  ),
+)(SelectField);
+
+export const AssigneesSelectField = compose(
+  withWorkers,
+  propTransformer(
+    'workers',
+    'domainValues',
+    map(worker => ({ id: worker._id, value: fullName(worker) })),
+  ),
+)(MultiSelectField);
+
+export const PeopleSelectField = compose(
+  withPeople,
+  propTransformer(
+    'people',
+    'domainValues',
+    map(person => ({ id: person._id, value: person.name })),
   ),
 )(SelectField);
 
