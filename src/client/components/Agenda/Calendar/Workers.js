@@ -345,7 +345,7 @@ class WorkersCalendar extends Component {
     else if (from && selecting) this.setState({ to: date });
   };
 
-  endPeriod = (worker, date) => {
+  endPeriod = () => {
     this.setState({ selecting: false });
   };
 

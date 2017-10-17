@@ -8,6 +8,8 @@ import { getRouteByName, getRouteByPath, defaultRoute } from '../../routes';
 import UserButton from './User';
 import { NavBar, NavBarLeft, NavBarRight } from './NavBar';
 import { Spacer } from '../widgets';
+import { getRouteRoles } from '../../routes';
+import { isAdmin } from '../../utils/people';
 
 const Logo = styled.i`
   color: #cd4436;
@@ -62,9 +64,9 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
             selectedTabId={selectedTab}
           >
             <Tab2 id="agenda" title={Agenda} />
-            <Tab2 id="companies" title={Companies} />
-            <Tab2 id="people" title={People} />
-            <Tab2 id="notes" title={Notes} />
+            {isAdmin(user) && <Tab2 id="companies" title={Companies} />}
+            {isAdmin(user) && <Tab2 id="people" title={People} />}
+            {isAdmin(user) && <Tab2 id="notes" title={Notes} />}
           </Tabs2>
           <span className="pt-navbar-divider" />
           <UserButton user={user} logout={logout} />

@@ -1,4 +1,4 @@
-import { compose, find, prop, reduce, toPairs } from 'ramda';
+import { pathOr, compose, find, prop, reduce, toPairs } from 'ramda';
 import Login from './components/Login';
 import Companies from './components/Companies';
 import People from './components/People';
@@ -15,6 +15,7 @@ import EditPerson from './components/People/Edit';
 import EditNote from './components/Notes/Edit';
 import AddNotes from './components/Notes/Add';
 import NotFound from './components/NotFound';
+import { ADMIN_ROLE } from './utils/people';
 
 const routes = {
   home: {
@@ -29,6 +30,7 @@ const routes = {
     default: true,
     exact: true,
     auth: true,
+    roles: [ADMIN_ROLE],
   },
   addCompany: {
     path: '/companies/add',
@@ -133,4 +135,5 @@ export const getPathByName = (name, param) => {
   const path = prop('path', getRouteByName(name));
   return param ? `${path.replace(':id', param)}` : path;
 };
+export const getRouteRoles = name => pathOr([], 'roles', getRouteByName(name));
 export default exportedRoutes;
