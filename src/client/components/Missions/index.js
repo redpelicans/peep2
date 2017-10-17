@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 
-import { getMissions } from '../../selectors/missions';
 import { Header, HeaderRight, HeaderLeft } from '../Header';
 import {
   LinkButton,
@@ -46,7 +45,7 @@ Missions.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  missions: getMissions(state),
+  missions: {},
 });
 
 const actions = {};
