@@ -15,6 +15,7 @@ import AddPeople from './components/People/Add';
 import Agenda from './components/Agenda';
 import Notes from './components/Notes';
 import Missions from './components/Missions';
+import AddMissions from './components/Missions/Add';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
 import EditAgenda from './components/Agenda/Edit';
@@ -145,6 +146,12 @@ const routes = {
     exact: true,
     auth: true,
     component: Missions,
+  },
+  addMissions: {
+    path: '/missions/add',
+    exact: true,
+    auth: true,
+    component: AddMissions,
   },
   addMission: {},
   editMission: {},
