@@ -5,15 +5,14 @@ import { withStateHandlers } from 'recompose';
 import Footer from './Footer';
 import { MarkdownConvertor } from '../widgets/Markdown';
 import { Button } from '@blueprintjs/core';
-import { getPathByName } from '../../routes';
 import {
+  LinkButton,
   PreviewContainer,
   Actions,
   ModalConfirmation,
-  LinkButton,
 } from '../widgets';
 import { Auth } from '../../lib/kontrolo';
-import { getRouteAuthProps } from '../../routes';
+import { getPathByName, getRouteAuthProps } from '../../routes';
 
 const StyledButton = styled(Button)`
   margin-right: 5px;
