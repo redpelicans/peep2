@@ -8,15 +8,23 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
-import { getValidationSchema, defaultValues } from '../../forms/missions';
-import { addMission } from '../../actions/missions';
+import { getMission } from '../../selectors/missions';
+import { getPathByName } from '../../routes';
+import { getValidationSchema } from '../../forms/people';
+import { updateMission } from '../../actions/people';
 import { Prompt } from 'react-router';
-import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
+import {
+  Spacer,
+  Title,
+  Container,
+  AvatarSelector,
+  ModalConfirmation,
+} from '../widgets';
 import AddOrEdit from './AddOrEdit';
 
-export const StyledContainer = styled(Container)`min-width: 300px;`;
+const StyledContainer = styled(Container)`min-width: 300px;`;
 
-export const Add = compose(
+export const Edit = compose(
   withState('isCancelDialogOpen', 'showCancelDialog', false),
   withHandlers({
     cancel: ({ history }) => () => history.goBack(),
@@ -31,7 +39,6 @@ export const Add = compose(
   ({
     values,
     isSubmitting,
-    isValid,
     dirty,
     handleSubmit,
     handleReset,
@@ -57,16 +64,25 @@ export const Add = compose(
       <Header>
         <HeaderLeft>
           <Spacer size={15} />
-          <Title title={'Add Mission'} />
+          <AvatarSelector
+            formId="missionForm"
+            color={values.color}
+            name={values.firstName}
+            lastName={values.lastName}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+          <Spacer />
+          <Title title={'Edit Mission'} />
         </HeaderLeft>
         <HeaderRight>
           <Button
             form="missionForm"
             type="submit"
-            disabled={isSubmitting || !isValid || !dirty}
+            disabled={isSubmitting || !dirty}
             className="pt-intent-success pt-large"
           >
-            Create
+            Update
           </Button>
           <Spacer />
           <Button
@@ -87,7 +103,7 @@ export const Add = compose(
         </HeaderRight>
       </Header>
       <AddOrEdit
-        type="add"
+        type="edit"
         handleSubmit={handleSubmit}
         values={values}
         setFieldTouched={setFieldTouched}
@@ -98,7 +114,7 @@ export const Add = compose(
   ),
 );
 
-Add.propTypes = {
+Edit.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   isValid: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
@@ -107,17 +123,35 @@ Add.propTypes = {
   values: PropTypes.object.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
+  mision: PropTypes.object,
 };
 
-const actions = { addMission };
+const actions = { updateMission };
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(actions, dispatch),
   dispatch,
 });
+const mapStateToProps = (state, props) => {
+  const { match: { params: { id } = {} }, history } = props;
+  if (getMission(state, id) === undefined) {
+    history.push(getPathByName('notfound'));
+  }
+  return {
+    person: getMission(state, id),
+  };
+};
 
-const FormikAdd = ({ dispatch, ...props }) => (
+const FormikEdit = ({
+  updateMission,
+  mission = {},
+  history,
+  dispatch,
+  ...props
+}) => (
   <Formik
-    initialValues={defaultValues}
+    initialValues={{
+      ...mission,
+    }}
     validationSchema={getValidationSchema()}
     onSubmit={({
       name,
@@ -131,8 +165,8 @@ const FormikAdd = ({ dispatch, ...props }) => (
       endDate,
       workers,
       note,
+      _id,
     }) => {
-      const { addMission, history } = props;
       const newMission = {
         name,
         clientId,
@@ -145,17 +179,21 @@ const FormikAdd = ({ dispatch, ...props }) => (
         endDate,
         workers,
         note,
+        _id,
       };
-      addMission(newMission);
+      updateMission(newMission);
       history.goBack();
     }}
-    render={({ ...others }) => <Add {...props} {...others} />}
+    render={({ ...others }) => (
+      <Edit history={history} {...props} {...others} />
+    )}
   />
 );
 
-FormikAdd.propTypes = {
-  addMission: PropTypes.func.isRequired,
+FormikEdit.propTypes = {
+  updateMission: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  mission: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
 };
-export default connect(null, mapDispatchToProps)(FormikAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(FormikEdit);
