@@ -15,7 +15,7 @@ const fields = {
     required: true,
     component: InputField,
   },
-  client: {
+  clientId: {
     label: 'Client',
     component: CompaniesSelectField,
     required: true,

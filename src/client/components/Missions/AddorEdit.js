@@ -13,10 +13,10 @@ const MissionForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'name' 'client' 'partner' 'billedTarget' 'manager'
+  grid-template-areas: 'name' 'clientId' 'partner' 'billedTarget' 'manager'
     'allowWeekends' 'timesheetUnit' 'startDate' 'endDate' 'workers' 'note';
   @media (min-width: 700px) {
-    grid-template-areas: 'name name client' 'partner partner billedTarget'
+    grid-template-areas: 'name name clientId' 'partner partner billedTarget'
       'manager manager allowWeekends' 'timesheetUnit startDate endDate'
       'workers workers workers' 'note note note';
   }
@@ -46,7 +46,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('client')}
+        field={getField('clientId')}
         values={values}
         errors={errors}
         touched={touched}

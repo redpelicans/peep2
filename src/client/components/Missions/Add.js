@@ -127,7 +127,7 @@ const FormikAdd = ({ dispatch, ...props }) => (
     validationSchema={getValidationSchema()}
     onSubmit={({
       name,
-      client,
+      clientId,
       partner,
       billedTarget,
       manager,
@@ -141,7 +141,7 @@ const FormikAdd = ({ dispatch, ...props }) => (
       const { addMission, history } = props;
       const newMission = {
         name,
-        client,
+        clientId,
         partner,
         billedTarget,
         manager,
