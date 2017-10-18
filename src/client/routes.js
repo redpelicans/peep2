@@ -156,7 +156,7 @@ const routes = {
   },
   editMission: {
     path: '/missions/edit/:id',
-    exact: false,
+    exact: true,
     auth: true,
     component: EditMission,
   },

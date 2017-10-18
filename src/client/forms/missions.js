@@ -5,6 +5,7 @@ import {
   SelectField,
   AssigneesSelectField,
   CompaniesSelectField,
+  WorkerSelectField,
 } from '../fields/SelectField';
 import { DateField } from '../fields/DateField';
 import { MarkDownField } from '../fields/MarkDownField';
@@ -22,7 +23,7 @@ const fields = {
   },
   partner: {
     label: 'Partner',
-    component: InputField,
+    component: CompaniesSelectField,
   },
   billedTarget: {
     label: 'Billed Target',
@@ -34,7 +35,7 @@ const fields = {
   },
   manager: {
     label: 'Manager',
-    component: InputField,
+    component: WorkerSelectField,
     required: true,
   },
   workers: {

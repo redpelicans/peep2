@@ -133,6 +133,7 @@ const mapDispatchToProps = dispatch => ({
 });
 const mapStateToProps = (state, props) => {
   const { match: { params: { id } = {} }, history } = props;
+  console.log('getMission: ', getMission(state, id));
   if (getMission(state, id) === undefined) {
     history.push(getPathByName('notfound'));
   }
