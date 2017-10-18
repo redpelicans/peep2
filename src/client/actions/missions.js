@@ -1,4 +1,5 @@
 import { isEmpty } from 'ramda';
+import { getPeople } from '../selectors/people';
 
 export const LOAD_MISSIONS = 'EvtX:Server:missions:load';
 export const MISSIONS_LOADED = 'missions:loaded';
@@ -18,11 +19,9 @@ export const TYPES = {
   WORKER: 'worker',
 };
 
-// passer par selector
-
 export const loadMissions = () => (dispatch, getState) => {
-  const { people } = getState();
-  if (isEmpty(people.data)) {
+  const people = getPeople(getState());
+  if (isEmpty(people)) {
     dispatch({
       type: LOAD_MISSIONS,
       replyTo: MISSIONS_LOADED,

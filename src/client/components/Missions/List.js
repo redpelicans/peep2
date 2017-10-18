@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { isEmpty, indexOf, filter } from 'ramda';
+import { isEmpty, indexOf, filter, map } from 'ramda';
 import Preview from './Preview';
 import { EmptySearch } from '../widgets';
 import MasonryLayout from '../widgets/MasonryLayout';
@@ -22,7 +22,7 @@ const sizes = [
   { mq: '2535px', columns: 8, gutter: 10 },
 ];
 
-export const List = ({ missions, deleteMission, companies, ...params }) => (
+export const List = ({ missions, companies, people, deleteMission }) => (
   <StyledContainer>
     {isEmpty(missions) ? (
       <EmptySearch>
@@ -31,18 +31,25 @@ export const List = ({ missions, deleteMission, companies, ...params }) => (
       </EmptySearch>
     ) : (
       <MasonryLayout id="missions" sizes={sizes}>
-        {missions.map(mission => {
+        {map(mission => {
           const client = companies[mission.clientId];
+          const manager = people[mission.managerId];
+          const workers = map(workerId => people[workerId], mission.workerIds);
+          const workersFiltered = filter(
+            worker => worker !== undefined,
+            workers,
+          );
           return (
             <Preview
               key={mission._id}
               mission={mission}
+              manager={manager}
+              workers={workersFiltered}
               deleteMission={deleteMission}
               client={client}
-              {...params}
             />
           );
-        })}
+        }, missions)}
       </MasonryLayout>
     )}
   </StyledContainer>

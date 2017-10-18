@@ -97,7 +97,7 @@ const mapStateToProps = state => ({
   sort: getSort(state),
 });
 
-const actions = { deleteMission, sortMissionsList, filterMissionsList };
+const actions = { sortMissionsList, filterMissionsList, deleteMission };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
