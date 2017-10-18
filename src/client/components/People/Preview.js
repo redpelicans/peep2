@@ -13,10 +13,10 @@ import {
   CompanyLink,
   Actions,
   ModalConfirmation,
-  Spacer,
 } from '../widgets';
 import Avatar from '../Avatar';
-import { getPathByName } from '../../routes';
+import { getPathByName, getRouteAuthProps } from '../../routes';
+import { Auth } from '../../lib/kontrolo';
 
 export const TitleRow = styled.div`
   overflow: hidden;
@@ -83,17 +83,20 @@ export const Preview = ({
         </StyledInfos>
         {showActions && (
           <Actions>
-            <LinkButton
-              to={getPathByName('editPerson', _id)}
-              className="pt-small pt-button pt-intent-warning"
-              iconName="pt-icon-edit"
-            />
-            <Spacer size="5" />
-            <Button
-              className="pt-small pt-button"
-              iconName="pt-icon-trash"
-              onClick={() => showDialog()}
-            />
+            <Auth {...getRouteAuthProps('editNote')} context={{ company }}>
+              <LinkButton
+                to={getPathByName('editPerson', _id)}
+                className="pt-small pt-button pt-intent-warning"
+                iconName="pt-icon-edit"
+              />
+            </Auth>
+            <Auth {...getRouteAuthProps('deleteNote')} context={{ company }}>
+              <Button
+                className="pt-small pt-button pt-intent-danger"
+                iconName="pt-icon-trash"
+                onClick={() => showDialog()}
+              />
+            </Auth>
           </Actions>
         )}
       </TitleRow>

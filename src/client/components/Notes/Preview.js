@@ -12,6 +12,8 @@ import {
   ModalConfirmation,
   LinkButton,
 } from '../widgets';
+import { Auth } from '../../lib/kontrolo';
+import { getRouteAuthProps } from '../../routes';
 
 const StyledButton = styled(Button)`
   margin-right: 5px;
@@ -83,16 +85,20 @@ export const Preview = ({
     />
     {showActions && (
       <Actions>
-        <StyledLinkButton
-          to={getPathByName('editNote', note._id)}
-          className="pt-small pt-button pt-intent-warning"
-          iconName="pt-icon-edit"
-        />
-        <StyledButton
-          className="pt-small pt-button pt-intent-danger"
-          iconName="pt-icon-trash"
-          onClick={() => showDialog()}
-        />
+        <Auth {...getRouteAuthProps('editNote')} context={{ note }}>
+          <StyledLinkButton
+            to={getPathByName('editNote', note._id)}
+            className="pt-small pt-button pt-intent-warning"
+            iconName="pt-icon-edit"
+          />
+        </Auth>
+        <Auth {...getRouteAuthProps('deleteNote')} context={{ note }}>
+          <StyledButton
+            className="pt-small pt-button pt-intent-danger"
+            iconName="pt-icon-trash"
+            onClick={() => showDialog()}
+          />
+        </Auth>
       </Actions>
     )}
     <CardContent note={note} person={person} entity={entity} />

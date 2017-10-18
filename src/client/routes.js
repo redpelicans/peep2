@@ -14,6 +14,7 @@ import People from './components/People';
 import AddPeople from './components/People/Add';
 import Agenda from './components/Agenda';
 import Notes from './components/Notes';
+import Missions from './components/Missions';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
 import EditAgenda from './components/Agenda/Edit';
@@ -24,7 +25,11 @@ import EditPerson from './components/People/Edit';
 import EditNote from './components/Notes/Edit';
 import AddNotes from './components/Notes/Add';
 import NotFound from './components/NotFound';
-import { ADMIN_ROLE } from './utils/people';
+import { ADMIN_ROLE, isAdmin } from './utils/people';
+
+const NoteEditTest = ({ user, note = {} }) => {
+  return note.authorId === user._id || isAdmin(user);
+};
 
 const routes = {
   home: {
@@ -118,22 +123,31 @@ const routes = {
     exact: true,
     auth: true,
     component: Notes,
-    roles: [ADMIN_ROLE],
   },
   addNotes: {
     path: '/notes/add',
     exact: true,
     auth: true,
     component: AddNotes,
-    roles: [ADMIN_ROLE],
   },
   editNote: {
     path: '/note/edit/:id',
     exact: false,
     auth: true,
     component: EditNote,
-    roles: [ADMIN_ROLE],
+    test: NoteEditTest,
   },
+  deleteNote: {
+    test: NoteEditTest,
+  },
+  missions: {
+    path: '/missions',
+    exact: true,
+    auth: true,
+    component: Missions,
+  },
+  addMission: {},
+  editMission: {},
   login: {
     path: '/login',
     exact: true,
@@ -159,6 +173,13 @@ export const getPathByName = (name, param) => {
   const path = prop('path', getRouteByName(name));
   return param ? `${path.replace(':id', param)}` : path;
 };
-export const getRouteRoles = name => path([name, 'roles'], routes);
+export const getRouteProp = prop => name => path([name, prop], routes);
+export const getRouteRoles = getRouteProp('roles');
+export const getRouteTest = getRouteProp('test');
+export const getRouteAuthProps = name => ({
+  roles: getRouteRoles(name),
+  test: getRouteTest(name),
+});
+
 export const isAuthRequired = route => route && (route.auth || route.roles);
 export default exportedRoutes;

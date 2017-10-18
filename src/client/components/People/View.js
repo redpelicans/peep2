@@ -14,7 +14,7 @@ import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { deleteNote } from '../../actions/notes';
 import { deletePeople } from '../../actions/people';
 import { Auth } from '../../lib/kontrolo';
-import { getRouteRoles } from '../../routes';
+import { getRouteAuthProps } from '../../routes';
 
 import {
   Title,
@@ -275,7 +275,7 @@ const Person = ({
           <Title title={`${person.name}`} />
         </HeaderLeft>
         <HeaderRight>
-          <Auth roles={getRouteRoles('deletePerson')}>
+          <Auth {...getRouteAuthProps('deletePerson')} context={{ person }}>
             <Button
               iconName="pt-icon-trash"
               className="pt-button pt-large"
@@ -283,7 +283,7 @@ const Person = ({
             />
           </Auth>
           <Spacer />
-          <Auth roles={getRouteRoles('editPerson')}>
+          <Auth {...getRouteAuthProps('editPerson')} context={{ person }}>
             <LinkButton
               to={getPathByName('editPerson', id)}
               iconName="pt-icon-edit"
