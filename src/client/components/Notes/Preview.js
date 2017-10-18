@@ -5,15 +5,14 @@ import { withStateHandlers } from 'recompose';
 import Footer from './Footer';
 import { MarkdownConvertor } from '../widgets/Markdown';
 import { Button } from '@blueprintjs/core';
-import ModalNote from '../widgets/ModalNote';
 import {
+  LinkButton,
   PreviewContainer,
   Actions,
   ModalConfirmation,
-  LinkButton,
 } from '../widgets';
 import { Auth } from '../../lib/kontrolo';
-import { getRouteAuthProps } from '../../routes';
+import { getPathByName, getRouteAuthProps } from '../../routes';
 
 const StyledButton = styled(Button)`
   margin-right: 5px;
@@ -86,10 +85,10 @@ export const Preview = ({
     {showActions && (
       <Actions>
         <Auth {...getRouteAuthProps('editNote')} context={{ note }}>
-          <StyledButton
+          <StyledLinkButton
+            to={getPathByName('editNote', note._id)}
             className="pt-small pt-button pt-intent-warning"
             iconName="pt-icon-edit"
-            // onClick={() => showModal()}
           />
         </Auth>
         <Auth {...getRouteAuthProps('deleteNote')} context={{ note }}>

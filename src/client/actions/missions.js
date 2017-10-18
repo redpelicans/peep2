@@ -18,6 +18,8 @@ export const TYPES = {
   WORKER: 'worker',
 };
 
+// passer par selector
+
 export const loadMissions = () => (dispatch, getState) => {
   const { people } = getState();
   if (isEmpty(people.data)) {
@@ -36,20 +38,20 @@ export const addMission = mission => dispatch => {
   });
 };
 
-export const updateMission = mission => dispatch => {
-  dispatch({
+export const updateMission = mission => {
+  return {
     type: UPDATE_MISSION,
     payload: mission,
     replyTo: MISSION_UPDATED,
-  });
+  };
 };
 
-export const deleteMission = id => dispatch => {
-  dispatch({
+export const deleteMission = id => {
+  return {
     type: DELETE_MISSION,
     payload: { _id: id },
     replyTo: MISSION_DELETED,
-  });
+  };
 };
 
 export const sortMissionsList = sortBy => ({
