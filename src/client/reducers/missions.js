@@ -1,5 +1,9 @@
 import { compose, fromPairs, map } from 'ramda';
-import { MISSIONS_LOADED } from '../actions/missions';
+import {
+  MISSIONS_LOADED,
+  ADD_MISSION,
+  MISSION_ADDED,
+} from '../actions/missions';
 
 const make = mission => {
   const updatedMission = {
@@ -22,6 +26,17 @@ const missions = (state = initialState, action) => {
   switch (action.type) {
     case MISSIONS_LOADED:
       return { ...state, data: makeAll(action.payload) };
+    case ADD_MISSION:
+      return { ...state, pending_action: true };
+    case MISSION_ADDED:
+      return {
+        ...state,
+        pending_action: false,
+        data: {
+          ...state.data,
+          [action.payload._id]: make(action.payload),
+        },
+      };
     default:
       return state;
   }
