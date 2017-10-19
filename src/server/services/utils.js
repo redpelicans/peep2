@@ -42,7 +42,7 @@ export const validate = schema => ctx => {
 };
 
 export const checkUser = () => ctx => {
-  if (ctx.user) return Promise.resolve(ctx);
+  if (R.path(['locals', 'user'], ctx)) return Promise.resolve(ctx);
   return Promise.reject({ code: 403, error: 'Forbidden access' });
 };
 
@@ -54,8 +54,9 @@ export const emitEvent = name => ctx => {
 export const emitAddNoteEvent = () => ctx => {
   const { output: { note, entity } } = ctx;
   const name = 'note:added';
-  if (note) {
-    ctx.evtx.service('notes').emit(name, {
+  const service = ctx.evtx.service('notes');
+  if (note && service) {
+    service.emit(name, {
       ...ctx,
       message: { broadcastAll: true, replyTo: name },
       output: note,
@@ -66,8 +67,9 @@ export const emitAddNoteEvent = () => ctx => {
 
 export const emitNoteEvent = name => ctx => {
   const { output: { note } } = ctx;
-  if (note) {
-    ctx.evtx.service('notes').emit(name, {
+  const service = ctx.evtx.service('notes');
+  if (note && service) {
+    service('notes').emit(name, {
       ...ctx,
       message: { broadcastAll: true, replyTo: name },
       output: note,
@@ -80,8 +82,9 @@ export const emitNotesDeleted = () => ctx => {
   const { output: { _id } } = ctx;
   const name = 'notes:deleted';
   Note.loadAll({ entityId: _id, isDeleted: true }).then(notes => {
-    if (!notes.length) return;
-    ctx.evtx.service('notes').emit(name, {
+    const service = ctx.evtx.service('notes');
+    if (!notes.length || !service) return;
+    service.emit(name, {
       ...ctx,
       message: { broadcastAll: true, replyTo: name },
       output: R.pluck('_id', notes),
