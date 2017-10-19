@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { isEmpty, indexOf, filter, map } from 'ramda';
+import { isEmpty, filter, map } from 'ramda';
 import Preview from './Preview';
 import { EmptySearch } from '../widgets';
 import MasonryLayout from '../widgets/MasonryLayout';
@@ -34,7 +34,9 @@ export const List = ({ missions, companies, people, deleteMission }) => (
         {map(mission => {
           const client = companies[mission.clientId];
           const manager = people[mission.managerId];
-          const workers = map(workerId => people[workerId], mission.workerIds);
+          const workers = mission.workerIds
+            ? map(workerId => people[workerId], mission.workerIds)
+            : [];
           const workersFiltered = filter(
             worker => worker !== undefined,
             workers,
