@@ -4,7 +4,7 @@ import localStorage from 'mock-local-storage';
 import { socketIoMiddleWare } from '../../middlewares';
 import reducer from '../../reducers';
 import { configureStore } from '../utils';
-import { loginRequest, USER_LOGGED } from '../login';
+import { loginRequest, LOGIN_REQUEST, USER_LOGGED } from '../login';
 
 global.window = {};
 window.localStorage = global.localStorage;
@@ -28,10 +28,11 @@ describe('Action:login', () => {
       socketIoMiddleWare(socket.socketClient),
     ]);
     socket.on('action', action => {
-      socket.emit('action', {
-        type: action.replyTo,
-        payload: DATA2,
-      });
+      if (action.LOGIN_REQUEST)
+        socket.emit('action', {
+          type: action.replyTo,
+          payload: DATA2,
+        });
     });
     store.dispatch(loginRequest(DATA));
   });
