@@ -31,11 +31,21 @@ const addSchema = Yup.object().shape({
     .oneOf(['client', 'partner'])
     .required(),
   timesheetUnit: Yup.string()
-    .oneOf(['day', 'hours'])
+    .oneOf(['day', 'hour'])
     .required(),
   allowWeekends: Yup.bool(),
-  assigneesIds: Yup.array().of(new ObjectIdSchemaType()),
+  workerIds: Yup.array().of(new ObjectIdSchemaType()),
   note: Yup.string(),
+});
+
+const updateSchema = addSchema.concat(
+  Yup.object().shape({
+    _id: new ObjectIdSchemaType().required(),
+  }),
+);
+
+const deleteSchema = Yup.object().shape({
+  _id: new ObjectIdSchemaType().required(),
 });
 
 const inMaker = input => {
@@ -62,6 +72,32 @@ export const missions = {
       .then(loadOne)
       .then(createNote);
   },
+
+  update(mission) {
+    const newVersion = inMaker(mission);
+    newVersion.updatedAt = new Date();
+    const loadOne = ({ _id }) => Mission.loadOne(_id);
+    const update = nextVersion => previousVersion =>
+      Mission.collection
+        .updateOne(
+          { _id: previousVersion._id },
+          { $set: { ...nextVersion, updatedAt: new Date() } },
+        )
+        .then(() => ({ _id: previousVersion._id }));
+
+    return loadOne(newVersion)
+      .then(update(newVersion))
+      .then(loadOne);
+  },
+
+  del({ _id }) {
+    const deleteOne = () =>
+      Mission.collection.updateOne(
+        { _id },
+        { $set: { updatedAt: new Date(), isDeleted: true } },
+      );
+    return deleteOne().then(() => ({ _id }));
+  },
 };
 
 const outMaker = mission => {
@@ -77,6 +113,8 @@ const init = evtx => {
     .before({
       all: [checkUser()],
       add: [validate(addSchema)],
+      update: [validate(updateSchema)],
+      del: [validate(deleteSchema)],
     })
     .after({
       load: [formatOutput(outMakerMany)],
@@ -85,6 +123,8 @@ const init = evtx => {
         formatOutput(outMaker),
         emitEvent('mission:added'),
       ],
+      update: [formatOutput(outMaker), emitEvent('mission:updated')],
+      del: [emitEvent('note:deleted')],
     });
 
   loginfo('mission service registered');
