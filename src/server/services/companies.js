@@ -117,6 +117,7 @@ export const company = {
 };
 
 export const outMaker = company => {
+  if (!company) return;
   company.createdAt = company.createdAt || new Date(1967, 9, 1);
   return company;
 };

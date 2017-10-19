@@ -28,11 +28,12 @@ describe('Action:login', () => {
       socketIoMiddleWare(socket.socketClient),
     ]);
     socket.on('action', action => {
-      if (action.LOGIN_REQUEST)
+      if (action.type === 'auth:login') {
         socket.emit('action', {
           type: action.replyTo,
           payload: DATA2,
         });
+      }
     });
     store.dispatch(loginRequest(DATA));
   });

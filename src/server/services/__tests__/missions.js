@@ -5,7 +5,7 @@ import params from '../../../../params';
 import Mission from '../../models/missions';
 import evtX from 'evtx';
 import initMissions from '../missions';
-import { connect, close, drop } from '../../utils/tests';
+import { manageError, connect, close, drop } from '../../utils/tests';
 
 const evtx = evtX().configure(initMissions);
 const service = evtx.service('missions');
@@ -32,10 +32,6 @@ const data = {
 let db;
 beforeAll(() => connect(params.db).then(ctx => (db = ctx)));
 afterAll(close);
-
-const manageError = e => {
-  if (e) throw e.error || e;
-};
 
 describe('Missions service', () => {
   beforeEach(() => drop(db));
