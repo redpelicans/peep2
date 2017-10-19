@@ -15,8 +15,8 @@ import AddPeople from './components/People/Add';
 import Agenda from './components/Agenda';
 import Notes from './components/Notes';
 import Missions from './components/Missions';
-import AddMissions from './components/Missions/Add';
 import EditMission from './components/Missions/Edit';
+import AddMission from './components/Missions/Add';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
 import EditAgenda from './components/Agenda/Edit';
@@ -148,17 +148,23 @@ const routes = {
     auth: true,
     component: Missions,
   },
-  addMissions: {
+  addMission: {
     path: '/missions/add',
     exact: true,
     auth: true,
-    component: AddMissions,
+    component: AddMission,
   },
   editMission: {
-    path: '/missions/edit/:id',
-    exact: true,
+    path: '/mission/edit/:id',
+    exact: false,
     auth: true,
     component: EditMission,
+  },
+  mission: {
+    path: '/missions/:id',
+    exact: true,
+    auth: true,
+    component: Missions,
   },
   login: {
     path: '/login',

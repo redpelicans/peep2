@@ -3,23 +3,17 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import { getMission } from '../../selectors/missions';
 import { getPathByName } from '../../routes';
-import { getValidationSchema } from '../../forms/people';
-import { updateMission } from '../../actions/people';
+import { getValidationSchema } from '../../forms/missions';
+import { updateMission } from '../../actions/missions';
 import { Prompt } from 'react-router';
-import {
-  Spacer,
-  Title,
-  Container,
-  AvatarSelector,
-  ModalConfirmation,
-} from '../widgets';
+import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
 import AddOrEdit from './AddOrEdit';
 
 const StyledContainer = styled(Container)`min-width: 300px;`;
@@ -64,15 +58,6 @@ export const Edit = compose(
       <Header>
         <HeaderLeft>
           <Spacer size={15} />
-          <AvatarSelector
-            formId="missionForm"
-            color={values.color}
-            name={values.firstName}
-            lastName={values.lastName}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <Spacer />
           <Title title={'Edit Mission'} />
         </HeaderLeft>
         <HeaderRight>
@@ -133,52 +118,46 @@ const mapDispatchToProps = dispatch => ({
 });
 const mapStateToProps = (state, props) => {
   const { match: { params: { id } = {} }, history } = props;
-  console.log('getMission: ', getMission(state, id));
   if (getMission(state, id) === undefined) {
     history.push(getPathByName('notfound'));
   }
   return {
-    person: getMission(state, id),
+    mission: getMission(state, id),
   };
 };
 
-const FormikEdit = ({
-  updateMission,
-  mission = {},
-  history,
-  dispatch,
-  ...props
-}) => (
+const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => (
   <Formik
     initialValues={{
       ...mission,
+      allowWeekends: mission.allowWeekends === true ? 'allow' : 'doNotAllow',
     }}
     validationSchema={getValidationSchema()}
     onSubmit={({
       name,
       clientId,
-      partner,
+      partnerId,
       billedTarget,
-      manager,
+      managerId,
       allowWeekends,
       timesheetUnit,
       startDate,
       endDate,
-      workers,
+      workerIds,
       note,
       _id,
     }) => {
       const newMission = {
         name,
         clientId,
-        partner,
+        partnerId,
         billedTarget,
-        manager,
-        allowWeekends,
+        managerId,
+        allowWeekends: allowWeekends === 'allow' ? true : false,
         timesheetUnit,
         startDate,
         endDate,
-        workers,
+        workerIds: workerIds ? map(workerId => workerId.value, workerIds) : [],
         note,
         _id,
       };

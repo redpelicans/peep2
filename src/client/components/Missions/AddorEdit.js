@@ -13,12 +13,12 @@ const MissionForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'name' 'clientId' 'partner' 'billedTarget' 'manager'
-    'allowWeekends' 'timesheetUnit' 'startDate' 'endDate' 'workers' 'note';
+  grid-template-areas: 'name' 'clientId' 'partnerId' 'billedTarget' 'managerId'
+    'allowWeekends' 'timesheetUnit' 'startDate' 'endDate' 'workerIds' 'note';
   @media (min-width: 700px) {
-    grid-template-areas: 'name name clientId' 'partner partner billedTarget'
-      'manager manager allowWeekends' 'timesheetUnit startDate endDate'
-      'workers workers workers' 'note note note';
+    grid-template-areas: 'name name clientId' 'partnerId partnerId billedTarget'
+      'managerId managerId allowWeekends' 'timesheetUnit startDate endDate'
+      'workerIds workerIds workerIds' 'note note note';
   }
 `;
 
@@ -54,7 +54,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('partner')}
+        field={getField('partnerId')}
         values={values}
         errors={errors}
         touched={touched}
@@ -70,7 +70,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('manager')}
+        field={getField('managerId')}
         values={values}
         errors={errors}
         touched={touched}
@@ -78,7 +78,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('workers')}
+        field={getField('workerIds')}
         values={values}
         errors={errors}
         touched={touched}

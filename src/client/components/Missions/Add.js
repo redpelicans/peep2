@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
-import { compose } from 'ramda';
+import { compose, map } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
@@ -122,28 +122,28 @@ const FormikAdd = ({ dispatch, ...props }) => (
     onSubmit={({
       name,
       clientId,
-      partner,
+      partnerId,
       billedTarget,
-      manager,
+      managerId,
       allowWeekends,
       timesheetUnit,
       startDate,
       endDate,
-      workers,
+      workerIds,
       note,
     }) => {
       const { addMission, history } = props;
       const newMission = {
         name,
         clientId,
-        partner,
+        partnerId,
         billedTarget,
-        manager,
-        allowWeekends,
+        managerId,
+        allowWeekends: allowWeekends === 'allow' ? true : false,
         timesheetUnit,
         startDate,
         endDate,
-        workers,
+        workerIds: workerIds ? map(workerId => workerId.value, workerIds) : [],
         note,
       };
       addMission(newMission);

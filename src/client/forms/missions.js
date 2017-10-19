@@ -21,7 +21,7 @@ const fields = {
     component: CompaniesSelectField,
     required: true,
   },
-  partner: {
+  partnerId: {
     label: 'Partner',
     component: CompaniesSelectField,
   },
@@ -32,13 +32,14 @@ const fields = {
       { id: 'client', value: 'Client' },
     ],
     component: SelectField,
+    required: true,
   },
-  manager: {
+  managerId: {
     label: 'Manager',
     component: WorkerSelectField,
     required: true,
   },
-  workers: {
+  workerIds: {
     label: 'Workers',
     component: AssigneesSelectField,
   },
@@ -58,6 +59,7 @@ const fields = {
     label: 'Timesheet Unit',
     domainValues: [{ id: 'day', value: 'Day' }, { id: 'hour', value: 'Hour' }],
     component: SelectField,
+    required: true,
   },
   startDate: {
     label: 'Start Date',
