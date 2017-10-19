@@ -116,7 +116,7 @@ export const people = {
 
   add(input) {
     const noteContent = input.note;
-    const { user: author } = this;
+    const { locals: { user: author } } = this;
     const newPerson = inMaker(author, input);
     newPerson.createdAt = new Date();
     const insertOne = p =>
@@ -130,7 +130,7 @@ export const people = {
   },
 
   update(input) {
-    const { user: author } = this;
+    const { locals: { user: author } } = this;
     const newVersion = inMaker(author, input);
     const loadOne = ({ _id }) => Person.loadOne(_id);
     const update = nextVersion => previousVersion => {
@@ -146,7 +146,7 @@ export const people = {
   },
 
   del({ _id }) {
-    const { user: author } = this;
+    const { locals: { user: author } } = this;
     const deleteOne = () =>
       Person.collection.updateOne(
         { _id },

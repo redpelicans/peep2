@@ -72,7 +72,7 @@ export const company = {
   },
 
   update(input) {
-    const { user: author } = this;
+    const { locals: { user: author } } = this;
     const newVersion = inMaker(author, input);
     const loadOne = ({ _id }) => Company.loadOne(_id);
     const update = nextVersion => previousVersion => {
@@ -88,7 +88,7 @@ export const company = {
 
   add(input) {
     const noteContent = input.note;
-    const { user: author } = this;
+    const { locals: { user: author } } = this;
     const newCompany = inMaker(author, input);
     newCompany.createdAt = new Date();
     const insertOne = company =>
@@ -102,7 +102,7 @@ export const company = {
   },
 
   del({ _id }) {
-    const { user: author } = this;
+    const { locals: { user: author } } = this;
     const deleteOne = () =>
       Company.collection.updateOne(
         { _id },
