@@ -11,6 +11,7 @@ import Preview from '../Notes/Preview';
 import { getPeople } from '../../selectors/people';
 import { getEntityNotes } from '../../selectors/notes';
 import { getCompanies } from '../../selectors/companies';
+import { getMissions } from '../../selectors/missions';
 import ModalNote from '../widgets/ModalNote';
 import { addNote, updateNote } from '../../actions/notes';
 
@@ -114,15 +115,27 @@ const mapStateToProps = (state, { entityId }) => ({
   people: getPeople(state),
   companies: getCompanies(state),
   notes: getEntityNotes(entityId)(state),
+  missions: getMissions(state),
 });
 
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    findEntity: ({ companies, people }) => (entityType, entityId) => {
-      if (!people || !companies) return null;
-      const entity =
-        entityType === 'person' ? people[entityId] : companies[entityId];
+    findEntity: ({ companies, people, missions }) => (entityType, entityId) => {
+      if (!people || !companies || !missions) return null;
+      const getEntity = (entityType, entityId) => {
+        switch (entityType) {
+          case 'person':
+            return people[entityId];
+          case 'company':
+            return companies[entityId];
+          case 'mission':
+            return missions[entityId];
+          default:
+            return null;
+        }
+      };
+      const entity = getEntity(entityType, entityId);
       return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
     },
   }),
