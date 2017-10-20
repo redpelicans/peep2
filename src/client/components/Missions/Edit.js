@@ -14,7 +14,7 @@ import { getValidationSchema } from '../../forms/missions';
 import { updateMission } from '../../actions/missions';
 import { Prompt } from 'react-router';
 import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
-import AddOrEdit from './AddorEdit';
+import AddOrEdit from './AddOrEdit';
 
 const StyledContainer = styled(Container)`min-width: 300px;`;
 
