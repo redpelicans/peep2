@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStateHandlers } from 'recompose';
 import styled from 'styled-components';
-import { Colors, Button } from '@blueprintjs/core';
+import { Button } from '@blueprintjs/core';
 import { map, isEmpty } from 'ramda';
 import {
   LinkButton,
   PreviewContainer,
   NameLink,
+  CompanyLink,
   Actions,
   ModalConfirmation,
 } from '../widgets';
@@ -25,13 +26,15 @@ const StyledButton = styled(Button)`
   margin-top: 5px;
 `;
 
-export const Title = styled.p`
+export const MissionTitle = styled.p`
   overflow: hidden;
   text-transform: capitalize;
-  font-size: 1em;
   margin: 0;
-  margin-left: 15px;
-  color: ${Colors.LIGHT_GRAY5};
+`;
+
+const ClientTitle = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const TitleRow = styled.div`
@@ -49,7 +52,12 @@ export const Icons = styled.div`
 
 const PreviewLeft = styled.span`width: 20%;`;
 
-const PreviewCenter = styled.span`width: 50%;`;
+const PreviewCenter = styled.span`
+  width: 50%;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 10px;
+`;
 
 const PreviewRight = styled.span`
   width: 30%;
@@ -96,7 +104,7 @@ export const Preview = ({
         isOpen={isDeleteDialogOpen}
         title="Would you like to delete this mission?"
         reject={() => hideDialog()}
-        accept={() => deleteMission(_id)} // delete mission here -- TO BE CHANGED
+        accept={() => deleteMission(_id)}
       />
       <TitleRow>
         <PreviewLeft>
@@ -122,9 +130,16 @@ export const Preview = ({
             )}
         </PreviewLeft>
         <PreviewCenter>
-          <Title>
+          <MissionTitle>
             <NameLink to={getPathByName('mission', _id)}>{name}</NameLink>
-          </Title>
+          </MissionTitle>
+          {client && (
+            <ClientTitle>
+              <CompanyLink to={getPathByName('company', client._id)}>
+                {client.name}
+              </CompanyLink>
+            </ClientTitle>
+          )}
         </PreviewCenter>
         <PreviewRight>
           {!isEmpty(workers) &&

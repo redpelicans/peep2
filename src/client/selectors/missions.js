@@ -40,3 +40,14 @@ export const getVisibleMissions = createSelector(
   [getFilter, getSort, getMissions],
   (filter, sort, missions) => filterAndSort(filter, sort, missions),
 );
+
+export const getClient = (id, companies) => companies[id];
+export const getManager = (id, people) => people[id];
+export const getWorkersFromMission = (people, workerIds) =>
+  map(workerId => people[workerId], workerIds);
+export const filterUndefinedWorkers = workers =>
+  filter(worker => worker !== undefined, workers);
+export const getWorkers = (people, workerIds) =>
+  filterUndefinedWorkers(getWorkersFromMission(people, workerIds));
+
+export const getMission = (state, id) => state.missions.data[id];

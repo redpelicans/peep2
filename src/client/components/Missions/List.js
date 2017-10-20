@@ -5,6 +5,7 @@ import { isEmpty, indexOf, filter, map } from 'ramda';
 import Preview from './Preview';
 import { EmptySearch } from '../widgets';
 import MasonryLayout from '../widgets/MasonryLayout';
+import { getClient, getManager, getWorkers } from '../../selectors/missions';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -32,19 +33,16 @@ export const List = ({ missions, companies, people, deleteMission }) => (
     ) : (
       <MasonryLayout id="missions" sizes={sizes}>
         {map(mission => {
-          const client = companies[mission.clientId];
-          const manager = people[mission.managerId];
-          const workers = map(workerId => people[workerId], mission.workerIds);
-          const workersFiltered = filter(
-            worker => worker !== undefined,
-            workers,
-          );
+          const { _id, clientId, managerId, workerIds } = mission;
+          const client = getClient(clientId, companies);
+          const manager = getManager(managerId, people);
+          const workers = workerIds ? getWorkers(people, workerIds) : [];
           return (
             <Preview
-              key={mission._id}
+              key={_id}
               mission={mission}
               manager={manager}
-              workers={workersFiltered}
+              workers={workers}
               deleteMission={deleteMission}
               client={client}
             />
