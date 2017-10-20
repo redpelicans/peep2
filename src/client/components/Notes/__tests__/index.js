@@ -126,10 +126,6 @@ describe('CardContent component', () => {
 });
 
 describe('Footer component', () => {
-  it('Should render null', () => {
-    const wrapper = shallow(<Footer note={null} entity={{}} person={{}} />);
-    should(wrapper.find(StyledFooter)).have.length(0);
-  });
   it('Should not render null)', () => {
     const wrapper = shallow(<Footer note={{}} entity={{}} person={{}} />);
     should(wrapper.find(StyledFooter)).have.length(1);
