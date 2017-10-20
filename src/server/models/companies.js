@@ -14,6 +14,7 @@ export class Company {
 
   /* eslint-disable no-use-before-define */
   static bless(obj) {
+    if (!obj) return;
     switch (obj.type) {
       case 'client':
         return mongobless.bless.bind(Client)(obj);
@@ -35,10 +36,7 @@ export class Company {
 }
 
 @mongobless()
-export class Client extends Company {
-}
+export class Client extends Company {}
 
 @mongobless()
-export class Tenant extends Company {
-}
-
+export class Tenant extends Company {}

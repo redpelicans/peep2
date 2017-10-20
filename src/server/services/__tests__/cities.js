@@ -1,6 +1,7 @@
 import sinon from 'sinon';
 import { cities } from '../cities';
 import { Company } from '../../models';
+import { manageError } from '../../utils/tests';
 
 const data = {
   collections: {
@@ -13,18 +14,20 @@ const data = {
 };
 
 describe('Cities service', () => {
-  it('expect load', (done) => {
-    const companyStub = sinon.stub(Company, 'findAll').callsFake(() => Promise.resolve(data.collections.companies));
-    const end = (...params) => {
+  it('expect load', () => {
+    const companyStub = sinon
+      .stub(Company, 'findAll')
+      .callsFake(() => Promise.resolve(data.collections.companies));
+    const end = e => {
       companyStub.restore();
-      done(...params);
+      manageError(e);
     };
-    cities.load()
-      .then((c) => {
+    return cities
+      .load()
+      .then(c => {
         expect(c).toEqual(['C1', 'C2', 'Paris']);
         end();
       })
       .catch(end);
   });
 });
-

@@ -17,11 +17,13 @@ import {
 const loginfo = debug('peep:evtx');
 const SERVICE_NAME = 'events';
 
-const loadSchema = Yup.object().shape({
-  from: Yup.date(),
-  to: Yup.date(),
-  groupId: new ObjectIdSchemaType(),
-});
+const loadSchema = Yup.object()
+  .shape({
+    from: Yup.date(),
+    to: Yup.date(),
+    groupId: new ObjectIdSchemaType(),
+  })
+  .nullable();
 
 const addEventSchema = Yup.object().shape({
   from: Yup.date().required(),

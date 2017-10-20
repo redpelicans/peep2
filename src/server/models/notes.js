@@ -13,18 +13,25 @@ export default class Note {
   }
 
   static create(content, user, entity) {
-    if (!content) return Promise.resolve({ entity });
+    if (!content || !entity || !user) return Promise.resolve({ entity });
     const newNote = {
       entityId: entity._id,
       createdAt: new Date(),
       authorId: user._id,
       content,
     };
-    return Note.collection.insertOne(newNote).then(res => ({ entity, note: { ...newNote, _id: res.insertedId } }));
+    return Note.collection
+      .insertOne(newNote)
+      .then(res => ({ entity, note: { ...newNote, _id: res.insertedId } }));
   }
 
   static deleteForEntity(id) {
-    return Note.collection.updateMany({ entityId: id }, { $set: { updatedAt: new Date(), isDeleted: true } }).then(() => id);
+    return Note.collection
+      .updateMany(
+        { entityId: id },
+        { $set: { updatedAt: new Date(), isDeleted: true } },
+      )
+      .then(() => id);
   }
 
   static loadAllForEntity({ _id }) {

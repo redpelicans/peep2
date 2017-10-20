@@ -127,7 +127,7 @@ class Reactor {
       if (user.equals(targetUser)) return targetSocket.emit('action', action);
     };
     const pushEvent = (
-      { locals: { socket }, user, output: company, message: { replyTo } },
+      { locals: { socket, user }, output: company, message: { replyTo } },
       targetUser,
       targetSocket,
     ) => {
