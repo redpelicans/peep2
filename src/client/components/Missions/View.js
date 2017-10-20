@@ -47,18 +47,17 @@ const StyledGrid = styled.div`
   grid-row-gap: 20px;
   grid-template-areas: 'startdate' 'enddate' 'client' 'manager' 'workers'
     'notes';
-  @media (min-width: 600px) {
+  @media (min-width: 700px) {
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     grid-template-rows: auto auto;
     grid-template-areas: 'startdate enddate' 'client manager' 'workers notes';
   }
   @media (min-width: 900px) {
-    grid-template-columns: repeat(6, minmax(100px, 1fr));
+    grid-template-columns: repeat(4, minmax(100px, 1fr));
     grid-template-rows: auto auto;
-    grid-template-areas: 'startdate startdate none none enddate enddate'
-      'client client none none manager manager'
-      'workers workers workers workers workers workers'
-      'notes notes notes notes notes notes';
+    grid-template-areas: 'startdate startdate enddate enddate'
+      'client client manager manager' 'workers workers workers workers'
+      'notes notes notes notes';
   }
 `;
 
@@ -117,6 +116,10 @@ const StyledPreviewField = styled(PreviewField)`
   grid-area: ${props => props.name};
 `;
 
+const StyledClientWrapper = styled.div`position: relative;`;
+
+const StyledManagerWrapper = styled.div`position: absolute;`;
+
 const MissionInfos = ({
   id,
   client,
@@ -146,13 +149,13 @@ const MissionInfos = ({
           label="Client"
           value={
             <ArrayBlock>
-              <MasonryLayout id="client" sizes={sizes}>
+              <StyledClientWrapper>
                 <CompanyPreview
                   key={client._id}
                   company={client}
                   deleteCompany={deleteCompany}
                 />
-              </MasonryLayout>
+              </StyledClientWrapper>
             </ArrayBlock>
           }
         />
@@ -163,13 +166,13 @@ const MissionInfos = ({
           label="Manager"
           value={
             <ArrayBlock>
-              <MasonryLayout id="manager" sizes={sizes}>
+              <StyledManagerWrapper>
                 <PersonPreview
                   key={manager._id}
                   person={manager}
                   deletePeople={deletePeople}
                 />
-              </MasonryLayout>
+              </StyledManagerWrapper>
             </ArrayBlock>
           }
         />
@@ -278,7 +281,7 @@ const Mission = ({
           <Auth {...getRouteAuthProps('deleteMission')} context={{ mission }}>
             <Button
               iconName="pt-icon-trash"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-danger"
               onClick={() => showDialog()}
             />
           </Auth>
@@ -287,7 +290,7 @@ const Mission = ({
             <LinkButton
               to={getPathByName('editMission', id)}
               iconName="pt-icon-edit"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
         </HeaderRight>

@@ -28,6 +28,7 @@ const StyledButton = styled(Button)`
 
 export const MissionTitle = styled.p`
   overflow: hidden;
+  text-overflow: ellipsis;
   text-transform: capitalize;
   margin: 0;
 `;
@@ -88,15 +89,15 @@ export const Preview = ({
     >
       {showActions && (
         <Actions>
-          <StyledLinkButton
-            to={getPathByName('editMission', _id)}
-            className="pt-small pt-button pt-intent-warning"
-            iconName="pt-icon-edit"
-          />
           <StyledButton
             className="pt-small pt-button pt-intent-danger"
             iconName="pt-icon-trash"
             onClick={() => showDialog()}
+          />
+          <StyledLinkButton
+            to={getPathByName('editMission', _id)}
+            className="pt-small pt-button pt-intent-warning"
+            iconName="pt-icon-edit"
           />
         </Actions>
       )}
