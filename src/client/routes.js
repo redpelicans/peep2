@@ -8,23 +8,29 @@ import {
   reduce,
   toPairs,
 } from 'ramda';
+
 import Login from './components/Login';
 import Companies from './components/Companies';
 import People from './components/People';
-import AddPeople from './components/People/Add';
 import Agenda from './components/Agenda';
+import NotFound from './components/NotFound';
 import Notes from './components/Notes';
 import Missions from './components/Missions';
+
+import AddPeople from './components/People/Add';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
+import AddNotes from './components/Notes/Add';
+
 import EditAgenda from './components/Agenda/Edit';
-import PersonView from './components/People/View';
-import CompanyView from './components/Companies/View';
-import EditCompany from './components/Companies/Edit';
 import EditPerson from './components/People/Edit';
 import EditNote from './components/Notes/Edit';
-import AddNotes from './components/Notes/Add';
-import NotFound from './components/NotFound';
+import EditCompany from './components/Companies/Edit';
+
+import PersonView from './components/People/View';
+import CompanyView from './components/Companies/View';
+import MissionView from './components/Missions/View';
+
 import { ADMIN_ROLE, isAdmin } from './utils/people';
 
 const NoteEditTest = ({ user, note = {} }) => {
@@ -162,7 +168,7 @@ const routes = {
     path: '/missions/:id',
     exact: true,
     auth: true,
-    component: Missions, // TO BE CHANGED
+    component: MissionView,
   },
   login: {
     path: '/login',

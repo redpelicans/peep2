@@ -23,7 +23,7 @@ const makeAll = compose(fromPairs, map(c => [c._id, make(c)]));
 
 const initialState = {
   data: {},
-  sort: { by: 'name', order: 'asc' },
+  sort: { by: 'endDate', order: 'desc' },
   filter: '',
 };
 

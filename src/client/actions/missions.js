@@ -9,11 +9,8 @@ export const DELETE_MISSION = 'EvtX:Server:mission:del';
 export const MISSION_DELETED = 'mission:deleted';
 export const UPDATE_MISSION = 'EvtX:Server:mission:update';
 export const MISSION_UPDATED = 'mission:updated';
-export const SET_PREFERRED_MISSION = 'EvtX:Server:mission:setPreferred';
-export const CHECK_EMAIL = 'EvtX:Server:mission:checkEmailUniqueness';
-export const TOGGLE_PREFERRED_FILTER = 'toggle:preferred:people';
-export const FILTER_MISSIONS_LIST = 'filter:mission:list';
-export const SORT_MISSIONS_LIST = 'sort:people:list';
+export const FILTER_MISSIONS_LIST = 'filter:missions:list';
+export const SORT_MISSIONS_LIST = 'sort:missions:list';
 
 export const TYPES = {
   WORKER: 'worker',
