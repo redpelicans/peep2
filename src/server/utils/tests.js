@@ -21,3 +21,5 @@ export const load = (db, data) => {
 export const manageError = e => {
   if (e) throw e.error || e;
 };
+
+export const manageFail = done => e => done.fail(e.error || e);

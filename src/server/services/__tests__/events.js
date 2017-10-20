@@ -6,7 +6,13 @@ import initEvents from '../events';
 import { events } from '../events';
 import { Event } from '../../models';
 import params from '../../../../params';
-import { manageError, connect, close, drop } from '../../utils/tests';
+import {
+  manageFail,
+  manageError,
+  connect,
+  close,
+  drop,
+} from '../../utils/tests';
 
 const data = {
   collections: {
@@ -97,7 +103,7 @@ describe('Events service', () => {
       done();
     });
 
-    service.addEventGroup(newObj, { user }).catch(done.fail);
+    service.addEventGroup(newObj, { user }).catch(manageFail(done));
   });
 
   test('expect add', () => {
@@ -266,7 +272,7 @@ describe('Events service', () => {
           { user },
         ),
       )
-      .catch(done.fail);
+      .catch(manageFail(done));
   });
 
   test('expect delete', () => {

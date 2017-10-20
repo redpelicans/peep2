@@ -1,282 +1,247 @@
 import R from 'ramda';
 import sinon from 'sinon';
 import evtX from 'evtx';
+import { ObjectId } from 'mongobless';
 import { Person, Preference, Note } from '../../models';
-import initPeople, { people } from '../people';
+import initPeople from '../people';
+import initNotes from '../notes';
 import params from '../../../../params';
-import { connect, close, drop } from '../../utils/tests';
+import {
+  manageError,
+  manageFail,
+  connect,
+  close,
+  drop,
+} from '../../utils/tests';
 
-const evtx = evtX().configure(initPeople);
+const evtx = evtX()
+  .configure(initPeople)
+  .configure(initNotes);
 const service = evtx.service('people');
+const user = { _id: 0 };
+const PERSON = {
+  _id: new ObjectId(),
+  prefix: 'Mr',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  type: 'client',
+  email: 'email@email.fr',
+  jobType: 'designer',
+  companyId: new ObjectId(),
+  tags: ['A', 'B'],
+  phones: [{ label: 'phone1', number: 'number' }],
+  tags: ['T1', 'T2'],
+  skills: ['s1'],
+  roles: ['role1'],
+  avatar: { color: 'color' },
+  fullName() {
+    return 'fullName';
+  },
+};
 const data = {
   collections: {
-    preferences: [
-      {
-        personId: 0,
-        entityId: 2,
-        type: 'person',
-      },
-      {
-        personId: 0,
-        entityId: 3,
-        type: 'person',
-      },
-    ],
     people: [
-      {
-        _id: 1,
-        tags: ['A', 'B'],
-        _isPreferred: false,
-      },
-      {
-        _id: 2,
-        tags: ['B'],
-        _isPreferred: true,
-      },
-      {
-        _id: 3,
-        tags: ['B', 'C'],
-        _isPreferred: true,
-      },
+      { ...PERSON, _id: new ObjectId() },
+      { ...PERSON, _id: new ObjectId() },
     ],
   },
 };
 
 let db;
-beforeAll(() => connect(params.db).then(ctx => db = ctx));
+beforeAll(() => connect(params.db).then(ctx => (db = ctx)));
 afterAll(close);
 
 describe('People service', () => {
   beforeEach(() => drop(db));
-  it('expect load', (done) => {
-    const personStub = sinon.stub(Person, 'loadAll').callsFake(() => Promise.resolve(data.collections.people));
-    const preferenceStub = sinon.stub(Preference, 'findAll').callsFake(() => Promise.resolve(data.collections.preferences));
-    const end = (...params) => {
+  it('expect load', () => {
+    const personStub = sinon
+      .stub(Person, 'loadAll')
+      .callsFake(() => Promise.resolve(data.collections.people));
+    const end = e => {
       personStub.restore();
-      preferenceStub.restore();
-      done(...params);
+      manageError(e);
     };
-    people.load.bind({ user: { _id: 0 } })()
+    return service
+      .load({}, { user })
       .then(people => {
-        people.forEach(p => expect(p.preferred === p._isPreferred));
+        expect(people.map(n => n._id)).toEqual(
+          data.collections.people.map(n => n._id),
+        );
         end();
       })
       .catch(end);
   });
 
-  it('expect check email correctness', (done) => {
-    const p1 = { email: 'toto.titi@redpelicans.com' };
-    const p2 = { email: 'titi.toto@redpelicans.com' };
-    const user = { _id: 0 };
+  it('expect check email correctness', () => {
+    const p1 = { ...PERSON, email: 'toto.titi@redpelicans.com' };
+    const p2 = { ...PERSON, email: 'titi.toto@redpelicans.com' };
 
-    service.add(p1, { user })
+    return service
+      .add(p1, { user })
       .then(() => service.add(p2, { user }))
-      .then(() => service.checkEmailUniqueness(p1.email))
-      .then(({ ok }) => expect(ok).toBeFalse())
-      .then(() => service.checkEmailUniqueness('tutu.titi@redpelicans.com'))
-      .then(({ ok }) => expect(ok).toBeTrue())
-      .then(() => done())
-      .catch(done);
+      .then(() => service.checkEmailUniqueness(p1.email, { user }))
+      .then(({ ok }) => expect(ok).toBe(false))
+      .then(() =>
+        service.checkEmailUniqueness('tutu.titi@redpelicans.com', { user }),
+      )
+      .then(({ ok }) => expect(ok).toBe(true))
+      .catch(manageError);
   });
 
-  it('expect add', (done) => {
-    const newPerson = {
-      firstName: 'F1',
-      lastName: 'L1',
-      companyId: 1,
-      type: 'worker',
-      __trash__: 1,
-      avatar: {
-        color: 'color',
-        __trash__: 1,
-      },
-      tags: ['TAG1', 'TAG1', 'TAG2'],
-      roles: ['admin', 'other', 'other'],
-      note: 'note',
-      preferred: true,
-    };
-    const user = { _id: 0 };
-    const checkPerson = (person) => {
-      const res = {
-        firstName: 'F1',
-        lastName: 'L1',
-        name: 'F1 L1',
-        type: 'worker',
-        avatar: { color: 'color' },
-        roles: ['Admin', 'Other'],
-        tags: ['Tag1', 'Tag2'],
-        isNew: true,
-        preferred: true,
-      };
-      expect(R.omit(['_id', 'companyId', 'createdAt', 'constructor'], person)).toEqual(res);
+  it('expect add', () => {
+    const NOTE = 'note';
+    const checkPerson = person => {
+      expect(
+        R.omit(
+          ['_id', 'createdAt', 'constructor', 'authorId', 'name', 'isNew'],
+          person,
+        ),
+      ).toEqual(R.omit(['_id', 'fullName'], PERSON));
+      expect(person.authorId).toEqual(user._id);
       return person;
     };
-    const checkNote = (person) => Note.loadAllForEntity(person).then((notes) => {
-      expect(notes[0].entityId).toEqual(person._id);
-      expect(notes[0].content).toEqual(newPerson.note);
-      return person;
-    });
-    const checkPreferrence = (person) => Preference.loadAll('person', user).then((preferences) => {
-      expect(preferences[0].personId).toEqual(user._id);
-      expect(preferences[0].entityId).toEqual(person._id);
-      return person;
-    });
+    const checkNote = person =>
+      Note.loadAllForEntity(person).then(notes => {
+        expect(notes[0].entityId).toEqual(person._id);
+        expect(notes[0].content).toEqual(NOTE);
+        return person;
+      });
 
-    service.add(newPerson, { user })
+    const newPerson = { ...R.omit(['_id'], PERSON), note: NOTE };
+    return service
+      .add(newPerson, { user })
       .then(checkPerson)
       .then(checkNote)
-      .then(checkPreferrence)
-      .then(() => done())
-      .catch(done);
+      .catch(manageError);
   });
 
-  it('expect toggle preferred', (done) => {
-    const newPerson = { firstName: 'C1' };
-    const user = { _id: 0 };
-    const checkIsPreferred = (person) => {
-      expect(person.preferred).toBeTrue();
-      return Preference.loadAll('person', user).then((preferences) => {
-        expect(preferences[0].personId).toEqual(user._id);
-        expect(preferences[0].entityId).toEqual(person._id);
-        return person;
-      });
-    };
-    const checkIsNotPreferred = (person) => {
-      expect(person.preferred).toBeFalse();
-      return Preference.loadAll('person', user).then((preferences) => {
-        expect(preferences.length).toEqual(0);
-        return person;
-      });
-    };
+  it('expect add will emit note:added', done => {
+    const NOTE = 'note';
+    const newPerson = { ...R.omit(['_id'], PERSON), note: NOTE };
 
-    service.add(newPerson, { user })
-      .then(person => service.setPreferred({ _id: person._id, preferred: true }, { user }))
-      .then(checkIsPreferred)
-      .then(person => service.setPreferred({ _id: person._id, preferred: false }, { user }))
-      .then(checkIsNotPreferred)
-      .then(() => done())
-      .catch(done);
+    evtx.service('notes').once('note:added', ({ output }) => {
+      expect(output.content).toEqual(NOTE);
+      done();
+    });
+    service.add(newPerson, { user }).catch(manageFail);
   });
 
-  it('expect update', (done) => {
-    const newObj = {
-      firstName: 'F1',
-      lastName: 'L1',
-      companyId: 1,
-      type: 'worker',
-      avatar: {
-        color: 'color',
-      },
-      tags: ['TAG1', 'TAG1', 'TAG2'],
-      roles: ['admin', 'other', 'other'],
-      note: 'note',
-      preferred: true,
+  it('expect add will emit person:added', done => {
+    const NOTE = 'note';
+    const checkPerson = person => {
+      expect(
+        R.omit(
+          ['_id', 'createdAt', 'constructor', 'authorId', 'name', 'isNew'],
+          person,
+        ),
+      ).toEqual(R.omit(['_id', 'fullName'], PERSON));
+      expect(person.authorId).toEqual(user._id);
+      return true;
     };
+
+    const newPerson = { ...R.omit(['_id'], PERSON), note: NOTE };
+
+    evtx.service('people').once('person:added', ({ output }) => {
+      expect(checkPerson(output)).toEqual(true);
+      done();
+    });
+    service.add(newPerson, { user }).catch(manageFail);
+  });
+
+  it('expect update', () => {
     const updates = {
       firstName: 'F2',
-      companyId: 1,
       avatar: { color: 'color2' },
-      roles: ['Admin', 'Other', 'test'],
-      tags: ['Tag1', 'Tag2', 'test'],
-      preferred: false,
+      roles: ['Admin', 'Other', 'Test'],
+      tags: ['Tag1', 'Tag2', 'Test'],
     };
 
-    const user = { _id: 0 };
-    const checkObj = (obj) => {
-      const res = {
-        firstName: 'F2',
-        lastName: 'L1',
-        name: 'F2 L1',
-        type: 'worker',
-        avatar: { color: 'color2' },
-        roles: ['Admin', 'Other', 'Test'],
-        tags: ['Tag1', 'Tag2', 'Test'],
-        isUpdated: true,
-        preferred: false,
-      };
-      expect(R.omit(['_id', 'companyId', 'updatedAt', 'createdAt', 'constructor'], obj)).toEqual(res);
+    const checkObj = obj => {
+      expect(obj.firstName).toEqual(updates.firstName);
+      expect(obj.avatar).toEqual(updates.avatar);
+      expect(obj.roles).toEqual(updates.roles);
+      expect(obj.tags).toEqual(updates.tags);
       return obj;
     };
-    const checkPreferrence = (obj) => Preference.loadAll('person', user).then((preferences) => {
-      expect(preferences.length).toEqual(0);
-      return obj;
-    });
 
-    service
-      .add(newObj, { user })
-      .then(o => service.update({ _id: o._id, ...updates }, { user }))
+    const newPerson = { ...R.omit(['_id'], PERSON) };
+    return service
+      .add(newPerson, { user })
+      .then(o =>
+        service.update({ ...newPerson, _id: o._id, ...updates }, { user }),
+      )
       .then(checkObj)
-      .then(checkPreferrence)
-      .then(() => done())
-      .catch(done);
+      .catch(manageError);
   });
 
-  it('expect update tags', (done) => {
-    const newObj = {
-      firstName: 'F1',
-      lastName: 'L1',
-      type: 'worker',
-      tags: ['tag1', 'tag2'],
-      type: 'worker',
+  it('expect update will emit person:updated', done => {
+    const updates = {
+      firstName: 'F2',
+      avatar: { color: 'color2' },
+      roles: ['Admin', 'Other', 'Test'],
+      tags: ['Tag1', 'Tag2', 'Test'],
     };
 
-    const user = { _id: 0 };
-    const checkObj = (obj) => {
-      const res = {
-        firstName: 'F1',
-        lastName: 'L1',
-        name: 'F1 L1',
-        type: 'worker',
-        tags: ['Tag11', 'Tag2', 'Tag3'],
-        isUpdated: true,
-        preferred: false,
-      };
-      expect(R.omit(['_id', 'companyId', 'updatedAt', 'createdAt', 'constructor'], obj)).toEqual(res);
-      return obj;
+    const checkObj = obj => {
+      expect(obj.firstName).toEqual(updates.firstName);
+      expect(obj.avatar).toEqual(updates.avatar);
+      expect(obj.roles).toEqual(updates.roles);
+      expect(obj.tags).toEqual(updates.tags);
+      return true;
     };
 
+    const newPerson = { ...R.omit(['_id'], PERSON) };
+
+    evtx.service('people').once('person:updated', ({ output }) => {
+      expect(checkObj(output)).toEqual(true);
+      done();
+    });
     service
-      .add(newObj, { user })
-      .then(o => service.update({ ...o, tags: ['tag11', 'tag3', 'tag2'] }, { user }))
-      .then(checkObj)
-      .then(() => done())
-      .catch(done);
+      .add(newPerson, { user })
+      .then(o =>
+        service.update({ ...newPerson, _id: o._id, ...updates }, { user }),
+      )
+      .catch(manageFail);
   });
 
+  it('expect delete', () => {
+    const checkObj = ({ _id }) =>
+      Person.findOne({ _id }).then(p => {
+        expect(p.isDeleted).toBe(true);
+        return { _id };
+      });
+    const checkNote = ({ _id }) =>
+      Note.loadAllForEntity({ _id }).then(notes => {
+        expect(notes.length).toEqual(0);
+        return { _id };
+      });
 
-  it('expect delete', (done) => {
-    const newObj = {
-      firstName: 'F1',
-      lastName: 'L1',
-      companyId: 1,
-      type: 'worker',
-      avatar: { color: 'color' },
-      tags: ['TAG1', 'TAG1', 'TAG2'],
-      roles: ['admin', 'other', 'other'],
-      note: 'note',
-      preferred: true,
-    };
-
-    const user = { _id: 0 };
-    const checkObj = (id) => Person.findOne({ _id: id }).then((p) => {
-      expect(p.isDeleted).toBeTrue();
-      return p._id;
-    });
-    const checkPreferrence = (id) => Preference.loadAll('person', user).then((preferences) => {
-      expect(preferences.length).toEqual(0);
-      return id;
-    });
-    const checkNote = (id) => Note.loadAllForEntity({ _id: id }).then((notes) => {
-      expect(notes.length).toEqual(0);
-      return id;
-    });
-
-    service.add(newObj, { user })
-      .then(({ _id }) => service.del(_id, { user }))
+    const newPerson = R.omit(['_id'], PERSON);
+    return service
+      .add(newPerson, { user })
+      .then(({ _id }) => service.del({ _id }, { user }))
       .then(checkObj)
-      .then(checkPreferrence)
       .then(checkNote)
-      .then(() => done())
-      .catch(done);
+      .catch(manageError);
+  });
+
+  it('expect delete will emit person:deleted', done => {
+    const checkObj = ({ _id }) => {
+      return Person.findOne({ _id: ObjectId(_id) }).then(p => {
+        expect(p);
+        expect(p.isDeleted).toBe(true);
+        return true;
+      });
+    };
+    const newPerson = R.omit(['_id'], PERSON);
+    evtx.service('people').once('person:deleted', ({ output }) => {
+      expect(checkObj(output)).resolves.toEqual(true);
+      done();
+    });
+
+    service
+      .add(newPerson, { user })
+      .then(({ _id }) => service.del({ _id }, { user }))
+      .catch(manageFail);
   });
 });

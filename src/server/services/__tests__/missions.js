@@ -5,7 +5,13 @@ import params from '../../../../params';
 import Mission from '../../models/missions';
 import evtX from 'evtx';
 import initMissions from '../missions';
-import { manageError, connect, close, drop } from '../../utils/tests';
+import {
+  manageFail,
+  manageError,
+  connect,
+  close,
+  drop,
+} from '../../utils/tests';
 
 const evtx = evtX().configure(initMissions);
 const service = evtx.service('missions');
@@ -106,7 +112,7 @@ describe('Missions service', () => {
       done();
     });
 
-    service.add(newObj, { user }).catch(done.fail);
+    service.add(newObj, { user }).catch(manageFail(done));
   });
 
   test('expect update', () => {
@@ -185,7 +191,7 @@ describe('Missions service', () => {
     service
       .add(newObj, { user })
       .then(o => service.update({ _id: o._id, ...updates }, { user }))
-      .catch(done.fail);
+      .catch(manageFail(done));
   });
 
   test('expect delete', () => {
