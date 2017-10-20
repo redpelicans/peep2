@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { map, isEmpty } from 'ramda';
 import { withHandlers, compose } from 'recompose';
 import styled from 'styled-components';
@@ -9,6 +10,8 @@ import Preview from '../Notes/Preview';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { getEntityNotes } from '../../selectors/notes';
+import { getMissions } from '../../selectors/missions';
+import { deleteNote } from '../../actions/notes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -26,7 +29,14 @@ const StyledWrapper = styled.div`
 
 const StyledLabel = styled.span`margin-bottom: 10px;`;
 
-const NotesView = ({ findEntity, notes, people, entityType, entityId }) => {
+const NotesView = ({
+  findEntity,
+  notes,
+  people,
+  entityType,
+  entityId,
+  deleteNote,
+}) => {
   if (notes === null || isEmpty(notes)) return null;
   return (
     <StyledWrapper>
@@ -39,6 +49,7 @@ const NotesView = ({ findEntity, notes, people, entityType, entityId }) => {
               note={note}
               person={people[note.authorId]}
               entity={findEntity(entityType, entityId)}
+              deleteNote={deleteNote}
             />
           ),
           notes,
@@ -55,21 +66,37 @@ NotesView.propTypes = {
   entityId: PropTypes.string,
   entityType: PropTypes.string,
   findEntity: PropTypes.func.isRequired,
+  deleteNote: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { entityId }) => ({
   notes: getEntityNotes(entityId)(state),
   people: getPeople(state),
+  missions: getMissions(state),
   companies: getCompanies(state),
 });
 
+const actions = { deleteNote };
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+
 const enhance = compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    findEntity: ({ companies, people }) => (entityType, entityId) => {
-      if (!people || !companies) return null;
-      const entity =
-        entityType === 'person' ? people[entityId] : companies[entityId];
+    findEntity: ({ companies, people, missions }) => (entityType, entityId) => {
+      if (!people || !companies || !missions) return null;
+      const getEntity = (entityType, entityId) => {
+        switch (entityType) {
+          case 'person':
+            return people[entityId];
+          case 'company':
+            return companies[entityId];
+          case 'mission':
+            return missions[entityId];
+          default:
+            return null;
+        }
+      };
+      const entity = getEntity(entityType, entityId);
       return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
     },
   }),
