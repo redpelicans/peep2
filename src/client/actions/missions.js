@@ -3,11 +3,11 @@ import { getPeople } from '../selectors/people';
 
 export const LOAD_MISSIONS = 'EvtX:Server:missions:load';
 export const MISSIONS_LOADED = 'missions:loaded';
-export const ADD_MISSION = 'EvtX:Server:mission:add';
+export const ADD_MISSION = 'EvtX:Server:missions:add';
 export const MISSION_ADDED = 'mission:added';
-export const DELETE_MISSION = 'EvtX:Server:mission:del';
+export const DELETE_MISSION = 'EvtX:Server:missions:del';
 export const MISSION_DELETED = 'mission:deleted';
-export const UPDATE_MISSION = 'EvtX:Server:mission:update';
+export const UPDATE_MISSION = 'EvtX:Server:missions:update';
 export const MISSION_UPDATED = 'mission:updated';
 export const FILTER_MISSIONS_LIST = 'filter:missions:list';
 export const SORT_MISSIONS_LIST = 'sort:missions:list';

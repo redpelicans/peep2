@@ -79,22 +79,23 @@ const AddOrEditForm = ({
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
-      {values.entityType !== 'none' && (
-        <StyledFormField
-          field={{
-            ...getField('entityId'),
-            label: values.entityType,
-            component: getEntityIdComponent(values.entityType),
-            required: true,
-          }}
-          values={values}
-          errors={errors}
-          touched={touched}
-          disabled={values.entityType === 'none' ? true : false}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
-        />
-      )}
+      {values.entityType &&
+        values.entityType !== 'none' && (
+          <StyledFormField
+            field={{
+              ...getField('entityId'),
+              label: values.entityType,
+              component: getEntityIdComponent(values.entityType),
+              required: true,
+            }}
+            values={values}
+            errors={errors}
+            touched={touched}
+            disabled={values.entityType === 'none' ? true : false}
+            setFieldTouched={setFieldTouched}
+            setFieldValue={setFieldValue}
+          />
+        )}
     </CompagnyForm>
   );
 };

@@ -5,13 +5,14 @@ import Person from './models/people';
 const loginfo = debug('peep:reactor');
 
 const getUser = ctx => {
-  const { user, message: { token } } = ctx;
+  const { locals: { user } = {}, message: { token } } = ctx;
   if (user) return Promise.resolve(ctx);
   if (!token) return Promise.resolve(ctx);
   const { secretKey } = ctx.evtx.globals;
   return Person.getFromToken(token, secretKey).then(person => ({
     ...ctx,
-    user: person,
+    // user: person,
+    locals: { ...ctx.locals, user: person },
   }));
 };
 
@@ -59,6 +60,7 @@ class Reactor {
     this.initCompanies();
     this.initPeople();
     this.initNotes();
+    this.initMissions();
     this.initWorkersEvents();
   }
 
@@ -116,7 +118,7 @@ class Reactor {
   initCompanies() {
     const { evtx } = this;
     const pushPreferredEvent = (
-      { locals: { socket }, user, output: company, message: { replyTo } },
+      { locals: { socket, user }, output: company, message: { replyTo } },
       targetUser,
       targetSocket,
     ) => {
@@ -152,7 +154,7 @@ class Reactor {
   initPeople() {
     const { evtx } = this;
     const pushEvent = (
-      { locals: { socket }, user, output: person, message: { replyTo } },
+      { locals: { socket, user }, output: person, message: { replyTo } },
       targetUser,
       targetSocket,
     ) => {
@@ -171,6 +173,26 @@ class Reactor {
     evtx.service('people').on('person:added', this.broadcast(pushEvent));
     evtx.service('people').on('person:updated', this.broadcast(pushEvent));
     evtx.service('people').on('person:deleted', this.broadcast(pushEvent));
+  }
+
+  initMissions() {
+    const { evtx } = this;
+    const pushEvent = (
+      {
+        locals: { socket },
+        output: mission,
+        message: { broadcastAll, replyTo },
+      },
+      targetUser,
+      targetSocket,
+    ) => {
+      const action = makeOutput(mission, replyTo);
+      if (!broadcastAll && targetSocket === socket) return;
+      targetSocket.emit('action', action);
+    };
+    evtx.service('missions').on('mission:added', this.broadcast(pushEvent));
+    evtx.service('missions').on('mission:updated', this.broadcast(pushEvent));
+    evtx.service('missions').on('mission:deleted', this.broadcast(pushEvent));
   }
 
   initNotes() {

@@ -22,7 +22,7 @@ const addSchema = Yup.object().shape({
     .oneOf(['person', 'company', 'mission'])
     .required(),
   dueDate: Yup.date(),
-  //assigneesIds: Yup.array.of(new ObjectIdSchemaType()),
+  assigneesIds: Yup.array().of(new ObjectIdSchemaType()),
 });
 
 const updateSchema = addSchema.concat(
@@ -58,7 +58,7 @@ export const notes = {
 
   add(note) {
     const newNote = inMaker(note);
-    newNote.authorId = this.user._id;
+    newNote.authorId = this.locals.user._id;
     newNote.createdAt = new Date();
     const loadOne = id => Note.loadOne(id);
     const insertOne = p =>
@@ -68,7 +68,7 @@ export const notes = {
 
   update(note) {
     const newVersion = inMaker(note);
-    newVersion.authorId = this.user._id;
+    newVersion.authorId = this.locals.user._id;
     newVersion.updatedAt = new Date();
     const loadOne = ({ _id }) => Note.loadOne(_id);
     const update = nextVersion => previousVersion =>

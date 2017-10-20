@@ -35,6 +35,7 @@ const filterAndSort = (filter, sort, missions) =>
 export const getFilter = state => state.missions.filter;
 export const getSort = state => state.missions.sort;
 export const getMissions = state => state.missions.data;
+export const getMission = (state, id) => state.missions.data[id];
 
 export const getVisibleMissions = createSelector(
   [getFilter, getSort, getMissions],
@@ -49,5 +50,3 @@ export const filterUndefinedWorkers = workers =>
   filter(worker => worker !== undefined, workers);
 export const getWorkers = (people, workerIds) =>
   filterUndefinedWorkers(getWorkersFromMission(people, workerIds));
-
-export const getMission = (state, id) => state.missions.data[id];

@@ -8,11 +8,13 @@ const loginfo = debug('peep:evtx');
 const SERVICE_NAME = 'auth';
 const TOKENINFO = 'https://www.googleapis.com/oauth2/v3/tokeninfo';
 
-const loadUser = ({ email }) => Person.loadByEmail(email).then((user) => {
-  if (!user) throw new Error(`Unknown email: ${email}`);
-  if (!user.hasSomeRoles(['admin', 'access'])) throw new Error(`Unauthorized email: ${email}`);
-  return user;
-});
+const loadUser = ({ email }) =>
+  Person.loadByEmail(email).then(user => {
+    if (!user) throw new Error('Wrong user');
+    if (!user.hasSomeRoles(['admin', 'access']))
+      throw new Error(`Unauthorized email: ${email}`);
+    return user;
+  });
 
 const getToken = (user, secretKey, expirationDate) => {
   const claims = {
@@ -26,23 +28,28 @@ const getToken = (user, secretKey, expirationDate) => {
 
 const checkGoogleUser = (token, { clientId }) => {
   const promise = new Promise((resolve, reject) => {
-    request({
-      method: 'GET',
-      uri: `${TOKENINFO}?id_token=${token}`,
-      json: true,
-      timeout: 5000,
-    }, (error, response, body) => {
-      if (error || response.statusCode !== 200) return reject(new Error(error));
-      if (body.aud !== clientId) return reject(new Error('Wrong Google token_id!'));
-      return resolve(body);
-    });
+    request(
+      {
+        method: 'GET',
+        uri: `${TOKENINFO}?id_token=${token}`,
+        json: true,
+        timeout: 5000,
+      },
+      (error, response, body) => {
+        if (error || response.statusCode !== 200)
+          return reject(new Error(error));
+        if (body.aud !== clientId)
+          return reject(new Error('Wrong Google token_id!'));
+        return resolve(body);
+      },
+    );
   });
   return promise;
 };
 
 export const auth = {
   checkToken() {
-    const { user, locals: { socket }, message: { token } } = this;
+    const { locals: { user, socket }, message: { token } } = this;
     if (!token) return Promise.resolve({});
     if (user) {
       this.emit('auth:login', { user, socket });
@@ -56,8 +63,10 @@ export const auth = {
     const { secretKey, sessionDuration, google: googleConfig } = this.globals;
     return checkGoogleUser(idToken, googleConfig)
       .then(loadUser)
-      .then((user) => {
-        const expires = moment().add(sessionDuration || 8, 'hours').toDate();
+      .then(user => {
+        const expires = moment()
+          .add(sessionDuration || 8, 'hours')
+          .toDate();
         const token = getToken(user, secretKey, expires);
         const { socket } = this.locals;
         this.emit('auth:login', { user, socket });
@@ -66,14 +75,13 @@ export const auth = {
   },
 
   logout() {
-    const { user } = this;
-    const { socket } = this.locals;
+    const { socket, user } = this.locals;
     this.emit('auth:logout', { user, socket });
     return Promise.resolve();
   },
 };
 
-const init = (evtx) => {
+const init = evtx => {
   evtx.use(SERVICE_NAME, auth);
   loginfo('auth service registered');
 };

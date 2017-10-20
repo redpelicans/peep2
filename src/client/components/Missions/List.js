@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { isEmpty, indexOf, filter, map } from 'ramda';
+import { isEmpty, map } from 'ramda';
 import Preview from './Preview';
 import { EmptySearch } from '../widgets';
 import MasonryLayout from '../widgets/MasonryLayout';
