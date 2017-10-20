@@ -199,7 +199,7 @@ const Company = ({
           <Auth {...getRouteAuthProps('deleteCompany')} context={{ company }}>
             <Button
               iconName="pt-icon-trash"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-danger"
               onClick={() => showDialog()}
             />
           </Auth>
@@ -208,7 +208,7 @@ const Company = ({
             <LinkButton
               to={getPathByName('editCompany', id)}
               iconName="pt-icon-edit"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
         </HeaderRight>

@@ -70,18 +70,18 @@ export const Preview = ({
     >
       {showActions && (
         <Actions>
-          <Auth {...getRouteAuthProps('editCompany')} context={{ company }}>
-            <StyledLinkButton
-              to={getPathByName('editCompany', _id)}
-              className="pt-small pt-button pt-intent-warning"
-              iconName="pt-icon-edit"
-            />
-          </Auth>
           <Auth {...getRouteAuthProps('deleteCompany')} context={{ company }}>
             <StyledButton
               className="pt-small pt-button pt-intent-danger"
               iconName="pt-icon-trash"
               onClick={() => showDialog()}
+            />
+          </Auth>
+          <Auth {...getRouteAuthProps('editCompany')} context={{ company }}>
+            <StyledLinkButton
+              to={getPathByName('editCompany', _id)}
+              className="pt-small pt-button pt-intent-warning"
+              iconName="pt-icon-edit"
             />
           </Auth>
         </Actions>

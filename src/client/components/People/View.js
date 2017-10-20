@@ -318,7 +318,7 @@ const Person = ({
           <Auth {...getRouteAuthProps('deletePerson')} context={{ person }}>
             <Button
               iconName="pt-icon-trash"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-danger"
               onClick={() => showDialog()}
             />
           </Auth>
@@ -327,7 +327,7 @@ const Person = ({
             <LinkButton
               to={getPathByName('editPerson', id)}
               iconName="pt-icon-edit"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
         </HeaderRight>
