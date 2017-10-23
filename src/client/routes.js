@@ -122,12 +122,14 @@ const routes = {
     exact: true,
     auth: true,
     component: Notes,
+    roles: [ADMIN_ROLE],
   },
-  addNotes: {
+  addNote: {
     path: '/notes/add',
     exact: true,
     auth: true,
     component: AddNotes,
+    roles: [ADMIN_ROLE],
   },
   editNote: {
     path: '/note/edit/:id',
@@ -144,24 +146,28 @@ const routes = {
     exact: true,
     auth: true,
     component: Missions,
+    roles: [ADMIN_ROLE],
   },
   addMission: {
     path: '/missions/add',
     exact: true,
     auth: true,
     component: AddMission,
+    roles: [ADMIN_ROLE],
   },
   editMission: {
     path: '/mission/edit/:id',
     exact: true,
     auth: true,
     component: EditMission,
+    roles: [ADMIN_ROLE],
   },
   mission: {
     path: '/missions/:id',
     exact: true,
     auth: true,
     component: MissionView,
+    roles: [ADMIN_ROLE],
   },
   login: {
     path: '/login',

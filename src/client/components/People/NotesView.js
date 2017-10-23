@@ -14,6 +14,8 @@ import { getCompanies } from '../../selectors/companies';
 import { getMissions } from '../../selectors/missions';
 import ModalNote from '../widgets/ModalNote';
 import { addNote, updateNote } from '../../actions/notes';
+import { Auth } from '../../lib/kontrolo';
+import { getRouteAuthProps } from '../../routes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -68,11 +70,13 @@ const NotesView = ({
       />
       <TitleContainer>
         <span>Notes</span>
-        <StyledButton
-          className="pt-small pt-button"
-          iconName="pt-icon-plus"
-          onClick={() => showModal()}
-        />
+        <Auth {...getRouteAuthProps('addNote')}>
+          <StyledButton
+            className="pt-small pt-button"
+            iconName="pt-icon-plus"
+            onClick={() => showModal()}
+          />
+        </Auth>
       </TitleContainer>
       <MasonryLayout id="notes" sizes={sizes}>
         {map(
