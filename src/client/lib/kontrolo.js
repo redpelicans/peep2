@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, identity, filter, reduce } from 'ramda';
+import { is, compose, identity, filter, reduce } from 'ramda';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -87,6 +87,9 @@ export class Auth extends React.Component {
 
   render() {
     const { children } = this.props;
+    const { user } = this.context;
+    const isAuthorized = this.isAuthorized();
+    if (is(Function, children)) return children({ user, isAuthorized });
     if (!this.isAuthorized()) return null;
     return React.Children.only(children);
   }
@@ -99,7 +102,7 @@ Auth.contextTypes = {
 };
 
 Auth.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
   redirect: PropTypes.bool,
   roles: PropTypes.array,
   test: PropTypes.func,

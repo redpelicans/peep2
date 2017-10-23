@@ -1,4 +1,5 @@
 import Yup from 'yup';
+import { find, prop } from 'ramda';
 import {
   getDefaultValues,
   getOneField,
@@ -52,6 +53,9 @@ const fields = {
 
 export const defaultValues = getDefaultValues(fields);
 export const getField = getOneField(fields);
+export const getLabelFromValueDomain = (field = {}, x) =>
+  prop('value', find(({ id }) => id === x, field.domainValues || []));
+
 export const getValidationSchema = () =>
   Yup.object().shape(getOneValidationSchema(fields));
 export default getAllFields(fields);

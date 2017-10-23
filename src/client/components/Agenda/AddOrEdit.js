@@ -4,10 +4,12 @@ import { compose, sum, pluck } from 'ramda';
 import styled from 'styled-components';
 import { freeEventsFromPeriod } from '../../utils/events';
 import PeriodPicker from './PeriodPicker';
-import { getField } from '../../forms/events';
+import { getField, getLabelFromValueDomain } from '../../forms/events';
 import { FormField } from '../../fields';
 import WorkerCalendar from './Calendar/Worker';
 import { ViewField } from '../widgets';
+import { Auth } from '../../lib/kontrolo';
+import { ADMIN_ROLE } from '../../utils/people';
 
 const StyledForm = styled.div`
   display: flex;
@@ -128,15 +130,32 @@ const AddOrEditForm = ({
           setFieldTouched={setFieldTouched}
         />
 
-        <StyledFormField
-          field={getField('status')}
-          values={values}
-          errors={errors}
-          touched={touched}
-          type="text"
-          setFieldValue={setFieldValue}
-          setFieldTouched={setFieldTouched}
-        />
+        <Auth roles={[ADMIN_ROLE]}>
+          {({ isAuthorized }) => {
+            if (isAuthorized)
+              return (
+                <StyledFormField
+                  field={getField('status')}
+                  values={values}
+                  errors={errors}
+                  touched={touched}
+                  type="text"
+                  setFieldValue={setFieldValue}
+                  setFieldTouched={setFieldTouched}
+                />
+              );
+            return (
+              <StyledViewField
+                name="status"
+                label="Status"
+                value={getLabelFromValueDomain(
+                  getField('status'),
+                  values['status'],
+                )}
+              />
+            );
+          }}
+        </Auth>
         <VSpacer />
         <StyledFormField
           field={getField('description')}
