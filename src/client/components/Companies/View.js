@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { map } from 'ramda';
+import { map, isEmpty } from 'ramda';
 import { compose, withStateHandlers } from 'recompose';
 import { Colors, Button } from '@blueprintjs/core';
 import Avatar from '../Avatar';
@@ -19,6 +19,7 @@ import {
   Dates,
   ModalConfirmation,
 } from '../widgets';
+import { PreviewField } from '../widgets/ViewField';
 import Preview from '../People/Preview';
 import { deleteCompany } from '../../actions/companies';
 import { deletePeople, onTagClick } from '../../actions/people';
@@ -35,17 +36,20 @@ const StyledGrid = styled.div`
   gird-template-rows: auto;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-  grid-template-areas: 'type' 'website' 'street' 'zipcode' 'city' 'country';
+  grid-template-areas: 'type' 'website' 'street' 'zipcode' 'city' 'country'
+    'contacts' 'notes';
   @media (min-width: 600px) {
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     grid-template-rows: auto auto;
-    grid-template-areas: 'type website' 'street zipcode' 'city country';
+    grid-template-areas: 'type website' 'street zipcode' 'city country'
+      'contacts contacts' 'notes notes';
   }
   @media (min-width: 900px) {
     grid-template-columns: repeat(4, minmax(100px, 1fr));
     grid-template-rows: auto auto;
     grid-template-areas: 'type website website none'
-      'street zipcode city country';
+      'street zipcode city country' 'contacts contacts contacts contacts'
+      'notes notes notes notes';
   }
 `;
 
@@ -77,6 +81,10 @@ const StyledWrapper = styled.div`
 
 const StyledViewField = styled(ViewField)`grid-area: ${props => props.name};`;
 
+const StyledPreviewField = styled(PreviewField)`
+  grid-area: ${props => props.name};
+`;
+
 const CompanyInfos = ({ company = {}, people }) => {
   const { type, website, address = {}, _id } = company;
   const { street, zipcode, city, country } = address;
@@ -103,29 +111,35 @@ const CompanyInfos = ({ company = {}, people }) => {
         <StyledViewField name="zipcode" label="Zip code" value={zipcode} />
         <StyledViewField name="city" label="City" value={city} />
         <StyledViewField name="country" label="Country" value={country} />
+        {!isEmpty(people) && (
+          <StyledPreviewField
+            name="contacts"
+            label="Contacts"
+            value={
+              <ArrayBlock>
+                <MasonryLayout id="people" sizes={sizes}>
+                  {map(
+                    person => (
+                      <Preview
+                        key={person._id}
+                        person={person}
+                        company={company}
+                        onTagClick={() => {}}
+                        deletePeople={deletePeople}
+                      />
+                    ),
+                    people,
+                  )}
+                </MasonryLayout>
+              </ArrayBlock>
+            }
+          />
+        )}
+        <StyledPreviewField
+          name="notes"
+          value={<NotesView entityType="company" entityId={_id} />}
+        />
       </StyledGrid>
-      {people.length > 0 && (
-        <div>
-          <label>Contacts</label>
-          <ArrayBlock>
-            <MasonryLayout id="people" sizes={sizes}>
-              {map(
-                person => (
-                  <Preview
-                    key={person._id}
-                    person={person}
-                    company={company}
-                    onTagClick={() => {}}
-                    deletePeople={deletePeople}
-                  />
-                ),
-                people,
-              )}
-            </MasonryLayout>
-          </ArrayBlock>
-        </div>
-      )}
-      <NotesView entityType="company" entityId={_id} />
     </StyledWrapper>
   );
 };
@@ -185,7 +199,7 @@ const Company = ({
           <Auth {...getRouteAuthProps('deleteCompany')} context={{ company }}>
             <Button
               iconName="pt-icon-trash"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-danger"
               onClick={() => showDialog()}
             />
           </Auth>
@@ -194,7 +208,7 @@ const Company = ({
             <LinkButton
               to={getPathByName('editCompany', id)}
               iconName="pt-icon-edit"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
         </HeaderRight>

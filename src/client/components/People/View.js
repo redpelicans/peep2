@@ -27,6 +27,7 @@ import {
   Dates,
   ModalConfirmation,
 } from '../widgets';
+import { PreviewField } from '../widgets/ViewField';
 import NotesView from './NotesView';
 
 const StyledGrid = styled.div`
@@ -37,18 +38,24 @@ const StyledGrid = styled.div`
   grid-row-gap: 20px;
   grid-template-rows: auto;
   grid-template-areas: 'prefix' 'firstName' 'lastName' 'company' 'type'
-    'jobType' 'email';
+    'jobType' 'email' 'phones' 'skills' 'tags' 'roles' 'notes';
   @media (min-width: 600px) {
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     grid-template-rows: auto auto;
     grid-template-areas: 'prefix firstName' 'lastName company' 'type jobType'
-      'email none';
+      'email none' 'phones phones' 'skills skills' 'tags tags' 'roles roles'
+      'notes notes';
   }
   @media (min-width: 900px) {
     grid-template-columns: repeat(7, minmax(100px, 1fr));
     grid-template-rows: auto auto auto;
     grid-template-areas: 'prefix firstName firstName firstName lastName lastName lastName'
-      'company company type jobType email email email';
+      'company company type jobType email email email'
+      'phones phones phones phones phones phones phones'
+      'skills skills skills skills skills skills skills'
+      'tags tags tags tags tags tags tags'
+      'roles roles roles roles roles roles roles'
+      'notes notes notes notes notes notes notes';
   }
 `;
 
@@ -118,6 +125,10 @@ PhoneField.propTypes = {
 };
 
 const StyledViewField = styled(ViewField)`grid-area: ${({ name }) => name};`;
+
+const StyledPreviewField = styled(PreviewField)`
+  grid-area: ${({ name }) => name};
+`;
 
 const ViewFieldArray = ({ label, items }) => (
   <StyledViewFieldArray>
@@ -198,29 +209,58 @@ const PersonInfos = ({ person = {}, deleteNote }) => {
           }
           value={email}
         />
+        {!isEmpty(phones) && (
+          <StyledPreviewField
+            name="phones"
+            value={
+              <div>
+                <label>Phones</label>
+                <PhoneNumberContainer>
+                  {map(
+                    phone => (
+                      <PhoneField
+                        key={phone.number}
+                        label={phone.label}
+                        number={phone.number}
+                      />
+                    ),
+                    phones,
+                  )}
+                </PhoneNumberContainer>
+              </div>
+            }
+          />
+        )}
+        {!isEmpty(skills) && (
+          <StyledPreviewField
+            name="skills"
+            value={<ViewFieldArray label="Skills" items={skills} />}
+          />
+        )}
+        {!isEmpty(tags) && (
+          <StyledPreviewField
+            name="tags"
+            value={<ViewFieldArray label="Tags" items={tags} />}
+          />
+        )}
+        {roles === null ||
+          (!isEmpty(roles) && (
+            <StyledPreviewField
+              name="roles"
+              value={<ViewFieldArray label="Roles" items={roles} />}
+            />
+          ))}
+        <StyledPreviewField
+          name="notes"
+          value={
+            <NotesView
+              entityType="person"
+              entityId={_id}
+              deleteNote={deleteNote}
+            />
+          }
+        />
       </StyledGrid>
-      {!isEmpty(phones) > 0 && (
-        <div>
-          <label>Phones</label>
-          <PhoneNumberContainer>
-            {map(
-              phone => (
-                <PhoneField
-                  key={phone.number}
-                  label={phone.label}
-                  number={phone.number}
-                />
-              ),
-              phones,
-            )}
-          </PhoneNumberContainer>
-        </div>
-      )}
-      {!isEmpty(skills) && <ViewFieldArray label="Skills" items={skills} />}
-      {!isEmpty(tags) && <ViewFieldArray label="Tags" items={tags} />}
-      {roles === null ||
-        (!isEmpty(roles) && <ViewFieldArray label="Roles" items={roles} />)}
-      <NotesView entityType="person" entityId={_id} deleteNote={deleteNote} />
     </StyledWrapper>
   );
 };
@@ -278,7 +318,7 @@ const Person = ({
           <Auth {...getRouteAuthProps('deletePerson')} context={{ person }}>
             <Button
               iconName="pt-icon-trash"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-danger"
               onClick={() => showDialog()}
             />
           </Auth>
@@ -287,7 +327,7 @@ const Person = ({
             <LinkButton
               to={getPathByName('editPerson', id)}
               iconName="pt-icon-edit"
-              className="pt-button pt-large"
+              className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
         </HeaderRight>

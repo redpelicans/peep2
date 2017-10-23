@@ -1,32 +1,29 @@
-import {
-  path,
-  filter,
-  pathOr,
-  compose,
-  find,
-  prop,
-  reduce,
-  toPairs,
-} from 'ramda';
+import { path, filter, compose, find, prop, reduce, toPairs } from 'ramda';
+
 import Login from './components/Login';
 import Companies from './components/Companies';
 import People from './components/People';
-import AddPeople from './components/People/Add';
 import Agenda from './components/Agenda';
+import NotFound from './components/NotFound';
 import Notes from './components/Notes';
 import Missions from './components/Missions';
+
+import AddPeople from './components/People/Add';
 import EditMission from './components/Missions/Edit';
 import AddMission from './components/Missions/Add';
 import AddCompany from './components/Companies/Add';
 import AddAgenda from './components/Agenda/Add';
+import AddNotes from './components/Notes/Add';
+
 import EditAgenda from './components/Agenda/Edit';
-import PersonView from './components/People/View';
-import CompanyView from './components/Companies/View';
-import EditCompany from './components/Companies/Edit';
 import EditPerson from './components/People/Edit';
 import EditNote from './components/Notes/Edit';
-import AddNotes from './components/Notes/Add';
-import NotFound from './components/NotFound';
+import EditCompany from './components/Companies/Edit';
+
+import PersonView from './components/People/View';
+import CompanyView from './components/Companies/View';
+import MissionView from './components/Missions/View';
+
 import { ADMIN_ROLE, isAdmin } from './utils/people';
 
 const NoteEditTest = ({ user, note = {} }) => {
@@ -58,7 +55,7 @@ const routes = {
   company: {
     path: '/companies/:id',
     component: CompanyView,
-    exact: false,
+    exact: true,
     auth: true,
   },
   people: {
@@ -78,13 +75,13 @@ const routes = {
   person: {
     path: '/people/:id',
     component: PersonView,
-    exact: false,
+    exact: true,
     auth: true,
   },
   editPerson: {
     path: '/person/edit/:id',
     component: EditPerson,
-    exact: false,
+    exact: true,
     auth: true,
     roles: [ADMIN_ROLE],
   },
@@ -94,7 +91,7 @@ const routes = {
   editCompany: {
     path: '/company/edit/:id',
     component: EditCompany,
-    exact: false,
+    exact: true,
     auth: true,
     roles: [ADMIN_ROLE],
   },
@@ -134,7 +131,7 @@ const routes = {
   },
   editNote: {
     path: '/note/edit/:id',
-    exact: false,
+    exact: true,
     auth: true,
     component: EditNote,
     test: NoteEditTest,
@@ -156,7 +153,7 @@ const routes = {
   },
   editMission: {
     path: '/mission/edit/:id',
-    exact: false,
+    exact: true,
     auth: true,
     component: EditMission,
   },
@@ -164,7 +161,7 @@ const routes = {
     path: '/missions/:id',
     exact: true,
     auth: true,
-    component: Missions,
+    component: MissionView,
   },
   login: {
     path: '/login',

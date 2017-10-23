@@ -3,7 +3,6 @@ import {
   reduce,
   pathOr,
   values,
-  mapObjIndexed,
   map,
   sortBy,
   compose,
@@ -21,7 +20,6 @@ import {
   propEq,
   find,
 } from 'ramda';
-import moment from 'moment';
 import { createSelector } from 'reselect';
 
 /* sorting */
@@ -53,20 +51,6 @@ const doFilter = (cfilter, preferredFilter) =>
 const filterAndSort = (filter, sort, preferredFilter, companies) =>
   compose(doSort(sort), doFilter(filter, preferredFilter), values)(companies);
 
-/* status */
-export const isNew = company =>
-  !company.updatedAt &&
-  moment.duration(moment() - company.createdAt).asHours() < 2;
-export const isUpdated = company =>
-  company.updatedAt &&
-  moment.duration(moment() - company.updatedAt).asHours() < 1;
-const putStatus = companies =>
-  mapObjIndexed(company => ({
-    ...company,
-    isNew: isNew(company),
-    isUpdated: isUpdated(company),
-  }))(companies);
-
 /* input selectors */
 export const getFilter = state => state.companies.filter;
 export const getSort = state => state.companies.sort;
@@ -76,10 +60,9 @@ export const getCompanyId = (companies, name) =>
   prop('_id', find(propEq('name', name), companies));
 const getPreferredFilter = state => state.companies.preferredFilter;
 /* selectors */
-const updateCompaniesStatus = createSelector(getCompanies, putStatus);
 
 export const getVisibleCompanies = createSelector(
-  [getFilter, getSort, getPreferredFilter, updateCompaniesStatus],
+  [getFilter, getSort, getPreferredFilter, getCompanies],
   (filter, sort, preferredFilter, companies) =>
     filterAndSort(filter, sort, preferredFilter, companies),
 );

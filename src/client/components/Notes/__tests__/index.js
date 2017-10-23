@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 import { List } from '../List';
 import { Actions } from '../../widgets';
 import { StyledFooterLine } from '../Preview';
-import { MarkdownConvertor } from '../../widgets/Markdown';
 import enhancedPreview, { Preview, CardContent } from '../Preview';
 import Footer, { StyledFooter } from '../Footer';
 
@@ -18,7 +17,8 @@ describe('List component', () => {
         people={{}}
         companies={{}}
         findEntity={() => {}}
-        deletePeople={() => {}}
+        deleteNote={() => {}}
+        updateNote={() => {}}
       />,
     );
     should(wrapper.find(enhancedPreview)).have.length(0);
@@ -29,7 +29,7 @@ describe('List component', () => {
         people={{}}
         findEntity={() => {}}
         companies={{}}
-        deletePeople={() => {}}
+        deleteNote={() => {}}
         notes={[
           {
             _id: 0,
@@ -41,6 +41,7 @@ describe('List component', () => {
             _id: 2,
           },
         ]}
+        updateNote={() => {}}
       />,
     );
     should(wrapper.find(enhancedPreview)).have.length(3);
@@ -59,6 +60,10 @@ describe('Preview component', () => {
         showActions={false}
         handleMouseEnter={() => {}}
         handleMouseLeave={() => {}}
+        showDialog={() => {}}
+        hideDialog={() => {}}
+        isDeleteDialogOpen={false}
+        deleteNote={() => {}}
       />,
     );
     should(wrapper.find(Actions)).have.length(0);
@@ -74,6 +79,10 @@ describe('Preview component', () => {
         showActions={true}
         handleMouseEnter={() => {}}
         handleMouseLeave={() => {}}
+        showDialog={() => {}}
+        hideDialog={() => {}}
+        isDeleteDialogOpen={false}
+        deleteNote={() => {}}
       />,
     );
     should(wrapper.find(Actions)).have.length(1);
@@ -89,6 +98,10 @@ describe('Preview component', () => {
         showActions={true}
         handleMouseEnter={() => {}}
         handleMouseLeave={() => {}}
+        showDialog={() => {}}
+        hideDialog={() => {}}
+        isDeleteDialogOpen={false}
+        deleteNote={() => {}}
       />,
     );
     should(wrapper.find(CardContent)).have.length(1);
@@ -113,12 +126,6 @@ describe('CardContent component', () => {
 });
 
 describe('Footer component', () => {
-  it('Should render null', () => {
-    const wrapper = shallow(
-      <Footer note={undefined} entity={{}} person={{}} />,
-    );
-    should(wrapper.find(StyledFooter)).have.length(0);
-  });
   it('Should not render null)', () => {
     const wrapper = shallow(<Footer note={{}} entity={{}} person={{}} />);
     should(wrapper.find(StyledFooter)).have.length(1);

@@ -15,17 +15,21 @@ const StyledBlock = styled.div`
   margin-top: 15px;
   height: 35px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.07);
+  width: 100%;
 `;
 
 const StyledBlockContent = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   color: ${Colors.LIGHT_GRAY5} !important;
+  width: 100%;
+  text-align: center;
 `;
 
 const StyledFormField = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const ViewField = ({ label, value, className }) => (
@@ -45,6 +49,19 @@ ViewField.propTypes = {
   label: PropTypes.node,
   className: PropTypes.string,
   value: PropTypes.string,
+};
+
+export const PreviewField = ({ label, value, className }) => (
+  <div className={className}>
+    <label>{label}</label>
+    {value && <span>{value}</span>}
+  </div>
+);
+
+PreviewField.propTypes = {
+  label: PropTypes.node,
+  value: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default ViewField;

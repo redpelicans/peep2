@@ -45,6 +45,8 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
         return '/companies';
       case '/note':
         return '/notes';
+      case '/mission':
+        return '/missions';
       default:
         return result;
     }

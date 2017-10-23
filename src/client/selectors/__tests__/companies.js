@@ -11,8 +11,6 @@ import {
   firstLevelReducer,
   getUnsortedTags,
   groupTags,
-  isNew,
-  isUpdated,
 } from '../companies';
 
 describe('Selectors:companies', () => {
@@ -184,47 +182,6 @@ describe('Selectors:companies', () => {
     const expected = [];
     const companiesTags = groupTags(companies);
     should(companiesTags).eql(expected);
-  });
-  it('newData.isNew should be false', () => {
-    const company = {
-      updatedAt: 'test',
-    };
-    const newData = {
-      isNew: isNew(company),
-    };
-    const expected = false;
-    should(newData.isNew).eql(expected);
-  });
-  it('newData.isNew should be true', () => {
-    const company = {
-      updatedAt: undefined,
-      createdAt: Date.now(),
-    };
-    const newData = {
-      isNew: isNew(company),
-    };
-    const expected = true;
-    should(newData.isNew).eql(expected);
-  });
-  it('newData.isUpdated should be false', () => {
-    const company = {
-      updatedAt: 'test',
-    };
-    const newData = {
-      isUpdated: isUpdated(company),
-    };
-    const expected = false;
-    should(newData.isUpdated).eql(expected);
-  });
-  it('newData.isUpdated should be true', () => {
-    const company = {
-      updatedAt: Date.now(),
-    };
-    const newData = {
-      isUpdated: isUpdated(company),
-    };
-    const expected = true;
-    should(newData.isUpdated).eql(expected);
   });
   it('Should regexp work', () => {
     const test = 'TesTeu';

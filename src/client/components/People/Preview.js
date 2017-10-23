@@ -40,11 +40,23 @@ export const Icons = styled.div`
   color: rgb(68, 86, 99);
 `;
 
+const StyledButton = styled(Button)`
+  margin-right: 5px;
+  margin-top: 5px;
+`;
+
+const StyledLinkButton = styled(LinkButton)`
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+`;
+
 export const Preview = ({
   handleMouseEnter,
   handleMouseLeave,
   showActions,
   person: { _id, name, avatar, tags = [] },
+  person,
   company = {},
   onTagClick,
   deletePeople,
@@ -77,24 +89,26 @@ export const Preview = ({
         )}
         <StyledInfos>
           <NameLink to={getPathByName('person', _id)}>{name}</NameLink>
-          <CompanyLink to={getPathByName('company', company._id)}>
-            {company.name}
-          </CompanyLink>
+          {company && (
+            <CompanyLink to={getPathByName('company', company._id)}>
+              {company.name}
+            </CompanyLink>
+          )}
         </StyledInfos>
         {showActions && (
           <Actions>
-            <Auth {...getRouteAuthProps('editNote')} context={{ company }}>
-              <LinkButton
-                to={getPathByName('editPerson', _id)}
-                className="pt-small pt-button pt-intent-warning"
-                iconName="pt-icon-edit"
-              />
-            </Auth>
-            <Auth {...getRouteAuthProps('deleteNote')} context={{ company }}>
-              <Button
+            <Auth {...getRouteAuthProps('deletePerson')} context={{ person }}>
+              <StyledButton
                 className="pt-small pt-button pt-intent-danger"
                 iconName="pt-icon-trash"
                 onClick={() => showDialog()}
+              />
+            </Auth>
+            <Auth {...getRouteAuthProps('editPerson')} context={{ person }}>
+              <StyledLinkButton
+                to={getPathByName('editPerson', _id)}
+                className="pt-small pt-button pt-intent-warning"
+                iconName="pt-icon-edit"
               />
             </Auth>
           </Actions>
@@ -119,7 +133,7 @@ Preview.propTypes = {
   showActions: PropTypes.bool.isRequired,
   person: PropTypes.object.isRequired,
   company: PropTypes.object,
-  onTagClick: PropTypes.func.isRequired,
+  onTagClick: PropTypes.func,
   deletePeople: PropTypes.func.isRequired,
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,

@@ -11,21 +11,27 @@ ShallowWrapper {
   "node": <Link
     className="sc-bdVaJa foEiOL"
     replace={false}
+    to=""
 />,
   "nodes": Array [
     <Link
       className="sc-bdVaJa foEiOL"
       replace={false}
+      to=""
 />,
   ],
   "options": Object {},
   "renderer": ReactShallowRenderer {
     "_context": Object {},
-    "_element": <Styled(Link) />,
+    "_element": <Styled(Link)
+      to=""
+/>,
     "_instance": StyledComponent {
       "attrs": Object {},
       "context": Object {},
-      "props": Object {},
+      "props": Object {
+        "to": "",
+      },
       "refs": Object {},
       "state": Object {
         "generatedClassName": "foEiOL",
@@ -43,6 +49,7 @@ ShallowWrapper {
     "_rendered": <Link
       className="sc-bdVaJa foEiOL"
       replace={false}
+      to=""
 />,
     "_rendering": false,
     "_updater": Updater {
@@ -52,6 +59,8 @@ ShallowWrapper {
     "render": [Function],
   },
   "root": [Circular],
-  "unrendered": <Styled(Link) />,
+  "unrendered": <Styled(Link)
+    to=""
+/>,
 }
 `;

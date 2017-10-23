@@ -29,9 +29,9 @@ import { getPathByName } from '../../routes';
 import List from './List';
 
 const sortTypes = [
+  { key: 'endDate', label: 'Sort by ended date' },
+  { key: 'startDate', label: 'Sort by started date' },
   { key: 'name', label: 'Sort by name' },
-  { key: 'createdAt', label: 'Sort by creation date' },
-  { key: 'updatedAt', label: 'Sort by updated date' },
 ];
 
 export const Missions = ({

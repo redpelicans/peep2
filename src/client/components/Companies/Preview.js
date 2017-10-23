@@ -14,7 +14,8 @@ import {
   ModalConfirmation,
 } from '../widgets';
 import Avatar from '../Avatar';
-import { getPathByName } from '../../routes';
+import { getPathByName, getRouteAuthProps } from '../../routes';
+import { Auth } from '../../lib/kontrolo';
 
 const StyledLinkButton = styled(LinkButton)`
   margin-left: 5px;
@@ -52,6 +53,7 @@ export const Preview = ({
   handleMouseLeave,
   showActions,
   company: { _id, name, avatar, tags = [] },
+  company,
   filterCompanyList,
   deleteCompany,
   isDeleteDialogOpen,
@@ -68,16 +70,20 @@ export const Preview = ({
     >
       {showActions && (
         <Actions>
-          <StyledLinkButton
-            to={getPathByName('editCompany', _id)}
-            className="pt-small pt-button pt-intent-warning"
-            iconName="pt-icon-edit"
-          />
-          <StyledButton
-            className="pt-small pt-button pt-intent-danger"
-            iconName="pt-icon-trash"
-            onClick={() => showDialog()}
-          />
+          <Auth {...getRouteAuthProps('deleteCompany')} context={{ company }}>
+            <StyledButton
+              className="pt-small pt-button pt-intent-danger"
+              iconName="pt-icon-trash"
+              onClick={() => showDialog()}
+            />
+          </Auth>
+          <Auth {...getRouteAuthProps('editCompany')} context={{ company }}>
+            <StyledLinkButton
+              to={getPathByName('editCompany', _id)}
+              className="pt-small pt-button pt-intent-warning"
+              iconName="pt-icon-edit"
+            />
+          </Auth>
         </Actions>
       )}
       <ModalConfirmation
@@ -117,7 +123,7 @@ Preview.propTypes = {
   handleMouseLeave: PropTypes.func,
   showActions: PropTypes.bool,
   company: PropTypes.object.isRequired,
-  filterCompanyList: PropTypes.func.isRequired,
+  filterCompanyList: PropTypes.func,
   deleteCompany: PropTypes.func.isRequired,
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,

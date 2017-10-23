@@ -1,13 +1,12 @@
 import should from 'should';
 import MockedSocket from 'socket.io-mock';
-import localStorage from 'mock-local-storage';
+global.window = {};
+import localStorage from 'mock-local-storage'; //eslint-disable-line no-unused-vars
+window.localStorage = global.localStorage;
 import { socketIoMiddleWare } from '../../middlewares';
 import reducer from '../../reducers';
 import { configureStore } from '../utils';
 import { loginRequest, LOGIN_REQUEST, USER_LOGGED } from '../login';
-
-global.window = {};
-window.localStorage = global.localStorage;
 
 describe('Action:login', () => {
   it('Should get logged', done => {

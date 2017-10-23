@@ -20,6 +20,8 @@ const StyledItemLabel = styled.span`
   width: 85%;
 `;
 
+const StyledButton = styled.button`min-width: 80px;`;
+
 const StyledItemCount = styled.span`width: auto;`;
 
 const ItemsMenu = ({ items, identifier, onClick, filter }) => {
@@ -79,10 +81,10 @@ const ItemsMenuWrapper = ({ identifier, title, items, onClick, filter }) => (
       />
     }
   >
-    <button className="pt-button">
+    <StyledButton className="pt-button">
       {title}
       <span className="pt-icon-standard pt-icon-caret-down pt-align-right" />
-    </button>
+    </StyledButton>
   </Popover2>
 );
 
