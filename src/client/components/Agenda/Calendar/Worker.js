@@ -35,7 +35,9 @@ const StyledEvent = styled.div`
   width: 100%;
   height: 100%;
   background: ${({ event }) =>
-    isVacation(event) ? vacationDayBackground : sickLeaveDayBackground};
+    isVacation(event)
+      ? vacationDayBackground(event)
+      : sickLeaveDayBackground(event)};
 `;
 
 const Event = ({ event }) => <StyledEvent event={event} />;
@@ -99,7 +101,9 @@ Day.propTypes = {
 const getSelectDaybackground = ({ selected, type, isWorkingDay }) => {
   if (!selected) return workingDayBackground;
   if (!isWorkingDay) return selectedBackground;
-  return type === 'vacation' ? vacationDayBackground : sickLeaveDayBackground;
+  return type === 'vacation'
+    ? vacationDayBackground()
+    : sickLeaveDayBackground();
 };
 
 const StyledHalfDaySelected = styled.div`

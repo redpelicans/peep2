@@ -249,7 +249,9 @@ const betweenDates = (date, first, last) => {
 
 const StyledEvent = styled.div`
   background: ${({ event }) =>
-    isVacation(event) ? vacationDayBackground : sickLeaveDayBackground};
+    isVacation(event)
+      ? vacationDayBackground(event)
+      : sickLeaveDayBackground(event)};
   cursor: ${({ readOnly }) => (readOnly ? 'default' : 'pointer')};
   grid-column: ${({ event }) =>
     event.period === EVENT_DAY ? 'span 2' : event.period};

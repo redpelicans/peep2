@@ -15,6 +15,7 @@ export const EVENT_DAY = 'DAY';
 export const EVENT_AM = 'AM';
 export const EVENT_PM = 'PM';
 
+export const isValidated = propEq('status', 'V');
 export const isVacation = propEq('type', 'vacation');
 export const isAfternoon = propEq('period', EVENT_PM);
 export const isMorningEvent = propEq('period', EVENT_AM);
