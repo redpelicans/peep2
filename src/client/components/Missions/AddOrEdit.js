@@ -33,7 +33,6 @@ const AddOrEditForm = ({
   errors,
   setFieldTouched,
   setFieldValue,
-  type,
 }) => {
   return (
     <MissionForm id="missionForm" onSubmit={handleSubmit}>
@@ -136,7 +135,6 @@ AddOrEditForm.propTypes = {
   setFieldValue: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   touched: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired,
 };
 
 export default AddOrEditForm;

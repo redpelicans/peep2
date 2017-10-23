@@ -4,7 +4,6 @@ import { isEqual } from 'date-fns';
 import { DateRangeInput, DateInput } from '@blueprintjs/datetime';
 import '@blueprintjs/datetime/dist/blueprint-datetime.css';
 import { Field, StyledInputIcon } from '../fields';
-import styled from 'styled-components';
 
 export const DateField = ({
   name,

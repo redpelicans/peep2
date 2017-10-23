@@ -8,7 +8,6 @@ import { getRouteByName, getRouteByPath, defaultRoute } from '../../routes';
 import UserButton from './User';
 import { NavBar, NavBarLeft, NavBarRight } from './NavBar';
 import { Spacer } from '../widgets';
-import { getRouteRoles } from '../../routes';
 import { isAdmin } from '../../utils/people';
 
 const Logo = styled.i`

@@ -126,7 +126,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const FormikEdit = ({ updateNote, note = {}, history, dispatch, ...props }) => (
+const FormikEdit = ({ updateNote, note = {}, history, ...props }) => (
   <Formik
     initialValues={{
       ...note,
@@ -156,7 +156,6 @@ const FormikEdit = ({ updateNote, note = {}, history, dispatch, ...props }) => (
 FormikEdit.propTypes = {
   updateNote: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
   note: PropTypes.object.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FormikEdit);

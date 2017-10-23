@@ -115,7 +115,7 @@ const mapDispatchToProps = dispatch => ({
   dispatch,
 });
 
-const FormikAdd = ({ dispatch, ...props }) => (
+const FormikAdd = props => (
   <Formik
     initialValues={defaultValues}
     validationSchema={getValidationSchema()}
@@ -156,6 +156,5 @@ const FormikAdd = ({ dispatch, ...props }) => (
 FormikAdd.propTypes = {
   addMission: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 export default connect(null, mapDispatchToProps)(FormikAdd);
