@@ -40,7 +40,7 @@ const addEventGroupSchema = Yup.object().shape({
   from: Yup.date().required(),
   to: Yup.date().required(),
   status: Yup.string()
-    .oneOf(['TBV', 'V'])
+    .oneOf(['TBV', 'V', 'R'])
     .required(),
   type: Yup.string()
     .oneOf(['vacation', 'sickLeaveDay'])
@@ -57,7 +57,7 @@ const updateEventGroupSchema = Yup.object().shape({
   from: Yup.date().required(),
   to: Yup.date().required(),
   status: Yup.string()
-    .oneOf(['TBV', 'V'])
+    .oneOf(['TBV', 'V', 'R'])
     .required(),
   type: Yup.string()
     .oneOf(['vacation', 'sickLeaveDay'])
@@ -109,9 +109,7 @@ export const events = {
   delEventGroup({ groupId }) {
     const deleteAll = () => Event.collection.remove({ groupId });
     const loadEventGroup = () => Event.loadAll({ groupId });
-    return loadEventGroup().then(events =>
-      deleteAll().then(() => R.pluck('_id', events)),
-    );
+    return loadEventGroup().then(events => deleteAll().then(() => events));
   },
 
   addEventGroup(eventGroup) {
@@ -147,6 +145,57 @@ export const events = {
 export const outMaker = event => event;
 export const outMakerMany = R.map(outMaker);
 
+const makeEventGroup = events => {
+  const [firstEvent, lastEvent] = [R.head(events), R.last(events)];
+  return {
+    ...R.pick(
+      ['from', 'status', 'type', 'workerId', 'description'],
+      firstEvent,
+    ),
+    to: lastEvent.to,
+    events,
+  };
+};
+
+const emitEventGroupAdded = () => ctx => {
+  const service = ctx.evtx.service('events');
+  const name = 'eventGroup:added';
+  const { locals: { user }, output: events } = ctx;
+  const eventGroup = makeEventGroup(events);
+  service.emit(name, {
+    ...ctx,
+    output: eventGroup,
+    author: user,
+  });
+  return Promise.resolve(ctx);
+};
+
+const emitEventGroupUpdated = () => ctx => {
+  const service = ctx.evtx.service('events');
+  const name = 'eventGroup:updated';
+  const { locals: { user }, output: { nextEvents: events } } = ctx;
+  const eventGroup = makeEventGroup(events);
+  service.emit(name, {
+    ...ctx,
+    output: eventGroup,
+    author: user,
+  });
+  return Promise.resolve(ctx);
+};
+
+const emitEventGroupDeleted = () => ctx => {
+  const service = ctx.evtx.service('events');
+  const name = 'eventGroup:deleted';
+  const { locals: { user }, output: events } = ctx;
+  const eventGroup = makeEventGroup(events);
+  service.emit(name, {
+    ...ctx,
+    output: eventGroup,
+    author: user,
+  });
+  return Promise.resolve({ ...ctx, output: R.pluck('_id', events) });
+};
+
 const emitUpdateEvent = () => ctx => {
   const { output: { previousEvents = [], nextEvents = [] } } = ctx;
   const name = 'events:deleted';
@@ -171,9 +220,17 @@ const init = evtx => {
     })
     .after({
       load: [formatOutput(outMakerMany)],
-      addEventGroup: [formatOutput(outMakerMany), emitEvent('events:added')],
-      updateEventGroup: [emitUpdateEvent(), emitEvent('events:added')],
-      delEventGroup: [emitEvent('events:deleted')],
+      addEventGroup: [
+        formatOutput(outMakerMany),
+        emitEventGroupAdded(),
+        emitEvent('events:added'),
+      ],
+      updateEventGroup: [
+        emitEventGroupUpdated(),
+        emitUpdateEvent(),
+        emitEvent('events:added'),
+      ],
+      delEventGroup: [emitEventGroupDeleted(), emitEvent('events:deleted')],
     });
 
   loginfo('events service registered');

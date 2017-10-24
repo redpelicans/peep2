@@ -1,5 +1,6 @@
 module.exports = {
   secretKey: '1',
+  siteUrl: 'http://peep.redpelicans.com',
   compress: true,
   devtool: false,
   devServer: null,
@@ -18,5 +19,9 @@ module.exports = {
       native_parser: true,
     },
     database: 'timetrack',
+  },
+  mg: {
+    api_key: '1',
+    domain: 'mg.redpelicans.com',
   },
 };

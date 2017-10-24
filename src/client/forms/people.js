@@ -81,9 +81,9 @@ const fields = {
     label: 'Roles',
     component: MultiSelectField,
     domainValues: [
-      { id: 'admin', value: 'Admin' },
-      { id: 'edit', value: 'Edit' },
-      { id: 'access', value: 'Access' },
+      { id: 'admin', value: 'admin' },
+      { id: 'edit', value: 'edit' },
+      { id: 'access', value: 'access' },
     ],
   },
   note: {

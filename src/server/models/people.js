@@ -16,6 +16,10 @@ class Person {
     return Person.findAll(R.merge(baseQuery, query), ...params);
   }
 
+  static getManagers() {
+    return Person.loadAll({ roles: 'admin', type: 'worker' });
+  }
+
   static getFromToken(token, secretKey) {
     const promise = new Promise(resolve => {
       njwt.verify(token, secretKey, (err, njwtoken) => {
@@ -27,6 +31,7 @@ class Person {
   }
 
   equals(obj) {
+    if (!obj) return false;
     return this._id.equals(obj._id);
   }
 

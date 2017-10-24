@@ -39,6 +39,7 @@ const fields = {
     domainValues: [
       { id: 'TBV', value: 'To Be Validated' },
       { id: 'V', value: 'Validated' },
+      { id: 'R', value: 'Rejected' },
     ],
     required: true,
     validate: Yup.string(),

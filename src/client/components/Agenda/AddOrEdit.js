@@ -98,6 +98,7 @@ const AddOrEditForm = ({
           worker={worker}
           calendar={calendar}
           type={values['type']}
+          status={values['status']}
         />
         {from &&
           to && (

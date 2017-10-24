@@ -30,7 +30,7 @@ import {
 import Avatar, { SMALL } from '../../Avatar';
 import { getPathByName } from '../../../routes';
 import { fullName, isAdmin, isEqual } from '../../../utils/people';
-import { EVENT_DAY, isVacation } from '../../../utils/events';
+import { EVENT_DAY, isVacation, isToBeValidated } from '../../../utils/events';
 import {
   vacationDayBackground,
   sickLeaveDayBackground,
@@ -198,6 +198,7 @@ const WorkingDay = enhanceWorkingDay(
     isSelected,
     events,
     readOnly,
+    user,
     handleMouseEnter,
     handleMouseUp,
     handleMouseDown,
@@ -214,7 +215,10 @@ const WorkingDay = enhanceWorkingDay(
     const dayEvents =
       events &&
       map(evt => {
-        const props = !readOnly ? { onClick: handleClick(evt) } : { readOnly };
+        const props =
+          !readOnly && (isToBeValidated(evt) || isAdmin(user))
+            ? { onClick: handleClick(evt) }
+            : { readOnly: true };
         return (
           <Event key={evt._id} event={evt} endPeriod={endPeriod} {...props} />
         );
@@ -235,6 +239,7 @@ WorkingDay.propTypes = {
   events: PropTypes.array,
   isSelected: PropTypes.bool,
   readOnly: PropTypes.bool,
+  user: PropTypes.object,
   startPeriod: PropTypes.func,
   selectPeriod: PropTypes.func,
   extendPeriod: PropTypes.func,
@@ -294,7 +299,7 @@ const Day = shouldUpdate(
   if (isAWorkingDay) {
     const newProps =
       user && (isAdmin(user) || isEqual(user, worker))
-        ? { isSelected, events, ...props }
+        ? { isSelected, events, user, ...props }
         : { isSelected, events, readOnly: true, ...props };
     return <WorkingDay {...newProps} />;
   }

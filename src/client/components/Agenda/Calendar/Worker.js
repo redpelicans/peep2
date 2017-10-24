@@ -98,12 +98,12 @@ Day.propTypes = {
   calendar: PropTypes.object.isRequired,
 };
 
-const getSelectDaybackground = ({ selected, type, isWorkingDay }) => {
+const getSelectDaybackground = ({ status, selected, type, isWorkingDay }) => {
   if (!selected) return workingDayBackground;
   if (!isWorkingDay) return selectedBackground;
   return type === 'vacation'
-    ? vacationDayBackground()
-    : sickLeaveDayBackground();
+    ? vacationDayBackground({ status })
+    : sickLeaveDayBackground({ status });
 };
 
 const StyledHalfDaySelected = styled.div`
@@ -125,12 +125,13 @@ const betweenDates = (startPeriod, endPeriod, from, to) => {
   return startPeriod >= from && endPeriod <= to;
 };
 
-const SelectedDay = ({ date, from, to, type, isWorkingDay }) => {
+const SelectedDay = ({ date, from, to, type, status, isWorkingDay }) => {
   return (
     <StyledSelectedDay>
       <StyledHalfDaySelected
         period={EVENT_AM}
         type={type}
+        status={status}
         isWorkingDay={isWorkingDay}
         selected={betweenDates(
           startOfDay(date),
@@ -142,6 +143,7 @@ const SelectedDay = ({ date, from, to, type, isWorkingDay }) => {
       <StyledHalfDaySelected
         period={EVENT_PM}
         type={type}
+        status={status}
         isWorkingDay={isWorkingDay}
         selected={betweenDates(addHours(date, 12), endOfDay(date), from, to)}
       />
@@ -154,6 +156,7 @@ SelectedDay.propTypes = {
   from: PropTypes.object,
   to: PropTypes.object,
   type: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
   isWorkingDay: PropTypes.bool.isRequired,
 };
 
@@ -169,6 +172,7 @@ const WorkerCalendar = ({
   worker,
   className,
   type,
+  status,
 }) => {
   if (!worker) return null;
   const days = eachDay(startDate, endDate);
@@ -181,6 +185,7 @@ const WorkerCalendar = ({
     d => (
       <SelectedDay
         type={type}
+        status={status}
         isWorkingDay={isWorkingDay(calendar, d)}
         key={dmy(d)}
         date={d}
@@ -225,6 +230,7 @@ WorkerCalendar.propTypes = {
   worker: PropTypes.object,
   className: PropTypes.string,
   type: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
 };
 
 export default WorkerCalendar;
