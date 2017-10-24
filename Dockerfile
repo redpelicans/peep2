@@ -2,7 +2,7 @@ FROM node:latest
 
 RUN apt-get update && apt-get install -y git vim-tiny
 
-RUN npm cache clear
+RUN npm install -g yarn
 
 ENV HOME /root
 
