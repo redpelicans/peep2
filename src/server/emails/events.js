@@ -48,7 +48,10 @@ const MailToManager = ({ eventGroup, worker, action, url }) => {
           Status: {getLabelFromValueDomain(statusField, eventGroup.status)}
         </li>
         {eventGroup.description && (
-          <li>Description: {eventGroup.description}</li>
+          <li>
+            Description:{' '}
+            <MarkdownConvertor>{eventGroup.description}</MarkdownConvertor>
+          </li>
         )}
       </ul>
     </div>
@@ -71,16 +74,14 @@ const sendEmailToManagers = (
       url={url}
     />
   );
+  const [to, ...cc] = R.map(manager => manager.email, managers);
   const mailOptions = {
     from: 'Peep peep dont sleep<peep@redpelicans.com>',
     subject: 'peep calendar',
     html: renderToString(Root),
+    to,
   };
-  const promises = R.map(
-    manager => send({ ...mailOptions, to: manager.email }),
-    managers,
-  );
-  return Promise.all(promises);
+  return send(cc.length ? { ...mailOptions, cc } : mailOptions);
 };
 
 const getAcceptanceFromAction = (action, event) => {
