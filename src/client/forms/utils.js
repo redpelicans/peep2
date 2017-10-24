@@ -1,4 +1,4 @@
-import { prop, filter, compose, reduce, toPairs, map } from 'ramda';
+import { find, prop, filter, compose, reduce, toPairs, map } from 'ramda';
 
 const getDomainIds = domainValues => map(x => x.id, domainValues || []);
 const extendWithRequired = ({ label, required }) => rule =>

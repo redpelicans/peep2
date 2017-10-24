@@ -5,7 +5,8 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import Person from '../models/people';
 import { isRejected, isValidated } from '../../client/utils/events';
-import { getField, getLabelFromValueDomain } from '../../client/forms/events';
+import { getField } from '../../client/forms/events';
+import { getLabelFromValueDomain } from '../../client/forms/utils';
 import { getPathByName } from '../../client/routes';
 import { MarkdownConvertor } from '../../client/components/widgets/Markdown';
 
