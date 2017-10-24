@@ -20,8 +20,4 @@ module.exports = {
     },
     database: 'timetrack',
   },
-  mg: {
-    api_key: '1',
-    domain: 'mg.redpelicans.com',
-  },
 };
