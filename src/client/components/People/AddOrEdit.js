@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { compose, lifecycle } from 'recompose';
 import { FormField } from '../../fields';
 import { getField } from '../../forms/people';
+import { ViewField } from '../widgets';
 
 const PeopleForm = styled.form`
   display: grid;
@@ -22,6 +24,8 @@ const PeopleForm = styled.form`
   }
 `;
 
+const StyledViewField = styled(ViewField)`grid-area: ${({ name }) => name};`;
+
 const StyledFormField = styled(FormField)`
   grid-area: ${({ field }) => field.name};
 `;
@@ -34,6 +38,7 @@ const AddOrEditForm = ({
   setFieldTouched,
   setFieldValue,
   type,
+  redpelicans,
 }) => {
   return (
     <PeopleForm id="peopleForm" onSubmit={handleSubmit}>
@@ -86,14 +91,10 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       {values.type === 'worker' ? (
-        <StyledFormField
-          field={getField('companyId')}
-          values={values}
-          touched={touched}
-          disabled={true}
-          errors={errors}
-          setFieldTouched={setFieldTouched}
-          setFieldValue={setFieldValue}
+        <StyledViewField
+          name="companyId"
+          label="Company"
+          value={redpelicans && redpelicans.name}
         />
       ) : (
         <StyledFormField
@@ -155,6 +156,21 @@ AddOrEditForm.propTypes = {
   errors: PropTypes.object.isRequired,
   touched: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
+  redpelicans: PropTypes.object,
 };
 
-export default AddOrEditForm;
+const componentLifecycle = {
+  componentWillReceiveProps(nextProps) {
+    const { setFieldValue, setFieldTouched, values, redpelicans } = nextProps;
+    const { values: previousValues } = this.props;
+    if (values.type === 'worker' && previousValues.type !== 'worker') {
+      setFieldValue('companyId', redpelicans._id);
+      setFieldTouched('companyId', true);
+    } else if (values.type !== 'worker' && previousValues.type === 'worker') {
+      setFieldValue('companyId', null);
+      setFieldTouched('companyId', true);
+    }
+  },
+};
+
+export default compose(lifecycle(componentLifecycle))(AddOrEditForm);

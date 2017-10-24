@@ -113,8 +113,8 @@ class AvatarSelector extends Component {
               onMouseLeave={this.handleMouseLeave}
             >
               {showIcon && <Icon className="pt-icon-standard pt-icon-edit" />}
-              {initials(name)}
-              {initials(lastName)}
+              {!showIcon && initials(name)}
+              {!showIcon && initials(lastName)}
             </Circle>
           </div>
         }

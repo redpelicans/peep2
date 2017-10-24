@@ -90,3 +90,7 @@ export const getUnsortedTags = compose(firstLevelReducer, values);
 export const groupTags = compose(sortTag, values, getUnsortedTags);
 
 export const getGroupedTagsByCount = createSelector(getCompanies, groupTags);
+export const getRedpelicans = createSelector(
+  getCompanies,
+  compose(find(prop('isRedpelicans')), values),
+);

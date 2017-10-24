@@ -38,10 +38,6 @@ export const SelectField = ({
       setFieldValue(name, '');
       return;
     }
-    if (name === 'type' && e.value === 'worker') {
-      setFieldTouched('companyId', true);
-      setFieldValue('companyId', '566abdf896de2706000c9481');
-    }
     const newValue = e.value;
     setFieldTouched(name, newValue !== value);
     setFieldValue(name, newValue);

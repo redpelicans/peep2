@@ -58,7 +58,7 @@ const ModalNote = ({
           className="pt-input pt-fill"
           dir="auto"
           defaultValue={defaultValue ? defaultValue : value}
-          onMouseLeave={handleChangeValue}
+          onChange={handleChangeValue}
         />
       )}
       {!displayTextArea && (

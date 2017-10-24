@@ -1,4 +1,4 @@
-import { filter, compose, reduce, toPairs, map } from 'ramda';
+import { prop, filter, compose, reduce, toPairs, map } from 'ramda';
 
 const getDomainIds = domainValues => map(x => x.id, domainValues || []);
 const extendWithRequired = ({ label, required }) => rule =>
@@ -36,3 +36,6 @@ export const getDefaultValues = compose(
   reduce((acc, [name, field]) => ({ ...acc, [name]: field.defaultValue }), {}),
   toPairs,
 );
+
+export const getLabelFromValueDomain = (field = {}, x) =>
+  prop('value', find(({ id }) => id === x, field.domainValues || []));

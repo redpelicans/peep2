@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
 import { compose, map } from 'ramda';
+import { Prompt } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import { getValidationSchema, defaultValues } from '../../forms/people';
 import { addPeople, checkEmail } from '../../actions/people';
-import { Prompt } from 'react-router';
+import { getRedpelicans } from '../../selectors/companies';
 import {
   Spacer,
   Title,
@@ -182,6 +183,12 @@ const FormikAdd = ({ dispatch, ...props }) => (
 FormikAdd.propTypes = {
   addPeople: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  redpelicans: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
 };
-export default connect(null, mapDispatchToProps)(FormikAdd);
+
+const mapStateToProps = state => ({
+  redpelicans: getRedpelicans(state),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormikAdd);

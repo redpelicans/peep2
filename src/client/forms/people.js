@@ -66,7 +66,7 @@ const fields = {
     label: 'Company',
     required: false,
     component: CompaniesSelectField,
-    validate: Yup.string(),
+    validate: Yup.string().nullable(),
   },
   phones: {
     label: 'Phones',

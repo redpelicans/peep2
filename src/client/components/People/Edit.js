@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import { getPerson } from '../../selectors/people';
+import { getRedpelicans } from '../../selectors/companies';
 import { getPathByName } from '../../routes';
 import { getValidationSchema } from '../../forms/people';
 import { updatePeople, checkEmail } from '../../actions/people';
@@ -138,6 +139,7 @@ const mapStateToProps = (state, props) => {
   }
   return {
     person: getPerson(state, id),
+    redpelicans: getRedpelicans(state),
   };
 };
 
@@ -219,6 +221,7 @@ FormikEdit.propTypes = {
   updatePeople: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   person: PropTypes.object,
+  redpelicans: PropTypes.object,
   dispatch: PropTypes.func.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FormikEdit);
