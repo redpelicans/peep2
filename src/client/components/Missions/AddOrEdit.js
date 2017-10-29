@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { FormField } from '../../fields';
 import { getField } from '../../forms/missions';
@@ -13,10 +14,10 @@ const MissionForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'name' 'clientId' 'partnerId' 'billedTarget' 'managerId'
+  grid-template-areas: 'clientId' 'name' 'partnerId' 'billedTarget' 'managerId'
     'allowWeekends' 'timesheetUnit' 'startDate' 'endDate' 'workerIds' 'note';
   @media (min-width: 700px) {
-    grid-template-areas: 'name name clientId' 'partnerId partnerId billedTarget'
+    grid-template-areas: 'clientId name name' 'partnerId partnerId billedTarget'
       'managerId managerId allowWeekends' 'timesheetUnit startDate endDate'
       'workerIds workerIds workerIds' 'note note note';
   }
@@ -137,4 +138,14 @@ AddOrEditForm.propTypes = {
   touched: PropTypes.object.isRequired,
 };
 
-export default AddOrEditForm;
+const componentLifecycle = {
+  componentWillReceiveProps(nextProps) {
+    // const { clients, setFieldValue, setFieldTouched, values } = nextProps;
+    // if (!values.name && values.clientId && clients) {
+    //   setFieldValue('name', clients[values.clientId].name);
+    //   setFieldTouched('name', true);
+    // }
+  },
+};
+
+export default compose(lifecycle(componentLifecycle))(AddOrEditForm);

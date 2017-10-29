@@ -13,6 +13,7 @@ import { addMission } from '../../actions/missions';
 import { Prompt } from 'react-router';
 import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
 import AddOrEdit from './AddOrEdit';
+import { getCompanies } from '../../selectors/companies';
 
 export const StyledContainer = styled(Container)`min-width: 300px;`;
 
@@ -107,6 +108,7 @@ Add.propTypes = {
   values: PropTypes.object.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
+  clients: PropTypes.object,
 };
 
 const actions = { addMission };
@@ -156,5 +158,11 @@ const FormikAdd = props => (
 FormikAdd.propTypes = {
   addMission: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  clients: PropTypes.object,
 };
-export default connect(null, mapDispatchToProps)(FormikAdd);
+
+const mapStateToProps = state => ({
+  //clients: getClients(state),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormikAdd);

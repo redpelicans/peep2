@@ -27,6 +27,7 @@ const fields = {
   },
   billedTarget: {
     label: 'Billed Target',
+    defaultValue: 'client',
     domainValues: [
       { id: 'partner', value: 'Partner' },
       { id: 'client', value: 'Client' },
@@ -49,6 +50,7 @@ const fields = {
   },
   allowWeekends: {
     label: 'Allow Weekends',
+    defaultValue: 'doNotAllow',
     domainValues: [
       { id: 'allow', value: 'Allow' },
       { id: 'doNotAllow', value: 'Do not Allow' },
@@ -57,6 +59,7 @@ const fields = {
   },
   timesheetUnit: {
     label: 'Timesheet Unit',
+    defaultValue: 'day',
     domainValues: [{ id: 'day', value: 'Day' }, { id: 'hour', value: 'Hour' }],
     component: SelectField,
     required: true,

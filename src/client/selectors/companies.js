@@ -21,6 +21,7 @@ import {
   find,
 } from 'ramda';
 import { createSelector } from 'reselect';
+import { isClient } from '../utils/companies';
 
 /* sorting */
 export const sortByProp = cprop =>
@@ -90,6 +91,8 @@ export const getUnsortedTags = compose(firstLevelReducer, values);
 export const groupTags = compose(sortTag, values, getUnsortedTags);
 
 export const getGroupedTagsByCount = createSelector(getCompanies, groupTags);
+export const getClients = createSelector(getCompanies, filter(isClient));
+
 export const getRedpelicans = createSelector(
   getCompanies,
   compose(find(prop('isRedpelicans')), values),
