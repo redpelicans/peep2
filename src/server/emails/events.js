@@ -183,14 +183,14 @@ const sendEmail = (send, action, url) => ({ output: eventGroup, author }) => {
 };
 
 const init = ctx => {
-  const { evtx, config: { siteUrl }, email: { sendMail } } = ctx;
-  evtx
+  const { api, config: { siteUrl }, email: { sendMail } } = ctx;
+  api
     .service('events')
     .on('eventGroup:added', sendEmail(sendMail, ADD, siteUrl));
-  evtx
+  api
     .service('events')
     .on('eventGroup:updated', sendEmail(sendMail, UPDATE, siteUrl));
-  evtx
+  api
     .service('events')
     .on('eventGroup:deleted', sendEmail(sendMail, DELETE, siteUrl));
   loginfo('events emails service registered');

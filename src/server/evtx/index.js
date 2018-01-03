@@ -6,10 +6,10 @@ import initRestApi from '../restApi';
 const loginfo = debug('peep:evtx');
 const init = ctx => {
   const { io, config } = ctx;
-  const evtx = evtX(config).configure(initServices);
-  const restApi = evtX(config).configure(initRestApi);
+  const api = evtX(config).configure(initServices);
+  const status = evtX(config).configure(initRestApi);
   loginfo('EvtX setup.');
-  return { ...ctx, evtx, restApi };
+  return { ...ctx, api, status };
 };
 
 export default init;

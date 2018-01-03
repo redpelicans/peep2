@@ -6,13 +6,14 @@ import favicon from 'serve-favicon';
 import compression from 'compression';
 import logger from 'morgan-debug';
 import errors from './middlewares/errors';
-import requestConnector from './rest';
+import staticConnector from './static';
+import apiConnector from './api';
 
 const loginfo = debug('peep:http');
 const getUrl = server =>
   `http://${server.address().address}:${server.address().port}`;
 const init = ctx => {
-  const { restApi, config } = ctx;
+  const { api, status, config } = ctx;
   const { publicPath, buildPath, server: { host, port } } = config;
   const app = express();
   const httpServer = http.createServer(app);
@@ -25,8 +26,9 @@ const init = ctx => {
       .use('/build', express.static(buildPath))
       .use('/static', express.static(path.join(buildPath, '/static')))
       .use('/ping', (req, res) => res.json({ ping: 'pong' }))
-      .use('/status', requestConnector('status', restApi))
+      .use('/status', staticConnector('status', status))
       .use(logger('peep:http', 'dev'))
+      .use('/api', apiConnector(api))
       .use(errors)
       .use((req, res) => res.redirect('/build/index.html'));
 

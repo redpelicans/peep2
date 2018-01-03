@@ -2,6 +2,7 @@ import Yup from 'yup';
 import R from 'ramda';
 import { ObjectID } from 'mongodb';
 import { Note } from '../models';
+import httpStatus from 'http-status';
 
 const ObjectSchema = Yup.mixed;
 export class ObjectIdSchemaType extends ObjectSchema {
@@ -43,7 +44,7 @@ export const validate = schema => ctx => {
 
 export const checkUser = () => ctx => {
   if (R.path(['locals', 'user'], ctx)) return Promise.resolve(ctx);
-  return Promise.reject({ code: 403, error: 'Forbidden access' });
+  return Promise.reject(new ForbiddenAccessError());
 };
 
 export const emitEvent = name => ctx => {
@@ -92,3 +93,13 @@ export const emitNotesDeleted = () => ctx => {
   });
   return Promise.resolve(ctx);
 };
+
+function ForbiddenAccessError() {
+  Error.captureStackTrace(this, ForbiddenAccessError);
+  this.code = httpStatus.FORBIDDEN;
+  this.message = 'Forbidden Access';
+  this.name = 'ForbiddenAccess';
+}
+
+ForbiddenAccessError.prototype = Object.create(Error.prototype);
+ForbiddenAccessError.prototype.constructor = ForbiddenAccessError;

@@ -264,13 +264,9 @@ class Reactor {
             else loginfo(`answered ${message.type} action`);
           })
           .catch(err => {
-            const res = R.is(Error, err)
-              ? { code: 500, message: err.toString() }
-              : { code: err.code, message: err.error };
-            if (process.env.NODE_ENV !== 'test')
-              console.error(err.stack || res.message); // eslint-disable-line no-console
-            if (cb) return cb(res);
-            socket.emit('action', { type: 'EvtX:Error', ...res });
+            if (process.env.NODE_ENV !== 'test') console.error(err.stack); // eslint-disable-line no-console
+            if (cb) return cb(err);
+            socket.emit('action', { type: 'EvtX:Error', code: err.code });
           });
       });
     });
@@ -278,8 +274,8 @@ class Reactor {
 }
 
 const init = ctx => {
-  const { evtx, io } = ctx;
-  new Reactor(evtx, io);
+  const { api, io } = ctx;
+  new Reactor(api, io);
   return Promise.resolve(ctx);
 };
 

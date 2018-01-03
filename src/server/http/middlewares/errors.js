@@ -1,8 +1,9 @@
+import httpStatus from 'http-status';
+
 const error = (err, req, res, next) => {
   if (!err) return next();
-  const message = err.message;
   console.log(err.stack); // eslint-disable-line no-console
-  res.status(500).json({ message });
+  res.sendStatus(err.code || httpStatus.INTERNAL_SERVER_ERROR);
 };
 
 export default error;
