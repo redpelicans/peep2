@@ -4,3 +4,4 @@ export { Company, Client, Tenant } from './companies';
 export Preference from './preferences';
 export Mission from './missions';
 export Event from './events';
+export Addenda from './addenda';

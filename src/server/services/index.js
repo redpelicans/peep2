@@ -11,6 +11,7 @@ import initNotes from './notes';
 import initAuth from './auth';
 import initStatus from './status';
 import initMissions from './missions';
+import initAddenda from './addenda';
 
 const allServices = [
   initAuth,
@@ -25,6 +26,7 @@ const allServices = [
   initCalendar,
   initStatus,
   initMissions,
+  initAddenda,
 ];
 
 const init = evtx =>

@@ -24,12 +24,8 @@ const data = {
         partnerId: new ObjectId(),
         managerId: new ObjectId(),
         name: 'name',
-        startDate: new Date(),
-        endDate: new Date(),
         billedTarget: 'client',
-        timesheetUnit: 'hour',
         allowWeekends: true,
-        workerIds: [new ObjectId(), new ObjectId()],
       },
     ],
   },
@@ -69,12 +65,8 @@ describe('Missions service', () => {
       partnerId: new ObjectId(),
       managerId: new ObjectId(),
       name: 'name',
-      startDate: new Date(),
-      endDate: new Date(),
       billedTarget: 'partner',
-      timesheetUnit: 'day',
       allowWeekends: false,
-      workerIds: [new ObjectId(), new ObjectId()],
     };
     const user = { _id: 0 };
     const checkObj = obj => {
@@ -96,12 +88,8 @@ describe('Missions service', () => {
       partnerId: new ObjectId(),
       managerId: new ObjectId(),
       name: 'name',
-      startDate: new Date(),
-      endDate: new Date(),
       billedTarget: 'client',
-      timesheetUnit: 'hour',
       allowWeekends: true,
-      workerIds: [new ObjectId(), new ObjectId()],
     };
     const user = { _id: 0 };
 
@@ -121,24 +109,16 @@ describe('Missions service', () => {
       partnerId: new ObjectId(),
       managerId: new ObjectId(),
       name: 'name',
-      startDate: new Date(),
-      endDate: new Date(),
       billedTarget: 'client',
-      timesheetUnit: 'hour',
       allowWeekends: true,
-      workerIds: [new ObjectId(), new ObjectId()],
     };
     const updates = {
       clientId: new ObjectId(),
       partnerId: new ObjectId(),
       managerId: new ObjectId(),
       name: 'new name',
-      startDate: new Date(),
-      endDate: new Date(),
       billedTarget: 'partner',
-      timesheetUnit: 'day',
       allowWeekends: false,
-      workerIds: [new ObjectId(), new ObjectId()],
     };
     const user = { _id: 0 };
     const checkObj = obj => {
@@ -160,24 +140,16 @@ describe('Missions service', () => {
       partnerId: new ObjectId(),
       managerId: new ObjectId(),
       name: 'name',
-      startDate: new Date(),
-      endDate: new Date(),
       billedTarget: 'client',
-      timesheetUnit: 'hour',
       allowWeekends: true,
-      workerIds: [new ObjectId(), new ObjectId()],
     };
     const updates = {
       clientId: new ObjectId(),
       partnerId: new ObjectId(),
       managerId: new ObjectId(),
       name: 'new name',
-      startDate: new Date(),
-      endDate: new Date(),
       billedTarget: 'partner',
-      timesheetUnit: 'day',
       allowWeekends: false,
-      workerIds: [new ObjectId(), new ObjectId()],
     };
     const user = { _id: 0 };
 

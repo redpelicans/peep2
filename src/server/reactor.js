@@ -61,6 +61,7 @@ class Reactor {
     this.initPeople();
     this.initNotes();
     this.initMissions();
+    this.initAddenda();
     this.initWorkersEvents();
   }
 
@@ -193,6 +194,26 @@ class Reactor {
     evtx.service('missions').on('mission:added', this.broadcast(pushEvent));
     evtx.service('missions').on('mission:updated', this.broadcast(pushEvent));
     evtx.service('missions').on('mission:deleted', this.broadcast(pushEvent));
+  }
+
+  initAddenda() {
+    const { evtx } = this;
+    const pushEvent = (
+      {
+        locals: { socket },
+        output: addendum,
+        message: { broadcastAll, replyTo },
+      },
+      targetUser,
+      targetSocket,
+    ) => {
+      const action = makeOutput(addendum, replyTo);
+      if (!broadcastAll && targetSocket === socket) return;
+      targetSocket.emit('action', action);
+    };
+    evtx.service('addenda').on('addendum:added', this.broadcast(pushEvent));
+    evtx.service('addenda').on('addendum:updated', this.broadcast(pushEvent));
+    evtx.service('addenda').on('addendum:deleted', this.broadcast(pushEvent));
   }
 
   initNotes() {

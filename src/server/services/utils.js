@@ -5,19 +5,19 @@ import { Note } from '../models';
 
 const ObjectSchema = Yup.mixed;
 export class ObjectIdSchemaType extends ObjectSchema {
-  constructor() {
-    super();
-    this.withMutation(() => {
-      this.transform(function(value, originalvalue) {
-        try {
-          return new ObjectID(originalvalue);
-        } catch (err) {
-          return originalvalue;
-        }
-      });
-      this.typeError('must be an ObjectID');
-    });
-  }
+  // constructor() {
+  //   super();
+  //   this.withMutation(() => {
+  //     this.transform(function(value, originalvalue) {
+  //       try {
+  //         return new ObjectID(originalvalue);
+  //       } catch (err) {
+  //         return originalvalue;
+  //       }
+  //     });
+  //     this.typeError('must be an ObjectID');
+  //   });
+  // }
 
   _typeCheck(value) {
     return value ? ObjectID.isValid(value) : true;

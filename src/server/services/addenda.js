@@ -2,34 +2,34 @@
 
 import debug from 'debug';
 import Yup from 'yup';
-import moment from 'moment';
 import R from 'ramda';
 import { ObjectId } from 'mongobless';
-import { Mission, Note } from '../models';
+import { Addenda } from '../models';
 import {
   checkUser,
   emitEvent,
-  emitAddNoteEvent,
   formatOutput,
   ObjectIdSchemaType,
   validate,
 } from './utils';
 
 const loginfo = debug('peep:evtx');
-const SERVICE_NAME = 'missions';
+const SERVICE_NAME = 'addenda';
 
 const addSchema = Yup.object().shape({
-  clientId: new ObjectIdSchemaType().required(),
-  partnerId: new ObjectIdSchemaType(),
-  managerId: new ObjectIdSchemaType().required(),
-  name: Yup.string()
-    .trim()
-    .required(),
-  billedTarget: Yup.string()
-    .oneOf(['client', 'partner'])
-    .required(),
-  allowWeekends: Yup.bool(),
-  note: Yup.string(),
+  missionId: new ObjectIdSchemaType().required(),
+  workerId: new ObjectIdSchemaType().required(),
+  startDate: Yup.date().required(),
+  endDate: Yup.date(),
+  fees: Yup.object().shape({
+    amount: Yup.number().required(),
+    unit: Yup.string()
+      .oneOf(['day'])
+      .required(),
+    currency: Yup.string()
+      .oneOf(['EUR'])
+      .required(),
+  }),
 });
 
 const updateSchema = addSchema.concat(
@@ -43,36 +43,29 @@ const deleteSchema = Yup.object().shape({
 });
 
 const inMaker = input => {
-  const newMission = R.omit(['note'], input);
-  return newMission;
+  return input;
 };
 
-export const missions = {
+export const addenda = {
   load() {
-    return Mission.loadAll();
+    return Addenda.loadAll();
   },
 
   add(input) {
-    const noteContent = input.note;
-    const { locals: { user: author } } = this;
-    const newMission = inMaker(input);
-    newMission.createdAt = new Date();
+    const newAddendum = inMaker(input);
+    newAddendum.createdAt = new Date();
     const insertOne = p =>
-      Mission.collection.insertOne(p).then(R.prop('insertedId'));
-    const loadOne = id => Mission.loadOne(id);
-    const createNote = mission => Note.create(noteContent, author, mission);
-
-    return insertOne(newMission)
-      .then(loadOne)
-      .then(createNote);
+      Addenda.collection.insertOne(p).then(R.prop('insertedId'));
+    const loadOne = id => Addenda.loadOne(id);
+    return insertOne(newAddendum).then(loadOne);
   },
 
-  update(mission) {
-    const newVersion = inMaker(mission);
+  update(addendum) {
+    const newVersion = inMaker(addendum);
     newVersion.updatedAt = new Date();
-    const loadOne = ({ _id }) => Mission.loadOne(_id);
+    const loadOne = ({ _id }) => Addenda.loadOne(_id);
     const update = nextVersion => previousVersion =>
-      Mission.collection
+      Addenda.collection
         .updateOne(
           { _id: previousVersion._id },
           { $set: { ...nextVersion, updatedAt: new Date() } },
@@ -86,7 +79,7 @@ export const missions = {
 
   del({ _id }) {
     const deleteOne = () =>
-      Mission.collection.updateOne(
+      Addenda.collection.updateOne(
         { _id },
         { $set: { updatedAt: new Date(), isDeleted: true } },
       );
@@ -94,14 +87,14 @@ export const missions = {
   },
 };
 
-const outMaker = mission => {
-  return mission;
+const outMaker = addendum => {
+  return addendum;
 };
 
 export const outMakerMany = R.map(outMaker);
 
 const init = evtx => {
-  evtx.use(SERVICE_NAME, missions);
+  evtx.use(SERVICE_NAME, addenda);
   evtx
     .service(SERVICE_NAME)
     .before({
@@ -112,16 +105,12 @@ const init = evtx => {
     })
     .after({
       load: [formatOutput(outMakerMany)],
-      add: [
-        emitAddNoteEvent(),
-        formatOutput(outMaker),
-        emitEvent('mission:added'),
-      ],
-      update: [formatOutput(outMaker), emitEvent('mission:updated')],
-      del: [emitEvent('note:deleted')],
+      add: [formatOutput(outMaker), emitEvent('addendum:added')],
+      update: [formatOutput(outMaker), emitEvent('addendum:updated')],
+      del: [emitEvent('addendum:deleted')],
     });
 
-  loginfo('mission service registered');
+  loginfo('addenda service registered');
 };
 
 export default init;
