@@ -31,29 +31,28 @@ const data = {
 };
 
 const ctx = {};
-beforeAll(() => connect(config.db).then(db => ctx.db = db));
+beforeAll(() => connect(config.db).then(db => (ctx.db = db)));
 afterAll(close);
 
 describe('People models', () => {
   beforeEach(() => drop(ctx.db).then(() => load(ctx.db, data)));
 
-  it('expect find all', (done) => {
-    Person
-      .loadAll()
+  it('expect find all', done => {
+    Person.loadAll()
       .then(people => {
         const names = people.map(person => person.firstName).join('');
         const res = data.collections.people
           .filter(person => !person.isDeleted)
-          .map(person => person.firstName).join('');
+          .map(person => person.firstName)
+          .join('');
         expect(names).toEqual(res);
         done();
       })
       .catch(done);
   });
 
-  it('expect load all', (done) => {
-    Person
-      .loadAll({ firstName: 'B' })
+  it('expect load all', done => {
+    Person.loadAll({ firstName: 'B' })
       .then(people => {
         const names = people.map(person => person.firstName).join('');
         expect(names).toEqual('B');
@@ -62,31 +61,27 @@ describe('People models', () => {
       .catch(done);
   });
 
-
-  it('expect load one', (done) => {
+  it('expect load one', done => {
     const { _id, _fullName, roles } = data.collections.people[0];
-    Person
-      .loadOne(_id)
+    Person.loadOne(_id)
       .then(person => {
         expect(person._id).toEqual(_id);
         expect(person.fullName()).toEqual(_fullName);
-        expect(person.isAdmin()).true();
-        expect(person.isWorker()).true();
-        expect(person.hasSomeRoles(['role1', 'admin', 'toto'])).true();
-        expect(person.hasAllRoles(['role1', 'admin'])).true();
-        expect(person.hasAllRoles(['role1', 'admin', 'toto'])).false();
-        expect(person.hasAllRoles([])).true();
-        expect(person.hasSomeRoles()).true();
+        expect(person.isAdmin()).toBeTruthy();
+        expect(person.isWorker()).toBeTruthy();
+        expect(person.hasSomeRoles(['role1', 'admin', 'toto'])).toBeTruthy();
+        expect(person.hasAllRoles(['role1', 'admin'])).toBeTruthy();
+        expect(person.hasAllRoles(['role1', 'admin', 'toto'])).toBeFalsy();
+        expect(person.hasAllRoles([])).toBeTruthy();
+        expect(person.hasSomeRoles()).toBeTruthy();
         done();
       })
       .catch(done);
   });
 
-
-  it('expect find one', (done) => {
+  it('expect find one', done => {
     const firstName = data.collections.people[0].firstName;
-    Person
-      .findOne({ firstName })
+    Person.findOne({ firstName })
       .then(person => {
         expect(person.firstName).toEqual(firstName);
         done();
@@ -94,4 +89,3 @@ describe('People models', () => {
       .catch(done);
   });
 });
-

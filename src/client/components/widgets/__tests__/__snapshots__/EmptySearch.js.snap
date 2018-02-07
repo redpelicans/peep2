@@ -2,53 +2,46 @@
 
 exports[`<EmptySearch /> should render an <EmptySearch /> 1`] = `
 ShallowWrapper {
-  "complexSelector": ComplexSelector {
-    "buildPredicate": [Function],
-    "childrenOfNode": [Function],
-    "findWhereUnwrapped": [Function],
-  },
   "length": 1,
-  "node": <span
-    className="sc-bdVaJa iejKxA"
-/>,
-  "nodes": Array [
-    <span
-      className="sc-bdVaJa iejKxA"
-/>,
-  ],
-  "options": Object {},
-  "renderer": ReactShallowRenderer {
-    "_context": Object {},
-    "_element": <styled.span />,
-    "_instance": StyledComponent {
-      "attrs": Object {},
-      "context": Object {},
-      "props": Object {},
-      "refs": Object {},
-      "state": Object {
-        "generatedClassName": "iejKxA",
-        "theme": null,
-      },
-      "unsubscribeId": -1,
-      "updater": Updater {
-        "_renderer": [Circular],
-      },
-    },
-    "_newState": Object {
-      "generatedClassName": "iejKxA",
-      "theme": null,
-    },
-    "_rendered": <span
-      className="sc-bdVaJa iejKxA"
-/>,
-    "_rendering": false,
-    "_updater": Updater {
-      "_renderer": [Circular],
-    },
-    "getRenderOutput": [Function],
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <styled.span />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
     "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
   },
-  "root": [Circular],
-  "unrendered": <styled.span />,
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "className": "sc-bdVaJa iejKxA",
+    },
+    "ref": null,
+    "rendered": null,
+    "type": "span",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "className": "sc-bdVaJa iejKxA",
+      },
+      "ref": null,
+      "rendered": null,
+      "type": "span",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
 }
 `;
