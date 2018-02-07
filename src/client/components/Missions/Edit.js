@@ -141,9 +141,6 @@ const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => (
       managerId,
       allowWeekends,
       timesheetUnit,
-      startDate,
-      endDate,
-      workerIds,
       note,
       _id,
     }) => {
@@ -155,9 +152,6 @@ const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => (
         managerId,
         allowWeekends: allowWeekends === 'allow' ? true : false,
         timesheetUnit,
-        startDate,
-        endDate,
-        workerIds: workerIds ? map(workerId => workerId.value, workerIds) : [],
         note,
         _id,
       };
