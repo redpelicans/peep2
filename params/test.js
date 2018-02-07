@@ -1,6 +1,6 @@
 module.exports = {
   db: {
-    host: 'rp3.redpelicans.com',
+    host: '127.0.0.1',
     port: 27017,
     options: {
       auto_reconnect: true,

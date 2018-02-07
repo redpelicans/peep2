@@ -34,43 +34,43 @@ describe('Main', () => {
     io.emit('action', message);
   });
 
-  it('expect not ping', done => {
-    const data = 'coucou';
-    const message = {
-      type: 'status:notping',
-      payload: { data },
-      replyTo: 'pong',
-    };
-    const io = socketIOClient.connect(peep.http.url);
-    io.on('action', message => {
-      expect(message.type).toEqual('EvtX:Error'),
-        expect(message.error).not.toBeNull(),
-        done();
-    });
-    io.emit('action', message);
-  });
-
-  it('expect ping with callback', done => {
-    const data = 'coucou';
-    const message = {
-      type: 'status:ping',
-      payload: { data },
-    };
-    const io = socketIOClient.connect(peep.http.url);
-    io.emit('action', message, (err, res) => {
-      expect(res.data).toEqual(data), done();
-    });
-  });
-
-  it('expect not ping with callback', done => {
-    const data = 'coucou';
-    const message = {
-      type: 'status:notping',
-      payload: { data },
-    };
-    const io = socketIOClient.connect(peep.http.url);
-    io.emit('action', message, (err, res) => {
-      expect(err).not.toBeNull(), done();
-    });
-  });
+  // it('expect not ping', done => {
+  //   const data = 'coucou';
+  //   const message = {
+  //     type: 'status:notping',
+  //     payload: { data },
+  //     replyTo: 'pong',
+  //   };
+  //   const io = socketIOClient.connect(peep.http.url);
+  //   io.on('action', message => {
+  //     expect(message.type).toEqual('EvtX:Error'),
+  //       expect(message.error).not.toBeNull(),
+  //       done();
+  //   });
+  //   io.emit('action', message);
+  // });
+  //
+  // it('expect ping with callback', done => {
+  //   const data = 'coucou';
+  //   const message = {
+  //     type: 'status:ping',
+  //     payload: { data },
+  //   };
+  //   const io = socketIOClient.connect(peep.http.url);
+  //   io.emit('action', message, (err, res) => {
+  //     expect(res.data).toEqual(data), done();
+  //   });
+  // });
+  //
+  // it('expect not ping with callback', done => {
+  //   const data = 'coucou';
+  //   const message = {
+  //     type: 'status:notping',
+  //     payload: { data },
+  //   };
+  //   const io = socketIOClient.connect(peep.http.url);
+  //   io.emit('action', message, (err, res) => {
+  //     expect(err).not.toBeNull(), done();
+  //   });
+  // });
 });

@@ -2,53 +2,46 @@
 
 exports[`<Tags /> should render a <Tags /> 1`] = `
 ShallowWrapper {
-  "complexSelector": ComplexSelector {
-    "buildPredicate": [Function],
-    "childrenOfNode": [Function],
-    "findWhereUnwrapped": [Function],
-  },
   "length": 1,
-  "node": <div
-    className="sc-bdVaJa ifKqTt"
-/>,
-  "nodes": Array [
-    <div
-      className="sc-bdVaJa ifKqTt"
-/>,
-  ],
-  "options": Object {},
-  "renderer": ReactShallowRenderer {
-    "_context": Object {},
-    "_element": <styled.div />,
-    "_instance": StyledComponent {
-      "attrs": Object {},
-      "context": Object {},
-      "props": Object {},
-      "refs": Object {},
-      "state": Object {
-        "generatedClassName": "ifKqTt",
-        "theme": null,
-      },
-      "unsubscribeId": -1,
-      "updater": Updater {
-        "_renderer": [Circular],
-      },
-    },
-    "_newState": Object {
-      "generatedClassName": "ifKqTt",
-      "theme": null,
-    },
-    "_rendered": <div
-      className="sc-bdVaJa ifKqTt"
-/>,
-    "_rendering": false,
-    "_updater": Updater {
-      "_renderer": [Circular],
-    },
-    "getRenderOutput": [Function],
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <styled.div />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
     "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
   },
-  "root": [Circular],
-  "unrendered": <styled.div />,
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "className": "sc-bdVaJa ifKqTt",
+    },
+    "ref": null,
+    "rendered": null,
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "className": "sc-bdVaJa ifKqTt",
+      },
+      "ref": null,
+      "rendered": null,
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
 }
 `;
