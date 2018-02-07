@@ -129,9 +129,6 @@ const FormikAdd = props => (
       managerId,
       allowWeekends,
       timesheetUnit,
-      startDate,
-      endDate,
-      workerIds,
       note,
     }) => {
       const { addMission, history } = props;
@@ -143,9 +140,6 @@ const FormikAdd = props => (
         managerId,
         allowWeekends: allowWeekends === 'allow' ? true : false,
         timesheetUnit,
-        startDate,
-        endDate,
-        workerIds: workerIds ? map(workerId => workerId.value, workerIds) : [],
         note,
       };
       addMission(newMission);

@@ -40,10 +40,6 @@ const fields = {
     component: WorkerSelectField,
     required: true,
   },
-  workerIds: {
-    label: 'Workers',
-    component: AssigneesSelectField,
-  },
   note: {
     label: 'Note',
     component: MarkDownField,
@@ -63,14 +59,6 @@ const fields = {
     domainValues: [{ id: 'day', value: 'Day' }, { id: 'hour', value: 'Hour' }],
     component: SelectField,
     required: true,
-  },
-  startDate: {
-    label: 'Start Date',
-    component: DateField,
-  },
-  endDate: {
-    label: 'End Date',
-    component: DateField,
   },
 };
 

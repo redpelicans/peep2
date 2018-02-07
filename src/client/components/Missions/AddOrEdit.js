@@ -15,11 +15,11 @@ const MissionForm = styled.form`
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
   grid-template-areas: 'clientId' 'name' 'partnerId' 'billedTarget' 'managerId'
-    'allowWeekends' 'timesheetUnit' 'startDate' 'endDate' 'workerIds' 'note';
+    'allowWeekends' 'timesheetUnit' 'note';
   @media (min-width: 700px) {
     grid-template-areas: 'clientId name name' 'partnerId partnerId billedTarget'
-      'managerId managerId allowWeekends' 'timesheetUnit startDate endDate'
-      'workerIds workerIds workerIds' 'note note note';
+      'managerId managerId allowWeekends' 'timesheetUnit null null'
+      'note note note';
   }
 `;
 
@@ -78,14 +78,6 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('workerIds')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
         field={getField('note')}
         values={values}
         touched={touched}
@@ -103,22 +95,6 @@ const AddOrEditForm = ({
       />
       <StyledFormField
         field={getField('timesheetUnit')}
-        values={values}
-        touched={touched}
-        errors={errors}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('startDate')}
-        values={values}
-        touched={touched}
-        errors={errors}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('endDate')}
         values={values}
         touched={touched}
         errors={errors}
