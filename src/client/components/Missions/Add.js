@@ -65,20 +65,20 @@ export const Add = compose(
             form="missionForm"
             type="submit"
             disabled={isSubmitting || !isValid || !dirty}
-            className="pt-intent-success pt-large"
+            className="submit pt-intent-success pt-large"
           >
             Create
           </Button>
           <Spacer />
           <Button
             onClick={requestCancel(dirty)}
-            className="pt-intent-warning pt-large"
+            className="cancel pt-intent-warning pt-large"
           >
             Cancel
           </Button>
           <Spacer />
           <Button
-            className="pt-intent-danger pt-large"
+            className="reset pt-intent-danger pt-large"
             onClick={handleReset}
             disabled={!dirty || isSubmitting}
           >
