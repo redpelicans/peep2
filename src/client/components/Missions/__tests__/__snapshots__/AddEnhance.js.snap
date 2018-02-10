@@ -1,0 +1,2960 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`app | components | Mission | component render should match snapshot 1`] = `
+.c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 1.5em;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-right: 25px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 1.5em;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-left: 25px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.c2 {
+  padding-top: 1rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 1em;
+  padding-bottom: 2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  border-bottom: 1.5px solid rgb(49,65,77);
+  grid-row: 2;
+}
+
+.c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c12 {
+  margin-left: 5px;
+  color: #FF7373;
+}
+
+.c14 {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #FF7373;
+  margin-top: 5px;
+}
+
+.c13 {
+  height: 36px;
+}
+
+.c5 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  position: relative;
+  min-width: 300px;
+  padding: 20px;
+  margin: 25px;
+  margin-top: 40px;
+  background-color: #394b59;
+  border-radius: 3px;
+}
+
+.c4 {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.c7 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.c8 {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.c22 {
+  right: 0;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+  margin-bottom: 15px;
+}
+
+.c23 {
+  min-height: 150px;
+  min-width: 100%;
+}
+
+.c20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c21 {
+  z-index: 0;
+}
+
+.c9 {
+  display: grid;
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  width: 90%;
+  grid-gap: 20px;
+  grid-auto-columns: minmax(70px,auto);
+  grid-auto-rows: minmax(70px,auto);
+  grid-template-areas: 'clientId' 'name' 'partnerId' 'billedTarget' 'managerId' 'allowWeekends' 'timesheetUnit' 'note';
+}
+
+.c10 {
+  grid-area: name;
+}
+
+.c15 {
+  grid-area: clientId;
+}
+
+.c16 {
+  grid-area: partnerId;
+}
+
+.c17 {
+  grid-area: billedTarget;
+}
+
+.c18 {
+  grid-area: managerId;
+}
+
+.c19 {
+  grid-area: note;
+}
+
+.c24 {
+  grid-area: allowWeekends;
+}
+
+.c25 {
+  grid-area: timesheetUnit;
+}
+
+.c0 {
+  min-width: 300px;
+}
+
+@media (min-width:700px) {
+  .c9 {
+    grid-template-areas: 'clientId name name' 'partnerId partnerId billedTarget' 'managerId managerId allowWeekends' 'timesheetUnit null null' 'note note note';
+  }
+}
+
+<Provider
+  store={
+    Object {
+      "dispatch": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+      Symbol(observable): [Function],
+    }
+  }
+>
+  <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 1,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+          "state": undefined,
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <Connect(FormikAdd)
+      history={
+        Object {
+          "action": "POP",
+          "block": [Function],
+          "createHref": [Function],
+          "go": [Function],
+          "goBack": [Function],
+          "goForward": [Function],
+          "length": 1,
+          "listen": [Function],
+          "location": Object {
+            "hash": "",
+            "pathname": "/",
+            "search": "",
+            "state": undefined,
+          },
+          "push": [Function],
+          "replace": [Function],
+        }
+      }
+    >
+      <FormikAdd
+        addMission={[Function]}
+        dispatch={[Function]}
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "createHref": [Function],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <Formik
+          enableReinitialize={false}
+          initialValues={
+            Object {
+              "allowWeekends": "doNotAllow",
+              "billedTarget": "client",
+              "clientId": undefined,
+              "managerId": undefined,
+              "name": undefined,
+              "note": undefined,
+              "partnerId": undefined,
+              "timesheetUnit": "day",
+            }
+          }
+          isInitialValid={false}
+          onSubmit={[Function]}
+          render={[Function]}
+          validateOnBlur={true}
+          validateOnChange={true}
+          validationSchema={
+            ObjectSchema {
+              "_blacklist": Set {},
+              "_conditions": Array [],
+              "_defaultDefault": [Function],
+              "_deps": Array [],
+              "_excludedEdges": Array [
+                "undefined-undefined",
+              ],
+              "_exclusive": Object {},
+              "_mutate": false,
+              "_nodes": Array [],
+              "_options": Object {
+                "abortEarly": true,
+                "recursive": true,
+              },
+              "_type": "object",
+              "_typeError": [Function],
+              "_whitelist": Set {},
+              "fields": Object {},
+              "tests": Array [],
+              "transforms": Array [
+                [Function],
+              ],
+            }
+          }
+        >
+          <withState(withHandlers(Component))
+            addMission={[Function]}
+            dirty={false}
+            dispatch={[Function]}
+            errors={Object {}}
+            handleBlur={[Function]}
+            handleChange={[Function]}
+            handleReset={[Function]}
+            handleSubmit={[Function]}
+            history={
+              Object {
+                "action": "POP",
+                "block": [Function],
+                "createHref": [Function],
+                "go": [Function],
+                "goBack": [Function],
+                "goForward": [Function],
+                "length": 1,
+                "listen": [Function],
+                "location": Object {
+                  "hash": "",
+                  "pathname": "/",
+                  "search": "",
+                  "state": undefined,
+                },
+                "push": [Function],
+                "replace": [Function],
+              }
+            }
+            initialValues={
+              Object {
+                "allowWeekends": "doNotAllow",
+                "billedTarget": "client",
+                "clientId": undefined,
+                "managerId": undefined,
+                "name": undefined,
+                "note": undefined,
+                "partnerId": undefined,
+                "timesheetUnit": "day",
+              }
+            }
+            isSubmitting={false}
+            isValid={false}
+            resetForm={[Function]}
+            setError={[Function]}
+            setErrors={[Function]}
+            setFieldError={[Function]}
+            setFieldTouched={[Function]}
+            setFieldValue={[Function]}
+            setStatus={[Function]}
+            setSubmitting={[Function]}
+            setTouched={[Function]}
+            setValues={[Function]}
+            submitForm={[Function]}
+            touched={Object {}}
+            values={
+              Object {
+                "allowWeekends": "doNotAllow",
+                "billedTarget": "client",
+                "clientId": undefined,
+                "managerId": undefined,
+                "name": undefined,
+                "note": undefined,
+                "partnerId": undefined,
+                "timesheetUnit": "day",
+              }
+            }
+          >
+            <withHandlers(Component)
+              addMission={[Function]}
+              dirty={false}
+              dispatch={[Function]}
+              errors={Object {}}
+              handleBlur={[Function]}
+              handleChange={[Function]}
+              handleReset={[Function]}
+              handleSubmit={[Function]}
+              history={
+                Object {
+                  "action": "POP",
+                  "block": [Function],
+                  "createHref": [Function],
+                  "go": [Function],
+                  "goBack": [Function],
+                  "goForward": [Function],
+                  "length": 1,
+                  "listen": [Function],
+                  "location": Object {
+                    "hash": "",
+                    "pathname": "/",
+                    "search": "",
+                    "state": undefined,
+                  },
+                  "push": [Function],
+                  "replace": [Function],
+                }
+              }
+              initialValues={
+                Object {
+                  "allowWeekends": "doNotAllow",
+                  "billedTarget": "client",
+                  "clientId": undefined,
+                  "managerId": undefined,
+                  "name": undefined,
+                  "note": undefined,
+                  "partnerId": undefined,
+                  "timesheetUnit": "day",
+                }
+              }
+              isCancelDialogOpen={false}
+              isSubmitting={false}
+              isValid={false}
+              resetForm={[Function]}
+              setError={[Function]}
+              setErrors={[Function]}
+              setFieldError={[Function]}
+              setFieldTouched={[Function]}
+              setFieldValue={[Function]}
+              setStatus={[Function]}
+              setSubmitting={[Function]}
+              setTouched={[Function]}
+              setValues={[Function]}
+              showCancelDialog={[Function]}
+              submitForm={[Function]}
+              touched={Object {}}
+              values={
+                Object {
+                  "allowWeekends": "doNotAllow",
+                  "billedTarget": "client",
+                  "clientId": undefined,
+                  "managerId": undefined,
+                  "name": undefined,
+                  "note": undefined,
+                  "partnerId": undefined,
+                  "timesheetUnit": "day",
+                }
+              }
+            >
+              <Component
+                addMission={[Function]}
+                cancel={[Function]}
+                dirty={false}
+                dispatch={[Function]}
+                errors={Object {}}
+                handleBlur={[Function]}
+                handleChange={[Function]}
+                handleReset={[Function]}
+                handleSubmit={[Function]}
+                history={
+                  Object {
+                    "action": "POP",
+                    "block": [Function],
+                    "createHref": [Function],
+                    "go": [Function],
+                    "goBack": [Function],
+                    "goForward": [Function],
+                    "length": 1,
+                    "listen": [Function],
+                    "location": Object {
+                      "hash": "",
+                      "pathname": "/",
+                      "search": "",
+                      "state": undefined,
+                    },
+                    "push": [Function],
+                    "replace": [Function],
+                  }
+                }
+                initialValues={
+                  Object {
+                    "allowWeekends": "doNotAllow",
+                    "billedTarget": "client",
+                    "clientId": undefined,
+                    "managerId": undefined,
+                    "name": undefined,
+                    "note": undefined,
+                    "partnerId": undefined,
+                    "timesheetUnit": "day",
+                  }
+                }
+                isCancelDialogOpen={false}
+                isSubmitting={false}
+                isValid={false}
+                requestCancel={[Function]}
+                resetForm={[Function]}
+                setError={[Function]}
+                setErrors={[Function]}
+                setFieldError={[Function]}
+                setFieldTouched={[Function]}
+                setFieldValue={[Function]}
+                setStatus={[Function]}
+                setSubmitting={[Function]}
+                setTouched={[Function]}
+                setValues={[Function]}
+                showCancelDialog={[Function]}
+                submitForm={[Function]}
+                toggleDialog={[Function]}
+                touched={Object {}}
+                values={
+                  Object {
+                    "allowWeekends": "doNotAllow",
+                    "billedTarget": "client",
+                    "clientId": undefined,
+                    "managerId": undefined,
+                    "name": undefined,
+                    "note": undefined,
+                    "partnerId": undefined,
+                    "timesheetUnit": "day",
+                  }
+                }
+              >
+                <Styled(styled.div)>
+                  <styled.div
+                    className="c0"
+                  >
+                    <div
+                      className="c0 c1"
+                    >
+                      <Prompt
+                        message="Would you like to cancel this form ?"
+                        when={false}
+                      />
+                      <ModalConfirmation
+                        accept={[Function]}
+                        isOpen={false}
+                        reject={[Function]}
+                        title="Would you like to cancel this form ?"
+                      >
+                        <Blueprint.Dialog
+                          canOutsideClickClose={true}
+                          className="pt-dark"
+                          isOpen={false}
+                        >
+                          <Blueprint.Overlay
+                            autoFocus={true}
+                            backdropProps={Object {}}
+                            canEscapeKeyClose={true}
+                            canOutsideClickClose={true}
+                            className="pt-overlay-scroll-container"
+                            enforceFocus={true}
+                            hasBackdrop={true}
+                            inline={false}
+                            isOpen={false}
+                            lazy={true}
+                            transitionDuration={300}
+                            transitionName="pt-overlay"
+                          />
+                        </Blueprint.Dialog>
+                      </ModalConfirmation>
+                      <Header>
+                        <div>
+                          <styled.div>
+                            <div
+                              className="c2"
+                            >
+                              <HeaderLeft
+                                key=".0"
+                              >
+                                <styled.div>
+                                  <div
+                                    className="c3"
+                                  >
+                                    <styled.span
+                                      size={15}
+                                    >
+                                      <span
+                                        className="c4"
+                                        size={15}
+                                      />
+                                    </styled.span>
+                                    <Title
+                                      title="Add Mission"
+                                    >
+                                      <styled.span>
+                                        <span
+                                          className="c5"
+                                        >
+                                          Add Mission
+                                        </span>
+                                      </styled.span>
+                                    </Title>
+                                  </div>
+                                </styled.div>
+                              </HeaderLeft>
+                              <HeaderRight
+                                key=".1"
+                              >
+                                <styled.div>
+                                  <div
+                                    className="c6"
+                                  >
+                                    <Blueprint.Button
+                                      className="submit pt-intent-success pt-large"
+                                      disabled={true}
+                                      form="missionForm"
+                                      type="submit"
+                                    >
+                                      <button
+                                        className="pt-button pt-disabled submit pt-intent-success pt-large"
+                                        disabled={true}
+                                        form="missionForm"
+                                        onKeyDown={[Function]}
+                                        onKeyUp={[Function]}
+                                        type="submit"
+                                      >
+                                        <span
+                                          key="text-0/.0"
+                                        >
+                                          Create
+                                        </span>
+                                        <Blueprint.Icon
+                                          className="pt-align-right"
+                                          key="icon"
+                                        />
+                                      </button>
+                                    </Blueprint.Button>
+                                    <styled.span>
+                                      <span
+                                        className="c7"
+                                      />
+                                    </styled.span>
+                                    <Blueprint.Button
+                                      className="cancel pt-intent-warning pt-large"
+                                      onClick={[Function]}
+                                    >
+                                      <button
+                                        className="pt-button cancel pt-intent-warning pt-large"
+                                        onClick={[Function]}
+                                        onKeyDown={[Function]}
+                                        onKeyUp={[Function]}
+                                        type="button"
+                                      >
+                                        <span
+                                          key="text-0/.0"
+                                        >
+                                          Cancel
+                                        </span>
+                                        <Blueprint.Icon
+                                          className="pt-align-right"
+                                          key="icon"
+                                        />
+                                      </button>
+                                    </Blueprint.Button>
+                                    <styled.span>
+                                      <span
+                                        className="c7"
+                                      />
+                                    </styled.span>
+                                    <Blueprint.Button
+                                      className="reset pt-intent-danger pt-large"
+                                      disabled={true}
+                                      onClick={[Function]}
+                                    >
+                                      <button
+                                        className="pt-button pt-disabled reset pt-intent-danger pt-large"
+                                        disabled={true}
+                                        onKeyDown={[Function]}
+                                        onKeyUp={[Function]}
+                                        type="button"
+                                      >
+                                        <span
+                                          key="text-0/.0"
+                                        >
+                                          Reset
+                                        </span>
+                                        <Blueprint.Icon
+                                          className="pt-align-right"
+                                          key="icon"
+                                        />
+                                      </button>
+                                    </Blueprint.Button>
+                                    <styled.span
+                                      size={20}
+                                    >
+                                      <span
+                                        className="c8"
+                                        size={20}
+                                      />
+                                    </styled.span>
+                                  </div>
+                                </styled.div>
+                              </HeaderRight>
+                            </div>
+                          </styled.div>
+                        </div>
+                      </Header>
+                      <lifecycle(AddOrEditForm)
+                        addMission={[Function]}
+                        dispatch={[Function]}
+                        errors={Object {}}
+                        handleBlur={[Function]}
+                        handleChange={[Function]}
+                        handleSubmit={[Function]}
+                        history={
+                          Object {
+                            "action": "POP",
+                            "block": [Function],
+                            "createHref": [Function],
+                            "go": [Function],
+                            "goBack": [Function],
+                            "goForward": [Function],
+                            "length": 1,
+                            "listen": [Function],
+                            "location": Object {
+                              "hash": "",
+                              "pathname": "/",
+                              "search": "",
+                              "state": undefined,
+                            },
+                            "push": [Function],
+                            "replace": [Function],
+                          }
+                        }
+                        initialValues={
+                          Object {
+                            "allowWeekends": "doNotAllow",
+                            "billedTarget": "client",
+                            "clientId": undefined,
+                            "managerId": undefined,
+                            "name": undefined,
+                            "note": undefined,
+                            "partnerId": undefined,
+                            "timesheetUnit": "day",
+                          }
+                        }
+                        resetForm={[Function]}
+                        setError={[Function]}
+                        setErrors={[Function]}
+                        setFieldError={[Function]}
+                        setFieldTouched={[Function]}
+                        setFieldValue={[Function]}
+                        setStatus={[Function]}
+                        setSubmitting={[Function]}
+                        setTouched={[Function]}
+                        setValues={[Function]}
+                        submitForm={[Function]}
+                        toggleDialog={[Function]}
+                        touched={Object {}}
+                        type="add"
+                        values={
+                          Object {
+                            "allowWeekends": "doNotAllow",
+                            "billedTarget": "client",
+                            "clientId": undefined,
+                            "managerId": undefined,
+                            "name": undefined,
+                            "note": undefined,
+                            "partnerId": undefined,
+                            "timesheetUnit": "day",
+                          }
+                        }
+                      >
+                        <AddOrEditForm
+                          addMission={[Function]}
+                          dispatch={[Function]}
+                          errors={Object {}}
+                          handleBlur={[Function]}
+                          handleChange={[Function]}
+                          handleSubmit={[Function]}
+                          history={
+                            Object {
+                              "action": "POP",
+                              "block": [Function],
+                              "createHref": [Function],
+                              "go": [Function],
+                              "goBack": [Function],
+                              "goForward": [Function],
+                              "length": 1,
+                              "listen": [Function],
+                              "location": Object {
+                                "hash": "",
+                                "pathname": "/",
+                                "search": "",
+                                "state": undefined,
+                              },
+                              "push": [Function],
+                              "replace": [Function],
+                            }
+                          }
+                          initialValues={
+                            Object {
+                              "allowWeekends": "doNotAllow",
+                              "billedTarget": "client",
+                              "clientId": undefined,
+                              "managerId": undefined,
+                              "name": undefined,
+                              "note": undefined,
+                              "partnerId": undefined,
+                              "timesheetUnit": "day",
+                            }
+                          }
+                          resetForm={[Function]}
+                          setError={[Function]}
+                          setErrors={[Function]}
+                          setFieldError={[Function]}
+                          setFieldTouched={[Function]}
+                          setFieldValue={[Function]}
+                          setStatus={[Function]}
+                          setSubmitting={[Function]}
+                          setTouched={[Function]}
+                          setValues={[Function]}
+                          submitForm={[Function]}
+                          toggleDialog={[Function]}
+                          touched={Object {}}
+                          type="add"
+                          values={
+                            Object {
+                              "allowWeekends": "doNotAllow",
+                              "billedTarget": "client",
+                              "clientId": undefined,
+                              "managerId": undefined,
+                              "name": undefined,
+                              "note": undefined,
+                              "partnerId": undefined,
+                              "timesheetUnit": "day",
+                            }
+                          }
+                        >
+                          <styled.form
+                            id="missionForm"
+                            onSubmit={[Function]}
+                          >
+                            <form
+                              className="c9"
+                              id="missionForm"
+                              onSubmit={[Function]}
+                            >
+                              <Styled(FormField)
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "label": "Name",
+                                    "name": "name",
+                                    "required": true,
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                    "timesheetUnit": "day",
+                                  }
+                                }
+                              >
+                                <FormField
+                                  className="c10"
+                                  errors={Object {}}
+                                  field={
+                                    Object {
+                                      "component": [Function],
+                                      "label": "Name",
+                                      "name": "name",
+                                      "required": true,
+                                    }
+                                  }
+                                  setFieldTouched={[Function]}
+                                  setFieldValue={[Function]}
+                                  touched={Object {}}
+                                  values={
+                                    Object {
+                                      "allowWeekends": "doNotAllow",
+                                      "billedTarget": "client",
+                                      "clientId": undefined,
+                                      "managerId": undefined,
+                                      "name": undefined,
+                                      "note": undefined,
+                                      "partnerId": undefined,
+                                      "timesheetUnit": "day",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="c10"
+                                  >
+                                    <InputField
+                                      error={null}
+                                      label="Name"
+                                      name="name"
+                                      required={true}
+                                      setFieldTouched={[Function]}
+                                      setFieldValue={[Function]}
+                                    >
+                                      <Field
+                                        error={null}
+                                        label="Name"
+                                        required={true}
+                                      >
+                                        <styled.div>
+                                          <div
+                                            className="c11"
+                                          >
+                                            <label
+                                              className="pt-label"
+                                            >
+                                              Name
+                                              <RequiredTag
+                                                required={true}
+                                              >
+                                                <styled.span>
+                                                  <span
+                                                    className="c12"
+                                                  >
+                                                    *
+                                                  </span>
+                                                </styled.span>
+                                              </RequiredTag>
+                                            </label>
+                                            <styled.input
+                                              className="pt-input pt-fill"
+                                              dir="auto"
+                                              name="name"
+                                              onChange={[Function]}
+                                              value=""
+                                            >
+                                              <input
+                                                className="pt-input pt-fill c13"
+                                                dir="auto"
+                                                name="name"
+                                                onChange={[Function]}
+                                                value=""
+                                              />
+                                            </styled.input>
+                                            <styled.span>
+                                              <span
+                                                className="c14"
+                                              />
+                                            </styled.span>
+                                          </div>
+                                        </styled.div>
+                                      </Field>
+                                    </InputField>
+                                  </div>
+                                </FormField>
+                              </Styled(FormField)>
+                              <Styled(FormField)
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "label": "Client",
+                                    "name": "clientId",
+                                    "required": true,
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                    "timesheetUnit": "day",
+                                  }
+                                }
+                              >
+                                <FormField
+                                  className="c15"
+                                  errors={Object {}}
+                                  field={
+                                    Object {
+                                      "component": [Function],
+                                      "label": "Client",
+                                      "name": "clientId",
+                                      "required": true,
+                                    }
+                                  }
+                                  setFieldTouched={[Function]}
+                                  setFieldValue={[Function]}
+                                  touched={Object {}}
+                                  values={
+                                    Object {
+                                      "allowWeekends": "doNotAllow",
+                                      "billedTarget": "client",
+                                      "clientId": undefined,
+                                      "managerId": undefined,
+                                      "name": undefined,
+                                      "note": undefined,
+                                      "partnerId": undefined,
+                                      "timesheetUnit": "day",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="c15"
+                                  >
+                                    <Connect(Transformer)
+                                      error={null}
+                                      label="Client"
+                                      name="clientId"
+                                      required={true}
+                                      setFieldTouched={[Function]}
+                                      setFieldValue={[Function]}
+                                    >
+                                      <Transformer
+                                        companies={Array []}
+                                        dispatch={[Function]}
+                                        error={null}
+                                        label="Client"
+                                        name="clientId"
+                                        required={true}
+                                        setFieldTouched={[Function]}
+                                        setFieldValue={[Function]}
+                                      >
+                                        <SelectField
+                                          dispatch={[Function]}
+                                          domainValues={Array []}
+                                          error={null}
+                                          label="Client"
+                                          name="clientId"
+                                          required={true}
+                                          setFieldTouched={[Function]}
+                                          setFieldValue={[Function]}
+                                        >
+                                          <Field
+                                            label="Client"
+                                            required={true}
+                                          >
+                                            <styled.div>
+                                              <div
+                                                className="c11"
+                                              >
+                                                <label
+                                                  className="pt-label"
+                                                >
+                                                  Client
+                                                  <RequiredTag
+                                                    required={true}
+                                                  >
+                                                    <styled.span>
+                                                      <span
+                                                        className="c12"
+                                                      >
+                                                        *
+                                                      </span>
+                                                    </styled.span>
+                                                  </RequiredTag>
+                                                </label>
+                                                <Styled(Select)
+                                                  clearable={false}
+                                                  dispatch={[Function]}
+                                                  error={null}
+                                                  id="Client"
+                                                  name="Client"
+                                                  onChange={[Function]}
+                                                  options={Array []}
+                                                  placeholder="Select Client..."
+                                                >
+                                                  <Select
+                                                    arrowRenderer={[Function]}
+                                                    autosize={true}
+                                                    backspaceRemoves={true}
+                                                    backspaceToRemoveMessage="Press backspace to remove {label}"
+                                                    className=""
+                                                    clearAllText="Clear all"
+                                                    clearRenderer={[Function]}
+                                                    clearValueText="Clear value"
+                                                    clearable={false}
+                                                    closeOnSelect={true}
+                                                    deleteRemoves={true}
+                                                    delimiter=","
+                                                    disabled={false}
+                                                    dispatch={[Function]}
+                                                    error={null}
+                                                    escapeClearsValue={true}
+                                                    filterOptions={[Function]}
+                                                    id="Client"
+                                                    ignoreAccents={true}
+                                                    ignoreCase={true}
+                                                    inputProps={Object {}}
+                                                    isLoading={false}
+                                                    joinValues={false}
+                                                    labelKey="label"
+                                                    matchPos="any"
+                                                    matchProp="any"
+                                                    menuBuffer={0}
+                                                    menuRenderer={[Function]}
+                                                    multi={false}
+                                                    name="Client"
+                                                    noResultsText="No results found"
+                                                    onBlurResetsInput={true}
+                                                    onChange={[Function]}
+                                                    onCloseResetsInput={true}
+                                                    onSelectResetsInput={true}
+                                                    openOnClick={true}
+                                                    optionComponent={[Function]}
+                                                    options={Array []}
+                                                    pageSize={5}
+                                                    placeholder="Select Client..."
+                                                    removeSelected={true}
+                                                    required={false}
+                                                    rtl={false}
+                                                    scrollMenuIntoView={true}
+                                                    searchable={true}
+                                                    simpleValue={false}
+                                                    tabSelectsValue={true}
+                                                    trimFilter={true}
+                                                    valueComponent={[Function]}
+                                                    valueKey="value"
+                                                  >
+                                                    <div
+                                                      className="Select is-searchable Select--single"
+                                                    >
+                                                      <div
+                                                        className="Select-control"
+                                                        onKeyDown={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        onTouchEnd={[Function]}
+                                                        onTouchMove={[Function]}
+                                                        onTouchStart={[Function]}
+                                                      >
+                                                        <span
+                                                          className="Select-multi-value-wrapper"
+                                                          id="react-select-2--value"
+                                                        >
+                                                          <div
+                                                            className="Select-placeholder"
+                                                          >
+                                                            Select Client...
+                                                          </div>
+                                                          <AutosizeInput
+                                                            aria-activedescendant="react-select-2--value"
+                                                            aria-expanded="false"
+                                                            aria-haspopup="false"
+                                                            aria-owns=""
+                                                            className="Select-input"
+                                                            id="Client"
+                                                            injectStyles={true}
+                                                            minWidth="5"
+                                                            onBlur={[Function]}
+                                                            onChange={[Function]}
+                                                            onFocus={[Function]}
+                                                            required={false}
+                                                            role="combobox"
+                                                            value=""
+                                                          >
+                                                            <div
+                                                              className="Select-input"
+                                                              style={
+                                                                Object {
+                                                                  "display": "inline-block",
+                                                                }
+                                                              }
+                                                            >
+                                                              <input
+                                                                aria-activedescendant="react-select-2--value"
+                                                                aria-expanded="false"
+                                                                aria-haspopup="false"
+                                                                aria-owns=""
+                                                                id="Client"
+                                                                onBlur={[Function]}
+                                                                onChange={[Function]}
+                                                                onFocus={[Function]}
+                                                                required={false}
+                                                                role="combobox"
+                                                                style={
+                                                                  Object {
+                                                                    "boxSizing": "content-box",
+                                                                    "width": "5px",
+                                                                  }
+                                                                }
+                                                                value=""
+                                                              />
+                                                              <div
+                                                                style={
+                                                                  Object {
+                                                                    "height": 0,
+                                                                    "left": 0,
+                                                                    "overflow": "scroll",
+                                                                    "position": "absolute",
+                                                                    "top": 0,
+                                                                    "visibility": "hidden",
+                                                                    "whiteSpace": "pre",
+                                                                  }
+                                                                }
+                                                              />
+                                                            </div>
+                                                          </AutosizeInput>
+                                                        </span>
+                                                        <span
+                                                          className="Select-arrow-zone"
+                                                          onMouseDown={[Function]}
+                                                        >
+                                                          <span
+                                                            className="Select-arrow"
+                                                            onMouseDown={[Function]}
+                                                          />
+                                                        </span>
+                                                      </div>
+                                                    </div>
+                                                  </Select>
+                                                </Styled(Select)>
+                                                <styled.span>
+                                                  <span
+                                                    className="c14"
+                                                  />
+                                                </styled.span>
+                                              </div>
+                                            </styled.div>
+                                          </Field>
+                                        </SelectField>
+                                      </Transformer>
+                                    </Connect(Transformer)>
+                                  </div>
+                                </FormField>
+                              </Styled(FormField)>
+                              <Styled(FormField)
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "label": "Partner",
+                                    "name": "partnerId",
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                    "timesheetUnit": "day",
+                                  }
+                                }
+                              >
+                                <FormField
+                                  className="c16"
+                                  errors={Object {}}
+                                  field={
+                                    Object {
+                                      "component": [Function],
+                                      "label": "Partner",
+                                      "name": "partnerId",
+                                    }
+                                  }
+                                  setFieldTouched={[Function]}
+                                  setFieldValue={[Function]}
+                                  touched={Object {}}
+                                  values={
+                                    Object {
+                                      "allowWeekends": "doNotAllow",
+                                      "billedTarget": "client",
+                                      "clientId": undefined,
+                                      "managerId": undefined,
+                                      "name": undefined,
+                                      "note": undefined,
+                                      "partnerId": undefined,
+                                      "timesheetUnit": "day",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="c16"
+                                  >
+                                    <Connect(Transformer)
+                                      error={null}
+                                      label="Partner"
+                                      name="partnerId"
+                                      required={false}
+                                      setFieldTouched={[Function]}
+                                      setFieldValue={[Function]}
+                                    >
+                                      <Transformer
+                                        companies={Array []}
+                                        dispatch={[Function]}
+                                        error={null}
+                                        label="Partner"
+                                        name="partnerId"
+                                        required={false}
+                                        setFieldTouched={[Function]}
+                                        setFieldValue={[Function]}
+                                      >
+                                        <SelectField
+                                          dispatch={[Function]}
+                                          domainValues={Array []}
+                                          error={null}
+                                          label="Partner"
+                                          name="partnerId"
+                                          required={false}
+                                          setFieldTouched={[Function]}
+                                          setFieldValue={[Function]}
+                                        >
+                                          <Field
+                                            label="Partner"
+                                            required={false}
+                                          >
+                                            <styled.div>
+                                              <div
+                                                className="c11"
+                                              >
+                                                <label
+                                                  className="pt-label"
+                                                >
+                                                  Partner
+                                                  <RequiredTag
+                                                    required={false}
+                                                  />
+                                                </label>
+                                                <Styled(Select)
+                                                  clearable={false}
+                                                  dispatch={[Function]}
+                                                  error={null}
+                                                  id="Partner"
+                                                  name="Partner"
+                                                  onChange={[Function]}
+                                                  options={Array []}
+                                                  placeholder="Select Partner..."
+                                                >
+                                                  <Select
+                                                    arrowRenderer={[Function]}
+                                                    autosize={true}
+                                                    backspaceRemoves={true}
+                                                    backspaceToRemoveMessage="Press backspace to remove {label}"
+                                                    className=""
+                                                    clearAllText="Clear all"
+                                                    clearRenderer={[Function]}
+                                                    clearValueText="Clear value"
+                                                    clearable={false}
+                                                    closeOnSelect={true}
+                                                    deleteRemoves={true}
+                                                    delimiter=","
+                                                    disabled={false}
+                                                    dispatch={[Function]}
+                                                    error={null}
+                                                    escapeClearsValue={true}
+                                                    filterOptions={[Function]}
+                                                    id="Partner"
+                                                    ignoreAccents={true}
+                                                    ignoreCase={true}
+                                                    inputProps={Object {}}
+                                                    isLoading={false}
+                                                    joinValues={false}
+                                                    labelKey="label"
+                                                    matchPos="any"
+                                                    matchProp="any"
+                                                    menuBuffer={0}
+                                                    menuRenderer={[Function]}
+                                                    multi={false}
+                                                    name="Partner"
+                                                    noResultsText="No results found"
+                                                    onBlurResetsInput={true}
+                                                    onChange={[Function]}
+                                                    onCloseResetsInput={true}
+                                                    onSelectResetsInput={true}
+                                                    openOnClick={true}
+                                                    optionComponent={[Function]}
+                                                    options={Array []}
+                                                    pageSize={5}
+                                                    placeholder="Select Partner..."
+                                                    removeSelected={true}
+                                                    required={false}
+                                                    rtl={false}
+                                                    scrollMenuIntoView={true}
+                                                    searchable={true}
+                                                    simpleValue={false}
+                                                    tabSelectsValue={true}
+                                                    trimFilter={true}
+                                                    valueComponent={[Function]}
+                                                    valueKey="value"
+                                                  >
+                                                    <div
+                                                      className="Select is-searchable Select--single"
+                                                    >
+                                                      <div
+                                                        className="Select-control"
+                                                        onKeyDown={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        onTouchEnd={[Function]}
+                                                        onTouchMove={[Function]}
+                                                        onTouchStart={[Function]}
+                                                      >
+                                                        <span
+                                                          className="Select-multi-value-wrapper"
+                                                          id="react-select-3--value"
+                                                        >
+                                                          <div
+                                                            className="Select-placeholder"
+                                                          >
+                                                            Select Partner...
+                                                          </div>
+                                                          <AutosizeInput
+                                                            aria-activedescendant="react-select-3--value"
+                                                            aria-expanded="false"
+                                                            aria-haspopup="false"
+                                                            aria-owns=""
+                                                            className="Select-input"
+                                                            id="Partner"
+                                                            injectStyles={true}
+                                                            minWidth="5"
+                                                            onBlur={[Function]}
+                                                            onChange={[Function]}
+                                                            onFocus={[Function]}
+                                                            required={false}
+                                                            role="combobox"
+                                                            value=""
+                                                          >
+                                                            <div
+                                                              className="Select-input"
+                                                              style={
+                                                                Object {
+                                                                  "display": "inline-block",
+                                                                }
+                                                              }
+                                                            >
+                                                              <input
+                                                                aria-activedescendant="react-select-3--value"
+                                                                aria-expanded="false"
+                                                                aria-haspopup="false"
+                                                                aria-owns=""
+                                                                id="Partner"
+                                                                onBlur={[Function]}
+                                                                onChange={[Function]}
+                                                                onFocus={[Function]}
+                                                                required={false}
+                                                                role="combobox"
+                                                                style={
+                                                                  Object {
+                                                                    "boxSizing": "content-box",
+                                                                    "width": "5px",
+                                                                  }
+                                                                }
+                                                                value=""
+                                                              />
+                                                              <div
+                                                                style={
+                                                                  Object {
+                                                                    "height": 0,
+                                                                    "left": 0,
+                                                                    "overflow": "scroll",
+                                                                    "position": "absolute",
+                                                                    "top": 0,
+                                                                    "visibility": "hidden",
+                                                                    "whiteSpace": "pre",
+                                                                  }
+                                                                }
+                                                              />
+                                                            </div>
+                                                          </AutosizeInput>
+                                                        </span>
+                                                        <span
+                                                          className="Select-arrow-zone"
+                                                          onMouseDown={[Function]}
+                                                        >
+                                                          <span
+                                                            className="Select-arrow"
+                                                            onMouseDown={[Function]}
+                                                          />
+                                                        </span>
+                                                      </div>
+                                                    </div>
+                                                  </Select>
+                                                </Styled(Select)>
+                                                <styled.span>
+                                                  <span
+                                                    className="c14"
+                                                  />
+                                                </styled.span>
+                                              </div>
+                                            </styled.div>
+                                          </Field>
+                                        </SelectField>
+                                      </Transformer>
+                                    </Connect(Transformer)>
+                                  </div>
+                                </FormField>
+                              </Styled(FormField)>
+                              <Styled(FormField)
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "defaultValue": "client",
+                                    "domainValues": Array [
+                                      Object {
+                                        "id": "partner",
+                                        "value": "Partner",
+                                      },
+                                      Object {
+                                        "id": "client",
+                                        "value": "Client",
+                                      },
+                                    ],
+                                    "label": "Billed Target",
+                                    "name": "billedTarget",
+                                    "required": true,
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                    "timesheetUnit": "day",
+                                  }
+                                }
+                              >
+                                <FormField
+                                  className="c17"
+                                  errors={Object {}}
+                                  field={
+                                    Object {
+                                      "component": [Function],
+                                      "defaultValue": "client",
+                                      "domainValues": Array [
+                                        Object {
+                                          "id": "partner",
+                                          "value": "Partner",
+                                        },
+                                        Object {
+                                          "id": "client",
+                                          "value": "Client",
+                                        },
+                                      ],
+                                      "label": "Billed Target",
+                                      "name": "billedTarget",
+                                      "required": true,
+                                    }
+                                  }
+                                  setFieldTouched={[Function]}
+                                  setFieldValue={[Function]}
+                                  touched={Object {}}
+                                  values={
+                                    Object {
+                                      "allowWeekends": "doNotAllow",
+                                      "billedTarget": "client",
+                                      "clientId": undefined,
+                                      "managerId": undefined,
+                                      "name": undefined,
+                                      "note": undefined,
+                                      "partnerId": undefined,
+                                      "timesheetUnit": "day",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="c17"
+                                  >
+                                    <SelectField
+                                      domainValues={
+                                        Array [
+                                          Object {
+                                            "id": "partner",
+                                            "value": "Partner",
+                                          },
+                                          Object {
+                                            "id": "client",
+                                            "value": "Client",
+                                          },
+                                        ]
+                                      }
+                                      error={null}
+                                      label="Billed Target"
+                                      name="billedTarget"
+                                      required={false}
+                                      setFieldTouched={[Function]}
+                                      setFieldValue={[Function]}
+                                      value="client"
+                                    >
+                                      <Field
+                                        label="Billed Target"
+                                        required={false}
+                                      >
+                                        <styled.div>
+                                          <div
+                                            className="c11"
+                                          >
+                                            <label
+                                              className="pt-label"
+                                            >
+                                              Billed Target
+                                              <RequiredTag
+                                                required={false}
+                                              />
+                                            </label>
+                                            <Styled(Select)
+                                              clearable={false}
+                                              error={null}
+                                              id="Billed Target"
+                                              name="Billed Target"
+                                              onChange={[Function]}
+                                              options={
+                                                Array [
+                                                  Object {
+                                                    "label": "Partner",
+                                                    "value": "partner",
+                                                  },
+                                                  Object {
+                                                    "label": "Client",
+                                                    "value": "client",
+                                                  },
+                                                ]
+                                              }
+                                              placeholder="Select Billed Target..."
+                                              value="client"
+                                            >
+                                              <Select
+                                                arrowRenderer={[Function]}
+                                                autosize={true}
+                                                backspaceRemoves={true}
+                                                backspaceToRemoveMessage="Press backspace to remove {label}"
+                                                className=""
+                                                clearAllText="Clear all"
+                                                clearRenderer={[Function]}
+                                                clearValueText="Clear value"
+                                                clearable={false}
+                                                closeOnSelect={true}
+                                                deleteRemoves={true}
+                                                delimiter=","
+                                                disabled={false}
+                                                error={null}
+                                                escapeClearsValue={true}
+                                                filterOptions={[Function]}
+                                                id="Billed Target"
+                                                ignoreAccents={true}
+                                                ignoreCase={true}
+                                                inputProps={Object {}}
+                                                isLoading={false}
+                                                joinValues={false}
+                                                labelKey="label"
+                                                matchPos="any"
+                                                matchProp="any"
+                                                menuBuffer={0}
+                                                menuRenderer={[Function]}
+                                                multi={false}
+                                                name="Billed Target"
+                                                noResultsText="No results found"
+                                                onBlurResetsInput={true}
+                                                onChange={[Function]}
+                                                onCloseResetsInput={true}
+                                                onSelectResetsInput={true}
+                                                openOnClick={true}
+                                                optionComponent={[Function]}
+                                                options={
+                                                  Array [
+                                                    Object {
+                                                      "label": "Partner",
+                                                      "value": "partner",
+                                                    },
+                                                    Object {
+                                                      "label": "Client",
+                                                      "value": "client",
+                                                    },
+                                                  ]
+                                                }
+                                                pageSize={5}
+                                                placeholder="Select Billed Target..."
+                                                removeSelected={true}
+                                                required={false}
+                                                rtl={false}
+                                                scrollMenuIntoView={true}
+                                                searchable={true}
+                                                simpleValue={false}
+                                                tabSelectsValue={true}
+                                                trimFilter={true}
+                                                value="client"
+                                                valueComponent={[Function]}
+                                                valueKey="value"
+                                              >
+                                                <div
+                                                  className="Select has-value is-searchable Select--single"
+                                                >
+                                                  <input
+                                                    disabled={false}
+                                                    key="hidden.0"
+                                                    name="Billed Target"
+                                                    type="hidden"
+                                                    value="client"
+                                                  />
+                                                  <div
+                                                    className="Select-control"
+                                                    onKeyDown={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    onTouchEnd={[Function]}
+                                                    onTouchMove={[Function]}
+                                                    onTouchStart={[Function]}
+                                                  >
+                                                    <span
+                                                      className="Select-multi-value-wrapper"
+                                                      id="react-select-4--value"
+                                                    >
+                                                      <Value
+                                                        disabled={false}
+                                                        id="react-select-4--value-item"
+                                                        instancePrefix="react-select-4-"
+                                                        onClick={null}
+                                                        placeholder="Select Billed Target..."
+                                                        value={
+                                                          Object {
+                                                            "label": "Client",
+                                                            "value": "client",
+                                                          }
+                                                        }
+                                                      >
+                                                        <div
+                                                          className="Select-value"
+                                                        >
+                                                          <span
+                                                            aria-selected="true"
+                                                            className="Select-value-label"
+                                                            id="react-select-4--value-item"
+                                                            role="option"
+                                                          >
+                                                            Client
+                                                          </span>
+                                                        </div>
+                                                      </Value>
+                                                      <AutosizeInput
+                                                        aria-activedescendant="react-select-4--value"
+                                                        aria-expanded="false"
+                                                        aria-haspopup="false"
+                                                        aria-owns=""
+                                                        className="Select-input"
+                                                        id="Billed Target"
+                                                        injectStyles={true}
+                                                        minWidth="5"
+                                                        onBlur={[Function]}
+                                                        onChange={[Function]}
+                                                        onFocus={[Function]}
+                                                        required={false}
+                                                        role="combobox"
+                                                        value=""
+                                                      >
+                                                        <div
+                                                          className="Select-input"
+                                                          style={
+                                                            Object {
+                                                              "display": "inline-block",
+                                                            }
+                                                          }
+                                                        >
+                                                          <input
+                                                            aria-activedescendant="react-select-4--value"
+                                                            aria-expanded="false"
+                                                            aria-haspopup="false"
+                                                            aria-owns=""
+                                                            id="Billed Target"
+                                                            onBlur={[Function]}
+                                                            onChange={[Function]}
+                                                            onFocus={[Function]}
+                                                            required={false}
+                                                            role="combobox"
+                                                            style={
+                                                              Object {
+                                                                "boxSizing": "content-box",
+                                                                "width": "5px",
+                                                              }
+                                                            }
+                                                            value=""
+                                                          />
+                                                          <div
+                                                            style={
+                                                              Object {
+                                                                "height": 0,
+                                                                "left": 0,
+                                                                "overflow": "scroll",
+                                                                "position": "absolute",
+                                                                "top": 0,
+                                                                "visibility": "hidden",
+                                                                "whiteSpace": "pre",
+                                                              }
+                                                            }
+                                                          />
+                                                        </div>
+                                                      </AutosizeInput>
+                                                    </span>
+                                                    <span
+                                                      className="Select-arrow-zone"
+                                                      onMouseDown={[Function]}
+                                                    >
+                                                      <span
+                                                        className="Select-arrow"
+                                                        onMouseDown={[Function]}
+                                                      />
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </Select>
+                                            </Styled(Select)>
+                                            <styled.span>
+                                              <span
+                                                className="c14"
+                                              />
+                                            </styled.span>
+                                          </div>
+                                        </styled.div>
+                                      </Field>
+                                    </SelectField>
+                                  </div>
+                                </FormField>
+                              </Styled(FormField)>
+                              <Styled(FormField)
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "label": "Manager",
+                                    "name": "managerId",
+                                    "required": true,
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                    "timesheetUnit": "day",
+                                  }
+                                }
+                              >
+                                <FormField
+                                  className="c18"
+                                  errors={Object {}}
+                                  field={
+                                    Object {
+                                      "component": [Function],
+                                      "label": "Manager",
+                                      "name": "managerId",
+                                      "required": true,
+                                    }
+                                  }
+                                  setFieldTouched={[Function]}
+                                  setFieldValue={[Function]}
+                                  touched={Object {}}
+                                  values={
+                                    Object {
+                                      "allowWeekends": "doNotAllow",
+                                      "billedTarget": "client",
+                                      "clientId": undefined,
+                                      "managerId": undefined,
+                                      "name": undefined,
+                                      "note": undefined,
+                                      "partnerId": undefined,
+                                      "timesheetUnit": "day",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="c18"
+                                  >
+                                    <Connect(Transformer)
+                                      error={null}
+                                      label="Manager"
+                                      name="managerId"
+                                      required={true}
+                                      setFieldTouched={[Function]}
+                                      setFieldValue={[Function]}
+                                    >
+                                      <Transformer
+                                        dispatch={[Function]}
+                                        error={null}
+                                        label="Manager"
+                                        name="managerId"
+                                        required={true}
+                                        setFieldTouched={[Function]}
+                                        setFieldValue={[Function]}
+                                        workers={Array []}
+                                      >
+                                        <SelectField
+                                          dispatch={[Function]}
+                                          domainValues={Array []}
+                                          error={null}
+                                          label="Manager"
+                                          name="managerId"
+                                          required={true}
+                                          setFieldTouched={[Function]}
+                                          setFieldValue={[Function]}
+                                        >
+                                          <Field
+                                            label="Manager"
+                                            required={true}
+                                          >
+                                            <styled.div>
+                                              <div
+                                                className="c11"
+                                              >
+                                                <label
+                                                  className="pt-label"
+                                                >
+                                                  Manager
+                                                  <RequiredTag
+                                                    required={true}
+                                                  >
+                                                    <styled.span>
+                                                      <span
+                                                        className="c12"
+                                                      >
+                                                        *
+                                                      </span>
+                                                    </styled.span>
+                                                  </RequiredTag>
+                                                </label>
+                                                <Styled(Select)
+                                                  clearable={false}
+                                                  dispatch={[Function]}
+                                                  error={null}
+                                                  id="Manager"
+                                                  name="Manager"
+                                                  onChange={[Function]}
+                                                  options={Array []}
+                                                  placeholder="Select Manager..."
+                                                >
+                                                  <Select
+                                                    arrowRenderer={[Function]}
+                                                    autosize={true}
+                                                    backspaceRemoves={true}
+                                                    backspaceToRemoveMessage="Press backspace to remove {label}"
+                                                    className=""
+                                                    clearAllText="Clear all"
+                                                    clearRenderer={[Function]}
+                                                    clearValueText="Clear value"
+                                                    clearable={false}
+                                                    closeOnSelect={true}
+                                                    deleteRemoves={true}
+                                                    delimiter=","
+                                                    disabled={false}
+                                                    dispatch={[Function]}
+                                                    error={null}
+                                                    escapeClearsValue={true}
+                                                    filterOptions={[Function]}
+                                                    id="Manager"
+                                                    ignoreAccents={true}
+                                                    ignoreCase={true}
+                                                    inputProps={Object {}}
+                                                    isLoading={false}
+                                                    joinValues={false}
+                                                    labelKey="label"
+                                                    matchPos="any"
+                                                    matchProp="any"
+                                                    menuBuffer={0}
+                                                    menuRenderer={[Function]}
+                                                    multi={false}
+                                                    name="Manager"
+                                                    noResultsText="No results found"
+                                                    onBlurResetsInput={true}
+                                                    onChange={[Function]}
+                                                    onCloseResetsInput={true}
+                                                    onSelectResetsInput={true}
+                                                    openOnClick={true}
+                                                    optionComponent={[Function]}
+                                                    options={Array []}
+                                                    pageSize={5}
+                                                    placeholder="Select Manager..."
+                                                    removeSelected={true}
+                                                    required={false}
+                                                    rtl={false}
+                                                    scrollMenuIntoView={true}
+                                                    searchable={true}
+                                                    simpleValue={false}
+                                                    tabSelectsValue={true}
+                                                    trimFilter={true}
+                                                    valueComponent={[Function]}
+                                                    valueKey="value"
+                                                  >
+                                                    <div
+                                                      className="Select is-searchable Select--single"
+                                                    >
+                                                      <div
+                                                        className="Select-control"
+                                                        onKeyDown={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        onTouchEnd={[Function]}
+                                                        onTouchMove={[Function]}
+                                                        onTouchStart={[Function]}
+                                                      >
+                                                        <span
+                                                          className="Select-multi-value-wrapper"
+                                                          id="react-select-5--value"
+                                                        >
+                                                          <div
+                                                            className="Select-placeholder"
+                                                          >
+                                                            Select Manager...
+                                                          </div>
+                                                          <AutosizeInput
+                                                            aria-activedescendant="react-select-5--value"
+                                                            aria-expanded="false"
+                                                            aria-haspopup="false"
+                                                            aria-owns=""
+                                                            className="Select-input"
+                                                            id="Manager"
+                                                            injectStyles={true}
+                                                            minWidth="5"
+                                                            onBlur={[Function]}
+                                                            onChange={[Function]}
+                                                            onFocus={[Function]}
+                                                            required={false}
+                                                            role="combobox"
+                                                            value=""
+                                                          >
+                                                            <div
+                                                              className="Select-input"
+                                                              style={
+                                                                Object {
+                                                                  "display": "inline-block",
+                                                                }
+                                                              }
+                                                            >
+                                                              <input
+                                                                aria-activedescendant="react-select-5--value"
+                                                                aria-expanded="false"
+                                                                aria-haspopup="false"
+                                                                aria-owns=""
+                                                                id="Manager"
+                                                                onBlur={[Function]}
+                                                                onChange={[Function]}
+                                                                onFocus={[Function]}
+                                                                required={false}
+                                                                role="combobox"
+                                                                style={
+                                                                  Object {
+                                                                    "boxSizing": "content-box",
+                                                                    "width": "5px",
+                                                                  }
+                                                                }
+                                                                value=""
+                                                              />
+                                                              <div
+                                                                style={
+                                                                  Object {
+                                                                    "height": 0,
+                                                                    "left": 0,
+                                                                    "overflow": "scroll",
+                                                                    "position": "absolute",
+                                                                    "top": 0,
+                                                                    "visibility": "hidden",
+                                                                    "whiteSpace": "pre",
+                                                                  }
+                                                                }
+                                                              />
+                                                            </div>
+                                                          </AutosizeInput>
+                                                        </span>
+                                                        <span
+                                                          className="Select-arrow-zone"
+                                                          onMouseDown={[Function]}
+                                                        >
+                                                          <span
+                                                            className="Select-arrow"
+                                                            onMouseDown={[Function]}
+                                                          />
+                                                        </span>
+                                                      </div>
+                                                    </div>
+                                                  </Select>
+                                                </Styled(Select)>
+                                                <styled.span>
+                                                  <span
+                                                    className="c14"
+                                                  />
+                                                </styled.span>
+                                              </div>
+                                            </styled.div>
+                                          </Field>
+                                        </SelectField>
+                                      </Transformer>
+                                    </Connect(Transformer)>
+                                  </div>
+                                </FormField>
+                              </Styled(FormField)>
+                              <Styled(FormField)
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "label": "Note",
+                                    "name": "note",
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                    "timesheetUnit": "day",
+                                  }
+                                }
+                              >
+                                <FormField
+                                  className="c19"
+                                  errors={Object {}}
+                                  field={
+                                    Object {
+                                      "component": [Function],
+                                      "label": "Note",
+                                      "name": "note",
+                                    }
+                                  }
+                                  setFieldTouched={[Function]}
+                                  setFieldValue={[Function]}
+                                  touched={Object {}}
+                                  values={
+                                    Object {
+                                      "allowWeekends": "doNotAllow",
+                                      "billedTarget": "client",
+                                      "clientId": undefined,
+                                      "managerId": undefined,
+                                      "name": undefined,
+                                      "note": undefined,
+                                      "partnerId": undefined,
+                                      "timesheetUnit": "day",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="c19"
+                                  >
+                                    <MarkDownField
+                                      error={null}
+                                      label="Note"
+                                      name="note"
+                                      required={false}
+                                      setFieldTouched={[Function]}
+                                      setFieldValue={[Function]}
+                                    >
+                                      <Field
+                                        error={null}
+                                      >
+                                        <styled.div>
+                                          <div
+                                            className="c11"
+                                          >
+                                            <label
+                                              className="pt-label"
+                                            >
+                                              <RequiredTag />
+                                            </label>
+                                            <div>
+                                              <styled.div>
+                                                <div
+                                                  className="c20"
+                                                >
+                                                  <label
+                                                    className="pt-label"
+                                                  >
+                                                    Note
+                                                    <RequiredTag
+                                                      required={false}
+                                                    />
+                                                  </label>
+                                                  <styled.span>
+                                                    <span
+                                                      className="c7"
+                                                    />
+                                                  </styled.span>
+                                                  <Styled(styled.div)
+                                                    className="pt-button-group pt-minimal"
+                                                  >
+                                                    <styled.div
+                                                      className="pt-button-group pt-minimal c21"
+                                                    >
+                                                      <div
+                                                        className="pt-button-group pt-minimal c21 c22"
+                                                      >
+                                                        <button
+                                                          className="pt-button"
+                                                          onClick={[Function]}
+                                                          type="button"
+                                                        >
+                                                          Edit
+                                                        </button>
+                                                        <button
+                                                          className="pt-button"
+                                                          onClick={[Function]}
+                                                          type="button"
+                                                        >
+                                                          View
+                                                        </button>
+                                                      </div>
+                                                    </styled.div>
+                                                  </Styled(styled.div)>
+                                                </div>
+                                              </styled.div>
+                                              <styled.textarea
+                                                className="pt-input pt-fill"
+                                                dir="auto"
+                                                name="note"
+                                                onChange={[Function]}
+                                                value=""
+                                              >
+                                                <textarea
+                                                  className="pt-input pt-fill c23"
+                                                  dir="auto"
+                                                  name="note"
+                                                  onChange={[Function]}
+                                                  value=""
+                                                />
+                                              </styled.textarea>
+                                            </div>
+                                            <styled.span>
+                                              <span
+                                                className="c14"
+                                              />
+                                            </styled.span>
+                                          </div>
+                                        </styled.div>
+                                      </Field>
+                                    </MarkDownField>
+                                  </div>
+                                </FormField>
+                              </Styled(FormField)>
+                              <Styled(FormField)
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "defaultValue": "doNotAllow",
+                                    "domainValues": Array [
+                                      Object {
+                                        "id": "allow",
+                                        "value": "Allow",
+                                      },
+                                      Object {
+                                        "id": "doNotAllow",
+                                        "value": "Do not Allow",
+                                      },
+                                    ],
+                                    "label": "Allow Weekends",
+                                    "name": "allowWeekends",
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                    "timesheetUnit": "day",
+                                  }
+                                }
+                              >
+                                <FormField
+                                  className="c24"
+                                  errors={Object {}}
+                                  field={
+                                    Object {
+                                      "component": [Function],
+                                      "defaultValue": "doNotAllow",
+                                      "domainValues": Array [
+                                        Object {
+                                          "id": "allow",
+                                          "value": "Allow",
+                                        },
+                                        Object {
+                                          "id": "doNotAllow",
+                                          "value": "Do not Allow",
+                                        },
+                                      ],
+                                      "label": "Allow Weekends",
+                                      "name": "allowWeekends",
+                                    }
+                                  }
+                                  setFieldTouched={[Function]}
+                                  setFieldValue={[Function]}
+                                  touched={Object {}}
+                                  values={
+                                    Object {
+                                      "allowWeekends": "doNotAllow",
+                                      "billedTarget": "client",
+                                      "clientId": undefined,
+                                      "managerId": undefined,
+                                      "name": undefined,
+                                      "note": undefined,
+                                      "partnerId": undefined,
+                                      "timesheetUnit": "day",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="c24"
+                                  >
+                                    <SelectField
+                                      domainValues={
+                                        Array [
+                                          Object {
+                                            "id": "allow",
+                                            "value": "Allow",
+                                          },
+                                          Object {
+                                            "id": "doNotAllow",
+                                            "value": "Do not Allow",
+                                          },
+                                        ]
+                                      }
+                                      error={null}
+                                      label="Allow Weekends"
+                                      name="allowWeekends"
+                                      required={false}
+                                      setFieldTouched={[Function]}
+                                      setFieldValue={[Function]}
+                                      value="doNotAllow"
+                                    >
+                                      <Field
+                                        label="Allow Weekends"
+                                        required={false}
+                                      >
+                                        <styled.div>
+                                          <div
+                                            className="c11"
+                                          >
+                                            <label
+                                              className="pt-label"
+                                            >
+                                              Allow Weekends
+                                              <RequiredTag
+                                                required={false}
+                                              />
+                                            </label>
+                                            <Styled(Select)
+                                              clearable={false}
+                                              error={null}
+                                              id="Allow Weekends"
+                                              name="Allow Weekends"
+                                              onChange={[Function]}
+                                              options={
+                                                Array [
+                                                  Object {
+                                                    "label": "Allow",
+                                                    "value": "allow",
+                                                  },
+                                                  Object {
+                                                    "label": "Do not Allow",
+                                                    "value": "doNotAllow",
+                                                  },
+                                                ]
+                                              }
+                                              placeholder="Select Allow Weekends..."
+                                              value="doNotAllow"
+                                            >
+                                              <Select
+                                                arrowRenderer={[Function]}
+                                                autosize={true}
+                                                backspaceRemoves={true}
+                                                backspaceToRemoveMessage="Press backspace to remove {label}"
+                                                className=""
+                                                clearAllText="Clear all"
+                                                clearRenderer={[Function]}
+                                                clearValueText="Clear value"
+                                                clearable={false}
+                                                closeOnSelect={true}
+                                                deleteRemoves={true}
+                                                delimiter=","
+                                                disabled={false}
+                                                error={null}
+                                                escapeClearsValue={true}
+                                                filterOptions={[Function]}
+                                                id="Allow Weekends"
+                                                ignoreAccents={true}
+                                                ignoreCase={true}
+                                                inputProps={Object {}}
+                                                isLoading={false}
+                                                joinValues={false}
+                                                labelKey="label"
+                                                matchPos="any"
+                                                matchProp="any"
+                                                menuBuffer={0}
+                                                menuRenderer={[Function]}
+                                                multi={false}
+                                                name="Allow Weekends"
+                                                noResultsText="No results found"
+                                                onBlurResetsInput={true}
+                                                onChange={[Function]}
+                                                onCloseResetsInput={true}
+                                                onSelectResetsInput={true}
+                                                openOnClick={true}
+                                                optionComponent={[Function]}
+                                                options={
+                                                  Array [
+                                                    Object {
+                                                      "label": "Allow",
+                                                      "value": "allow",
+                                                    },
+                                                    Object {
+                                                      "label": "Do not Allow",
+                                                      "value": "doNotAllow",
+                                                    },
+                                                  ]
+                                                }
+                                                pageSize={5}
+                                                placeholder="Select Allow Weekends..."
+                                                removeSelected={true}
+                                                required={false}
+                                                rtl={false}
+                                                scrollMenuIntoView={true}
+                                                searchable={true}
+                                                simpleValue={false}
+                                                tabSelectsValue={true}
+                                                trimFilter={true}
+                                                value="doNotAllow"
+                                                valueComponent={[Function]}
+                                                valueKey="value"
+                                              >
+                                                <div
+                                                  className="Select has-value is-searchable Select--single"
+                                                >
+                                                  <input
+                                                    disabled={false}
+                                                    key="hidden.0"
+                                                    name="Allow Weekends"
+                                                    type="hidden"
+                                                    value="doNotAllow"
+                                                  />
+                                                  <div
+                                                    className="Select-control"
+                                                    onKeyDown={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    onTouchEnd={[Function]}
+                                                    onTouchMove={[Function]}
+                                                    onTouchStart={[Function]}
+                                                  >
+                                                    <span
+                                                      className="Select-multi-value-wrapper"
+                                                      id="react-select-6--value"
+                                                    >
+                                                      <Value
+                                                        disabled={false}
+                                                        id="react-select-6--value-item"
+                                                        instancePrefix="react-select-6-"
+                                                        onClick={null}
+                                                        placeholder="Select Allow Weekends..."
+                                                        value={
+                                                          Object {
+                                                            "label": "Do not Allow",
+                                                            "value": "doNotAllow",
+                                                          }
+                                                        }
+                                                      >
+                                                        <div
+                                                          className="Select-value"
+                                                        >
+                                                          <span
+                                                            aria-selected="true"
+                                                            className="Select-value-label"
+                                                            id="react-select-6--value-item"
+                                                            role="option"
+                                                          >
+                                                            Do not Allow
+                                                          </span>
+                                                        </div>
+                                                      </Value>
+                                                      <AutosizeInput
+                                                        aria-activedescendant="react-select-6--value"
+                                                        aria-expanded="false"
+                                                        aria-haspopup="false"
+                                                        aria-owns=""
+                                                        className="Select-input"
+                                                        id="Allow Weekends"
+                                                        injectStyles={true}
+                                                        minWidth="5"
+                                                        onBlur={[Function]}
+                                                        onChange={[Function]}
+                                                        onFocus={[Function]}
+                                                        required={false}
+                                                        role="combobox"
+                                                        value=""
+                                                      >
+                                                        <div
+                                                          className="Select-input"
+                                                          style={
+                                                            Object {
+                                                              "display": "inline-block",
+                                                            }
+                                                          }
+                                                        >
+                                                          <input
+                                                            aria-activedescendant="react-select-6--value"
+                                                            aria-expanded="false"
+                                                            aria-haspopup="false"
+                                                            aria-owns=""
+                                                            id="Allow Weekends"
+                                                            onBlur={[Function]}
+                                                            onChange={[Function]}
+                                                            onFocus={[Function]}
+                                                            required={false}
+                                                            role="combobox"
+                                                            style={
+                                                              Object {
+                                                                "boxSizing": "content-box",
+                                                                "width": "5px",
+                                                              }
+                                                            }
+                                                            value=""
+                                                          />
+                                                          <div
+                                                            style={
+                                                              Object {
+                                                                "height": 0,
+                                                                "left": 0,
+                                                                "overflow": "scroll",
+                                                                "position": "absolute",
+                                                                "top": 0,
+                                                                "visibility": "hidden",
+                                                                "whiteSpace": "pre",
+                                                              }
+                                                            }
+                                                          />
+                                                        </div>
+                                                      </AutosizeInput>
+                                                    </span>
+                                                    <span
+                                                      className="Select-arrow-zone"
+                                                      onMouseDown={[Function]}
+                                                    >
+                                                      <span
+                                                        className="Select-arrow"
+                                                        onMouseDown={[Function]}
+                                                      />
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </Select>
+                                            </Styled(Select)>
+                                            <styled.span>
+                                              <span
+                                                className="c14"
+                                              />
+                                            </styled.span>
+                                          </div>
+                                        </styled.div>
+                                      </Field>
+                                    </SelectField>
+                                  </div>
+                                </FormField>
+                              </Styled(FormField)>
+                              <Styled(FormField)
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "defaultValue": "day",
+                                    "domainValues": Array [
+                                      Object {
+                                        "id": "day",
+                                        "value": "Day",
+                                      },
+                                      Object {
+                                        "id": "hour",
+                                        "value": "Hour",
+                                      },
+                                    ],
+                                    "label": "Timesheet Unit",
+                                    "name": "timesheetUnit",
+                                    "required": true,
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                    "timesheetUnit": "day",
+                                  }
+                                }
+                              >
+                                <FormField
+                                  className="c25"
+                                  errors={Object {}}
+                                  field={
+                                    Object {
+                                      "component": [Function],
+                                      "defaultValue": "day",
+                                      "domainValues": Array [
+                                        Object {
+                                          "id": "day",
+                                          "value": "Day",
+                                        },
+                                        Object {
+                                          "id": "hour",
+                                          "value": "Hour",
+                                        },
+                                      ],
+                                      "label": "Timesheet Unit",
+                                      "name": "timesheetUnit",
+                                      "required": true,
+                                    }
+                                  }
+                                  setFieldTouched={[Function]}
+                                  setFieldValue={[Function]}
+                                  touched={Object {}}
+                                  values={
+                                    Object {
+                                      "allowWeekends": "doNotAllow",
+                                      "billedTarget": "client",
+                                      "clientId": undefined,
+                                      "managerId": undefined,
+                                      "name": undefined,
+                                      "note": undefined,
+                                      "partnerId": undefined,
+                                      "timesheetUnit": "day",
+                                    }
+                                  }
+                                >
+                                  <div
+                                    className="c25"
+                                  >
+                                    <SelectField
+                                      domainValues={
+                                        Array [
+                                          Object {
+                                            "id": "day",
+                                            "value": "Day",
+                                          },
+                                          Object {
+                                            "id": "hour",
+                                            "value": "Hour",
+                                          },
+                                        ]
+                                      }
+                                      error={null}
+                                      label="Timesheet Unit"
+                                      name="timesheetUnit"
+                                      required={false}
+                                      setFieldTouched={[Function]}
+                                      setFieldValue={[Function]}
+                                      value="day"
+                                    >
+                                      <Field
+                                        label="Timesheet Unit"
+                                        required={false}
+                                      >
+                                        <styled.div>
+                                          <div
+                                            className="c11"
+                                          >
+                                            <label
+                                              className="pt-label"
+                                            >
+                                              Timesheet Unit
+                                              <RequiredTag
+                                                required={false}
+                                              />
+                                            </label>
+                                            <Styled(Select)
+                                              clearable={false}
+                                              error={null}
+                                              id="Timesheet Unit"
+                                              name="Timesheet Unit"
+                                              onChange={[Function]}
+                                              options={
+                                                Array [
+                                                  Object {
+                                                    "label": "Day",
+                                                    "value": "day",
+                                                  },
+                                                  Object {
+                                                    "label": "Hour",
+                                                    "value": "hour",
+                                                  },
+                                                ]
+                                              }
+                                              placeholder="Select Timesheet Unit..."
+                                              value="day"
+                                            >
+                                              <Select
+                                                arrowRenderer={[Function]}
+                                                autosize={true}
+                                                backspaceRemoves={true}
+                                                backspaceToRemoveMessage="Press backspace to remove {label}"
+                                                className=""
+                                                clearAllText="Clear all"
+                                                clearRenderer={[Function]}
+                                                clearValueText="Clear value"
+                                                clearable={false}
+                                                closeOnSelect={true}
+                                                deleteRemoves={true}
+                                                delimiter=","
+                                                disabled={false}
+                                                error={null}
+                                                escapeClearsValue={true}
+                                                filterOptions={[Function]}
+                                                id="Timesheet Unit"
+                                                ignoreAccents={true}
+                                                ignoreCase={true}
+                                                inputProps={Object {}}
+                                                isLoading={false}
+                                                joinValues={false}
+                                                labelKey="label"
+                                                matchPos="any"
+                                                matchProp="any"
+                                                menuBuffer={0}
+                                                menuRenderer={[Function]}
+                                                multi={false}
+                                                name="Timesheet Unit"
+                                                noResultsText="No results found"
+                                                onBlurResetsInput={true}
+                                                onChange={[Function]}
+                                                onCloseResetsInput={true}
+                                                onSelectResetsInput={true}
+                                                openOnClick={true}
+                                                optionComponent={[Function]}
+                                                options={
+                                                  Array [
+                                                    Object {
+                                                      "label": "Day",
+                                                      "value": "day",
+                                                    },
+                                                    Object {
+                                                      "label": "Hour",
+                                                      "value": "hour",
+                                                    },
+                                                  ]
+                                                }
+                                                pageSize={5}
+                                                placeholder="Select Timesheet Unit..."
+                                                removeSelected={true}
+                                                required={false}
+                                                rtl={false}
+                                                scrollMenuIntoView={true}
+                                                searchable={true}
+                                                simpleValue={false}
+                                                tabSelectsValue={true}
+                                                trimFilter={true}
+                                                value="day"
+                                                valueComponent={[Function]}
+                                                valueKey="value"
+                                              >
+                                                <div
+                                                  className="Select has-value is-searchable Select--single"
+                                                >
+                                                  <input
+                                                    disabled={false}
+                                                    key="hidden.0"
+                                                    name="Timesheet Unit"
+                                                    type="hidden"
+                                                    value="day"
+                                                  />
+                                                  <div
+                                                    className="Select-control"
+                                                    onKeyDown={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    onTouchEnd={[Function]}
+                                                    onTouchMove={[Function]}
+                                                    onTouchStart={[Function]}
+                                                  >
+                                                    <span
+                                                      className="Select-multi-value-wrapper"
+                                                      id="react-select-7--value"
+                                                    >
+                                                      <Value
+                                                        disabled={false}
+                                                        id="react-select-7--value-item"
+                                                        instancePrefix="react-select-7-"
+                                                        onClick={null}
+                                                        placeholder="Select Timesheet Unit..."
+                                                        value={
+                                                          Object {
+                                                            "label": "Day",
+                                                            "value": "day",
+                                                          }
+                                                        }
+                                                      >
+                                                        <div
+                                                          className="Select-value"
+                                                        >
+                                                          <span
+                                                            aria-selected="true"
+                                                            className="Select-value-label"
+                                                            id="react-select-7--value-item"
+                                                            role="option"
+                                                          >
+                                                            Day
+                                                          </span>
+                                                        </div>
+                                                      </Value>
+                                                      <AutosizeInput
+                                                        aria-activedescendant="react-select-7--value"
+                                                        aria-expanded="false"
+                                                        aria-haspopup="false"
+                                                        aria-owns=""
+                                                        className="Select-input"
+                                                        id="Timesheet Unit"
+                                                        injectStyles={true}
+                                                        minWidth="5"
+                                                        onBlur={[Function]}
+                                                        onChange={[Function]}
+                                                        onFocus={[Function]}
+                                                        required={false}
+                                                        role="combobox"
+                                                        value=""
+                                                      >
+                                                        <div
+                                                          className="Select-input"
+                                                          style={
+                                                            Object {
+                                                              "display": "inline-block",
+                                                            }
+                                                          }
+                                                        >
+                                                          <input
+                                                            aria-activedescendant="react-select-7--value"
+                                                            aria-expanded="false"
+                                                            aria-haspopup="false"
+                                                            aria-owns=""
+                                                            id="Timesheet Unit"
+                                                            onBlur={[Function]}
+                                                            onChange={[Function]}
+                                                            onFocus={[Function]}
+                                                            required={false}
+                                                            role="combobox"
+                                                            style={
+                                                              Object {
+                                                                "boxSizing": "content-box",
+                                                                "width": "5px",
+                                                              }
+                                                            }
+                                                            value=""
+                                                          />
+                                                          <div
+                                                            style={
+                                                              Object {
+                                                                "height": 0,
+                                                                "left": 0,
+                                                                "overflow": "scroll",
+                                                                "position": "absolute",
+                                                                "top": 0,
+                                                                "visibility": "hidden",
+                                                                "whiteSpace": "pre",
+                                                              }
+                                                            }
+                                                          />
+                                                        </div>
+                                                      </AutosizeInput>
+                                                    </span>
+                                                    <span
+                                                      className="Select-arrow-zone"
+                                                      onMouseDown={[Function]}
+                                                    >
+                                                      <span
+                                                        className="Select-arrow"
+                                                        onMouseDown={[Function]}
+                                                      />
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </Select>
+                                            </Styled(Select)>
+                                            <styled.span>
+                                              <span
+                                                className="c14"
+                                              />
+                                            </styled.span>
+                                          </div>
+                                        </styled.div>
+                                      </Field>
+                                    </SelectField>
+                                  </div>
+                                </FormField>
+                              </Styled(FormField)>
+                            </form>
+                          </styled.form>
+                        </AddOrEditForm>
+                      </lifecycle(AddOrEditForm)>
+                    </div>
+                  </styled.div>
+                </Styled(styled.div)>
+              </Component>
+            </withHandlers(Component)>
+          </withState(withHandlers(Component))>
+        </Formik>
+      </FormikAdd>
+    </Connect(FormikAdd)>
+  </Router>
+</Provider>
+`;

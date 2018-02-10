@@ -26,29 +26,23 @@ export const loadMissions = () => (dispatch, getState) => {
   }
 };
 
-export const addMission = mission => dispatch => {
-  dispatch({
-    type: ADD_MISSION,
-    payload: mission,
-    replyTo: MISSION_ADDED,
-  });
-};
+export const addMission = mission => ({
+  type: ADD_MISSION,
+  payload: mission,
+  replyTo: MISSION_ADDED,
+});
 
-export const updateMission = mission => {
-  return {
-    type: UPDATE_MISSION,
-    payload: mission,
-    replyTo: MISSION_UPDATED,
-  };
-};
+export const updateMission = mission => ({
+  type: UPDATE_MISSION,
+  payload: mission,
+  replyTo: MISSION_UPDATED,
+});
 
-export const deleteMission = id => {
-  return {
-    type: DELETE_MISSION,
-    payload: { _id: id },
-    replyTo: MISSION_DELETED,
-  };
-};
+export const deleteMission = id => ({
+  type: DELETE_MISSION,
+  payload: { _id: id },
+  replyTo: MISSION_DELETED,
+});
 
 export const sortMissionsList = sortBy => ({
   type: SORT_MISSIONS_LIST,

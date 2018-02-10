@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`app | components | Mission | component render should match snapshot 1`] = `
+<AddOrEditForm
+  errors={Object {}}
+  handleSubmit={[Function]}
+  setFieldTouched={[Function]}
+  setFieldValue={[Function]}
+  touched={Object {}}
+  values={
+    Object {
+      "allowWeekends": "doNotAllow",
+      "billedTarget": "client",
+      "clientId": undefined,
+      "managerId": undefined,
+      "name": undefined,
+      "note": undefined,
+      "partnerId": undefined,
+      "timesheetUnit": "day",
+    }
+  }
+/>
+`;
