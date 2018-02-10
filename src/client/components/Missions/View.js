@@ -37,6 +37,7 @@ import { getRouteAuthProps } from '../../routes';
 import PersonPreview from '../People/Preview';
 import CompanyPreview from '../Companies/Preview';
 import NotesView from './NotesView';
+import AddendaView from '../Addenda/AddendaView';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -46,18 +47,19 @@ const StyledGrid = styled.div`
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   grid-template-areas: 'startdate' 'enddate' 'client' 'manager' 'workers'
-    'notes';
+    'notes' 'addenda';
   @media (min-width: 700px) {
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     grid-template-rows: auto auto;
-    grid-template-areas: 'startdate enddate' 'client manager' 'workers notes';
+    grid-template-areas: 'startdate enddate' 'client manager' 'workers null'
+      'notes addenda';
   }
   @media (min-width: 900px) {
     grid-template-columns: repeat(4, minmax(100px, 1fr));
     grid-template-rows: auto auto;
     grid-template-areas: 'startdate startdate enddate enddate'
       'client client manager manager' 'workers workers workers workers'
-      'notes notes notes notes';
+      'notes notes addenda addenda';
   }
 `;
 
@@ -205,6 +207,16 @@ const MissionInfos = ({
         name="notes"
         value={
           <NotesView
+            entityType="mission"
+            entityId={id}
+            deleteNote={deleteNote}
+          />
+        }
+      />
+      <StyledPreviewField
+        name="addenda"
+        value={
+          <AddendaView
             entityType="mission"
             entityId={id}
             deleteNote={deleteNote}
