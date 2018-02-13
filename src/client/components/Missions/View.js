@@ -37,7 +37,7 @@ import { getRouteAuthProps } from '../../routes';
 import PersonPreview from '../People/Preview';
 import CompanyPreview from '../Companies/Preview';
 import NotesView from './NotesView';
-import AddendaView from '../Addenda/AddendaView';
+import AddendaView from './AddendaView';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -217,9 +217,8 @@ const MissionInfos = ({
         name="addenda"
         value={
           <AddendaView
-            entityType="mission"
-            entityId={id}
-            deleteNote={deleteNote}
+            missionId={id}
+            // addAddendum
           />
         }
       />
