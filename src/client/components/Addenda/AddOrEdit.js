@@ -15,11 +15,7 @@ const MissionForm = styled.form`
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
   grid-template-areas: 'workerId none' 'startDate endDate'
-    'amount timesheetUnit'
-    ${'' /* @media (min-width: 700px) {
-    grid-template-areas: 'workerId none'
-    'startDate endDate' 'amount timesheetUnit'
-  } */};
+    'amount timesheetUnit';
 `;
 
 const StyledFormField = styled(FormField)`
@@ -35,7 +31,7 @@ const AddOrEditForm = ({
   setFieldValue,
 }) => {
   return (
-    <MissionForm id="missionForm" onSubmit={handleSubmit}>
+    <MissionForm id="addendaForm" onSubmit={handleSubmit}>
       <StyledFormField
         field={getField('workerId')}
         values={values}
@@ -91,11 +87,11 @@ AddOrEditForm.propTypes = {
 
 const componentLifecycle = {
   componentWillReceiveProps(nextProps) {
-    // const { clients, setFieldValue, setFieldTouched, values } = nextProps;
-    // if (!values.name && values.clientId && clients) {
-    //   setFieldValue('name', clients[values.clientId].name);
-    //   setFieldTouched('name', true);
-    // }
+    const { clients, setFieldValue, setFieldTouched, values } = nextProps;
+    if (!values.name && values.clientId && clients) {
+      setFieldValue('name', clients[values.clientId].name);
+      setFieldTouched('name', true);
+    }
   },
 };
 

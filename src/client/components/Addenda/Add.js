@@ -8,8 +8,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
-import { getValidationSchema, defaultValues } from '../../forms/missions';
-import { addMission } from '../../actions/missions';
+import { getValidationSchema, defaultValues } from '../../forms/addenda';
+// import { addMission } from '../../actions/missions';
 import { Prompt } from 'react-router';
 import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
 import AddOrEdit from './AddOrEdit';
@@ -61,7 +61,7 @@ export const Add = compose(
         </HeaderLeft>
         <HeaderRight>
           <Button
-            form="missionForm"
+            form="addendaForm"
             type="submit"
             disabled={isSubmitting || !isValid || !dirty}
             className="submit pt-intent-success pt-large"
@@ -110,50 +110,48 @@ Add.propTypes = {
   clients: PropTypes.object,
 };
 
-const actions = { addMission };
+const actions = {
+  /*addAddendum*/
+};
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(actions, dispatch),
   dispatch,
 });
 
-const FormikAdd = props => (
-  <Formik
-    initialValues={defaultValues}
-    validationSchema={getValidationSchema()}
-    onSubmit={({
-      workerId,
-      startDate,
-      endDate,
-      amount,
-      unit,
-      // currency,
-    }) => {
-      // const { addMission } = props;
-      const newAddendum = {
+const FormikAdd = ({ accept, ...props }) => {
+  return (
+    <Formik
+      initialValues={defaultValues}
+      validationSchema={getValidationSchema()}
+      onSubmit={({
         workerId,
         startDate,
         endDate,
-        fees: {
-          amout: amount,
-          unit: unit,
-          // currency: currency,
-        },
-      };
-      // console.log('Submit, values: ', values)
-      console.log(newAddendum);
-      // addMission(newMission);
-    }}
-    render={({ ...others }) => <Add {...props} {...others} />}
-  />
-);
-
-FormikAdd.propTypes = {
-  addMission: PropTypes.func.isRequired,
-  clients: PropTypes.object,
+        amount,
+        timesheetUnit,
+        currency,
+      }) => {
+        const newAddendum = {
+          workerId,
+          startDate,
+          endDate,
+          fees: {
+            amout: amount,
+            timesheetUnit: timesheetUnit,
+            currency: currency,
+          },
+        };
+        console.log('newAddendum', newAddendum);
+        // addAddendum(newAddendum);
+      }}
+      render={({ ...others }) => <Add {...props} {...others} />}
+    />
+  );
 };
 
-const mapStateToProps = state => ({
-  //clients: getClients(state),
-});
+FormikAdd.propTypes = {
+  accept: PropTypes.func.isRequired,
+  // addAddendum: PropTypes.func.isRequired,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormikAdd);
+export default connect(null, mapDispatchToProps)(FormikAdd);

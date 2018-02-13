@@ -1,14 +1,8 @@
 import Yup from 'yup';
 import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
 import { InputField } from '../fields';
-import {
-  SelectField,
-  AssigneesSelectField,
-  CompaniesSelectField,
-  WorkerSelectField,
-} from '../fields/SelectField';
+import { SelectField, WorkerSelectField } from '../fields/SelectField';
 import { DateField } from '../fields/DateField';
-import { MarkDownField } from '../fields/MarkDownField';
 
 const fields = {
   workerId: {
@@ -38,7 +32,12 @@ const fields = {
   },
   currency: {
     label: 'Currency',
-    component: InputField,
+    defaultValue: 'euro',
+    domainValues: [
+      { id: 'euro', value: 'Euro' },
+      { id: 'dollar', value: 'Dollar' },
+    ],
+    component: SelectField,
     required: true,
   },
 };
