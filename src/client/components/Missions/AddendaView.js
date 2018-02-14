@@ -35,11 +35,11 @@ const AddendaView = ({ missionId, isModalOpen, showModal, hideModal }) => {
           hideModal();
         }}
         accept={value => {
-          console.log('accept');
           console.log('ValueAddenda!', value);
           hideModal();
         }}
         type="Add"
+        missionId={missionId}
       />
       <TitleContainer>
         <span>Addenda</span>

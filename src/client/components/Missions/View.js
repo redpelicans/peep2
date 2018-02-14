@@ -52,14 +52,14 @@ const StyledGrid = styled.div`
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     grid-template-rows: auto auto;
     grid-template-areas: 'startdate enddate' 'client manager' 'workers null'
-      'notes addenda';
+      'addenda addenda' 'notes notes';
   }
   @media (min-width: 900px) {
     grid-template-columns: repeat(4, minmax(100px, 1fr));
     grid-template-rows: auto auto;
     grid-template-areas: 'startdate startdate enddate enddate'
       'client client manager manager' 'workers workers workers workers'
-      'notes notes addenda addenda';
+      'addenda addenda addenda addenda' 'notes notes notes notes';
   }
 `;
 
@@ -204,21 +204,21 @@ const MissionInfos = ({
         />
       )}
       <StyledPreviewField
+        name="addenda"
+        value={
+          <AddendaView
+            missionId={id}
+            // addAddendum
+          />
+        }
+      />
+      <StyledPreviewField
         name="notes"
         value={
           <NotesView
             entityType="mission"
             entityId={id}
             deleteNote={deleteNote}
-          />
-        }
-      />
-      <StyledPreviewField
-        name="addenda"
-        value={
-          <AddendaView
-            missionId={id}
-            // addAddendum
           />
         }
       />

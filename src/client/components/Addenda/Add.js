@@ -42,60 +42,62 @@ export const Add = compose(
     cancel,
     requestCancel,
     ...props
-  }) => (
-    <StyledContainer>
-      <Prompt
-        when={!isCancelDialogOpen && dirty && !isSubmitting}
-        message="Would you like to cancel this form ?"
-      />
-      <ModalConfirmation
-        isOpen={isCancelDialogOpen}
-        title="Would you like to cancel this form ?"
-        reject={() => showCancelDialog(false)}
-        accept={cancel}
-      />
-      <Header>
-        <HeaderLeft>
-          <Spacer size={15} />
-          <Title title={'Add Addendum'} />
-        </HeaderLeft>
-        <HeaderRight>
-          <Button
-            form="addendaForm"
-            type="submit"
-            disabled={isSubmitting || !isValid || !dirty}
-            className="submit pt-intent-success pt-large"
-          >
-            Create
-          </Button>
-          <Spacer />
-          <Button
-            onClick={requestCancel(dirty)}
-            className="cancel pt-intent-warning pt-large"
-          >
-            Cancel
-          </Button>
-          <Spacer />
-          <Button
-            className="reset pt-intent-danger pt-large"
-            onClick={handleReset}
-            disabled={!dirty || isSubmitting}
-          >
-            Reset
-          </Button>
-          <Spacer size={20} />
-        </HeaderRight>
-      </Header>
-      <AddOrEdit
-        type="add"
-        handleSubmit={handleSubmit}
-        values={values}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-        {...props}
-      />
-    </StyledContainer>
-  ),
+  }) => {
+    return (
+      <StyledContainer>
+        <Prompt
+          when={!isCancelDialogOpen && dirty && !isSubmitting}
+          message="Would you like to cancel this form ?"
+        />
+        <ModalConfirmation
+          isOpen={isCancelDialogOpen}
+          title="Would you like to cancel this form ?"
+          reject={() => showCancelDialog(false)}
+          accept={cancel}
+        />
+        <Header>
+          <HeaderLeft>
+            <Spacer size={15} />
+            <Title title={'Add Addendum'} />
+          </HeaderLeft>
+          <HeaderRight>
+            <Button
+              form="addendaForm"
+              type="submit"
+              disabled={isSubmitting || !isValid || !dirty}
+              className="submit pt-intent-success pt-large"
+            >
+              Create
+            </Button>
+            <Spacer />
+            <Button
+              onClick={requestCancel(dirty)}
+              className="cancel pt-intent-warning pt-large"
+            >
+              Cancel
+            </Button>
+            <Spacer />
+            <Button
+              className="reset pt-intent-danger pt-large"
+              onClick={handleReset}
+              disabled={!dirty || isSubmitting}
+            >
+              Reset
+            </Button>
+            <Spacer size={20} />
+          </HeaderRight>
+        </Header>
+        <AddOrEdit
+          type="add"
+          handleSubmit={handleSubmit}
+          values={values}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+          {...props}
+        />
+      </StyledContainer>
+    );
+  },
 );
 
 Add.propTypes = {
@@ -113,12 +115,13 @@ Add.propTypes = {
 const actions = {
   /*addAddendum*/
 };
+
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(actions, dispatch),
   dispatch,
 });
 
-const FormikAdd = ({ accept, ...props }) => {
+const FormikAdd = ({ accept, missionId, ...props }) => {
   return (
     <Formik
       initialValues={defaultValues}
@@ -132,6 +135,7 @@ const FormikAdd = ({ accept, ...props }) => {
         currency,
       }) => {
         const newAddendum = {
+          missionId,
           workerId,
           startDate,
           endDate,
@@ -141,7 +145,7 @@ const FormikAdd = ({ accept, ...props }) => {
             currency: currency,
           },
         };
-        console.log('newAddendum', newAddendum);
+        accept(newAddendum);
         // addAddendum(newAddendum);
       }}
       render={({ ...others }) => <Add {...props} {...others} />}
@@ -151,6 +155,7 @@ const FormikAdd = ({ accept, ...props }) => {
 
 FormikAdd.propTypes = {
   accept: PropTypes.func.isRequired,
+  missionId: PropTypes.string,
   // addAddendum: PropTypes.func.isRequired,
 };
 
