@@ -14,8 +14,7 @@ const MissionForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'workerId none' 'startDate endDate'
-    'amount timesheetUnit';
+  grid-template-areas: 'workerId none' 'startDate endDate' 'amount unit';
 `;
 
 const StyledFormField = styled(FormField)`
@@ -65,7 +64,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('timesheetUnit')}
+        field={getField('unit')}
         values={values}
         errors={errors}
         touched={touched}

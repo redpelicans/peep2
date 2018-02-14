@@ -47,7 +47,7 @@ const StyledGrid = styled.div`
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   grid-template-areas: 'startdate' 'enddate' 'client' 'manager' 'workers'
-    'notes' 'addenda';
+    'addenda' 'notes';
   @media (min-width: 700px) {
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     grid-template-rows: auto auto;

@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import { getValidationSchema, defaultValues } from '../../forms/addenda';
-// import { addMission } from '../../actions/missions';
+import { addAddendum } from '../../actions/addenda';
 import { Prompt } from 'react-router';
 import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
 import AddOrEdit from './AddOrEdit';
@@ -112,41 +112,31 @@ Add.propTypes = {
   clients: PropTypes.object,
 };
 
-const actions = {
-  /*addAddendum*/
-};
-
+const actions = { addAddendum };
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(actions, dispatch),
   dispatch,
 });
 
-const FormikAdd = ({ accept, missionId, ...props }) => {
+const FormikAdd = ({ missionId, accept, addAddendum, ...props }) => {
   return (
     <Formik
       initialValues={defaultValues}
       validationSchema={getValidationSchema()}
-      onSubmit={({
-        workerId,
-        startDate,
-        endDate,
-        amount,
-        timesheetUnit,
-        currency,
-      }) => {
+      onSubmit={({ workerId, startDate, endDate, amount, unit, currency }) => {
         const newAddendum = {
           missionId,
           workerId,
           startDate,
           endDate,
           fees: {
-            amout: amount,
-            timesheetUnit: timesheetUnit,
+            amount: amount,
+            unit: unit,
             currency: currency,
           },
         };
-        accept(newAddendum);
-        // addAddendum(newAddendum);
+        addAddendum(newAddendum);
+        accept();
       }}
       render={({ ...others }) => <Add {...props} {...others} />}
     />
@@ -154,9 +144,9 @@ const FormikAdd = ({ accept, missionId, ...props }) => {
 };
 
 FormikAdd.propTypes = {
-  accept: PropTypes.func.isRequired,
   missionId: PropTypes.string,
-  // addAddendum: PropTypes.func.isRequired,
+  accept: PropTypes.func.isRequired,
+  addAddendum: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(FormikAdd);

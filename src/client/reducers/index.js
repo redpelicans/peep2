@@ -12,6 +12,7 @@ import agenda from './agenda';
 import login from './login';
 import events from './events';
 import missions from './missions';
+import addenda from './addenda';
 
 export default combineReducers({
   form: formReducer,
@@ -22,6 +23,7 @@ export default combineReducers({
   notes,
   events,
   missions,
+  addenda,
   // countries,
   // cities,
   login,
