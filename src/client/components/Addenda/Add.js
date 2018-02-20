@@ -11,11 +11,9 @@ import { Formik } from 'formik';
 import { getValidationSchema, defaultValues } from '../../forms/addenda';
 import { addAddendum } from '../../actions/addenda';
 import { Prompt } from 'react-router';
-import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
+import { Spacer, Title, ModalConfirmation } from '../widgets';
 import AddOrEdit from './AddOrEdit';
 import { getCompanies } from '../../selectors/companies';
-
-export const StyledContainer = styled(Container)`min-width: 300px;`;
 
 export const Add = compose(
   withState('isCancelDialogOpen', 'showCancelDialog', false),
@@ -44,7 +42,7 @@ export const Add = compose(
     ...props
   }) => {
     return (
-      <StyledContainer>
+      <div>
         <Prompt
           when={!isCancelDialogOpen && dirty && !isSubmitting}
           message="Would you like to cancel this form ?"
@@ -60,32 +58,6 @@ export const Add = compose(
             <Spacer size={15} />
             <Title title={'Add Addendum'} />
           </HeaderLeft>
-          <HeaderRight>
-            <Button
-              form="addendaForm"
-              type="submit"
-              disabled={isSubmitting || !isValid || !dirty}
-              className="submit pt-intent-success pt-large"
-            >
-              Create
-            </Button>
-            <Spacer />
-            <Button
-              onClick={requestCancel(dirty)}
-              className="cancel pt-intent-warning pt-large"
-            >
-              Cancel
-            </Button>
-            <Spacer />
-            <Button
-              className="reset pt-intent-danger pt-large"
-              onClick={handleReset}
-              disabled={!dirty || isSubmitting}
-            >
-              Reset
-            </Button>
-            <Spacer size={20} />
-          </HeaderRight>
         </Header>
         <AddOrEdit
           type="add"
@@ -95,7 +67,25 @@ export const Add = compose(
           setFieldValue={setFieldValue}
           {...props}
         />
-      </StyledContainer>
+        <div className="pt-dialog-footer">
+          <div className="pt-dialog-footer-actions">
+            <Button
+              onClick={requestCancel(dirty)}
+              className="cancel pt-intent-warning pt-large"
+            >
+              Cancel
+            </Button>
+            <Button
+              form="addendaForm"
+              type="submit"
+              disabled={isSubmitting || !isValid || !dirty}
+              className="submit pt-intent-success pt-large"
+            >
+              Create
+            </Button>
+          </div>
+        </div>
+      </div>
     );
   },
 );

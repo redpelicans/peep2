@@ -35,7 +35,6 @@ const AddendaView = ({ missionId, isModalOpen, showModal, hideModal }) => {
           hideModal();
         }}
         accept={value => {
-          // console.log('ValueAddenda!', value);
           hideModal();
         }}
         type="Add"
