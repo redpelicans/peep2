@@ -13,7 +13,7 @@ import { getEntityNotes } from '../../selectors/notes';
 import { getCompanies } from '../../selectors/companies';
 import { getMissions } from '../../selectors/missions';
 import ModalNote from '../widgets/ModalNote';
-import { addNote, updateNote } from '../../actions/notes';
+import { addNote, updateNote, deleteNote } from '../../actions/notes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -108,7 +108,7 @@ NotesView.propTypes = {
   updateNote: PropTypes.func.isRequired,
 };
 
-const actions = { addNote, updateNote };
+const actions = { addNote, updateNote, deleteNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const mapStateToProps = (state, { entityId }) => ({
