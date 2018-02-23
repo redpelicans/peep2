@@ -179,7 +179,7 @@ const MissionInfos = ({
           }
         />
       )}
-      {!isEmpty(workers) && (
+      {/* {!isEmpty(workers) && (
         <StyledPreviewField
           name="workers"
           label="Workers"
@@ -202,7 +202,7 @@ const MissionInfos = ({
             </div>
           }
         />
-      )}
+      )} */}
       <StyledPreviewField
         name="addenda"
         value={

@@ -4,12 +4,29 @@ import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown';
 import { Dialog } from '@blueprintjs/core';
 import FormikAdd from '../Addenda/Add';
+import FormikEdit from '../Addenda/Edit';
 
 const DialogStyled = styled(Dialog)`width: 70%;`;
 
-const ModalAddenda = ({ isOpen, value, type, accept, reject, missionId }) => (
+const ModalAddenda = ({
+  isOpen,
+  value,
+  type,
+  defaultValues,
+  accept,
+  reject,
+  missionId,
+}) => (
   <DialogStyled isOpen={isOpen} className="pt-dark">
-    <FormikAdd accept={accept} cancel={reject} missionId={missionId} />
+    {type === 'add' ? (
+      <FormikAdd accept={accept} cancel={reject} missionId={missionId} />
+    ) : (
+      <FormikEdit
+        accept={accept}
+        cancel={reject}
+        defaultValues={defaultValues}
+      />
+    )}
   </DialogStyled>
 );
 
@@ -20,6 +37,7 @@ ModalAddenda.propTypes = {
   accept: PropTypes.func.isRequired,
   reject: PropTypes.func.isRequired,
   missionId: PropTypes.string,
+  defaultValues: PropTypes.object,
 };
 
 export default ModalAddenda;

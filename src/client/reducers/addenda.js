@@ -1,4 +1,12 @@
-import { ADD_ADDENDUM, ADDENDUM_ADDED } from '../actions/addenda';
+import { omit } from 'ramda';
+
+import {
+  // ADD_ADDENDUM,
+  ADDENDUM_ADDED,
+  // UPDATE_ADDENDUM,
+  ADDENDUM_UPDATED,
+  ADDENDUM_DELETED,
+} from '../actions/addenda';
 
 const initialState = {
   data: {},
@@ -6,8 +14,6 @@ const initialState = {
 
 const addenda = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_ADDENDUM:
-      return { ...state };
     case ADDENDUM_ADDED:
       return {
         ...state,
@@ -16,6 +22,16 @@ const addenda = (state = initialState, action) => {
           [action.payload._id]: action.payload,
         },
       };
+    case ADDENDUM_UPDATED:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.payload._id]: action.payload,
+        },
+      };
+    case ADDENDUM_DELETED:
+      return { ...state, data: omit([action.payload._id], state.data) };
     default:
       return state;
   }

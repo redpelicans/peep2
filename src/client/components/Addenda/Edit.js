@@ -9,13 +9,13 @@ import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Formik } from 'formik';
 import { getValidationSchema, defaultValues } from '../../forms/addenda';
-import { addAddendum } from '../../actions/addenda';
+import { updateAddendum } from '../../actions/addenda';
 import { Prompt } from 'react-router';
 import { Spacer, Title, ModalConfirmation } from '../widgets';
 import AddOrEdit from './AddOrEdit';
 import { getCompanies } from '../../selectors/companies';
 
-export const Add = compose(
+export const Edit = compose(
   withState('isCancelDialogOpen', 'showCancelDialog', false),
   withHandlers({
     requestCancel: ({ showCancelDialog, cancel }) => dirty => () => {
@@ -90,7 +90,7 @@ export const Add = compose(
   },
 );
 
-Add.propTypes = {
+Edit.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   isValid: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
@@ -102,19 +102,35 @@ Add.propTypes = {
   clients: PropTypes.object,
 };
 
-const actions = { addAddendum };
+const actions = { updateAddendum };
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators(actions, dispatch),
   dispatch,
 });
 
-const FormikAdd = ({ missionId, accept, addAddendum, ...props }) => {
+const formatDefaultValues = ({ fees, ...rest }) => ({
+  ...fees,
+  ...rest,
+});
+
+const FormikEdit = ({ accept, updateAddendum, defaultValues, ...props }) => {
+  const _id = defaultValues._id;
+  // console.log('Id: ', _id);
   return (
     <Formik
-      initialValues={defaultValues}
+      initialValues={formatDefaultValues(defaultValues)}
       validationSchema={getValidationSchema()}
-      onSubmit={({ workerId, startDate, endDate, amount, unit, currency }) => {
+      onSubmit={({
+        missionId,
+        workerId,
+        startDate,
+        endDate,
+        amount,
+        unit,
+        currency,
+      }) => {
         const newAddendum = {
+          _id,
           missionId,
           workerId,
           startDate,
@@ -125,19 +141,19 @@ const FormikAdd = ({ missionId, accept, addAddendum, ...props }) => {
             currency: currency,
           },
         };
-        addAddendum(newAddendum);
+        // console.log('Addendum: ', newAddendum);
+        updateAddendum(newAddendum);
         accept();
       }}
-      render={({ ...others }) => <Add {...props} {...others} />}
+      render={({ ...others }) => <Edit {...props} {...others} />}
     />
   );
 };
 
-FormikAdd.propTypes = {
-  missionId: PropTypes.string,
+FormikEdit.propTypes = {
   accept: PropTypes.func.isRequired,
-  addAddendum: PropTypes.func.isRequired,
+  updateAddendum: PropTypes.func.isRequired,
   defaultValues: PropTypes.object,
 };
 
-export default connect(null, mapDispatchToProps)(FormikAdd);
+export default connect(null, mapDispatchToProps)(FormikEdit);
