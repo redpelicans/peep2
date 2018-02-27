@@ -82,8 +82,8 @@ export const CardContent = ({ people, workerId, startDate, endDate }) => {
         <StyledInfos>
           <NameLink to={getPathByName('person', _id)}>{name}</NameLink>
           <StyledDuration>
-            {format(startDate, 'MMM Do YYYY')} to{' '}
-            {format(endDate, 'MMM Do YYYY')}
+            {format(startDate, 'MMM Do YYYY')}
+            {endDate && ` to ${format(endDate, 'MMM Do YYYY')}`}
           </StyledDuration>
         </StyledInfos>
       </TitleRow>
@@ -131,14 +131,11 @@ export const Preview = ({
       />
       {showActions && (
         <Actions>
-          {/* <Auth {...getRouteAuthProps('deleteAddendum')} context={{ }}> */}
           <StyledButton
             className="pt-small pt-button pt-intent-danger"
             iconName="pt-icon-trash"
             onClick={() => showDialog()}
           />
-          {/* </Auth> */}
-          {/* <Auth {...getRouteAuthProps('editAddendum')} context={{ }}> */}
           <StyledButton
             className="pt-small pt-button pt-intent-warning"
             iconName="pt-icon-edit"
@@ -147,7 +144,6 @@ export const Preview = ({
               showModal();
             }}
           />
-          {/* </Auth> */}
         </Actions>
       )}
       <CardContent people={people} {...addendum} />

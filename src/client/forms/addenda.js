@@ -18,7 +18,7 @@ const fields = {
   endDate: {
     label: 'End Date',
     component: DateField,
-    required: true,
+    // required: true,
   },
   amount: {
     label: 'Amount',

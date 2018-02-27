@@ -1,12 +1,13 @@
-import { omit } from 'ramda';
+import { compose, fromPairs, map, omit } from 'ramda';
 
 import {
-  // ADD_ADDENDUM,
+  ADDENDA_LOADED,
   ADDENDUM_ADDED,
-  // UPDATE_ADDENDUM,
   ADDENDUM_UPDATED,
   ADDENDUM_DELETED,
 } from '../actions/addenda';
+
+const makeAll = compose(fromPairs, map(o => [o._id, o]));
 
 const initialState = {
   data: {},
@@ -14,6 +15,8 @@ const initialState = {
 
 const addenda = (state = initialState, action) => {
   switch (action.type) {
+    case ADDENDA_LOADED:
+      return { ...state, data: makeAll(action.payload) };
     case ADDENDUM_ADDED:
       return {
         ...state,

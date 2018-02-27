@@ -179,38 +179,9 @@ const MissionInfos = ({
           }
         />
       )}
-      {/* {!isEmpty(workers) && (
-        <StyledPreviewField
-          name="workers"
-          label="Workers"
-          value={
-            <div>
-              <ArrayBlock>
-                <MasonryLayout id="workers" sizes={sizes}>
-                  {map(
-                    worker => (
-                      <PersonPreview
-                        key={worker._id}
-                        person={worker}
-                        deletePeople={deletePeople}
-                      />
-                    ),
-                    workers,
-                  )}
-                </MasonryLayout>
-              </ArrayBlock>
-            </div>
-          }
-        />
-      )} */}
       <StyledPreviewField
         name="addenda"
-        value={
-          <AddendaView
-            missionId={id}
-            // addAddendum
-          />
-        }
+        value={<AddendaView missionId={id} />}
       />
       <StyledPreviewField
         name="notes"

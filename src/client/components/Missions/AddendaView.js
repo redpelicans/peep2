@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { map, values } from 'ramda';
+import { map, values, isEmpty } from 'ramda';
 import { Button } from '@blueprintjs/core';
 import { compose, withStateHandlers } from 'recompose';
 import { bindActionCreators } from 'redux';
@@ -78,22 +78,24 @@ const AddendaView = ({
           }}
         />
       </TitleContainer>
-      <MasonryLayout id="addenda" sizes={sizes}>
-        {map(
-          addendum => (
-            <Preview
-              key={addendum._id}
-              addendum={addendum}
-              people={people}
-              isEditForm={isEditForm}
-              showModal={showModal}
-              deleteAddendum={deleteAddendum}
-              updateAddendum={updateAddendum}
-            />
-          ),
-          values(addenda),
-        )}
-      </MasonryLayout>
+      {!isEmpty(people) && (
+        <MasonryLayout id="addenda" sizes={sizes}>
+          {map(
+            addendum => (
+              <Preview
+                key={addendum._id}
+                addendum={addendum}
+                people={people}
+                isEditForm={isEditForm}
+                showModal={showModal}
+                deleteAddendum={deleteAddendum}
+                updateAddendum={updateAddendum}
+              />
+            ),
+            values(addenda),
+          )}
+        </MasonryLayout>
+      )}
     </StyledWrapper>
   );
 };
