@@ -7,7 +7,7 @@ import { compose, withStateHandlers } from 'recompose';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import ModalAddenda from '../widgets/ModalAddenda';
-import { getAddenda } from '../../selectors/addenda';
+import { getMissionAddenda } from '../../selectors/addenda';
 import { getPeople } from '../../selectors/people';
 import MasonryLayout from '../widgets/MasonryLayout';
 import Preview from '../Addenda/Preview';
@@ -92,7 +92,7 @@ const AddendaView = ({
                 updateAddendum={updateAddendum}
               />
             ),
-            values(addenda),
+            addenda,
           )}
         </MasonryLayout>
       )}
@@ -115,8 +115,8 @@ AddendaView.propTypes = {
   isEditForm: PropTypes.func,
 };
 
-const mapStateToProps = state => ({
-  addenda: getAddenda(state),
+const mapStateToProps = (state, { missionId }) => ({
+  addenda: getMissionAddenda(missionId)(state),
   people: getPeople(state),
 });
 
