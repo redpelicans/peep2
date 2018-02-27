@@ -33,7 +33,7 @@ const fields = {
   },
   currency: {
     label: 'Currency',
-    defaultValue: 'EUR',
+    defaultValue: 'eur',
     domainValues: [{ id: 'eur', value: 'EUR' }],
     component: SelectField,
     required: true,
