@@ -18,7 +18,6 @@ const fields = {
   endDate: {
     label: 'End Date',
     component: DateField,
-    // required: true,
   },
   amount: {
     label: 'Amount',
@@ -28,14 +27,14 @@ const fields = {
   unit: {
     label: 'Unit',
     defaultValue: 'day',
-    domainValues: [{ id: 'day', value: 'Day' }, { id: 'hour', value: 'Hour' }],
+    domainValues: [{ id: 'day', value: 'Day' }],
     component: SelectField,
     required: true,
   },
   currency: {
     label: 'Currency',
     defaultValue: 'EUR',
-    domainValues: [{ id: 'eur', value: 'EUR' }, { id: 'usd', value: 'USD' }],
+    domainValues: [{ id: 'eur', value: 'EUR' }],
     component: SelectField,
     required: true,
   },

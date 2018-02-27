@@ -56,11 +56,10 @@ export const Edit = compose(
         <Header>
           <HeaderLeft>
             <Spacer size={15} />
-            <Title title={'Add Addendum'} />
+            <Title title={'Edit Addendum'} />
           </HeaderLeft>
         </Header>
         <AddOrEdit
-          type="add"
           handleSubmit={handleSubmit}
           values={values}
           setFieldTouched={setFieldTouched}
@@ -81,7 +80,7 @@ export const Edit = compose(
               disabled={isSubmitting || !isValid || !dirty}
               className="submit pt-intent-success pt-large"
             >
-              Create
+              Update
             </Button>
           </div>
         </div>
