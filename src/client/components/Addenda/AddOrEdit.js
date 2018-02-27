@@ -14,7 +14,12 @@ const MissionForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'workerId none' 'startDate endDate' 'amount unit';
+  grid-template-areas: 'workerId' 'startDate' 'endDate' 'amount' 'unit'
+    'currency';
+  @media (min-width: 700px) {
+    grid-template-areas: 'workerId workerId workerId'
+      'startDate startDate endDate' 'amount unit currency';
+  }
 `;
 
 const StyledFormField = styled(FormField)`
@@ -65,6 +70,14 @@ const AddOrEditForm = ({
       />
       <StyledFormField
         field={getField('unit')}
+        values={values}
+        errors={errors}
+        touched={touched}
+        setFieldTouched={setFieldTouched}
+        setFieldValue={setFieldValue}
+      />
+      <StyledFormField
+        field={getField('currency')}
         values={values}
         errors={errors}
         touched={touched}
