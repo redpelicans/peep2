@@ -27,7 +27,7 @@ const addSchema = Yup.object().shape({
       .oneOf(['day'])
       .required(),
     currency: Yup.string()
-      .oneOf(['EUR'])
+      .oneOf(['eur'])
       .required(),
   }),
 });
@@ -64,14 +64,16 @@ export const addenda = {
     const newVersion = inMaker(addendum);
     newVersion.updatedAt = new Date();
     const loadOne = ({ _id }) => Addenda.loadOne(_id);
-    const update = nextVersion => previousVersion =>
-      Addenda.collection
+    const update = nextVersion => previousVersion => {
+      console.log('nextVersion', nextVersion);
+      console.log('previousVersion', previousVersion);
+      return Addenda.collection
         .updateOne(
           { _id: previousVersion._id },
           { $set: { ...nextVersion, updatedAt: new Date() } },
         )
         .then(() => ({ _id: previousVersion._id }));
-
+    };
     return loadOne(newVersion)
       .then(update(newVersion))
       .then(loadOne);
