@@ -7,7 +7,15 @@ import {
   ADDENDUM_DELETED,
 } from '../actions/addenda';
 
-const makeAll = compose(fromPairs, map(o => [o._id, o]));
+const make = addendum => ({
+  ...addendum,
+  startDate: new Date(addendum.startDate),
+  endDate: new Date(addendum.endDate),
+});
+const makeAll = compose(
+  fromPairs,
+  map(addendum => [addendum._id, make(addendum)]),
+);
 
 const initialState = {
   data: {},
@@ -22,7 +30,7 @@ const addenda = (state = initialState, action) => {
         ...state,
         data: {
           ...state.data,
-          [action.payload._id]: action.payload,
+          [action.payload._id]: make(action.payload),
         },
       };
     case ADDENDUM_UPDATED:
@@ -30,7 +38,7 @@ const addenda = (state = initialState, action) => {
         ...state,
         data: {
           ...state.data,
-          [action.payload._id]: action.payload,
+          [action.payload._id]: make(action.payload),
         },
       };
     case ADDENDUM_DELETED:

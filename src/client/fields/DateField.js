@@ -39,7 +39,7 @@ DateField.propTypes = {
   label: PropTypes.string,
   error: PropTypes.string,
   required: PropTypes.bool.isRequired,
-  value: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  value: PropTypes.object,
   setFieldValue: PropTypes.func,
   setFieldTouched: PropTypes.func,
 };

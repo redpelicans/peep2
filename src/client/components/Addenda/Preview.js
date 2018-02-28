@@ -94,8 +94,8 @@ export const CardContent = ({ people, workerId, startDate, endDate }) => {
 CardContent.propTypes = {
   people: PropTypes.object.isRequired,
   workerId: PropTypes.string.isRequired,
-  startDate: PropTypes.string,
-  endDate: PropTypes.string,
+  startDate: PropTypes.object.isRequired,
+  endDate: PropTypes.object,
 };
 
 export const Preview = ({
