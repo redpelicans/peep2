@@ -7,11 +7,13 @@ import {
   ADDENDUM_DELETED,
 } from '../actions/addenda';
 
-const make = addendum => ({
-  ...addendum,
-  startDate: new Date(addendum.startDate),
-  endDate: new Date(addendum.endDate),
-});
+const make = addendum => {
+  return {
+    ...addendum,
+    startDate: new Date(addendum.startDate),
+    endDate: addendum.endDate ? new Date(addendum.endDate) : undefined,
+  };
+};
 const makeAll = compose(
   fromPairs,
   map(addendum => [addendum._id, make(addendum)]),

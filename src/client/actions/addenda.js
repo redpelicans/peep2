@@ -22,10 +22,13 @@ export const addAddendum = newAddendum => dispatch => {
   });
 };
 
-export const updateAddendum = newAddendum => dispatch => {
+export const updateAddendum = ({ endDate, ...rest }) => dispatch => {
   dispatch({
     type: UPDATE_ADDENDUM,
-    payload: newAddendum,
+    payload: {
+      ...rest,
+      endDate: endDate || null,
+    },
     replyTo: ADDENDUM_UPDATED,
   });
 };
