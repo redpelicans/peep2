@@ -59,18 +59,19 @@ const StyledGrid = styled.div`
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   grid-template-areas: 'startdate' 'enddate' 'client' 'manager' 'workers'
-    'addenda' 'notes';
+    'billedTarget' 'allowWeekends' 'addenda' 'notes';
   @media (min-width: 700px) {
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     grid-template-rows: auto auto;
     grid-template-areas: 'startdate enddate' 'client manager' 'workers null'
-      'addenda addenda' 'notes notes';
+      'billedTarget allowWeekends' 'addenda addenda' 'notes notes';
   }
   @media (min-width: 900px) {
     grid-template-columns: repeat(4, minmax(100px, 1fr));
     grid-template-rows: auto auto;
     grid-template-areas: 'startdate startdate enddate enddate'
       'client client manager manager' 'workers workers workers workers'
+      'billedTarget billedTarget allowWeekends allowWeekends'
       'addenda addenda addenda addenda' 'notes notes notes notes';
   }
 `;
@@ -100,7 +101,7 @@ const StyledWrapper = styled.div`
   flex-direction: column;
 `;
 
-const StyledDateField = styled.div`
+const StyledField = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -116,10 +117,10 @@ const StyledDateField = styled.div`
 `;
 
 const FormattedMissionDate = ({ date }) => (
-  <StyledDateField>
+  <StyledField>
     {date && <span>{format(date, 'MM/DD/YYYY')}</span>}
     {date && <Icon iconName="calendar" />}
-  </StyledDateField>
+  </StyledField>
 );
 
 FormattedMissionDate.propTypes = {
@@ -143,87 +144,101 @@ const MissionInfos = ({
   createdAt,
   updatedAt,
   workers,
+  billedTarget,
+  allowWeekends,
   isAddendaModalOpen,
   showAddendaModal,
   hideAddendaModal,
   isNoteModalOpen,
   showNoteModal,
   hideNoteModal,
-}) => (
-  <StyledWrapper>
-    <Dates createdAt={createdAt} updatedAt={updatedAt} />
-    <StyledGrid>
-      <StyledPreviewField
-        name="startdate"
-        label="Start Date"
-        value={<FormattedMissionDate date={startDate} />}
-      />
-      <StyledPreviewField
-        name="enddate"
-        label="End Date"
-        value={<FormattedMissionDate date={endDate} />}
-      />
-      {client && (
+}) => {
+  return (
+    <StyledWrapper>
+      <Dates createdAt={createdAt} updatedAt={updatedAt} />
+      <StyledGrid>
         <StyledPreviewField
-          name="client"
-          label="Client"
+          name="startdate"
+          label="Start Date"
+          value={<FormattedMissionDate date={startDate} />}
+        />
+        <StyledPreviewField
+          name="enddate"
+          label="End Date"
+          value={<FormattedMissionDate date={endDate} />}
+        />
+        {client && (
+          <StyledPreviewField
+            name="client"
+            label="Client"
+            value={
+              <ArrayBlock>
+                <StyledClientWrapper>
+                  <CompanyPreview
+                    key={client._id}
+                    company={client}
+                    deleteCompany={deleteCompany}
+                  />
+                </StyledClientWrapper>
+              </ArrayBlock>
+            }
+          />
+        )}
+        {manager && (
+          <StyledPreviewField
+            name="manager"
+            label="Manager"
+            value={
+              <ArrayBlock>
+                <StyledManagerWrapper>
+                  <PersonPreview
+                    key={manager._id}
+                    person={manager}
+                    deletePeople={deletePeople}
+                  />
+                </StyledManagerWrapper>
+              </ArrayBlock>
+            }
+          />
+        )}
+        <StyledPreviewField
+          name="billedTarget"
+          label="Billed Target"
+          value={<StyledField>{billedTarget}</StyledField>}
+        />
+        <StyledPreviewField
+          name="allowWeekends"
+          label="Allow Weekends"
+          value={<StyledField>{allowWeekends}</StyledField>}
+        />
+        <StyledPreviewField
+          name="addenda"
           value={
-            <ArrayBlock>
-              <StyledClientWrapper>
-                <CompanyPreview
-                  key={client._id}
-                  company={client}
-                  deleteCompany={deleteCompany}
-                />
-              </StyledClientWrapper>
-            </ArrayBlock>
+            <AddendaView
+              isModalOpen={isAddendaModalOpen}
+              showModal={showAddendaModal}
+              hideModal={hideAddendaModal}
+              missionId={id}
+            />
           }
         />
-      )}
-      {manager && (
         <StyledPreviewField
-          name="manager"
-          label="Manager"
+          name="notes"
           value={
-            <ArrayBlock>
-              <StyledManagerWrapper>
-                <PersonPreview
-                  key={manager._id}
-                  person={manager}
-                  deletePeople={deletePeople}
-                />
-              </StyledManagerWrapper>
-            </ArrayBlock>
+            <NotesView
+              entityType="mission"
+              entityId={id}
+              isModalOpen={isNoteModalOpen}
+              showModal={showNoteModal}
+              hideModal={hideNoteModal}
+              deleteNote={deleteNote}
+            />
           }
         />
-      )}
-      <StyledPreviewField
-        name="addenda"
-        value={
-          <AddendaView
-            isModalOpen={isAddendaModalOpen}
-            showModal={showAddendaModal}
-            hideModal={hideAddendaModal}
-            missionId={id}
-          />
-        }
-      />
-      <StyledPreviewField
-        name="notes"
-        value={
-          <NotesView
-            entityType="mission"
-            entityId={id}
-            isModalOpen={isNoteModalOpen}
-            showModal={showNoteModal}
-            hideModal={hideNoteModal}
-            deleteNote={deleteNote}
-          />
-        }
-      />
-    </StyledGrid>
-  </StyledWrapper>
-);
+      </StyledGrid>
+    </StyledWrapper>
+  );
+};
 
 MissionInfos.propTypes = {
   id: PropTypes.string,
@@ -234,6 +249,8 @@ MissionInfos.propTypes = {
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
   workers: PropTypes.array,
+  billedTarget: PropTypes.string,
+  allowWeekends: PropTypes.bool,
   isAddendaModalOpen: PropTypes.bool,
   showAddendaModal: PropTypes.func,
   hideAddendaModal: PropTypes.func,
@@ -263,6 +280,8 @@ const Mission = ({
   createdAt,
   updatedAt,
   workers,
+  billedTarget,
+  allowWeekends,
   showDialog,
   hideDialog,
   isDeleteDialogOpen,
@@ -366,6 +385,8 @@ const Mission = ({
         createdAt={createdAt}
         updatedAt={updatedAt}
         workers={workers}
+        billedTarget={billedTarget}
+        allowWeekends={allowWeekends}
         isAddendaModalOpen={isAddendaModalOpen}
         showAddendaModal={showAddendaModal}
         hideAddendaModal={hideAddendaModal}
@@ -388,6 +409,8 @@ Mission.propTypes = {
   updatedAt: PropTypes.string,
   startDate: PropTypes.string,
   endDate: PropTypes.string,
+  billedTarget: PropTypes.string,
+  allowWeekends: PropTypes.bool,
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
@@ -413,6 +436,8 @@ const mapStateToProps = (state, { match: { params: { id } } }) => {
     endDate,
     createdAt,
     updatedAt,
+    billedTarget,
+    allowWeekends,
   } = mission;
   const people = getPeople(state);
   const companies = getCompanies(state);
@@ -428,6 +453,8 @@ const mapStateToProps = (state, { match: { params: { id } } }) => {
     endDate,
     createdAt,
     updatedAt,
+    billedTarget,
+    allowWeekends,
     workers,
     filter,
   };

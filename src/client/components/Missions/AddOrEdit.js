@@ -15,11 +15,10 @@ const MissionForm = styled.form`
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
   grid-template-areas: 'clientId' 'name' 'partnerId' 'billedTarget' 'managerId'
-    'allowWeekends' 'timesheetUnit' 'note';
+    'allowWeekends' 'note';
   @media (min-width: 700px) {
     grid-template-areas: 'clientId name name' 'partnerId partnerId billedTarget'
-      'managerId managerId allowWeekends' 'timesheetUnit null null'
-      'note note note';
+      'managerId managerId allowWeekends' 'note note note';
   }
 `;
 
@@ -87,14 +86,6 @@ const AddOrEditForm = ({
       />
       <StyledFormField
         field={getField('allowWeekends')}
-        values={values}
-        touched={touched}
-        errors={errors}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('timesheetUnit')}
         values={values}
         touched={touched}
         errors={errors}
