@@ -129,13 +129,13 @@ const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(
     {
-      isModalOpen: false,
+      // isModalOpen: false,
       type: 'add',
       payload: {},
     },
     {
-      showModal: () => () => ({ isModalOpen: true }),
-      hideModal: () => () => ({ isModalOpen: false }),
+      // showModal: () => () => ({ isModalOpen: true }),
+      // hideModal: () => () => ({ isModalOpen: false }),
       isAddForm: () => () => ({ type: 'add' }),
       isEditForm: () => addendum => ({ type: 'edit', payload: addendum }),
     },

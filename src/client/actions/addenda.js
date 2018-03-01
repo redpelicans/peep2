@@ -6,6 +6,7 @@ export const UPDATE_ADDENDUM = 'EvtX:Server:addenda:update';
 export const ADDENDUM_UPDATED = 'addendum:updated';
 export const DELETE_ADDENDUM = 'EvtX:Server:addenda:del';
 export const ADDENDUM_DELETED = 'addendum:deleted';
+export const SET_FILTER = 'addendum:setFilter';
 
 export const loadAddenda = () => (dispatch, getState) => {
   dispatch({
@@ -40,3 +41,8 @@ export const deleteAddendum = id => dispatch => {
     replyTo: ADDENDUM_DELETED,
   });
 };
+
+export const set_filter = type => ({
+  type: SET_FILTER,
+  payload: type,
+});

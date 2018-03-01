@@ -5,6 +5,7 @@ import {
   ADDENDUM_ADDED,
   ADDENDUM_UPDATED,
   ADDENDUM_DELETED,
+  SET_FILTER,
 } from '../actions/addenda';
 
 const make = addendum => {
@@ -21,6 +22,7 @@ const makeAll = compose(
 
 const initialState = {
   data: {},
+  filter: 'current',
 };
 
 const addenda = (state = initialState, action) => {
@@ -45,6 +47,8 @@ const addenda = (state = initialState, action) => {
       };
     case ADDENDUM_DELETED:
       return { ...state, data: omit([action.payload._id], state.data) };
+    case SET_FILTER:
+      return { ...state, filter: action.payload };
     default:
       return state;
   }

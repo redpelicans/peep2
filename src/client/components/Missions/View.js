@@ -6,7 +6,17 @@ import styled from 'styled-components';
 import { map, isEmpty } from 'ramda';
 import { compose, withStateHandlers } from 'recompose';
 import { format } from 'date-fns';
-import { Colors, Button, Icon } from '@blueprintjs/core';
+import {
+  Colors,
+  Button,
+  ButtonGroup,
+  Icon,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  Popover,
+  Position,
+} from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
@@ -16,6 +26,7 @@ import {
   getManager,
   getWorkers,
 } from '../../selectors/missions';
+import { getFilter } from '../../selectors/addenda';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import {
   Title,
@@ -30,6 +41,7 @@ import { deleteMission } from '../../actions/missions';
 import { deleteCompany } from '../../actions/companies';
 import { deleteNote } from '../../actions/notes';
 import { deletePeople } from '../../actions/people';
+import { set_filter } from '../../actions/addenda';
 import MasonryLayout from '../widgets/MasonryLayout';
 import { getPathByName } from '../../routes';
 import { Auth } from '../../lib/kontrolo';
@@ -131,6 +143,9 @@ const MissionInfos = ({
   createdAt,
   updatedAt,
   workers,
+  isModalOpen,
+  showModal,
+  hideModal,
 }) => (
   <StyledWrapper>
     <Dates createdAt={createdAt} updatedAt={updatedAt} />
@@ -181,7 +196,14 @@ const MissionInfos = ({
       )}
       <StyledPreviewField
         name="addenda"
-        value={<AddendaView missionId={id} />}
+        value={
+          <AddendaView
+            isModalOpen={isModalOpen}
+            showModal={showModal}
+            hideModal={hideModal}
+            missionId={id}
+          />
+        }
       />
       <StyledPreviewField
         name="notes"
@@ -206,6 +228,9 @@ MissionInfos.propTypes = {
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
   workers: PropTypes.array,
+  isModalOpen: PropTypes.bool,
+  showModal: PropTypes.func,
+  hideModal: PropTypes.func,
 };
 
 const GoBack = ({ history }) => (
@@ -232,6 +257,11 @@ const Mission = ({
   showDialog,
   hideDialog,
   isDeleteDialogOpen,
+  isModalOpen,
+  showModal,
+  hideModal,
+  filter,
+  set_filter,
 }) => {
   if (!mission) return null;
   return (
@@ -275,6 +305,40 @@ const Mission = ({
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
+          <Spacer />
+          <Popover position={Position.BOTTOM_RIGHT}>
+            <Button className="pt-minimal" iconName="pt-icon-menu" />
+            <Menu>
+              <MenuDivider title="Mission" />
+              <MenuItem className="pt-icon-small-cross" text="Close" />
+              <MenuDivider title="Addenda" />
+              <MenuItem
+                className="pt-icon-add"
+                onClick={() => showModal()}
+                text="Add"
+              />
+              <MenuItem className="pt-icon-filter-list" text="Filter" />
+              <ButtonGroup className="pt-minimal">
+                <Button
+                  active={filter === 'all'}
+                  onClick={() => set_filter('all')}
+                  text="All"
+                />
+                <Button
+                  active={filter === 'current'}
+                  onClick={() => set_filter('current')}
+                  text="Current"
+                />
+                <Button
+                  active={filter === 'past'}
+                  onClick={() => set_filter('past')}
+                  text="Past"
+                />
+              </ButtonGroup>
+              <MenuDivider title="Notes" />
+              <MenuItem className="pt-icon-add" text="Add" />
+            </Menu>
+          </Popover>
         </HeaderRight>
       </Header>
       <MissionInfos
@@ -286,6 +350,9 @@ const Mission = ({
         createdAt={createdAt}
         updatedAt={updatedAt}
         workers={workers}
+        isModalOpen={isModalOpen}
+        showModal={showModal}
+        hideModal={hideModal}
       />
     </Container>
   );
@@ -305,10 +372,16 @@ Mission.propTypes = {
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
+  isModalOpen: PropTypes.bool,
+  showModal: PropTypes.func,
+  hideModal: PropTypes.func,
+  filter: PropTypes.string,
+  set_filter: PropTypes.func,
 };
 
 const mapStateToProps = (state, { match: { params: { id } } }) => {
   const mission = getMission(state, id);
+  const filter = getFilter(state);
   if (!mission) return {};
   const {
     clientId,
@@ -334,10 +407,11 @@ const mapStateToProps = (state, { match: { params: { id } } }) => {
     createdAt,
     updatedAt,
     workers,
+    filter,
   };
 };
 
-const actions = {};
+const actions = { set_filter };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
@@ -345,10 +419,13 @@ const enhance = compose(
   withStateHandlers(
     {
       isDeleteDialogOpen: false,
+      isModalOpen: false,
     },
     {
       showDialog: () => () => ({ isDeleteDialogOpen: true }),
       hideDialog: () => () => ({ isDeleteDialogOpen: false }),
+      showModal: () => () => ({ isModalOpen: true }),
+      hideModal: () => () => ({ isModalOpen: false }),
     },
   ),
 );
