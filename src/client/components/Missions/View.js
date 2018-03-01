@@ -143,9 +143,12 @@ const MissionInfos = ({
   createdAt,
   updatedAt,
   workers,
-  isModalOpen,
-  showModal,
-  hideModal,
+  isAddendaModalOpen,
+  showAddendaModal,
+  hideAddendaModal,
+  isNoteModalOpen,
+  showNoteModal,
+  hideNoteModal,
 }) => (
   <StyledWrapper>
     <Dates createdAt={createdAt} updatedAt={updatedAt} />
@@ -198,9 +201,9 @@ const MissionInfos = ({
         name="addenda"
         value={
           <AddendaView
-            isModalOpen={isModalOpen}
-            showModal={showModal}
-            hideModal={hideModal}
+            isModalOpen={isAddendaModalOpen}
+            showModal={showAddendaModal}
+            hideModal={hideAddendaModal}
             missionId={id}
           />
         }
@@ -211,6 +214,9 @@ const MissionInfos = ({
           <NotesView
             entityType="mission"
             entityId={id}
+            isModalOpen={isNoteModalOpen}
+            showModal={showNoteModal}
+            hideModal={hideNoteModal}
             deleteNote={deleteNote}
           />
         }
@@ -228,9 +234,12 @@ MissionInfos.propTypes = {
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
   workers: PropTypes.array,
-  isModalOpen: PropTypes.bool,
-  showModal: PropTypes.func,
-  hideModal: PropTypes.func,
+  isAddendaModalOpen: PropTypes.bool,
+  showAddendaModal: PropTypes.func,
+  hideAddendaModal: PropTypes.func,
+  isNoteModalOpen: PropTypes.bool,
+  showNoteModal: PropTypes.func,
+  hideNoteModal: PropTypes.func,
 };
 
 const GoBack = ({ history }) => (
@@ -257,9 +266,12 @@ const Mission = ({
   showDialog,
   hideDialog,
   isDeleteDialogOpen,
-  isModalOpen,
-  showModal,
-  hideModal,
+  isAddendaModalOpen,
+  showAddendaModal,
+  hideAddendaModal,
+  isNoteModalOpen,
+  showNoteModal,
+  hideNoteModal,
   filter,
   set_filter,
 }) => {
@@ -314,7 +326,7 @@ const Mission = ({
               <MenuDivider title="Addenda" />
               <MenuItem
                 className="pt-icon-add"
-                onClick={() => showModal()}
+                onClick={() => showAddendaModal()}
                 text="Add"
               />
               <MenuItem className="pt-icon-filter-list" text="Filter" />
@@ -336,7 +348,11 @@ const Mission = ({
                 />
               </ButtonGroup>
               <MenuDivider title="Notes" />
-              <MenuItem className="pt-icon-add" text="Add" />
+              <MenuItem
+                className="pt-icon-add"
+                onClick={() => showNoteModal()}
+                text="Add"
+              />
             </Menu>
           </Popover>
         </HeaderRight>
@@ -350,9 +366,12 @@ const Mission = ({
         createdAt={createdAt}
         updatedAt={updatedAt}
         workers={workers}
-        isModalOpen={isModalOpen}
-        showModal={showModal}
-        hideModal={hideModal}
+        isAddendaModalOpen={isAddendaModalOpen}
+        showAddendaModal={showAddendaModal}
+        hideAddendaModal={hideAddendaModal}
+        isNoteModalOpen={isNoteModalOpen}
+        showNoteModal={showNoteModal}
+        hideNoteModal={hideNoteModal}
       />
     </Container>
   );
@@ -372,9 +391,12 @@ Mission.propTypes = {
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
-  isModalOpen: PropTypes.bool,
-  showModal: PropTypes.func,
-  hideModal: PropTypes.func,
+  isAddendaModalOpen: PropTypes.bool,
+  showAddendaModal: PropTypes.func,
+  hideAddendaModal: PropTypes.func,
+  isNoteModalOpen: PropTypes.bool,
+  showNoteModal: PropTypes.func,
+  hideNoteModal: PropTypes.func,
   filter: PropTypes.string,
   set_filter: PropTypes.func,
 };
@@ -419,13 +441,16 @@ const enhance = compose(
   withStateHandlers(
     {
       isDeleteDialogOpen: false,
-      isModalOpen: false,
+      isAddendaModalOpen: false,
+      isNoteModalOpen: false,
     },
     {
       showDialog: () => () => ({ isDeleteDialogOpen: true }),
       hideDialog: () => () => ({ isDeleteDialogOpen: false }),
-      showModal: () => () => ({ isModalOpen: true }),
-      hideModal: () => () => ({ isModalOpen: false }),
+      showAddendaModal: () => () => ({ isAddendaModalOpen: true }),
+      hideAddendaModal: () => () => ({ isAddendaModalOpen: false }),
+      showNoteModal: () => () => ({ isNoteModalOpen: true }),
+      hideNoteModal: () => () => ({ isNoteModalOpen: false }),
     },
   ),
 );

@@ -67,17 +67,11 @@ const AddendaView = ({
         defaultValues={payload}
         missionId={missionId}
       />
-      <TitleContainer>
-        <span>Addenda</span>
-        <StyledButton
-          className="pt-small pt-button"
-          iconName="pt-icon-plus"
-          onClick={() => {
-            isAddForm();
-            showModal();
-          }}
-        />
-      </TitleContainer>
+      {!isEmpty(addenda) && (
+        <TitleContainer>
+          <span>Addenda</span>
+        </TitleContainer>
+      )}
       {!isEmpty(people) && (
         <MasonryLayout id="addenda" sizes={sizes}>
           {map(
