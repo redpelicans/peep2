@@ -208,8 +208,10 @@ const MissionInfos = ({
         />
         <StyledPreviewField
           name="allowWeekends"
-          label="Allow Weekends"
-          value={<StyledField>{allowWeekends}</StyledField>}
+          label="Weekends"
+          value={
+            <StyledField>{allowWeekends ? 'Allow' : 'Not Allow'}</StyledField>
+          }
         />
         <StyledPreviewField
           name="addenda"

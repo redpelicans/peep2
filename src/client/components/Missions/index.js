@@ -53,7 +53,6 @@ export const Missions = ({
   onFilterChange,
   sortMissionsList,
 }) => {
-  console.log(sort);
   return (
     <Container>
       <Header>
