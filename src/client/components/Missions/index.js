@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
-
+import {
+  Button,
+  ButtonGroup,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  Popover,
+  Position,
+} from '@blueprintjs/core';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import {
@@ -59,13 +67,18 @@ export const Missions = ({
           resetValue={() => filterMissionsList('')}
         />
         <Spacer />
-        <SortMenu
-          sortTypes={sortTypes}
-          onClick={sortMissionsList}
-          sort={sort}
-        />
-        <Spacer />
-        <LinkButton to={getPathByName('addMission')} iconName="plus" />
+        <Popover position={Position.BOTTOM_RIGHT}>
+          <Button className="pt-minimal" iconName="pt-icon-menu" />
+          <Menu>
+            <MenuDivider title="Mission" />
+            <LinkButton to={getPathByName('addMission')} iconName="plus" />
+            <SortMenu
+              sortTypes={sortTypes}
+              onClick={sortMissionsList}
+              sort={sort}
+            />
+          </Menu>
+        </Popover>
       </HeaderRight>
     </Header>
     <List
