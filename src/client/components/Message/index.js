@@ -22,6 +22,7 @@ import {
   PEOPLE_UPDATED,
 } from '../../actions/people';
 import './message.css';
+import Toast from './toaster';
 
 const ICON_COMPANY = 'pt-icon-home';
 const ICON_PEOPLE = 'pt-icon-people';
@@ -281,13 +282,6 @@ const ToastView = (type, toast, history) => {
 };
 
 class Message extends React.Component {
-  componentDidMount() {
-    this.toast = Toaster.create({
-      position: Position.TOP_RIGHT,
-      className: 'message',
-    });
-  }
-
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.message;
     if (id !== nextProps.message.id) {
@@ -296,7 +290,7 @@ class Message extends React.Component {
       const alert = ToastView(message.actionType, toastMessage, history);
       const { iconName, toastIntent } = toastMessage;
       const intent = Intent[toastIntent];
-      this.toast.show({ iconName, message: alert, intent });
+      Toast.show({ iconName, message: alert, intent });
     }
   }
 
