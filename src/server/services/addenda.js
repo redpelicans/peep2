@@ -20,7 +20,7 @@ const addSchema = Yup.object().shape({
   missionId: new ObjectIdSchemaType().required(),
   workerId: new ObjectIdSchemaType().required(),
   startDate: Yup.date().required(),
-  endDate: Yup.date(),
+  endDate: Yup.date().nullable(),
   fees: Yup.object().shape({
     amount: Yup.number().required(),
     unit: Yup.string()
@@ -64,14 +64,14 @@ export const addenda = {
     const newVersion = inMaker(addendum);
     newVersion.updatedAt = new Date();
     const loadOne = ({ _id }) => Addenda.loadOne(_id);
-    const update = nextVersion => previousVersion =>
-      Addenda.collection
+    const update = nextVersion => previousVersion => {
+      return Addenda.collection
         .updateOne(
           { _id: previousVersion._id },
           { $set: { ...nextVersion, updatedAt: new Date() } },
         )
         .then(() => ({ _id: previousVersion._id }));
-
+    };
     return loadOne(newVersion)
       .then(update(newVersion))
       .then(loadOne);

@@ -3,6 +3,7 @@ import { loadPeople } from './people';
 import { loadNotes } from './notes';
 import { loadCalendar } from './calendar';
 import { loadMissions } from './missions';
+import { loadAddenda } from './addenda';
 
 const PEEP_TOKEN = 'peepToken';
 export const LOGIN_REQUEST = 'EvtX:Server:auth:login';
@@ -30,6 +31,7 @@ export const userLogged = (user, token) => dispatch => {
   dispatch(loadNotes());
   dispatch(loadCalendar());
   dispatch(loadMissions());
+  dispatch(loadAddenda());
 };
 
 export const logout = () => dispatch => {

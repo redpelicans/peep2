@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { FormField } from '../../fields';
-import { getField } from '../../forms/missions';
+import { getField } from '../../forms/addenda';
 
 const MissionForm = styled.form`
   display: grid;
@@ -14,11 +14,11 @@ const MissionForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'clientId' 'name' 'partnerId' 'billedTarget' 'managerId'
-    'allowWeekends' 'note';
+  grid-template-areas: 'workerId' 'startDate' 'endDate' 'amount' 'unit'
+    'currency';
   @media (min-width: 700px) {
-    grid-template-areas: 'clientId name name' 'partnerId partnerId billedTarget'
-      'managerId managerId allowWeekends' 'note note note';
+    grid-template-areas: 'workerId workerId workerId'
+      'startDate startDate endDate' 'amount unit currency';
   }
 `;
 
@@ -35,9 +35,9 @@ const AddOrEditForm = ({
   setFieldValue,
 }) => {
   return (
-    <MissionForm id="missionForm" onSubmit={handleSubmit}>
+    <MissionForm id="addendaForm" onSubmit={handleSubmit}>
       <StyledFormField
-        field={getField('name')}
+        field={getField('workerId')}
         values={values}
         errors={errors}
         touched={touched}
@@ -45,7 +45,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('clientId')}
+        field={getField('startDate')}
         values={values}
         errors={errors}
         touched={touched}
@@ -53,7 +53,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('partnerId')}
+        field={getField('endDate')}
         values={values}
         errors={errors}
         touched={touched}
@@ -61,7 +61,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('billedTarget')}
+        field={getField('amount')}
         values={values}
         errors={errors}
         touched={touched}
@@ -69,7 +69,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('managerId')}
+        field={getField('unit')}
         values={values}
         errors={errors}
         touched={touched}
@@ -77,18 +77,10 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('note')}
+        field={getField('currency')}
         values={values}
-        touched={touched}
         errors={errors}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('allowWeekends')}
-        values={values}
         touched={touched}
-        errors={errors}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
       />
@@ -107,11 +99,11 @@ AddOrEditForm.propTypes = {
 
 const componentLifecycle = {
   componentWillReceiveProps(nextProps) {
-    // const { clients, setFieldValue, setFieldTouched, values } = nextProps;
-    // if (!values.name && values.clientId && clients) {
-    //   setFieldValue('name', clients[values.clientId].name);
-    //   setFieldTouched('name', true);
-    // }
+    const { clients, setFieldValue, setFieldTouched, values } = nextProps;
+    if (!values.name && values.clientId && clients) {
+      setFieldValue('name', clients[values.clientId].name);
+      setFieldTouched('name', true);
+    }
   },
 };
 

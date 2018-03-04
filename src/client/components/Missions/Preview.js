@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStateHandlers } from 'recompose';
+import { compose, withStateHandlers } from 'recompose';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '@blueprintjs/core';
 import { map, isEmpty } from 'ramda';
@@ -14,6 +15,8 @@ import {
 } from '../widgets';
 import Avatar from '../Avatar';
 import { getPathByName } from '../../routes';
+import { getMissionAddenda, getWorker } from '../../selectors/addenda';
+import { getPeople } from '../../selectors/people';
 
 const StyledLinkButton = styled(LinkButton)`
   margin-left: 5px;
@@ -73,7 +76,8 @@ export const Preview = ({
   showActions,
   client,
   manager,
-  workers,
+  addenda,
+  people,
   mission: { _id, name },
   deleteMission,
   isDeleteDialogOpen,
@@ -143,9 +147,10 @@ export const Preview = ({
           )}
         </PreviewCenter>
         <PreviewRight>
-          {!isEmpty(workers) &&
-            map(worker => {
-              const { _id, avatar, name } = worker;
+          {!isEmpty(addenda) &&
+            !isEmpty(people) &&
+            map(({ workerId }) => {
+              const { _id, avatar, name } = getWorker(workerId, people);
               if (avatar) {
                 return (
                   <Avatar
@@ -157,7 +162,7 @@ export const Preview = ({
                   />
                 );
               }
-            }, workers)}
+            }, addenda)}
         </PreviewRight>
       </TitleRow>
     </PreviewContainer>
@@ -175,20 +180,31 @@ Preview.propTypes = {
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   client: PropTypes.object,
-  workers: PropTypes.array,
+  addenda: PropTypes.array,
+  people: PropTypes.object,
 };
 
-const enhance = withStateHandlers(
-  {
-    showActions: false,
-    isDeleteDialogOpen: false,
-  },
-  {
-    handleMouseLeave: () => () => ({ showActions: false }),
-    handleMouseEnter: () => () => ({ showActions: true }),
-    showDialog: () => () => ({ isDeleteDialogOpen: true }),
-    hideDialog: () => () => ({ isDeleteDialogOpen: false }),
-  },
+const mapStateToProps = (state, { mission }) => {
+  return {
+    addenda: getMissionAddenda(mission._id)(state),
+    people: getPeople(state),
+  };
+};
+
+const enhance = compose(
+  connect(mapStateToProps),
+  withStateHandlers(
+    {
+      showActions: false,
+      isDeleteDialogOpen: false,
+    },
+    {
+      handleMouseLeave: () => () => ({ showActions: false }),
+      handleMouseEnter: () => () => ({ showActions: true }),
+      showDialog: () => () => ({ isDeleteDialogOpen: true }),
+      hideDialog: () => () => ({ isDeleteDialogOpen: false }),
+    },
+  ),
 );
 
 export default enhance(Preview);

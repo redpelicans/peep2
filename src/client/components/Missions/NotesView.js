@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { map } from 'ramda';
+import { isEmpty, map } from 'ramda';
 import { Button } from '@blueprintjs/core';
 import { withHandlers, compose, withStateHandlers } from 'recompose';
 import { bindActionCreators } from 'redux';
@@ -13,7 +13,7 @@ import { getEntityNotes } from '../../selectors/notes';
 import { getCompanies } from '../../selectors/companies';
 import { getMissions } from '../../selectors/missions';
 import ModalNote from '../widgets/ModalNote';
-import { addNote, updateNote } from '../../actions/notes';
+import { addNote, updateNote, deleteNote } from '../../actions/notes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -66,14 +66,11 @@ const NotesView = ({
         }}
         type="Add"
       />
-      <TitleContainer>
-        <span>Notes</span>
-        <StyledButton
-          className="pt-small pt-button"
-          iconName="pt-icon-plus"
-          onClick={() => showModal()}
-        />
-      </TitleContainer>
+      {!isEmpty(notes) && (
+        <TitleContainer>
+          <span>Notes</span>
+        </TitleContainer>
+      )}
       <MasonryLayout id="notes" sizes={sizes}>
         {map(
           note => (
@@ -108,7 +105,7 @@ NotesView.propTypes = {
   updateNote: PropTypes.func.isRequired,
 };
 
-const actions = { addNote, updateNote };
+const actions = { addNote, updateNote, deleteNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const mapStateToProps = (state, { entityId }) => ({
@@ -141,11 +138,11 @@ const enhance = compose(
   }),
   withStateHandlers(
     {
-      isModalOpen: false,
+      // isModalOpen: false,
     },
     {
-      showModal: () => () => ({ isModalOpen: true }),
-      hideModal: () => () => ({ isModalOpen: false }),
+      // showModal: () => () => ({ isModalOpen: true }),
+      // hideModal: () => () => ({ isModalOpen: false }),
     },
   ),
 );
