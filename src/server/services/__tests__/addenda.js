@@ -2,29 +2,27 @@ import R from 'ramda';
 import sinon from 'sinon';
 import { ObjectId } from 'mongobless';
 import params from '../../../../params';
-import Mission from '../../models/missions';
 import evtX from 'evtx';
 import initAddenda from '../addenda';
-import { manageError, manageFail } from '../../utils/tests';
+import Addenda from '../../models/addenda';
+import {
+  manageFail,
+  manageError,
+  connect,
+  close,
+  drop,
+} from '../../utils/tests';
 
 const evtx = evtX().configure(initAddenda);
 const service = evtx.service('addenda');
-const FAKE_ID = 'A'.repeat(12);
 const user = { _id: 0 };
-
-jest.mock('../../models/addenda', () => {
-  let count = 0;
-  const ID = () =>
-    String(count++)
-      .repeat(12)
-      .slice(0, 12);
-  const FAKE_ID = 'A'.repeat(12);
-  const DB = {
-    addendum: {
-      [ID()]: {
-        _id: FAKE_ID,
-        missionId: FAKE_ID,
-        workerId: FAKE_ID,
+const data = {
+  collections: {
+    addenda: [
+      {
+        _id: 1,
+        missionId: new ObjectId(),
+        workerId: new ObjectId(),
         startDate: new Date(2018, 1, 1),
         endDate: new Date(2020, 1, 1),
         fees: {
@@ -33,36 +31,33 @@ jest.mock('../../models/addenda', () => {
           unit: 'day',
         },
       },
-    },
-  };
-  return {
-    loadAll: () => Promise.resolve(Object.values(DB.addendum)),
-    loadOne: id => {
-      return Promise.resolve(DB.addendum[id]);
-    },
-    collection: {
-      insertOne: addendum => {
-        const newAddendum = { _id: ID(), ...addendum };
-        DB.addendum[newAddendum._id] = newAddendum;
-        return Promise.resolve({ insertedId: newAddendum._id });
-      },
-      updateOne: ({ _id }, { $set: updates }) => {
-        DB.addendum[_id] = updates;
-        return Promise.resolve(updates);
-      },
-    },
-  };
-});
+    ],
+  },
+};
+
+let db;
+beforeAll(() => connect(params.db).then(ctx => (db = ctx)));
+afterAll(close);
 
 describe('Addenda service', () => {
   test('expect load', () => {
+    const addendumStub = sinon
+      .stub(Addenda, 'findAll')
+      .callsFake(() => Promise.resolve(data.collections.addenda));
+    const end = e => {
+      addendumStub.restore();
+      manageError(e);
+    };
+    const user = { _id: 0 };
     return service
       .load(null, { user })
-      .then(missions => {
-        expect(missions[0].workerId).toEqual(FAKE_ID);
-        manageError();
+      .then(addenda => {
+        expect(addenda.map(n => n.content)).toEqual(
+          data.collections.addenda.map(n => n.content),
+        );
+        end();
       })
-      .catch(manageError);
+      .catch(end);
   });
 
   test('expect add', () => {
@@ -74,7 +69,7 @@ describe('Addenda service', () => {
     };
 
     const checkObj = obj => {
-      expect(newObj).toEqual(R.omit(['_id', 'createdAt'], obj));
+      expect(newObj).toEqual(R.omit(['_id', 'createdAt', 'constructor'], obj));
     };
 
     return service
@@ -92,7 +87,9 @@ describe('Addenda service', () => {
     };
 
     evtx.service('addenda').once('addendum:added', ({ output: addenda }) => {
-      expect(R.omit(['_id', 'createdAt'], addenda)).toEqual(newObj);
+      expect(R.omit(['_id', 'createdAt', 'constructor'], addenda)).toEqual(
+        newObj,
+      );
       done();
     });
 
@@ -116,7 +113,9 @@ describe('Addenda service', () => {
     };
 
     const checkObj = obj => {
-      expect(updates).toEqual(R.omit(['_id', 'createdAt', 'updatedAt'], obj));
+      expect(updates).toEqual(
+        R.omit(['_id', 'createdAt', 'updatedAt', 'constructor'], obj),
+      );
     };
 
     return service
@@ -143,9 +142,9 @@ describe('Addenda service', () => {
     };
 
     evtx.service('addenda').once('addendum:updated', ({ output: addenda }) => {
-      expect(R.omit(['_id', 'createdAt', 'updatedAt'], addenda)).toEqual(
-        updates,
-      );
+      expect(
+        R.omit(['_id', 'createdAt', 'updatedAt', 'constructor'], addenda),
+      ).toEqual(updates);
       done();
     });
 

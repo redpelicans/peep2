@@ -61,7 +61,6 @@ export const addenda = {
   },
 
   update(addendum) {
-    console.log('addendum', addendum);
     const newVersion = inMaker(addendum);
     newVersion.updatedAt = new Date();
     const loadOne = ({ _id }) => Addenda.loadOne(_id);
