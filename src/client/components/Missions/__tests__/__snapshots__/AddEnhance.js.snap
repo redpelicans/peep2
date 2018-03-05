@@ -322,7 +322,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
               ],
               "_exclusive": Object {},
               "_mutate": false,
-              "_nodes": Array [],
+              "_nodes": Array [
+                "timesheetUnit",
+                "allowWeekends",
+                "note",
+                "managerId",
+                "billedTarget",
+                "partnerId",
+                "clientId",
+                "name",
+              ],
               "_options": Object {
                 "abortEarly": true,
                 "recursive": true,
@@ -330,7 +339,189 @@ exports[`app | components | Mission | component render should match snapshot 1`]
               "_type": "object",
               "_typeError": [Function],
               "_whitelist": Set {},
-              "fields": Object {},
+              "fields": Object {
+                "allowWeekends": StringSchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {},
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {
+                    "allow",
+                    "doNotAllow",
+                  },
+                  "_whitelistError": [Function],
+                  "tests": Array [],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+                "billedTarget": StringSchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {
+                    "required": false,
+                  },
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {
+                    "partner",
+                    "client",
+                  },
+                  "_whitelistError": [Function],
+                  "tests": Array [
+                    [Function],
+                    [Function],
+                  ],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+                "clientId": StringSchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {
+                    "required": false,
+                  },
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {},
+                  "tests": Array [
+                    [Function],
+                    [Function],
+                  ],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+                "managerId": StringSchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {
+                    "required": false,
+                  },
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {},
+                  "tests": Array [
+                    [Function],
+                    [Function],
+                  ],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+                "name": StringSchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {
+                    "required": false,
+                  },
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {},
+                  "tests": Array [
+                    [Function],
+                    [Function],
+                  ],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+                "note": StringSchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {},
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {},
+                  "tests": Array [],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+                "partnerId": StringSchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {},
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {},
+                  "tests": Array [],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+                "timesheetUnit": StringSchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {
+                    "required": false,
+                  },
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {
+                    "day",
+                    "hour",
+                  },
+                  "_whitelistError": [Function],
+                  "tests": Array [
+                    [Function],
+                    [Function],
+                  ],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+              },
               "tests": Array [],
               "transforms": Array [
                 [Function],
@@ -873,6 +1064,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "label": "Name",
                                     "name": "name",
                                     "required": true,
+                                    "validate": StringSchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_type": "string",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
                                   }
                                 }
                                 setFieldTouched={[Function]}
@@ -900,6 +1109,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       "label": "Name",
                                       "name": "name",
                                       "required": true,
+                                      "validate": StringSchema {
+                                        "_blacklist": Set {},
+                                        "_conditions": Array [],
+                                        "_deps": Array [],
+                                        "_exclusive": Object {},
+                                        "_mutate": false,
+                                        "_options": Object {
+                                          "abortEarly": true,
+                                          "recursive": true,
+                                        },
+                                        "_type": "string",
+                                        "_typeError": [Function],
+                                        "_whitelist": Set {},
+                                        "tests": Array [],
+                                        "transforms": Array [
+                                          [Function],
+                                        ],
+                                      },
                                     }
                                   }
                                   setFieldTouched={[Function]}
@@ -989,6 +1216,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "label": "Client",
                                     "name": "clientId",
                                     "required": true,
+                                    "validate": StringSchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_type": "string",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
                                   }
                                 }
                                 setFieldTouched={[Function]}
@@ -1016,6 +1261,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       "label": "Client",
                                       "name": "clientId",
                                       "required": true,
+                                      "validate": StringSchema {
+                                        "_blacklist": Set {},
+                                        "_conditions": Array [],
+                                        "_deps": Array [],
+                                        "_exclusive": Object {},
+                                        "_mutate": false,
+                                        "_options": Object {
+                                          "abortEarly": true,
+                                          "recursive": true,
+                                        },
+                                        "_type": "string",
+                                        "_typeError": [Function],
+                                        "_whitelist": Set {},
+                                        "tests": Array [],
+                                        "transforms": Array [
+                                          [Function],
+                                        ],
+                                      },
                                     }
                                   }
                                   setFieldTouched={[Function]}
@@ -1264,6 +1527,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "component": [Function],
                                     "label": "Partner",
                                     "name": "partnerId",
+                                    "validate": StringSchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_type": "string",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
                                   }
                                 }
                                 setFieldTouched={[Function]}
@@ -1290,6 +1571,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       "component": [Function],
                                       "label": "Partner",
                                       "name": "partnerId",
+                                      "validate": StringSchema {
+                                        "_blacklist": Set {},
+                                        "_conditions": Array [],
+                                        "_deps": Array [],
+                                        "_exclusive": Object {},
+                                        "_mutate": false,
+                                        "_options": Object {
+                                          "abortEarly": true,
+                                          "recursive": true,
+                                        },
+                                        "_type": "string",
+                                        "_typeError": [Function],
+                                        "_whitelist": Set {},
+                                        "tests": Array [],
+                                        "transforms": Array [
+                                          [Function],
+                                        ],
+                                      },
                                     }
                                   }
                                   setFieldTouched={[Function]}
@@ -1542,6 +1841,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "label": "Billed Target",
                                     "name": "billedTarget",
                                     "required": true,
+                                    "validate": StringSchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_type": "string",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
                                   }
                                 }
                                 setFieldTouched={[Function]}
@@ -1580,6 +1897,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       "label": "Billed Target",
                                       "name": "billedTarget",
                                       "required": true,
+                                      "validate": StringSchema {
+                                        "_blacklist": Set {},
+                                        "_conditions": Array [],
+                                        "_deps": Array [],
+                                        "_exclusive": Object {},
+                                        "_mutate": false,
+                                        "_options": Object {
+                                          "abortEarly": true,
+                                          "recursive": true,
+                                        },
+                                        "_type": "string",
+                                        "_typeError": [Function],
+                                        "_whitelist": Set {},
+                                        "tests": Array [],
+                                        "transforms": Array [
+                                          [Function],
+                                        ],
+                                      },
                                     }
                                   }
                                   setFieldTouched={[Function]}
@@ -1862,6 +2197,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "label": "Manager",
                                     "name": "managerId",
                                     "required": true,
+                                    "validate": StringSchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_type": "string",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
                                   }
                                 }
                                 setFieldTouched={[Function]}
@@ -1889,6 +2242,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       "label": "Manager",
                                       "name": "managerId",
                                       "required": true,
+                                      "validate": StringSchema {
+                                        "_blacklist": Set {},
+                                        "_conditions": Array [],
+                                        "_deps": Array [],
+                                        "_exclusive": Object {},
+                                        "_mutate": false,
+                                        "_options": Object {
+                                          "abortEarly": true,
+                                          "recursive": true,
+                                        },
+                                        "_type": "string",
+                                        "_typeError": [Function],
+                                        "_whitelist": Set {},
+                                        "tests": Array [],
+                                        "transforms": Array [
+                                          [Function],
+                                        ],
+                                      },
                                     }
                                   }
                                   setFieldTouched={[Function]}
@@ -2137,6 +2508,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "component": [Function],
                                     "label": "Note",
                                     "name": "note",
+                                    "validate": StringSchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_type": "string",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
                                   }
                                 }
                                 setFieldTouched={[Function]}
@@ -2163,6 +2552,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       "component": [Function],
                                       "label": "Note",
                                       "name": "note",
+                                      "validate": StringSchema {
+                                        "_blacklist": Set {},
+                                        "_conditions": Array [],
+                                        "_deps": Array [],
+                                        "_exclusive": Object {},
+                                        "_mutate": false,
+                                        "_options": Object {
+                                          "abortEarly": true,
+                                          "recursive": true,
+                                        },
+                                        "_type": "string",
+                                        "_typeError": [Function],
+                                        "_whitelist": Set {},
+                                        "tests": Array [],
+                                        "transforms": Array [
+                                          [Function],
+                                        ],
+                                      },
                                     }
                                   }
                                   setFieldTouched={[Function]}
@@ -2296,6 +2703,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     ],
                                     "label": "Allow Weekends",
                                     "name": "allowWeekends",
+                                    "validate": StringSchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_type": "string",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
                                   }
                                 }
                                 setFieldTouched={[Function]}
@@ -2333,6 +2758,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       ],
                                       "label": "Allow Weekends",
                                       "name": "allowWeekends",
+                                      "validate": StringSchema {
+                                        "_blacklist": Set {},
+                                        "_conditions": Array [],
+                                        "_deps": Array [],
+                                        "_exclusive": Object {},
+                                        "_mutate": false,
+                                        "_options": Object {
+                                          "abortEarly": true,
+                                          "recursive": true,
+                                        },
+                                        "_type": "string",
+                                        "_typeError": [Function],
+                                        "_whitelist": Set {},
+                                        "tests": Array [],
+                                        "transforms": Array [
+                                          [Function],
+                                        ],
+                                      },
                                     }
                                   }
                                   setFieldTouched={[Function]}
