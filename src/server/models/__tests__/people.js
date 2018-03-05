@@ -62,7 +62,7 @@ describe('People models', () => {
   });
 
   it('expect load one', done => {
-    const { _id, _fullName, roles } = data.collections.people[0];
+    const { _id, _fullName } = data.collections.people[0];
     Person.loadOne(_id)
       .then(person => {
         expect(person._id).toEqual(_id);

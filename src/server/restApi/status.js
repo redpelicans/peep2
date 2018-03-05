@@ -15,7 +15,7 @@ const status = {
       let version, error;
       cmd.stdout.on(
         'data',
-        data => (version = data.toString().replace(/(\n$|\")/g, '')),
+        data => (version = data.toString().replace(/(\n$|")/g, '')),
       );
       cmd.stderr.on('data', data => (error = data.toString()));
       cmd.on('close', code => {
