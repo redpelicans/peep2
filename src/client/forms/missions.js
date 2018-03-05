@@ -3,11 +3,9 @@ import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
 import { InputField } from '../fields';
 import {
   SelectField,
-  AssigneesSelectField,
   CompaniesSelectField,
   WorkerSelectField,
 } from '../fields/SelectField';
-import { DateField } from '../fields/DateField';
 import { MarkDownField } from '../fields/MarkDownField';
 
 const fields = {

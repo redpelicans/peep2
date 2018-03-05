@@ -1,5 +1,4 @@
 import Yup from 'yup';
-import { find, prop } from 'ramda';
 import {
   getDefaultValues,
   getOneField,
