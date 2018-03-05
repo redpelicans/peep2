@@ -9,8 +9,9 @@ export const DELETE_MISSION = 'EvtX:Server:missions:del';
 export const MISSION_DELETED = 'mission:deleted';
 export const UPDATE_MISSION = 'EvtX:Server:missions:update';
 export const MISSION_UPDATED = 'mission:updated';
+export const FILTER_MISSIONS = 'missions:filter';
 export const SORT_MISSIONS = 'sort:missions:list';
-export const SPOTLIGHT_MISSIONS = 'filter:missions:list';
+export const SPOTLIGHT_MISSIONS = 'spotlight:missions:list';
 
 export const TYPES = {
   WORKER: 'worker',
@@ -42,6 +43,11 @@ export const deleteMission = id => ({
   type: DELETE_MISSION,
   payload: { _id: id },
   replyTo: MISSION_DELETED,
+});
+
+export const filterMissions = type => ({
+  type: FILTER_MISSIONS,
+  payload: type,
 });
 
 export const sortMissions = sortBy => ({

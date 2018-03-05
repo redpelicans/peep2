@@ -6,6 +6,7 @@ import {
   MISSION_ADDED,
   MISSION_UPDATED,
   MISSION_DELETED,
+  FILTER_MISSIONS,
   SORT_MISSIONS,
 } from '../actions/missions';
 
@@ -23,12 +24,15 @@ const makeAll = compose(fromPairs, map(c => [c._id, make(c)]));
 
 const initialState = {
   data: {},
+  filter: 'current',
   sort: { by: 'endDate', order: 'desc' },
   spotlight: '',
 };
 
 const missions = (state = initialState, action) => {
   switch (action.type) {
+    case FILTER_MISSIONS:
+      return { ...state, filter: action.payload };
     case SORT_MISSIONS: {
       const { by, order } = state.sort;
       const newOrder = by === action.sortBy && order === 'asc' ? 'desc' : 'asc';

@@ -15,6 +15,7 @@ import {
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import {
+  getFilter,
   getSpotlight,
   getSort,
   getVisibleMissions,
@@ -23,6 +24,7 @@ import {
   deleteMission,
   sortMissions,
   spotlightMissions,
+  filterMissions,
 } from '../../actions/missions';
 import { Header, HeaderRight, HeaderLeft } from '../Header';
 import {
@@ -46,9 +48,11 @@ export const Missions = ({
   people,
   companies,
   missions,
+  filter,
   spotlight,
   sort,
   deleteMission,
+  filterMissions,
   spotlightMissions,
   onFilterChange,
   sortMissions,
@@ -78,24 +82,24 @@ export const Missions = ({
                 iconName="pt-icon-add"
                 text="Add"
               />
-              {/* <MenuItem className="pt-icon-filter-list" text="Filter" />
+              <MenuItem className="pt-icon-filter-list" text="Filter" />
               <ButtonGroup className="pt-minimal">
                 <Button
                   active={filter === 'all'}
-                  onClick={() => set_filter('all')}
+                  onClick={() => filterMissions('all')}
                   text="All"
                 />
                 <Button
                   active={filter === 'current'}
-                  onClick={() => set_filter('current')}
+                  onClick={() => filterMissions('current')}
                   text="Current"
                 />
                 <Button
                   active={filter === 'past'}
-                  onClick={() => set_filter('past')}
+                  onClick={() => filterMissions('past')}
                   text="Past"
                 />
-              </ButtonGroup> */}
+              </ButtonGroup>
               <MenuItem iconName="pt-icon-double-caret-vertical" text="Sort" />
               <ButtonGroup className="pt-minimal">
                 <Button
@@ -150,9 +154,11 @@ Missions.propTypes = {
   people: PropTypes.object,
   companies: PropTypes.object,
   missions: PropTypes.array,
+  filter: PropTypes.string,
   spotlight: PropTypes.string,
   sort: PropTypes.object,
   deleteMission: PropTypes.func.isRequired,
+  filterMissions: PropTypes.func.isRequired,
   spotlightMissions: PropTypes.func.isRequired,
   sortMissions: PropTypes.func.isRequired,
   onFilterChange: PropTypes.func.isRequired,
@@ -162,11 +168,17 @@ const mapStateToProps = state => ({
   people: getPeople(state),
   companies: getCompanies(state),
   missions: getVisibleMissions(state),
+  filter: getFilter(state),
   spotlight: getSpotlight(state),
   sort: getSort(state),
 });
 
-const actions = { sortMissions, spotlightMissions, deleteMission };
+const actions = {
+  filterMissions,
+  sortMissions,
+  spotlightMissions,
+  deleteMission,
+};
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
