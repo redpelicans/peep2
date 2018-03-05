@@ -1,5 +1,4 @@
 import debug from 'debug';
-import R from 'ramda';
 import daysOff from './spare_days';
 
 const loginfo = debug('peep:evtx');
@@ -11,10 +10,8 @@ export const calendar = {
   },
 };
 
-const init = (evtx) => {
-  evtx
-    .use(SERVICE_NAME, calendar)
-    .service(SERVICE_NAME);
+const init = evtx => {
+  evtx.use(SERVICE_NAME, calendar).service(SERVICE_NAME);
   loginfo('calendar service registered');
 };
 

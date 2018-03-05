@@ -2,10 +2,9 @@
 
 import debug from 'debug';
 import Yup from 'yup';
-import { ObjectId } from 'mongobless';
 import uppercamelcase from 'uppercamelcase';
 import R from 'ramda';
-import { Company, Preference, Note } from '../models';
+import { Company, Note } from '../models';
 import {
   emitAddNoteEvent,
   emitNotesDeleted,

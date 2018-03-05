@@ -10,7 +10,6 @@ import {
   validate,
   emitEvent,
   checkUser,
-  formatInput,
   formatOutput,
 } from './utils';
 

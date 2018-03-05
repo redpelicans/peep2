@@ -2,7 +2,7 @@ import R from 'ramda';
 import sinon from 'sinon';
 import evtX from 'evtx';
 import { ObjectId } from 'mongobless';
-import { Person, Preference, Note } from '../../models';
+import { Person, Note } from '../../models';
 import initPeople from '../people';
 import initNotes from '../notes';
 import params from '../../../../params';
@@ -28,7 +28,7 @@ const PERSON = {
   email: 'email@email.fr',
   jobType: 'designer',
   companyId: new ObjectId(),
-  tags: ['A', 'B'],
+  // tags: ['A', 'B'],
   phones: [{ label: 'phone1', number: 'number' }],
   tags: ['T1', 'T2'],
   skills: ['s1'],

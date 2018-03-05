@@ -3,7 +3,6 @@ import R from 'ramda';
 import { ObjectId } from 'mongobless';
 import evtX from 'evtx';
 import initEvents from '../events';
-import { events } from '../events';
 import { Event } from '../../models';
 import params from '../../../../params';
 import {

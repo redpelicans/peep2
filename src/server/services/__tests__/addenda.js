@@ -5,13 +5,7 @@ import params from '../../../../params';
 import evtX from 'evtx';
 import initAddenda from '../addenda';
 import Addenda from '../../models/addenda';
-import {
-  manageFail,
-  manageError,
-  connect,
-  close,
-  drop,
-} from '../../utils/tests';
+import { manageFail, manageError, connect, close } from '../../utils/tests';
 
 const evtx = evtX().configure(initAddenda);
 const service = evtx.service('addenda');
