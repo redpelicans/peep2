@@ -27,7 +27,7 @@ const addSchema = Yup.object().shape({
       .oneOf(['day'])
       .required(),
     currency: Yup.string()
-      .oneOf(['EUR'])
+      .oneOf(['eur'])
       .required(),
   }),
 });
