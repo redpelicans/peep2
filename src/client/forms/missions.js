@@ -15,15 +15,18 @@ const fields = {
     label: 'Name',
     required: true,
     component: InputField,
+    validate: Yup.string(),
   },
   clientId: {
     label: 'Client',
     component: CompaniesSelectField,
     required: true,
+    validate: Yup.string(),
   },
   partnerId: {
     label: 'Partner',
     component: CompaniesSelectField,
+    validate: Yup.string(),
   },
   billedTarget: {
     label: 'Billed Target',
@@ -34,15 +37,18 @@ const fields = {
     ],
     component: SelectField,
     required: true,
+    validate: Yup.string(),
   },
   managerId: {
     label: 'Manager',
     component: WorkerSelectField,
     required: true,
+    validate: Yup.string(),
   },
   note: {
     label: 'Note',
     component: MarkDownField,
+    validate: Yup.string(),
   },
   allowWeekends: {
     label: 'Allow Weekends',
@@ -52,6 +58,7 @@ const fields = {
       { id: 'doNotAllow', value: 'Do not Allow' },
     ],
     component: SelectField,
+    validate: Yup.string(),
   },
   timesheetUnit: {
     label: 'Timesheet Unit',
@@ -59,6 +66,7 @@ const fields = {
     domainValues: [{ id: 'day', value: 'Day' }, { id: 'hour', value: 'Hour' }],
     component: SelectField,
     required: true,
+    validate: Yup.string(),
   },
 };
 

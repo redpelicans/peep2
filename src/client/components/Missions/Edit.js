@@ -32,6 +32,7 @@ export const Edit = compose(
 )(
   ({
     values,
+    isValid,
     isSubmitting,
     dirty,
     handleSubmit,
@@ -64,7 +65,7 @@ export const Edit = compose(
           <Button
             form="missionForm"
             type="submit"
-            disabled={isSubmitting || !dirty}
+            disabled={isSubmitting || !isValid || !dirty}
             className="pt-intent-success pt-large"
           >
             Update
