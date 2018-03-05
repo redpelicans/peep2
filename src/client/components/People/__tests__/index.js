@@ -3,19 +3,9 @@ import should from 'should';
 import { shallow } from 'enzyme';
 import Avatar from '../../Avatar';
 import List from '../List';
-import {
-  Tags,
-  Tag,
-  Actions,
-  PreviewContainer,
-  ModalConfirmation,
-  Container,
-} from '../../widgets';
+import { Tags, Tag, Actions, PreviewContainer, Container } from '../../widgets';
 import enhancedPreview, { TitleRow, Preview, StyledInfos } from '../Preview';
 import { Header, HeaderLeft, HeaderRight } from '../../Header';
-import AddOrEdit from '../AddOrEdit';
-import { StyledContainer, Add } from '../Add';
-import { Edit } from '../Edit';
 import { People } from '../index';
 
 const { describe, it } = global;
