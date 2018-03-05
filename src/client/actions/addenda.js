@@ -8,7 +8,7 @@ export const DELETE_ADDENDUM = 'EvtX:Server:addenda:del';
 export const ADDENDUM_DELETED = 'addendum:deleted';
 export const SET_FILTER = 'addendum:setFilter';
 
-export const loadAddenda = () => (dispatch, getState) => {
+export const loadAddenda = () => dispatch => {
   dispatch({
     type: LOAD_ADDENDA,
     replyTo: ADDENDA_LOADED,

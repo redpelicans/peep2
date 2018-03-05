@@ -2,10 +2,8 @@ import React from 'react';
 import should from 'should';
 import { shallow } from 'enzyme';
 import List from '../List';
-import { Formik } from 'formik';
 import Avatar from '../../Avatar';
 import { Tags, Tag, Actions } from '../../widgets';
-import { Form } from '../Add';
 import enhancedPreview, { Preview, Title } from '../Preview';
 
 const { describe, it } = global;

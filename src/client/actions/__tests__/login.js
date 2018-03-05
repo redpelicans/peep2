@@ -6,7 +6,7 @@ window.localStorage = global.localStorage;
 import { socketIoMiddleWare } from '../../middlewares';
 import reducer from '../../reducers';
 import { configureStore } from '../utils';
-import { loginRequest, LOGIN_REQUEST, USER_LOGGED } from '../login';
+import { loginRequest, USER_LOGGED } from '../login';
 
 describe('Action:login', () => {
   it('Should get logged', done => {

@@ -1,19 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
-import { compose, map } from 'ramda';
+import { compose } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Header, HeaderLeft, HeaderRight } from '../Header';
+import { Header, HeaderLeft } from '../Header';
 import { Formik } from 'formik';
-import { getValidationSchema, defaultValues } from '../../forms/addenda';
+import { getValidationSchema } from '../../forms/addenda';
 import { updateAddendum } from '../../actions/addenda';
 import { Prompt } from 'react-router';
 import { Spacer, Title, ModalConfirmation } from '../widgets';
 import AddOrEdit from './AddOrEdit';
-import { getCompanies } from '../../selectors/companies';
 
 export const Edit = compose(
   withState('isCancelDialogOpen', 'showCancelDialog', false),
@@ -32,7 +30,6 @@ export const Edit = compose(
     isValid,
     dirty,
     handleSubmit,
-    handleReset,
     setFieldTouched,
     setFieldValue,
     isCancelDialogOpen,
@@ -92,7 +89,6 @@ export const Edit = compose(
 Edit.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   isValid: PropTypes.bool.isRequired,
-  handleReset: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   dirty: PropTypes.bool.isRequired,
   values: PropTypes.object.isRequired,
@@ -114,7 +110,6 @@ const formatDefaultValues = ({ fees, ...rest }) => ({
 
 const FormikEdit = ({ accept, updateAddendum, defaultValues, ...props }) => {
   const _id = defaultValues._id;
-  // console.log('Id: ', _id);
   return (
     <Formik
       initialValues={formatDefaultValues(defaultValues)}
@@ -140,7 +135,6 @@ const FormikEdit = ({ accept, updateAddendum, defaultValues, ...props }) => {
             currency: currency,
           },
         };
-        // console.log('Addendum: ', newAddendum);
         updateAddendum(newAddendum);
         accept();
       }}

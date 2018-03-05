@@ -27,22 +27,9 @@ import {
   filterMissions,
 } from '../../actions/missions';
 import { Header, HeaderRight, HeaderLeft } from '../Header';
-import {
-  LinkButton,
-  Container,
-  Title,
-  Spacer,
-  Search,
-  SortMenu,
-} from '../widgets';
+import { LinkButton, Container, Title, Spacer, Search } from '../widgets';
 import { getPathByName } from '../../routes';
 import List from './List';
-
-const sortTypes = [
-  { key: 'endDate', label: 'Sort by ended date' },
-  { key: 'startDate', label: 'Sort by started date' },
-  { key: 'name', label: 'Sort by name' },
-];
 
 export const Missions = ({
   people,

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Position, Toaster, Intent, Icon, Colors } from '@blueprintjs/core';
+import { Intent, Icon, Colors } from '@blueprintjs/core';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import styled from 'styled-components';

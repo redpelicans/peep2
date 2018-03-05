@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { map, isEmpty } from 'ramda';
 import { compose, withStateHandlers } from 'recompose';
 import { format } from 'date-fns';
 import {
@@ -42,7 +41,6 @@ import { deleteCompany } from '../../actions/companies';
 import { deleteNote } from '../../actions/notes';
 import { deletePeople } from '../../actions/people';
 import { set_filter } from '../../actions/addenda';
-import MasonryLayout from '../widgets/MasonryLayout';
 import { getPathByName } from '../../routes';
 import { Auth } from '../../lib/kontrolo';
 import { getRouteAuthProps } from '../../routes';
@@ -75,14 +73,6 @@ const StyledGrid = styled.div`
       'addenda addenda addenda addenda' 'notes notes notes notes';
   }
 `;
-
-const sizes = [
-  { columns: 1, gutter: 10 },
-  { mq: '800px', columns: 2, gutter: 10 },
-  { mq: '1100px', columns: 3, gutter: 10 },
-  { mq: '1400px', columns: 4, gutter: 10 },
-  { mq: '1700px', columns: 5, gutter: 10 },
-];
 
 const ArrayBlock = styled.div`
   display: flex;
@@ -143,7 +133,6 @@ const MissionInfos = ({
   endDate,
   createdAt,
   updatedAt,
-  workers,
   billedTarget,
   allowWeekends,
   isAddendaModalOpen,
@@ -250,7 +239,6 @@ MissionInfos.propTypes = {
   endDate: PropTypes.string,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
-  workers: PropTypes.array,
   billedTarget: PropTypes.string,
   allowWeekends: PropTypes.bool,
   isAddendaModalOpen: PropTypes.bool,
