@@ -2,7 +2,6 @@ import R from 'ramda';
 import sinon from 'sinon';
 import { ObjectId } from 'mongobless';
 import params from '../../../../params';
-import { notes } from '../cities';
 import Note from '../../models/notes';
 import evtX from 'evtx';
 import initNotes from '../notes';

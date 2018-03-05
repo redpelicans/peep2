@@ -1,6 +1,5 @@
 import R from 'ramda';
 import sinon from 'sinon';
-import { ObjectId } from 'mongobless';
 import evtX from 'evtx';
 import params from '../../../../params';
 import initCompanies, { company } from '../companies';

@@ -1,7 +1,6 @@
 import debug from 'debug';
 import R from 'ramda';
 import Yup from 'yup';
-import { ObjectId } from 'mongobless';
 import { Note } from '../models';
 import {
   checkUser,

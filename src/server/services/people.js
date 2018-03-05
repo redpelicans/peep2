@@ -5,8 +5,7 @@ import Yup from 'yup';
 import moment from 'moment';
 import uppercamelcase from 'uppercamelcase';
 import R from 'ramda';
-import { ObjectId } from 'mongobless';
-import { Person, Preference, Note } from '../models';
+import { Person, Note } from '../models';
 import {
   emitNotesDeleted,
   emitAddNoteEvent,
