@@ -49,7 +49,7 @@ io.on('connect', () => {
     store.dispatch(
       checkToken((err, { user, token } = {}) => {
         // eslint-disable-line no-shadow
-        if (err) console.error(err.message);
+        if (err);
         else {
           // eslint-disable-line no-console
           // eslint-disable-line no-console
