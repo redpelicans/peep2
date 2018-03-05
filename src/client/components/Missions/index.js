@@ -78,12 +78,24 @@ export const Missions = ({
                 iconName="pt-icon-add"
                 text="Add"
               />
-              <MenuItem className="pt-icon-filter-list" text="Filter" />
+              {/* <MenuItem className="pt-icon-filter-list" text="Filter" />
               <ButtonGroup className="pt-minimal">
-                <Button text="All" /> // onClick={() => set_filter('all')} // active={filter === 'all'}
-                <Button text="Current" /> // onClick={() => set_filter('current')} // active={filter === 'current'}
-                <Button text="Past" /> // onClick={() => set_filter('past')} // active={filter === 'past'}
-              </ButtonGroup>
+                <Button
+                  active={filter === 'all'}
+                  onClick={() => set_filter('all')}
+                  text="All"
+                />
+                <Button
+                  active={filter === 'current'}
+                  onClick={() => set_filter('current')}
+                  text="Current"
+                />
+                <Button
+                  active={filter === 'past'}
+                  onClick={() => set_filter('past')}
+                  text="Past"
+                />
+              </ButtonGroup> */}
               <MenuItem iconName="pt-icon-double-caret-vertical" text="Sort" />
               <ButtonGroup className="pt-minimal">
                 <Button
