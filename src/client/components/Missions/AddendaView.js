@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { map, values, isEmpty } from 'ramda';
-import { Button } from '@blueprintjs/core';
+import { map, isEmpty } from 'ramda';
 import { compose, withStateHandlers } from 'recompose';
-import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import ModalAddenda from '../widgets/ModalAddenda';
 import { getMissionAddenda } from '../../selectors/addenda';
@@ -27,11 +25,6 @@ const StyledWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledButton = styled(Button)`
-  margin-left: 10px;
-  width: 35px;
-`;
-
 const TitleContainer = styled.div`
   display: flex;
   align-items: center;
@@ -48,7 +41,6 @@ const AddendaView = ({
   people,
   type,
   payload,
-  isAddForm,
   isEditForm,
   updateAddendum,
   deleteAddendum,
@@ -60,7 +52,7 @@ const AddendaView = ({
         reject={() => {
           hideModal();
         }}
-        accept={value => {
+        accept={() => {
           hideModal();
         }}
         type={type}
@@ -105,7 +97,6 @@ AddendaView.propTypes = {
   updateAddendum: PropTypes.func.isRequired,
   type: PropTypes.string,
   payload: PropTypes.object,
-  isAddForm: PropTypes.func,
   isEditForm: PropTypes.func,
 };
 
@@ -123,13 +114,10 @@ const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(
     {
-      // isModalOpen: false,
       type: 'add',
       payload: {},
     },
     {
-      // showModal: () => () => ({ isModalOpen: true }),
-      // hideModal: () => () => ({ isModalOpen: false }),
       isAddForm: () => () => ({ type: 'add' }),
       isEditForm: () => addendum => ({ type: 'edit', payload: addendum }),
     },

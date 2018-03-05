@@ -1,23 +1,210 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`app | components | Mission | component render should match snapshot 1`] = `
-<AddOrEditForm
-  errors={Object {}}
-  handleSubmit={[Function]}
-  setFieldTouched={[Function]}
-  setFieldValue={[Function]}
-  touched={Object {}}
-  values={
-    Object {
-      "allowWeekends": "doNotAllow",
-      "billedTarget": "client",
-      "clientId": undefined,
-      "managerId": undefined,
-      "name": undefined,
-      "note": undefined,
-      "partnerId": undefined,
-      "timesheetUnit": "day",
+<styled.form
+  id="missionForm"
+  onSubmit={[Function]}
+>
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "label": "Name",
+        "name": "name",
+        "required": true,
+      }
     }
-  }
-/>
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "label": "Client",
+        "name": "clientId",
+        "required": true,
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "label": "Partner",
+        "name": "partnerId",
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "defaultValue": "client",
+        "domainValues": Array [
+          Object {
+            "id": "partner",
+            "value": "Partner",
+          },
+          Object {
+            "id": "client",
+            "value": "Client",
+          },
+        ],
+        "label": "Billed Target",
+        "name": "billedTarget",
+        "required": true,
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "label": "Manager",
+        "name": "managerId",
+        "required": true,
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "label": "Note",
+        "name": "note",
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "defaultValue": "doNotAllow",
+        "domainValues": Array [
+          Object {
+            "id": "allow",
+            "value": "Allow",
+          },
+          Object {
+            "id": "doNotAllow",
+            "value": "Do not Allow",
+          },
+        ],
+        "label": "Allow Weekends",
+        "name": "allowWeekends",
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+</styled.form>
 `;

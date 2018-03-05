@@ -2,10 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { Button } from '@blueprintjs/core';
 import { Add as Component } from '../Add';
 import configureStore from '../../../store/configureStore';
-import { addMission } from '../../../actions/missions';
 import { defaultValues } from '../../../forms/missions';
 import createHistory from 'history/createBrowserHistory';
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
-import { compose, map } from 'ramda';
+import { compose } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
@@ -13,7 +13,6 @@ import { addMission } from '../../actions/missions';
 import { Prompt } from 'react-router';
 import { Spacer, Title, Container, ModalConfirmation } from '../widgets';
 import AddOrEdit from './AddOrEdit';
-import { getCompanies } from '../../selectors/companies';
 
 export const StyledContainer = styled(Container)`min-width: 300px;`;
 
@@ -155,8 +154,4 @@ FormikAdd.propTypes = {
   clients: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  //clients: getClients(state),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(FormikAdd);
+export default connect(null, mapDispatchToProps)(FormikAdd);

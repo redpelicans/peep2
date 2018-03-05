@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isEmpty, map } from 'ramda';
-import { Button } from '@blueprintjs/core';
-import { withHandlers, compose, withStateHandlers } from 'recompose';
+import { withHandlers, compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import MasonryLayout from '../widgets/MasonryLayout';
@@ -29,11 +28,6 @@ const StyledWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledButton = styled(Button)`
-  margin-left: 10px;
-  width: 35px;
-`;
-
 const TitleContainer = styled.div`
   display: flex;
   align-items: center;
@@ -49,7 +43,6 @@ const NotesView = ({
   entityId,
   deleteNote,
   isModalOpen,
-  showModal,
   hideModal,
   addNote,
   updateNote,
@@ -98,7 +91,6 @@ NotesView.propTypes = {
   entityType: PropTypes.string,
   findEntity: PropTypes.func.isRequired,
   deleteNote: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired,
   hideModal: PropTypes.func.isRequired,
   isModalOpen: PropTypes.bool.isRequired,
   addNote: PropTypes.func.isRequired,
@@ -136,15 +128,6 @@ const enhance = compose(
       return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
     },
   }),
-  withStateHandlers(
-    {
-      // isModalOpen: false,
-    },
-    {
-      // showModal: () => () => ({ isModalOpen: true }),
-      // hideModal: () => () => ({ isModalOpen: false }),
-    },
-  ),
 );
 
 export default enhance(NotesView);

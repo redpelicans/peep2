@@ -3,28 +3,18 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStateHandlers } from 'recompose';
 import { format } from 'date-fns';
-import { MarkdownConvertor } from '../widgets/Markdown';
 import { Button } from '@blueprintjs/core';
 import {
-  LinkButton,
   PreviewContainer,
   Actions,
   ModalConfirmation,
   NameLink,
 } from '../widgets';
-import { Auth } from '../../lib/kontrolo';
 import Avatar from '../Avatar';
-import { getPathByName, getRouteAuthProps } from '../../routes';
-import PersonPreview from '../People/Preview';
+import { getPathByName } from '../../routes';
 import { getWorker } from '../../selectors/addenda';
 
 const StyledButton = styled(Button)`
-  margin-right: 5px;
-  margin-top: 5px;
-`;
-
-const StyledLinkButton = styled(LinkButton)`
-  margin-left: 5px;
   margin-right: 5px;
   margin-top: 5px;
 `;
@@ -44,8 +34,6 @@ export const Icons = styled.div`
   margin-right: 5px;
   color: rgb(68, 86, 99);
 `;
-
-const StyledMarkdownConvertor = styled(MarkdownConvertor)`overflow: hidden;`;
 
 const TitleRow = styled.div`
   overflow: hidden;
@@ -108,7 +96,6 @@ export const Preview = ({
   hideDialog,
   isDeleteDialogOpen,
   deleteAddendum,
-  updateAddendum,
   isEditForm,
   showModal,
 }) => {
@@ -161,7 +148,6 @@ Preview.propTypes = {
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   deleteAddendum: PropTypes.func.isRequired,
-  updateAddendum: PropTypes.func.isRequired,
   isEditForm: PropTypes.func,
   showModal: PropTypes.func,
 };

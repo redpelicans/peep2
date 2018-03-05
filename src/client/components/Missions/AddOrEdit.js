@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose, lifecycle } from 'recompose';
 import styled from 'styled-components';
 import { FormField } from '../../fields';
 import { getField } from '../../forms/missions';
@@ -105,14 +104,4 @@ AddOrEditForm.propTypes = {
   touched: PropTypes.object.isRequired,
 };
 
-const componentLifecycle = {
-  componentWillReceiveProps(nextProps) {
-    // const { clients, setFieldValue, setFieldTouched, values } = nextProps;
-    // if (!values.name && values.clientId && clients) {
-    //   setFieldValue('name', clients[values.clientId].name);
-    //   setFieldTouched('name', true);
-    // }
-  },
-};
-
-export default compose(lifecycle(componentLifecycle))(AddOrEditForm);
+export default AddOrEditForm;
