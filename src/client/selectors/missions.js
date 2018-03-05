@@ -32,13 +32,13 @@ const doFilter = mfilter => filter(allPass([...getPredicates(mfilter)]));
 const filterAndSort = (filter, sort, missions) =>
   compose(doSort(sort), doFilter(filter), values)(missions);
 
-export const getFilter = state => state.missions.filter;
+export const getSpotlight = state => state.missions.spotlight;
 export const getSort = state => state.missions.sort;
 export const getMissions = state => state.missions.data;
 export const getMission = (state, id) => state.missions.data[id];
 
 export const getVisibleMissions = createSelector(
-  [getFilter, getSort, getMissions],
+  [getSpotlight, getSort, getMissions],
   (filter, sort, missions) => filterAndSort(filter, sort, missions),
 );
 

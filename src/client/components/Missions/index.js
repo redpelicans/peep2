@@ -15,14 +15,14 @@ import {
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import {
-  getFilter,
+  getSpotlight,
   getSort,
   getVisibleMissions,
 } from '../../selectors/missions';
 import {
   deleteMission,
-  sortMissionsList,
-  filterMissionsList,
+  sortMissions,
+  spotlightMissions,
 } from '../../actions/missions';
 import { Header, HeaderRight, HeaderLeft } from '../Header';
 import {
@@ -46,12 +46,12 @@ export const Missions = ({
   people,
   companies,
   missions,
-  filter,
+  spotlight,
   sort,
   deleteMission,
-  filterMissionsList,
+  spotlightMissions,
   onFilterChange,
-  sortMissionsList,
+  sortMissions,
 }) => {
   return (
     <Container>
@@ -63,9 +63,9 @@ export const Missions = ({
         </HeaderLeft>
         <HeaderRight>
           <Search
-            filter={filter}
+            spotlight={spotlight}
             onChange={onFilterChange}
-            resetValue={() => filterMissionsList('')}
+            resetValue={() => spotlightMissions('')}
           />
           <Spacer />
           <Popover position={Position.BOTTOM_RIGHT}>
@@ -78,6 +78,12 @@ export const Missions = ({
                 iconName="pt-icon-add"
                 text="Add"
               />
+              <MenuItem className="pt-icon-filter-list" text="Filter" />
+              <ButtonGroup className="pt-minimal">
+                <Button text="All" /> // onClick={() => set_filter('all')} // active={filter === 'all'}
+                <Button text="Current" /> // onClick={() => set_filter('current')} // active={filter === 'current'}
+                <Button text="Past" /> // onClick={() => set_filter('past')} // active={filter === 'past'}
+              </ButtonGroup>
               <MenuItem iconName="pt-icon-double-caret-vertical" text="Sort" />
               <ButtonGroup className="pt-minimal">
                 <Button
@@ -89,7 +95,7 @@ export const Missions = ({
                       : null
                   }
                   text="name"
-                  onClick={() => sortMissionsList('name')}
+                  onClick={() => sortMissions('name')}
                 />
                 <Button
                   iconName={
@@ -100,7 +106,7 @@ export const Missions = ({
                       : null
                   }
                   text="start date"
-                  onClick={() => sortMissionsList('startDate')}
+                  onClick={() => sortMissions('startDate')}
                 />
                 <Button
                   iconName={
@@ -111,7 +117,7 @@ export const Missions = ({
                       : null
                   }
                   text="end date"
-                  onClick={() => sortMissionsList('endDate')}
+                  onClick={() => sortMissions('endDate')}
                 />
               </ButtonGroup>
             </Menu>
@@ -132,11 +138,11 @@ Missions.propTypes = {
   people: PropTypes.object,
   companies: PropTypes.object,
   missions: PropTypes.array,
-  filter: PropTypes.string,
+  spotlight: PropTypes.string,
   sort: PropTypes.object,
   deleteMission: PropTypes.func.isRequired,
-  filterMissionsList: PropTypes.func.isRequired,
-  sortMissionsList: PropTypes.func.isRequired,
+  spotlightMissions: PropTypes.func.isRequired,
+  sortMissions: PropTypes.func.isRequired,
   onFilterChange: PropTypes.func.isRequired,
 };
 
@@ -144,18 +150,18 @@ const mapStateToProps = state => ({
   people: getPeople(state),
   companies: getCompanies(state),
   missions: getVisibleMissions(state),
-  filter: getFilter(state),
+  spotlight: getSpotlight(state),
   sort: getSort(state),
 });
 
-const actions = { sortMissionsList, filterMissionsList, deleteMission };
+const actions = { sortMissions, spotlightMissions, deleteMission };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   withHandlers({
-    onFilterChange: ({ filterMissionsList }) => event =>
-      filterMissionsList(event.target.value),
+    onFilterChange: ({ spotlightMissions }) => event =>
+      spotlightMissions(event.target.value),
   }),
 );
 
