@@ -2,7 +2,7 @@ import R from 'ramda';
 
 export const parseUrl = url => {
   const re = new RegExp(/^\/+(\w+)\/*(\w*)\/*(\w*)/);
-  const [_, service, id, method] = re.exec(url);
+  const [service, id, method] = re.exec(url);
   return R.map(x => x || undefined, [service, id, method]);
 };
 
