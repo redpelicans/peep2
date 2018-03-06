@@ -172,4 +172,24 @@ describe('Addenda service', () => {
       .then(checkObj)
       .catch(manageError);
   });
+
+  it('expect delete will emit addendum:deleted', done => {
+    const newObj = {
+      workerId: new ObjectId(),
+      missionId: new ObjectId(),
+      startDate: new Date(),
+      fees: { currency: 'EUR', unit: 'day', amount: 100 },
+    };
+
+    service
+      .add(newObj, { user })
+      .then(obj => {
+        evtx.service('addenda').once('addendum:deleted', ({ output: obj }) => {
+          expect(obj._id).toEqual(obj._id);
+          done();
+        });
+        return service.del({ _id: obj._id }, { user });
+      })
+      .catch(manageFail(done));
+  });
 });
