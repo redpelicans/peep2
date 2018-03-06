@@ -58,9 +58,11 @@ const AddendaView = ({
       <ModalAddenda
         isOpen={isModalOpen}
         reject={() => {
+          isAddForm();
           hideModal();
         }}
         accept={value => {
+          isAddForm();
           hideModal();
         }}
         type={type}

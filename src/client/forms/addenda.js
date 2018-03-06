@@ -9,20 +9,24 @@ const fields = {
     label: 'Worker',
     component: WorkerSelectField,
     required: true,
+    validate: Yup.string(),
   },
   startDate: {
     label: 'Start Date',
     component: DateField,
     required: true,
+    validate: Yup.string(),
   },
   endDate: {
     label: 'End Date',
     component: DateField,
+    validate: Yup.string(),
   },
   amount: {
     label: 'Amount',
     component: InputField,
     required: true,
+    validate: Yup.string(),
   },
   unit: {
     label: 'Unit',
@@ -30,6 +34,7 @@ const fields = {
     domainValues: [{ id: 'day', value: 'Day' }],
     component: SelectField,
     required: true,
+    validate: Yup.string(),
   },
   currency: {
     label: 'Currency',
@@ -37,6 +42,7 @@ const fields = {
     domainValues: [{ id: 'eur', value: 'EUR' }],
     component: SelectField,
     required: true,
+    validate: Yup.string(),
   },
 };
 
