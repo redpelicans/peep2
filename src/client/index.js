@@ -51,7 +51,6 @@ io.on('connect', () => {
         if (err) console.error(err.message);
         else {
           // eslint-disable-line no-console
-          // eslint-disable-line no-console
           store.dispatch(userLogged(user, token));
         }
         render(root, mountNode);
