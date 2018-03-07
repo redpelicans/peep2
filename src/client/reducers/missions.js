@@ -1,12 +1,13 @@
 import { compose, fromPairs, map, omit } from 'ramda';
 import {
   MISSIONS_LOADED,
-  FILTER_MISSIONS_LIST,
+  SPOTLIGHT_MISSIONS,
   ADD_MISSION,
   MISSION_ADDED,
   MISSION_UPDATED,
   MISSION_DELETED,
-  SORT_MISSIONS_LIST,
+  FILTER_MISSIONS,
+  SORT_MISSIONS,
 } from '../actions/missions';
 
 const make = mission => {
@@ -23,19 +24,22 @@ const makeAll = compose(fromPairs, map(c => [c._id, make(c)]));
 
 const initialState = {
   data: {},
+  filter: 'current',
   sort: { by: 'endDate', order: 'desc' },
-  filter: '',
+  spotlight: '',
 };
 
 const missions = (state = initialState, action) => {
   switch (action.type) {
-    case SORT_MISSIONS_LIST: {
+    case FILTER_MISSIONS:
+      return { ...state, filter: action.payload };
+    case SORT_MISSIONS: {
       const { by, order } = state.sort;
       const newOrder = by === action.sortBy && order === 'asc' ? 'desc' : 'asc';
       return { ...state, sort: { by: action.sortBy, order: newOrder } };
     }
-    case FILTER_MISSIONS_LIST:
-      return { ...state, filter: action.filter };
+    case SPOTLIGHT_MISSIONS:
+      return { ...state, spotlight: action.spotlight };
     case MISSIONS_LOADED:
       return { ...state, data: makeAll(action.payload) };
     case ADD_MISSION:
