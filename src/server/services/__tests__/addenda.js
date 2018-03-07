@@ -26,7 +26,7 @@ const data = {
         startDate: new Date(2018, 1, 1),
         endDate: new Date(2020, 1, 1),
         fees: {
-          currency: 'eur',
+          currency: 'EUR',
           amount: 100,
           unit: 'day',
         },
@@ -65,7 +65,7 @@ describe('Addenda service', () => {
       workerId: new ObjectId(),
       missionId: new ObjectId(),
       startDate: new Date(),
-      fees: { currency: 'eur', unit: 'day', amount: 100 },
+      fees: { currency: 'EUR', unit: 'day', amount: 100 },
     };
 
     const checkObj = obj => {
@@ -83,7 +83,7 @@ describe('Addenda service', () => {
       workerId: new ObjectId(),
       missionId: new ObjectId(),
       startDate: new Date(),
-      fees: { currency: 'eur', unit: 'day', amount: 100 },
+      fees: { currency: 'EUR', unit: 'day', amount: 100 },
     };
 
     evtx.service('addenda').once('addendum:added', ({ output: addenda }) => {
@@ -101,7 +101,7 @@ describe('Addenda service', () => {
       workerId: new ObjectId(),
       missionId: new ObjectId(),
       startDate: new Date(),
-      fees: { currency: 'eur', unit: 'day', amount: 100 },
+      fees: { currency: 'EUR', unit: 'day', amount: 100 },
     };
 
     const updates = {
@@ -109,7 +109,7 @@ describe('Addenda service', () => {
       missionId: new ObjectId(),
       startDate: new Date(),
       endDate: new Date(),
-      fees: { currency: 'eur', unit: 'day', amount: 200 },
+      fees: { currency: 'EUR', unit: 'day', amount: 200 },
     };
 
     const checkObj = obj => {
@@ -130,7 +130,7 @@ describe('Addenda service', () => {
       workerId: new ObjectId(),
       missionId: new ObjectId(),
       startDate: new Date(),
-      fees: { currency: 'eur', unit: 'day', amount: 100 },
+      fees: { currency: 'EUR', unit: 'day', amount: 100 },
     };
 
     const updates = {
@@ -138,7 +138,7 @@ describe('Addenda service', () => {
       missionId: new ObjectId(),
       startDate: new Date(),
       endDate: new Date(),
-      fees: { currency: 'eur', unit: 'day', amount: 200 },
+      fees: { currency: 'EUR', unit: 'day', amount: 200 },
     };
 
     evtx.service('addenda').once('addendum:updated', ({ output: addenda }) => {
