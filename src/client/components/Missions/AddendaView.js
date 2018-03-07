@@ -41,18 +41,21 @@ const AddendaView = ({
   people,
   type,
   payload,
-  isEditForm,
+  setEditForm,
   updateAddendum,
   deleteAddendum,
+  setAddForm,
 }) => {
   return (
     <StyledWrapper>
       <ModalAddenda
         isOpen={isModalOpen}
         reject={() => {
+          setAddForm();
           hideModal();
         }}
         accept={() => {
+          setAddForm();
           hideModal();
         }}
         type={type}
@@ -72,7 +75,7 @@ const AddendaView = ({
                 key={addendum._id}
                 addendum={addendum}
                 people={people}
-                isEditForm={isEditForm}
+                setEditForm={setEditForm}
                 showModal={showModal}
                 deleteAddendum={deleteAddendum}
                 updateAddendum={updateAddendum}
@@ -97,7 +100,8 @@ AddendaView.propTypes = {
   updateAddendum: PropTypes.func.isRequired,
   type: PropTypes.string,
   payload: PropTypes.object,
-  isEditForm: PropTypes.func,
+  setEditForm: PropTypes.func,
+  setAddForm: PropTypes.func,
 };
 
 const mapStateToProps = (state, { missionId }) => ({
@@ -118,8 +122,8 @@ const enhance = compose(
       payload: {},
     },
     {
-      isAddForm: () => () => ({ type: 'add' }),
-      isEditForm: () => addendum => ({ type: 'edit', payload: addendum }),
+      setAddForm: () => () => ({ type: 'add' }),
+      setEditForm: () => addendum => ({ type: 'edit', payload: addendum }),
     },
   ),
 );

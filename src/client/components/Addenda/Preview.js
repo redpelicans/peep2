@@ -96,7 +96,7 @@ export const Preview = ({
   hideDialog,
   isDeleteDialogOpen,
   deleteAddendum,
-  isEditForm,
+  setEditForm,
   showModal,
 }) => {
   return (
@@ -127,7 +127,7 @@ export const Preview = ({
             className="pt-small pt-button pt-intent-warning"
             iconName="pt-icon-edit"
             onClick={() => {
-              isEditForm(addendum);
+              setEditForm(addendum);
               showModal();
             }}
           />
@@ -148,7 +148,7 @@ Preview.propTypes = {
   hideDialog: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   deleteAddendum: PropTypes.func.isRequired,
-  isEditForm: PropTypes.func,
+  setEditForm: PropTypes.func,
   showModal: PropTypes.func,
 };
 
