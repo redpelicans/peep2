@@ -69,8 +69,6 @@ const updateEventGroupSchema = Yup.object().shape({
 });
 
 const makeEventsFromGroup = ({
-  from,
-  to,
   status,
   type,
   workerId,

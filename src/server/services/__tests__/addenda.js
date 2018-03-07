@@ -29,7 +29,7 @@ const data = {
   },
 };
 
-let db;
+let db; // eslint-disable-line no-unused-vars
 beforeAll(() => connect(params.db).then(ctx => (db = ctx)));
 afterAll(close);
 

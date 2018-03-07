@@ -26,10 +26,6 @@ let db;
 beforeAll(() => connect(params.db).then(ctx => (db = ctx)));
 afterAll(close);
 
-afterAll(() => {
-  eventStub.restore();
-});
-
 describe('Events service', () => {
   beforeEach(() => drop(db));
 
@@ -71,20 +67,20 @@ describe('Events service', () => {
       description: 'description',
     };
     const user = { _id: 0 };
-    const check = res => {
-      expect(res.length).toEqual(1);
-      expect(res[0]).toHaveProperty('groupId');
-      expect(R.omit(['_id', 'groupId', 'constructor'], res[0])).toEqual({
-        description: newObj.description,
-        from: newObj.from,
-        to: newObj.to,
-        type: newObj.type,
-        status: newObj.status,
-        workerId: newObj.workerId,
-        value: newObj.events[0].value,
-        period: newObj.events[0].period,
-      });
-    };
+    // const check = res => {
+    //   expect(res.length).toEqual(1);
+    //   expect(res[0]).toHaveProperty('groupId');
+    //   expect(R.omit(['_id', 'groupId', 'constructor'], res[0])).toEqual({
+    //     description: newObj.description,
+    //     from: newObj.from,
+    //     to: newObj.to,
+    //     type: newObj.type,
+    //     status: newObj.status,
+    //     workerId: newObj.workerId,
+    //     value: newObj.events[0].value,
+    //     period: newObj.events[0].period,
+    //   });
+    // };
 
     evtx.service('events').once('events:added', ({ output: res }) => {
       expect(res.length).toEqual(1);
@@ -244,9 +240,9 @@ describe('Events service', () => {
     };
 
     const user = { _id: 0 };
-    const check = res => {
-      expect(res.length).toEqual(2);
-    };
+    // const check = res => {
+    //   expect(res.length).toEqual(2);
+    // };
 
     let count = 0;
 

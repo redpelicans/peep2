@@ -48,12 +48,8 @@ io.on('connect', () => {
   if (token) {
     store.dispatch(
       checkToken((err, { user, token } = {}) => {
-        // eslint-disable-line no-shadow
-        if (err);
+        if (err) console.error(err.message);
         else {
-          // eslint-disable-line no-console
-          // eslint-disable-line no-console
-          // eslint-disable-line no-console
           // eslint-disable-line no-console
           store.dispatch(userLogged(user, token));
         }

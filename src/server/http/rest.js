@@ -1,9 +1,9 @@
 import R from 'ramda';
 
 export const parseUrl = url => {
-  const re = new RegExp(/^\/+(\w+)\/*(\w*)\/*(\w*)/);
-  const [service, id, method] = re.exec(url);
-  return R.map(x => x || undefined, [service, id, method]);
+  const re = new RegExp(/^\/+(\w+)\/*(\w*)/);
+  const [_, method, id] = re.exec(url); // eslint-disable-line no-unused-vars
+  return R.map(x => x || undefined, [method, id]);
 };
 
 const getInput = (id, req) => R.mergeAll([req.query, req.body, id && { id }]);
@@ -19,7 +19,7 @@ const server = (service, evtx) => (req, res, next) => {
     .run(getMessage(service, req), { req })
     .then(data => {
       if (data.pipe) {
-        data.on('error', err => next(error));
+        data.on('error', next);
         data.pipe(res);
       } else {
         res.json(data);

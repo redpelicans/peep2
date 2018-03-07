@@ -7,10 +7,7 @@ const mailDefaultOptions = {
   from: 'Peep peep dont sleep<peep@redpelicans.com>',
 };
 
-const fakeSendMail = mailOptions => {
-  console.log(mailOptions);
-  return Promise.resolve();
-};
+const fakeSendMail = () => Promise.resolve();
 
 const sendMail = mgOptions => {
   if (!mgOptions) return fakeSendMail;

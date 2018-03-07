@@ -1,5 +1,5 @@
-import should from 'should';
 import { compose, map, fromPairs } from 'ramda';
+import should from 'should';
 import MockedSocket from 'socket.io-mock';
 import reducer from '../../reducers';
 import { configureStore } from '../utils';
@@ -11,7 +11,7 @@ describe('Action:calendar', () => {
     const hook = {
       [LOAD_CALENDAR]: getState => {
         const { calendar } = getState();
-        calendar.data.should.be.empty();
+        should(calendar.data).be.empty();
         done();
       },
     };

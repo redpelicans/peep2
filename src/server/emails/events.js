@@ -1,5 +1,6 @@
 import debug from 'debug';
 import R from 'ramda';
+import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -56,6 +57,13 @@ const MailToManager = ({ eventGroup, worker, action, url }) => {
       </ul>
     </div>
   );
+};
+
+MailToManager.propTypes = {
+  eventGroup: PropTypes.object,
+  worker: PropTypes.object,
+  action: PropTypes.func,
+  url: PropTypes.string,
 };
 
 const sendEmailToManagers = (
@@ -133,6 +141,14 @@ const MailToWorker = ({ eventGroup, author, action, url }) => {
     </div>
   );
 };
+
+MailToWorker.propTypes = {
+  eventGroup: PropTypes.object,
+  author: PropTypes.object,
+  action: PropTypes.func,
+  url: PropTypes.string,
+};
+
 const sendEmailToWorker = (send, action, url, eventGroup, author, worker) => {
   const Root = (
     <MailToWorker
@@ -179,7 +195,7 @@ const sendEmail = (send, action, url) => ({ output: eventGroup, author }) => {
           );
       }),
     )
-    .catch(console.error);
+    .catch(console.error); // eslint-disable-line no-console
 };
 
 const init = ctx => {
