@@ -153,4 +153,43 @@ describe('Addenda service', () => {
       .then(obj => service.update({ _id: obj._id, ...updates }, { user }))
       .catch(manageFail(done));
   });
+
+  test('expect delete', () => {
+    const newObj = {
+      workerId: new ObjectId(),
+      missionId: new ObjectId(),
+      startDate: new Date(),
+      fees: { currency: 'EUR', unit: 'day', amount: 100 },
+    };
+
+    const checkObj = obj => {
+      expect(obj).toEqual({ _id: obj._id });
+    };
+
+    return service
+      .add(newObj, { user })
+      .then(obj => service.del({ _id: obj._id }, { user }))
+      .then(checkObj)
+      .catch(manageError);
+  });
+
+  it('expect delete will emit addendum:deleted', done => {
+    const newObj = {
+      workerId: new ObjectId(),
+      missionId: new ObjectId(),
+      startDate: new Date(),
+      fees: { currency: 'EUR', unit: 'day', amount: 100 },
+    };
+
+    service
+      .add(newObj, { user })
+      .then(obj => {
+        evtx.service('addenda').once('addendum:deleted', ({ output: obj }) => {
+          expect(obj._id).toEqual(obj._id);
+          done();
+        });
+        return service.del({ _id: obj._id }, { user });
+      })
+      .catch(manageFail(done));
+  });
 });
