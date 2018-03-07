@@ -20,7 +20,7 @@ const fields = {
   endDate: {
     label: 'End Date',
     component: DateField,
-    validate: Yup.string(),
+    validate: Yup.string().nullable(),
   },
   amount: {
     label: 'Amount',
