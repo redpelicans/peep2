@@ -13,11 +13,12 @@ const MissionForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'clientId' 'name' 'partnerId' 'billedTarget' 'managerId'
-    'allowWeekends' 'note';
+  grid-template-areas: 'clientId' 'name' 'startDate' 'enDate' 'partnerId'
+    'billedTarget' 'managerId' 'allowWeekends' 'note';
   @media (min-width: 700px) {
-    grid-template-areas: 'clientId name name' 'partnerId partnerId billedTarget'
-      'managerId managerId allowWeekends' 'note note note';
+    grid-template-areas: 'clientId name name' 'startDate endDate none'
+      'partnerId partnerId billedTarget' 'managerId managerId allowWeekends'
+      'note note note';
   }
 `;
 
@@ -37,6 +38,22 @@ const AddOrEditForm = ({
     <MissionForm id="missionForm" onSubmit={handleSubmit}>
       <StyledFormField
         field={getField('name')}
+        values={values}
+        errors={errors}
+        touched={touched}
+        setFieldTouched={setFieldTouched}
+        setFieldValue={setFieldValue}
+      />
+      <StyledFormField
+        field={getField('startDate')}
+        values={values}
+        errors={errors}
+        touched={touched}
+        setFieldTouched={setFieldTouched}
+        setFieldValue={setFieldValue}
+      />
+      <StyledFormField
+        field={getField('endDate')}
         values={values}
         errors={errors}
         touched={touched}

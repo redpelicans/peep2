@@ -17,6 +17,8 @@ const loginfo = debug('peep:evtx');
 const SERVICE_NAME = 'missions';
 
 const addSchema = Yup.object().shape({
+  startDate: Yup.date().nullable(),
+  endDate: Yup.date().nullable(),
   clientId: new ObjectIdSchemaType().required(),
   partnerId: new ObjectIdSchemaType(),
   managerId: new ObjectIdSchemaType().required(),

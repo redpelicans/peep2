@@ -136,6 +136,8 @@ const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => (
     validationSchema={getValidationSchema()}
     onSubmit={({
       name,
+      startDate,
+      endDate,
       clientId,
       partnerId,
       billedTarget,
@@ -147,6 +149,8 @@ const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => (
     }) => {
       const newMission = {
         name,
+        startDate,
+        endDate,
         clientId,
         partnerId,
         billedTarget,

@@ -1,6 +1,7 @@
 import Yup from 'yup';
 import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
 import { InputField } from '../fields';
+import { DateField } from '../fields/DateField';
 import {
   SelectField,
   CompaniesSelectField,
@@ -14,6 +15,16 @@ const fields = {
     required: true,
     component: InputField,
     validate: Yup.string(),
+  },
+  startDate: {
+    label: 'Start Date',
+    component: DateField,
+    validate: Yup.string().nullable(),
+  },
+  endDate: {
+    label: 'End Date',
+    component: DateField,
+    validate: Yup.string().nullable(),
   },
   clientId: {
     label: 'Client',

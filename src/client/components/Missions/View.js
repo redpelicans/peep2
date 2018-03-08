@@ -114,7 +114,7 @@ const FormattedMissionDate = ({ date }) => (
 );
 
 FormattedMissionDate.propTypes = {
-  date: PropTypes.string,
+  date: PropTypes.object,
 };
 
 const StyledPreviewField = styled(PreviewField)`
@@ -235,8 +235,8 @@ MissionInfos.propTypes = {
   id: PropTypes.string,
   client: PropTypes.object,
   manager: PropTypes.object,
-  startDate: PropTypes.string,
-  endDate: PropTypes.string,
+  startDate: PropTypes.object,
+  endDate: PropTypes.object,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
   billedTarget: PropTypes.string,
@@ -331,7 +331,6 @@ const Mission = ({
             <Button className="pt-minimal" iconName="pt-icon-menu" />
             <Menu>
               <MenuDivider title="Mission" />
-              <MenuItem className="pt-icon-small-cross" text="Close" />
               <MenuDivider title="Addenda" />
               <MenuItem
                 className="pt-icon-add"
@@ -397,8 +396,8 @@ Mission.propTypes = {
   workers: PropTypes.array,
   createdAt: PropTypes.string,
   updatedAt: PropTypes.string,
-  startDate: PropTypes.string,
-  endDate: PropTypes.string,
+  startDate: PropTypes.object,
+  endDate: PropTypes.object,
   billedTarget: PropTypes.string,
   allowWeekends: PropTypes.bool,
   showDialog: PropTypes.func.isRequired,
