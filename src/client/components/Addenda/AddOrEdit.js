@@ -14,11 +14,10 @@ const MissionForm = styled.form`
   grid-gap: 20px;
   grid-auto-columns: minmax(70px, auto);
   grid-auto-rows: minmax(70px, auto);
-  grid-template-areas: 'workerId' 'startDate' 'endDate' 'amount' 'unit'
-    'currency';
+  grid-template-areas: 'workerId' 'dates' 'amount' 'unit' 'currency';
   @media (min-width: 700px) {
-    grid-template-areas: 'workerId workerId workerId'
-      'startDate startDate endDate' 'amount unit currency';
+    grid-template-areas: 'workerId workerId workerId' 'dates dates none'
+      'amount unit currency';
   }
 `;
 
@@ -34,6 +33,7 @@ const AddOrEditForm = ({
   setFieldTouched,
   setFieldValue,
 }) => {
+  console.log(values);
   return (
     <MissionForm id="addendaForm" onSubmit={handleSubmit}>
       <StyledFormField
@@ -45,15 +45,7 @@ const AddOrEditForm = ({
         setFieldValue={setFieldValue}
       />
       <StyledFormField
-        field={getField('startDate')}
-        values={values}
-        errors={errors}
-        touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-      />
-      <StyledFormField
-        field={getField('endDate')}
+        field={getField('dates')}
         values={values}
         errors={errors}
         touched={touched}
