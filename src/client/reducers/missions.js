@@ -13,6 +13,8 @@ import {
 const make = mission => {
   const updatedMission = {
     ...mission,
+    startDate: mission.startDate ? new Date(mission.startDate) : undefined,
+    endDate: mission.endDate ? new Date(mission.endDate) : undefined,
     typeName: 'mission',
     createdAt: mission.createdAt ? mission.createdAt : undefined,
   };

@@ -41,10 +41,104 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "endDate": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
+        "startDate": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "label": "Start Date",
+        "name": "startDate",
+        "validate": StringSchema {
+          "_blacklist": Set {},
+          "_conditions": Array [],
+          "_deps": Array [],
+          "_exclusive": Object {},
+          "_mutate": false,
+          "_nullable": true,
+          "_options": Object {
+            "abortEarly": true,
+            "recursive": true,
+          },
+          "_type": "string",
+          "_typeError": [Function],
+          "_whitelist": Set {},
+          "tests": Array [],
+          "transforms": Array [
+            [Function],
+          ],
+        },
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "endDate": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "startDate": undefined,
+        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "label": "End Date",
+        "name": "endDate",
+        "validate": StringSchema {
+          "_blacklist": Set {},
+          "_conditions": Array [],
+          "_deps": Array [],
+          "_exclusive": Object {},
+          "_mutate": false,
+          "_nullable": true,
+          "_options": Object {
+            "abortEarly": true,
+            "recursive": true,
+          },
+          "_type": "string",
+          "_typeError": [Function],
+          "_whitelist": Set {},
+          "tests": Array [],
+          "transforms": Array [
+            [Function],
+          ],
+        },
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "endDate": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
+        "startDate": undefined,
         "timesheetUnit": "day",
       }
     }
@@ -85,10 +179,12 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "endDate": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
+        "startDate": undefined,
         "timesheetUnit": "day",
       }
     }
@@ -128,10 +224,12 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "endDate": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
+        "startDate": undefined,
         "timesheetUnit": "day",
       }
     }
@@ -183,10 +281,12 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "endDate": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
+        "startDate": undefined,
         "timesheetUnit": "day",
       }
     }
@@ -227,10 +327,12 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "endDate": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
+        "startDate": undefined,
         "timesheetUnit": "day",
       }
     }
@@ -270,10 +372,12 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "endDate": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
+        "startDate": undefined,
         "timesheetUnit": "day",
       }
     }
@@ -324,10 +428,12 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "endDate": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
+        "startDate": undefined,
         "timesheetUnit": "day",
       }
     }
