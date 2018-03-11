@@ -122,6 +122,7 @@ const FormikAdd = props => (
     validationSchema={getValidationSchema()}
     onSubmit={({
       name,
+      dates,
       clientId,
       partnerId,
       billedTarget,
@@ -131,8 +132,11 @@ const FormikAdd = props => (
       note,
     }) => {
       const { addMission, history } = props;
+      // console.log('dates', dates)
       const newMission = {
         name,
+        startDate: dates[0],
+        endDate: dates[1],
         clientId,
         partnerId,
         billedTarget,

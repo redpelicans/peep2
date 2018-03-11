@@ -109,12 +109,12 @@ const FormikAdd = ({ missionId, accept, addAddendum, ...props }) => {
     <Formik
       initialValues={defaultValues}
       validationSchema={getValidationSchema()}
-      onSubmit={({ workerId, startDate, endDate, amount, unit, currency }) => {
+      onSubmit={({ workerId, dates, amount, unit, currency }) => {
         const newAddendum = {
           missionId,
           workerId,
-          startDate,
-          endDate,
+          startDate: dates[0],
+          endDate: dates[1],
           fees: {
             amount: amount,
             unit: unit,

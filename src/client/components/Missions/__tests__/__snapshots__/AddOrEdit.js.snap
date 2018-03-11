@@ -41,11 +41,56 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "dates": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
-        "timesheetUnit": "day",
+      }
+    }
+  />
+  <Styled(FormField)
+    errors={Object {}}
+    field={
+      Object {
+        "component": [Function],
+        "label": "Dates",
+        "name": "dates",
+        "required": true,
+        "validate": ArraySchema {
+          "_blacklist": Set {},
+          "_conditions": Array [],
+          "_deps": Array [],
+          "_exclusive": Object {},
+          "_mutate": false,
+          "_options": Object {
+            "abortEarly": true,
+            "recursive": true,
+          },
+          "_subType": undefined,
+          "_type": "array",
+          "_typeError": [Function],
+          "_whitelist": Set {},
+          "tests": Array [],
+          "transforms": Array [
+            [Function],
+          ],
+        },
+      }
+    }
+    setFieldTouched={[Function]}
+    setFieldValue={[Function]}
+    touched={Object {}}
+    values={
+      Object {
+        "allowWeekends": "doNotAllow",
+        "billedTarget": "client",
+        "clientId": undefined,
+        "dates": undefined,
+        "managerId": undefined,
+        "name": undefined,
+        "note": undefined,
+        "partnerId": undefined,
       }
     }
   />
@@ -85,11 +130,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "dates": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
-        "timesheetUnit": "day",
       }
     }
   />
@@ -128,11 +173,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "dates": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
-        "timesheetUnit": "day",
       }
     }
   />
@@ -183,11 +228,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "dates": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
-        "timesheetUnit": "day",
       }
     }
   />
@@ -227,11 +272,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "dates": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
-        "timesheetUnit": "day",
       }
     }
   />
@@ -270,11 +315,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "dates": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
-        "timesheetUnit": "day",
       }
     }
   />
@@ -324,11 +369,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
         "allowWeekends": "doNotAllow",
         "billedTarget": "client",
         "clientId": undefined,
+        "dates": undefined,
         "managerId": undefined,
         "name": undefined,
         "note": undefined,
         "partnerId": undefined,
-        "timesheetUnit": "day",
       }
     }
   />
