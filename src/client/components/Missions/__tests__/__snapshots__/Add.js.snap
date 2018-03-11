@@ -907,8 +907,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       error={null}
                                       format="YYYY-MM-DD"
                                       invalidDateMessage="Invalid date"
-                                      maxDate={2018-12-31T16:35:06.693Z}
-                                      minDate={1998-01-01T16:35:06.693Z}
+                                      maxDate={2018-12-31T18:07:01.027Z}
+                                      minDate={1998-01-01T18:07:01.027Z}
                                       name="dates"
                                       onChange={[Function]}
                                       outOfRangeMessage="Out of range"
@@ -942,8 +942,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                             error={null}
                                             format="YYYY-MM-DD"
                                             invalidDateMessage="Invalid date"
-                                            maxDate={2018-12-31T16:35:06.693Z}
-                                            minDate={1998-01-01T16:35:06.693Z}
+                                            maxDate={2018-12-31T18:07:01.027Z}
+                                            minDate={1998-01-01T18:07:01.027Z}
                                             name="dates"
                                             onChange={[Function]}
                                             onHoverChange={[Function]}
