@@ -53,13 +53,11 @@ export const DatesFields = ({
   setFieldTouched,
   ...props
 }) => {
-  // const icon = <StyledInputIcon iconName="calendar" />;
   const handleChange = newValue => {
     setFieldTouched(name, !isEqual(newValue, value));
     setFieldValue(name, newValue);
   };
 
-  // console.log('value:', value)
   return (
     <Field label={label} required={required}>
       <DateRangeInput
