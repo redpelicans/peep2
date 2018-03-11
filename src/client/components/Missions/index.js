@@ -28,8 +28,25 @@ import {
 } from '../../actions/missions';
 import { Header, HeaderRight, HeaderLeft } from '../Header';
 import { LinkButton, Container, Title, Spacer, Search } from '../widgets';
+import {
+  ContextMenu,
+  ContextFilter,
+  ContextSort,
+} from '../widgets/ContextMenu';
 import { getPathByName } from '../../routes';
 import List from './List';
+
+export const FilterItems = [
+  { label: 'all', text: 'All' },
+  { label: 'current', text: 'Current' },
+  { label: 'past', text: 'Past' },
+];
+
+export const SortItems = [
+  { label: 'name', text: 'Name' },
+  { label: 'startDate', text: 'Start Date' },
+  { label: 'endDate', text: 'End Date' },
+];
 
 export const Missions = ({
   people,
@@ -59,72 +76,29 @@ export const Missions = ({
             resetValue={() => spotlightMissions('')}
           />
           <Spacer />
-          <Popover position={Position.BOTTOM_RIGHT}>
-            <Button className="pt-minimal" iconName="pt-icon-menu" />
-            <Menu>
-              <MenuDivider title="Mission" />
-              <LinkButton
-                className="pt-minimal"
-                to={getPathByName('addMission')}
-                iconName="pt-icon-add"
-                text="Add"
-              />
-              <MenuItem className="pt-icon-filter-list" text="Filter" />
-              <ButtonGroup className="pt-minimal">
-                <Button
-                  active={filter === 'all'}
-                  onClick={() => filterMissions('all')}
-                  text="All"
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="Mission" />
+                <LinkButton
+                  className="pt-minimal"
+                  to={getPathByName('addMission')}
+                  iconName="pt-icon-add"
+                  text="Add"
                 />
-                <Button
-                  active={filter === 'current'}
-                  onClick={() => filterMissions('current')}
-                  text="Current"
+                <ContextFilter
+                  currentFilter={filter}
+                  filterItems={FilterItems}
+                  setFilter={filterMissions}
                 />
-                <Button
-                  active={filter === 'past'}
-                  onClick={() => filterMissions('past')}
-                  text="Past"
+                <ContextSort
+                  currentSort={sort}
+                  sortItems={SortItems}
+                  setSort={sortMissions}
                 />
-              </ButtonGroup>
-              <MenuItem iconName="pt-icon-double-caret-vertical" text="Sort" />
-              <ButtonGroup className="pt-minimal">
-                <Button
-                  iconName={
-                    sort.by === 'name'
-                      ? sort.order === 'asc'
-                        ? 'pt-icon-caret-up'
-                        : 'pt-icon-caret-down'
-                      : null
-                  }
-                  text="name"
-                  onClick={() => sortMissions('name')}
-                />
-                <Button
-                  iconName={
-                    sort.by === 'startDate'
-                      ? sort.order === 'asc'
-                        ? 'pt-icon-caret-up'
-                        : 'pt-icon-caret-down'
-                      : null
-                  }
-                  text="start date"
-                  onClick={() => sortMissions('startDate')}
-                />
-                <Button
-                  iconName={
-                    sort.by === 'endDate'
-                      ? sort.order === 'asc'
-                        ? 'pt-icon-caret-up'
-                        : 'pt-icon-caret-down'
-                      : null
-                  }
-                  text="end date"
-                  onClick={() => sortMissions('endDate')}
-                />
-              </ButtonGroup>
-            </Menu>
-          </Popover>
+              </Menu>
+            }
+          />
         </HeaderRight>
       </Header>
       <List

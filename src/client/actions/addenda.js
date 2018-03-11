@@ -42,7 +42,7 @@ export const deleteAddendum = id => dispatch => {
   });
 };
 
-export const set_filter = type => ({
+export const setFilter = type => ({
   type: SET_FILTER,
   payload: type,
 });
