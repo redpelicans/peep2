@@ -20,7 +20,7 @@ const fields = {
     label: 'Dates',
     required: true,
     component: DatesFields,
-    validate: Yup.array(),
+    validate: Yup.array(Yup.string()),
   },
   clientId: {
     label: 'Client',
