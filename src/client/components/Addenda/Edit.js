@@ -103,7 +103,8 @@ const mapDispatchToProps = dispatch => ({
   dispatch,
 });
 
-const formatDefaultValues = ({ fees, ...rest }) => ({
+const formatDefaultValues = ({ startDate, endDate, fees, ...rest }) => ({
+  dates: [startDate, endDate],
   ...fees,
   ...rest,
 });
@@ -114,21 +115,13 @@ const FormikEdit = ({ accept, updateAddendum, defaultValues, ...props }) => {
     <Formik
       initialValues={formatDefaultValues(defaultValues)}
       validationSchema={getValidationSchema()}
-      onSubmit={({
-        missionId,
-        workerId,
-        startDate,
-        endDate,
-        amount,
-        unit,
-        currency,
-      }) => {
+      onSubmit={({ missionId, workerId, dates, amount, unit, currency }) => {
         const newAddendum = {
           _id,
           missionId,
           workerId,
-          startDate,
-          endDate,
+          startDate: dates[0],
+          endDate: dates[1],
           fees: {
             amount: amount,
             unit: unit,

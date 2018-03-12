@@ -44,6 +44,44 @@ DateField.propTypes = {
   setFieldTouched: PropTypes.func,
 };
 
+export const DatesFields = ({
+  name,
+  label,
+  required,
+  value,
+  setFieldValue,
+  setFieldTouched,
+  ...props
+}) => {
+  const handleChange = newValue => {
+    setFieldTouched(name, !isEqual(newValue, value));
+    setFieldValue(name, newValue);
+  };
+
+  return (
+    <Field label={label} required={required}>
+      <DateRangeInput
+        startInputProps={{ className: 'pt-datepicker pt-fill' }}
+        endInputProps={{ className: 'pt-datepicker pt-fill' }}
+        name={name}
+        value={value}
+        onChange={handleChange}
+        {...props}
+      />
+    </Field>
+  );
+};
+
+DatesFields.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  error: PropTypes.string,
+  required: PropTypes.bool.isRequired,
+  value: PropTypes.array,
+  setFieldValue: PropTypes.func,
+  setFieldTouched: PropTypes.func,
+};
+
 export const PeriodField = ({
   name,
   label,

@@ -2,7 +2,7 @@ import Yup from 'yup';
 import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
 import { InputField } from '../fields';
 import { SelectField, WorkerSelectField } from '../fields/SelectField';
-import { DateField } from '../fields/DateField';
+import { DatesFields } from '../fields/DateField';
 
 const fields = {
   workerId: {
@@ -11,16 +11,11 @@ const fields = {
     required: true,
     validate: Yup.string(),
   },
-  startDate: {
-    label: 'Start Date',
-    component: DateField,
+  dates: {
+    label: 'Dates',
+    component: DatesFields,
     required: true,
-    validate: Yup.string(),
-  },
-  endDate: {
-    label: 'End Date',
-    component: DateField,
-    validate: Yup.string().nullable(),
+    validate: Yup.array(),
   },
   amount: {
     label: 'Amount',

@@ -131,11 +131,13 @@ const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => (
   <Formik
     initialValues={{
       ...mission,
+      dates: [mission.startDate, mission.endDate],
       allowWeekends: mission.allowWeekends === true ? 'allow' : 'doNotAllow',
     }}
     validationSchema={getValidationSchema()}
     onSubmit={({
       name,
+      dates,
       clientId,
       partnerId,
       billedTarget,
@@ -147,6 +149,8 @@ const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => (
     }) => {
       const newMission = {
         name,
+        startDate: dates[0],
+        endDate: dates[1],
         clientId,
         partnerId,
         billedTarget,
