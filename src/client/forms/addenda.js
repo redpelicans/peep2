@@ -1,4 +1,6 @@
 import Yup from 'yup';
+import { is } from 'ramda';
+import isDate from 'date-fns/is_date';
 import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
 import { InputField } from '../fields';
 import { SelectField, WorkerSelectField } from '../fields/SelectField';
@@ -15,7 +17,11 @@ const fields = {
     label: 'Dates',
     component: DatesFields,
     required: true,
-    validate: Yup.array(),
+    validate: Yup.array().test(
+      'startDate',
+      '${path} do not contain startDate',
+      dates => is(Array, dates) && dates[0] && isDate(dates[0]),
+    ),
   },
   amount: {
     label: 'Amount',
