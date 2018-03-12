@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { compose, lifecycle, withHandlers } from 'recompose';
+import { compose, lifecycle, withHandlers, withStateHandlers } from 'recompose';
 import styled from 'styled-components';
 import {
   startOfMonth,
@@ -24,6 +24,22 @@ import { getCurrentDate } from '../../selectors/agenda';
 import { getUser } from '../../selectors/login';
 import Calendar from './Calendar/Workers';
 import Day from './Day';
+import TimesheetView from './TimesheetView';
+
+const timesheet = {
+  cols: [
+    { name: 'Nom du collaborateur', key: 0 },
+    { name: 'Nombre de jours travaillés', key: 1 },
+    { name: "Jours d'absences", key: 2 },
+    { name: 'Congés payés', key: 3 },
+    { name: 'Nombre de jours de CP', key: 4 },
+  ],
+  data: [
+    ['Le Floch', '16.5', '8AM, 9, 26'],
+    ['Tridon', '20'],
+    ['Vellue', '20'],
+  ],
+};
 
 const StyledContainer = styled(Container)`min-width: 1200px;`;
 
@@ -38,6 +54,9 @@ const Agenda = ({
   goToday,
   addEvent,
   editEvent,
+  isModalOpen,
+  showModal,
+  hideModal,
 }) => (
   <StyledContainer>
     <Header>
@@ -52,6 +71,8 @@ const Agenda = ({
         <Button iconName="stop" onClick={goToday} />
         <Spacer />
         <Button iconName="arrow-right" onClick={goNextMonth} />
+        <Spacer />
+        <Button text="Timesheet" onClick={() => showModal()} />
       </HeaderRight>
     </Header>
     <Calendar
@@ -63,6 +84,11 @@ const Agenda = ({
       editEvent={editEvent}
       workers={workers}
       user={user}
+    />
+    <TimesheetView
+      values={timesheet}
+      isModalOpen={isModalOpen}
+      hideModal={hideModal}
     />
   </StyledContainer>
 );
@@ -78,6 +104,9 @@ Agenda.propTypes = {
   addEvent: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
+  showModal: PropTypes.func.isRequired,
+  hideModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -126,6 +155,15 @@ const enhance = compose(
         to,
       }),
   }),
+  withStateHandlers(
+    {
+      isModalOpen: false,
+    },
+    {
+      showModal: () => () => ({ isModalOpen: true }),
+      hideModal: () => () => ({ isModalOpen: false }),
+    },
+  ),
 );
 
 export default enhance(Agenda);
