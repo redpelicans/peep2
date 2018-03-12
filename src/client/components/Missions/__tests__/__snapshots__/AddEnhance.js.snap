@@ -131,7 +131,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
   margin-right: 20px;
 }
 
-.c22 {
+.c23 {
   right: 0;
   -webkit-align-self: flex-end;
   -ms-flex-item-align: end;
@@ -139,12 +139,12 @@ exports[`app | components | Mission | component render should match snapshot 1`]
   margin-bottom: 15px;
 }
 
-.c23 {
+.c24 {
   min-height: 150px;
   min-width: 100%;
 }
 
-.c20 {
+.c21 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -159,7 +159,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
   align-items: center;
 }
 
-.c21 {
+.c22 {
   z-index: 0;
 }
 
@@ -172,7 +172,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
   grid-gap: 20px;
   grid-auto-columns: minmax(70px,auto);
   grid-auto-rows: minmax(70px,auto);
-  grid-template-areas: 'clientId' 'name' 'partnerId' 'billedTarget' 'managerId' 'allowWeekends' 'note';
+  grid-template-areas: 'clientId' 'name' 'dates' 'partnerId' 'billedTarget' 'managerId' 'allowWeekends' 'note';
 }
 
 .c10 {
@@ -180,26 +180,30 @@ exports[`app | components | Mission | component render should match snapshot 1`]
 }
 
 .c15 {
-  grid-area: clientId;
+  grid-area: dates;
 }
 
 .c16 {
-  grid-area: partnerId;
+  grid-area: clientId;
 }
 
 .c17 {
-  grid-area: billedTarget;
+  grid-area: partnerId;
 }
 
 .c18 {
-  grid-area: managerId;
+  grid-area: billedTarget;
 }
 
 .c19 {
+  grid-area: managerId;
+}
+
+.c20 {
   grid-area: note;
 }
 
-.c24 {
+.c25 {
   grid-area: allowWeekends;
 }
 
@@ -209,7 +213,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
 
 @media (min-width:700px) {
   .c9 {
-    grid-template-areas: 'clientId name name' 'partnerId partnerId billedTarget' 'managerId managerId allowWeekends' 'note note note';
+    grid-template-areas: 'clientId name name' 'dates dates none' 'partnerId partnerId billedTarget' 'managerId managerId allowWeekends' 'note note note';
   }
 }
 
@@ -299,11 +303,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
               "allowWeekends": "doNotAllow",
               "billedTarget": "client",
               "clientId": undefined,
+              "dates": undefined,
               "managerId": undefined,
               "name": undefined,
               "note": undefined,
               "partnerId": undefined,
-              "timesheetUnit": "day",
             }
           }
           isInitialValid={false}
@@ -323,13 +327,13 @@ exports[`app | components | Mission | component render should match snapshot 1`]
               "_exclusive": Object {},
               "_mutate": false,
               "_nodes": Array [
-                "timesheetUnit",
                 "allowWeekends",
                 "note",
                 "managerId",
                 "billedTarget",
                 "partnerId",
                 "clientId",
+                "dates",
                 "name",
               ],
               "_options": Object {
@@ -402,6 +406,47 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                     "recursive": true,
                   },
                   "_type": "string",
+                  "_typeError": [Function],
+                  "_whitelist": Set {},
+                  "tests": Array [
+                    [Function],
+                    [Function],
+                  ],
+                  "transforms": Array [
+                    [Function],
+                  ],
+                },
+                "dates": ArraySchema {
+                  "_blacklist": Set {},
+                  "_conditions": Array [],
+                  "_deps": Array [],
+                  "_exclusive": Object {
+                    "required": false,
+                  },
+                  "_mutate": false,
+                  "_options": Object {
+                    "abortEarly": true,
+                    "recursive": true,
+                  },
+                  "_subType": StringSchema {
+                    "_blacklist": Set {},
+                    "_conditions": Array [],
+                    "_deps": Array [],
+                    "_exclusive": Object {},
+                    "_mutate": false,
+                    "_options": Object {
+                      "abortEarly": true,
+                      "recursive": true,
+                    },
+                    "_type": "string",
+                    "_typeError": [Function],
+                    "_whitelist": Set {},
+                    "tests": Array [],
+                    "transforms": Array [
+                      [Function],
+                    ],
+                  },
+                  "_type": "array",
                   "_typeError": [Function],
                   "_whitelist": Set {},
                   "tests": Array [
@@ -494,33 +539,6 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                     [Function],
                   ],
                 },
-                "timesheetUnit": StringSchema {
-                  "_blacklist": Set {},
-                  "_conditions": Array [],
-                  "_deps": Array [],
-                  "_exclusive": Object {
-                    "required": false,
-                  },
-                  "_mutate": false,
-                  "_options": Object {
-                    "abortEarly": true,
-                    "recursive": true,
-                  },
-                  "_type": "string",
-                  "_typeError": [Function],
-                  "_whitelist": Set {
-                    "day",
-                    "hour",
-                  },
-                  "_whitelistError": [Function],
-                  "tests": Array [
-                    [Function],
-                    [Function],
-                  ],
-                  "transforms": Array [
-                    [Function],
-                  ],
-                },
               },
               "tests": Array [],
               "transforms": Array [
@@ -563,11 +581,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                 "allowWeekends": "doNotAllow",
                 "billedTarget": "client",
                 "clientId": undefined,
+                "dates": undefined,
                 "managerId": undefined,
                 "name": undefined,
                 "note": undefined,
                 "partnerId": undefined,
-                "timesheetUnit": "day",
               }
             }
             isSubmitting={false}
@@ -589,11 +607,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                 "allowWeekends": "doNotAllow",
                 "billedTarget": "client",
                 "clientId": undefined,
+                "dates": undefined,
                 "managerId": undefined,
                 "name": undefined,
                 "note": undefined,
                 "partnerId": undefined,
-                "timesheetUnit": "day",
               }
             }
           >
@@ -631,11 +649,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                   "allowWeekends": "doNotAllow",
                   "billedTarget": "client",
                   "clientId": undefined,
+                  "dates": undefined,
                   "managerId": undefined,
                   "name": undefined,
                   "note": undefined,
                   "partnerId": undefined,
-                  "timesheetUnit": "day",
                 }
               }
               isCancelDialogOpen={false}
@@ -659,11 +677,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                   "allowWeekends": "doNotAllow",
                   "billedTarget": "client",
                   "clientId": undefined,
+                  "dates": undefined,
                   "managerId": undefined,
                   "name": undefined,
                   "note": undefined,
                   "partnerId": undefined,
-                  "timesheetUnit": "day",
                 }
               }
             >
@@ -702,11 +720,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                     "allowWeekends": "doNotAllow",
                     "billedTarget": "client",
                     "clientId": undefined,
+                    "dates": undefined,
                     "managerId": undefined,
                     "name": undefined,
                     "note": undefined,
                     "partnerId": undefined,
-                    "timesheetUnit": "day",
                   }
                 }
                 isCancelDialogOpen={false}
@@ -732,11 +750,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                     "allowWeekends": "doNotAllow",
                     "billedTarget": "client",
                     "clientId": undefined,
+                    "dates": undefined,
                     "managerId": undefined,
                     "name": undefined,
                     "note": undefined,
                     "partnerId": undefined,
-                    "timesheetUnit": "day",
                   }
                 }
               >
@@ -947,11 +965,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                             "allowWeekends": "doNotAllow",
                             "billedTarget": "client",
                             "clientId": undefined,
+                            "dates": undefined,
                             "managerId": undefined,
                             "name": undefined,
                             "note": undefined,
                             "partnerId": undefined,
-                            "timesheetUnit": "day",
                           }
                         }
                         resetForm={[Function]}
@@ -973,11 +991,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                             "allowWeekends": "doNotAllow",
                             "billedTarget": "client",
                             "clientId": undefined,
+                            "dates": undefined,
                             "managerId": undefined,
                             "name": undefined,
                             "note": undefined,
                             "partnerId": undefined,
-                            "timesheetUnit": "day",
                           }
                         }
                       >
@@ -1026,11 +1044,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   "allowWeekends": "doNotAllow",
                                   "billedTarget": "client",
                                   "clientId": undefined,
+                                  "dates": undefined,
                                   "managerId": undefined,
                                   "name": undefined,
                                   "note": undefined,
                                   "partnerId": undefined,
-                                  "timesheetUnit": "day",
                                 }
                               }
                             >
@@ -1071,11 +1089,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "allowWeekends": "doNotAllow",
                                     "billedTarget": "client",
                                     "clientId": undefined,
+                                    "dates": undefined,
                                     "managerId": undefined,
                                     "name": undefined,
                                     "note": undefined,
                                     "partnerId": undefined,
-                                    "timesheetUnit": "day",
                                   }
                                 }
                               >
@@ -1147,6 +1165,380 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                               field={
                                 Object {
                                   "component": [Function],
+                                  "label": "Dates",
+                                  "name": "dates",
+                                  "required": true,
+                                  "validate": ArraySchema {
+                                    "_blacklist": Set {},
+                                    "_conditions": Array [],
+                                    "_deps": Array [],
+                                    "_exclusive": Object {},
+                                    "_mutate": false,
+                                    "_options": Object {
+                                      "abortEarly": true,
+                                      "recursive": true,
+                                    },
+                                    "_subType": StringSchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_type": "string",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
+                                    "_type": "array",
+                                    "_typeError": [Function],
+                                    "_whitelist": Set {},
+                                    "tests": Array [],
+                                    "transforms": Array [
+                                      [Function],
+                                    ],
+                                  },
+                                }
+                              }
+                              setFieldTouched={[Function]}
+                              setFieldValue={[Function]}
+                              touched={Object {}}
+                              values={
+                                Object {
+                                  "allowWeekends": "doNotAllow",
+                                  "billedTarget": "client",
+                                  "clientId": undefined,
+                                  "dates": undefined,
+                                  "managerId": undefined,
+                                  "name": undefined,
+                                  "note": undefined,
+                                  "partnerId": undefined,
+                                }
+                              }
+                            >
+                              <FormField
+                                className="c15"
+                                errors={Object {}}
+                                field={
+                                  Object {
+                                    "component": [Function],
+                                    "label": "Dates",
+                                    "name": "dates",
+                                    "required": true,
+                                    "validate": ArraySchema {
+                                      "_blacklist": Set {},
+                                      "_conditions": Array [],
+                                      "_deps": Array [],
+                                      "_exclusive": Object {},
+                                      "_mutate": false,
+                                      "_options": Object {
+                                        "abortEarly": true,
+                                        "recursive": true,
+                                      },
+                                      "_subType": StringSchema {
+                                        "_blacklist": Set {},
+                                        "_conditions": Array [],
+                                        "_deps": Array [],
+                                        "_exclusive": Object {},
+                                        "_mutate": false,
+                                        "_options": Object {
+                                          "abortEarly": true,
+                                          "recursive": true,
+                                        },
+                                        "_type": "string",
+                                        "_typeError": [Function],
+                                        "_whitelist": Set {},
+                                        "tests": Array [],
+                                        "transforms": Array [
+                                          [Function],
+                                        ],
+                                      },
+                                      "_type": "array",
+                                      "_typeError": [Function],
+                                      "_whitelist": Set {},
+                                      "tests": Array [],
+                                      "transforms": Array [
+                                        [Function],
+                                      ],
+                                    },
+                                  }
+                                }
+                                setFieldTouched={[Function]}
+                                setFieldValue={[Function]}
+                                touched={Object {}}
+                                values={
+                                  Object {
+                                    "allowWeekends": "doNotAllow",
+                                    "billedTarget": "client",
+                                    "clientId": undefined,
+                                    "dates": undefined,
+                                    "managerId": undefined,
+                                    "name": undefined,
+                                    "note": undefined,
+                                    "partnerId": undefined,
+                                  }
+                                }
+                              >
+                                <div
+                                  className="c15"
+                                >
+                                  <DatesFields
+                                    error={null}
+                                    label="Dates"
+                                    name="dates"
+                                    required={true}
+                                    setFieldTouched={[Function]}
+                                    setFieldValue={[Function]}
+                                  >
+                                    <Field
+                                      label="Dates"
+                                      required={true}
+                                    >
+                                      <styled.div>
+                                        <div
+                                          className="c11"
+                                        >
+                                          <label
+                                            className="pt-label"
+                                          >
+                                            Dates
+                                            <RequiredTag
+                                              required={true}
+                                            >
+                                              <styled.span>
+                                                <span
+                                                  className="c12"
+                                                >
+                                                  *
+                                                </span>
+                                              </styled.span>
+                                            </RequiredTag>
+                                          </label>
+                                          <Blueprint.DateRangeInput
+                                            allowSingleDayRange={false}
+                                            closeOnSelection={true}
+                                            contiguousCalendarMonths={true}
+                                            dayPickerProps={Object {}}
+                                            disabled={false}
+                                            endInputProps={
+                                              Object {
+                                                "className": "pt-datepicker pt-fill",
+                                              }
+                                            }
+                                            error={null}
+                                            format="YYYY-MM-DD"
+                                            invalidDateMessage="Invalid date"
+                                            maxDate={2018-12-31T10:58:16.056Z}
+                                            minDate={1998-01-01T10:58:16.056Z}
+                                            name="dates"
+                                            onChange={[Function]}
+                                            outOfRangeMessage="Out of range"
+                                            overlappingDatesMessage="Overlapping dates"
+                                            popoverProps={Object {}}
+                                            selectAllOnFocus={false}
+                                            shortcuts={true}
+                                            startInputProps={
+                                              Object {
+                                                "className": "pt-datepicker pt-fill",
+                                              }
+                                            }
+                                          >
+                                            <Blueprint.Popover
+                                              arrowSize={30}
+                                              autoFocus={false}
+                                              className=""
+                                              content={
+                                                <Blueprint.DateRangePicker
+                                                  allowSingleDayRange={false}
+                                                  boundaryToModify={undefined}
+                                                  closeOnSelection={true}
+                                                  contiguousCalendarMonths={true}
+                                                  dayPickerProps={Object {}}
+                                                  disabled={false}
+                                                  endInputProps={
+                                                    Object {
+                                                      "className": "pt-datepicker pt-fill",
+                                                    }
+                                                  }
+                                                  error={null}
+                                                  format="YYYY-MM-DD"
+                                                  invalidDateMessage="Invalid date"
+                                                  maxDate={2018-12-31T10:58:16.056Z}
+                                                  minDate={1998-01-01T10:58:16.056Z}
+                                                  name="dates"
+                                                  onChange={[Function]}
+                                                  onHoverChange={[Function]}
+                                                  outOfRangeMessage="Out of range"
+                                                  overlappingDatesMessage="Overlapping dates"
+                                                  popoverProps={Object {}}
+                                                  reverseMonthAndYearMenus={false}
+                                                  selectAllOnFocus={false}
+                                                  shortcuts={true}
+                                                  startInputProps={
+                                                    Object {
+                                                      "className": "pt-datepicker pt-fill",
+                                                    }
+                                                  }
+                                                  value={
+                                                    Array [
+                                                      undefined,
+                                                      undefined,
+                                                    ]
+                                                  }
+                                                />
+                                              }
+                                              defaultIsOpen={false}
+                                              enforceFocus={false}
+                                              hoverCloseDelay={300}
+                                              hoverOpenDelay={150}
+                                              inheritDarkTheme={true}
+                                              inline={true}
+                                              interactionKind={0}
+                                              isDisabled={false}
+                                              isModal={false}
+                                              isOpen={false}
+                                              onClose={[Function]}
+                                              openOnTargetFocus={true}
+                                              popoverClassName=""
+                                              position={8}
+                                              rootElementTag="span"
+                                              transitionDuration={300}
+                                              useSmartArrowPositioning={true}
+                                              useSmartPositioning={false}
+                                            >
+                                              <span
+                                                className="pt-popover-target"
+                                                onClick={[Function]}
+                                              >
+                                                <div
+                                                  className="pt-control-group"
+                                                  key=".0"
+                                                >
+                                                  <Blueprint.InputGroup
+                                                    autoComplete="off"
+                                                    className="pt-datepicker pt-fill"
+                                                    disabled={false}
+                                                    inputRef={[Function]}
+                                                    onBlur={[Function]}
+                                                    onChange={[Function]}
+                                                    onClick={[Function]}
+                                                    onFocus={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    placeholder="Start date"
+                                                    value=""
+                                                  >
+                                                    <div
+                                                      className="pt-input-group pt-datepicker pt-fill"
+                                                    >
+                                                      <Blueprint.Icon
+                                                        iconSize="inherit"
+                                                      />
+                                                      <input
+                                                        autoComplete="off"
+                                                        className="pt-input"
+                                                        disabled={false}
+                                                        onBlur={[Function]}
+                                                        onChange={[Function]}
+                                                        onClick={[Function]}
+                                                        onFocus={[Function]}
+                                                        onKeyDown={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        placeholder="Start date"
+                                                        style={
+                                                          Object {
+                                                            "paddingRight": 0,
+                                                          }
+                                                        }
+                                                        type="text"
+                                                        value=""
+                                                      />
+                                                    </div>
+                                                  </Blueprint.InputGroup>
+                                                  <Blueprint.InputGroup
+                                                    autoComplete="off"
+                                                    className="pt-datepicker pt-fill"
+                                                    disabled={false}
+                                                    inputRef={[Function]}
+                                                    onBlur={[Function]}
+                                                    onChange={[Function]}
+                                                    onClick={[Function]}
+                                                    onFocus={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    placeholder="End date"
+                                                    value=""
+                                                  >
+                                                    <div
+                                                      className="pt-input-group pt-datepicker pt-fill"
+                                                    >
+                                                      <Blueprint.Icon
+                                                        iconSize="inherit"
+                                                      />
+                                                      <input
+                                                        autoComplete="off"
+                                                        className="pt-input"
+                                                        disabled={false}
+                                                        onBlur={[Function]}
+                                                        onChange={[Function]}
+                                                        onClick={[Function]}
+                                                        onFocus={[Function]}
+                                                        onKeyDown={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        placeholder="End date"
+                                                        style={
+                                                          Object {
+                                                            "paddingRight": 0,
+                                                          }
+                                                        }
+                                                        type="text"
+                                                        value=""
+                                                      />
+                                                    </div>
+                                                  </Blueprint.InputGroup>
+                                                </div>
+                                                <Blueprint.Overlay
+                                                  autoFocus={false}
+                                                  backdropClassName="pt-popover-backdrop"
+                                                  backdropProps={Object {}}
+                                                  canEscapeKeyClose={true}
+                                                  canOutsideClickClose={true}
+                                                  didOpen={[Function]}
+                                                  enforceFocus={false}
+                                                  hasBackdrop={false}
+                                                  inline={true}
+                                                  isOpen={false}
+                                                  lazy={true}
+                                                  onClose={[Function]}
+                                                  transitionDuration={300}
+                                                  transitionName="pt-popover"
+                                                />
+                                              </span>
+                                            </Blueprint.Popover>
+                                          </Blueprint.DateRangeInput>
+                                          <styled.span>
+                                            <span
+                                              className="c14"
+                                            />
+                                          </styled.span>
+                                        </div>
+                                      </styled.div>
+                                    </Field>
+                                  </DatesFields>
+                                </div>
+                              </FormField>
+                            </Styled(FormField)>
+                            <Styled(FormField)
+                              errors={Object {}}
+                              field={
+                                Object {
+                                  "component": [Function],
                                   "label": "Client",
                                   "name": "clientId",
                                   "required": true,
@@ -1178,16 +1570,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   "allowWeekends": "doNotAllow",
                                   "billedTarget": "client",
                                   "clientId": undefined,
+                                  "dates": undefined,
                                   "managerId": undefined,
                                   "name": undefined,
                                   "note": undefined,
                                   "partnerId": undefined,
-                                  "timesheetUnit": "day",
                                 }
                               }
                             >
                               <FormField
-                                className="c15"
+                                className="c16"
                                 errors={Object {}}
                                 field={
                                   Object {
@@ -1223,16 +1615,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "allowWeekends": "doNotAllow",
                                     "billedTarget": "client",
                                     "clientId": undefined,
+                                    "dates": undefined,
                                     "managerId": undefined,
                                     "name": undefined,
                                     "note": undefined,
                                     "partnerId": undefined,
-                                    "timesheetUnit": "day",
                                   }
                                 }
                               >
                                 <div
-                                  className="c15"
+                                  className="c16"
                                 >
                                   <Connect(Transformer)
                                     error={null}
@@ -1489,16 +1881,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   "allowWeekends": "doNotAllow",
                                   "billedTarget": "client",
                                   "clientId": undefined,
+                                  "dates": undefined,
                                   "managerId": undefined,
                                   "name": undefined,
                                   "note": undefined,
                                   "partnerId": undefined,
-                                  "timesheetUnit": "day",
                                 }
                               }
                             >
                               <FormField
-                                className="c16"
+                                className="c17"
                                 errors={Object {}}
                                 field={
                                   Object {
@@ -1533,16 +1925,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "allowWeekends": "doNotAllow",
                                     "billedTarget": "client",
                                     "clientId": undefined,
+                                    "dates": undefined,
                                     "managerId": undefined,
                                     "name": undefined,
                                     "note": undefined,
                                     "partnerId": undefined,
-                                    "timesheetUnit": "day",
                                   }
                                 }
                               >
                                 <div
-                                  className="c16"
+                                  className="c17"
                                 >
                                   <Connect(Transformer)
                                     error={null}
@@ -1803,16 +2195,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   "allowWeekends": "doNotAllow",
                                   "billedTarget": "client",
                                   "clientId": undefined,
+                                  "dates": undefined,
                                   "managerId": undefined,
                                   "name": undefined,
                                   "note": undefined,
                                   "partnerId": undefined,
-                                  "timesheetUnit": "day",
                                 }
                               }
                             >
                               <FormField
-                                className="c17"
+                                className="c18"
                                 errors={Object {}}
                                 field={
                                   Object {
@@ -1859,16 +2251,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "allowWeekends": "doNotAllow",
                                     "billedTarget": "client",
                                     "clientId": undefined,
+                                    "dates": undefined,
                                     "managerId": undefined,
                                     "name": undefined,
                                     "note": undefined,
                                     "partnerId": undefined,
-                                    "timesheetUnit": "day",
                                   }
                                 }
                               >
                                 <div
-                                  className="c17"
+                                  className="c18"
                                 >
                                   <SelectField
                                     domainValues={
@@ -2159,16 +2551,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   "allowWeekends": "doNotAllow",
                                   "billedTarget": "client",
                                   "clientId": undefined,
+                                  "dates": undefined,
                                   "managerId": undefined,
                                   "name": undefined,
                                   "note": undefined,
                                   "partnerId": undefined,
-                                  "timesheetUnit": "day",
                                 }
                               }
                             >
                               <FormField
-                                className="c18"
+                                className="c19"
                                 errors={Object {}}
                                 field={
                                   Object {
@@ -2204,16 +2596,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "allowWeekends": "doNotAllow",
                                     "billedTarget": "client",
                                     "clientId": undefined,
+                                    "dates": undefined,
                                     "managerId": undefined,
                                     "name": undefined,
                                     "note": undefined,
                                     "partnerId": undefined,
-                                    "timesheetUnit": "day",
                                   }
                                 }
                               >
                                 <div
-                                  className="c18"
+                                  className="c19"
                                 >
                                   <Connect(Transformer)
                                     error={null}
@@ -2470,16 +2862,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   "allowWeekends": "doNotAllow",
                                   "billedTarget": "client",
                                   "clientId": undefined,
+                                  "dates": undefined,
                                   "managerId": undefined,
                                   "name": undefined,
                                   "note": undefined,
                                   "partnerId": undefined,
-                                  "timesheetUnit": "day",
                                 }
                               }
                             >
                               <FormField
-                                className="c19"
+                                className="c20"
                                 errors={Object {}}
                                 field={
                                   Object {
@@ -2514,16 +2906,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "allowWeekends": "doNotAllow",
                                     "billedTarget": "client",
                                     "clientId": undefined,
+                                    "dates": undefined,
                                     "managerId": undefined,
                                     "name": undefined,
                                     "note": undefined,
                                     "partnerId": undefined,
-                                    "timesheetUnit": "day",
                                   }
                                 }
                               >
                                 <div
-                                  className="c19"
+                                  className="c20"
                                 >
                                   <MarkDownField
                                     error={null}
@@ -2548,7 +2940,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                           <div>
                                             <styled.div>
                                               <div
-                                                className="c20"
+                                                className="c21"
                                               >
                                                 <label
                                                   className="pt-label"
@@ -2567,10 +2959,10 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                                   className="pt-button-group pt-minimal"
                                                 >
                                                   <styled.div
-                                                    className="pt-button-group pt-minimal c21"
+                                                    className="pt-button-group pt-minimal c22"
                                                   >
                                                     <div
-                                                      className="pt-button-group pt-minimal c21 c22"
+                                                      className="pt-button-group pt-minimal c22 c23"
                                                     >
                                                       <button
                                                         className="pt-button"
@@ -2599,7 +2991,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                               value=""
                                             >
                                               <textarea
-                                                className="pt-input pt-fill c23"
+                                                className="pt-input pt-fill c24"
                                                 dir="auto"
                                                 name="note"
                                                 onChange={[Function]}
@@ -2665,16 +3057,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   "allowWeekends": "doNotAllow",
                                   "billedTarget": "client",
                                   "clientId": undefined,
+                                  "dates": undefined,
                                   "managerId": undefined,
                                   "name": undefined,
                                   "note": undefined,
                                   "partnerId": undefined,
-                                  "timesheetUnit": "day",
                                 }
                               }
                             >
                               <FormField
-                                className="c24"
+                                className="c25"
                                 errors={Object {}}
                                 field={
                                   Object {
@@ -2720,16 +3112,16 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                     "allowWeekends": "doNotAllow",
                                     "billedTarget": "client",
                                     "clientId": undefined,
+                                    "dates": undefined,
                                     "managerId": undefined,
                                     "name": undefined,
                                     "note": undefined,
                                     "partnerId": undefined,
-                                    "timesheetUnit": "day",
                                   }
                                 }
                               >
                                 <div
-                                  className="c24"
+                                  className="c25"
                                 >
                                   <SelectField
                                     domainValues={

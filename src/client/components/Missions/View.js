@@ -8,13 +8,10 @@ import { format } from 'date-fns';
 import {
   Colors,
   Button,
-  ButtonGroup,
   Icon,
   Menu,
   MenuDivider,
   MenuItem,
-  Popover,
-  Position,
 } from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
@@ -35,12 +32,13 @@ import {
   Dates,
   ModalConfirmation,
 } from '../widgets';
+import { ContextMenu, ContextFilter } from '../widgets/ContextMenu';
 import { PreviewField } from '../widgets/ViewField';
 import { deleteMission } from '../../actions/missions';
 import { deleteCompany } from '../../actions/companies';
 import { deleteNote } from '../../actions/notes';
 import { deletePeople } from '../../actions/people';
-import { set_filter } from '../../actions/addenda';
+import { setFilter } from '../../actions/addenda';
 import { getPathByName } from '../../routes';
 import { Auth } from '../../lib/kontrolo';
 import { getRouteAuthProps } from '../../routes';
@@ -259,6 +257,12 @@ GoBack.propTypes = {
   history: PropTypes.object,
 };
 
+export const FilterItems = [
+  { label: 'all', text: 'All' },
+  { label: 'current', text: 'Current' },
+  { label: 'past', text: 'Past' },
+];
+
 const Mission = ({
   history,
   id,
@@ -282,7 +286,7 @@ const Mission = ({
   showNoteModal,
   hideNoteModal,
   filter,
-  set_filter,
+  setFilter,
 }) => {
   if (!mission) return null;
   return (
@@ -327,43 +331,23 @@ const Mission = ({
             />
           </Auth>
           <Spacer />
-          <Popover position={Position.BOTTOM_RIGHT}>
-            <Button className="pt-minimal" iconName="pt-icon-menu" />
-            <Menu>
-              <MenuDivider title="Mission" />
-              <MenuItem className="pt-icon-small-cross" text="Close" />
-              <MenuDivider title="Addenda" />
-              <MenuItem
-                className="pt-icon-add"
-                onClick={() => showAddendaModal()}
-                text="Add"
-              />
-              <MenuItem className="pt-icon-filter-list" text="Filter" />
-              <ButtonGroup className="pt-minimal">
-                <Button
-                  active={filter === 'all'}
-                  onClick={() => set_filter('all')}
-                  text="All"
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="Addenda" />
+                <MenuItem
+                  className="pt-icon-add"
+                  onClick={() => showAddendaModal()}
+                  text="Add"
                 />
-                <Button
-                  active={filter === 'current'}
-                  onClick={() => set_filter('current')}
-                  text="Current"
+                <ContextFilter
+                  currentFilter={filter}
+                  filterItems={FilterItems}
+                  setFilter={setFilter}
                 />
-                <Button
-                  active={filter === 'past'}
-                  onClick={() => set_filter('past')}
-                  text="Past"
-                />
-              </ButtonGroup>
-              <MenuDivider title="Notes" />
-              <MenuItem
-                className="pt-icon-add"
-                onClick={() => showNoteModal()}
-                text="Add"
-              />
-            </Menu>
-          </Popover>
+              </Menu>
+            }
+          />
         </HeaderRight>
       </Header>
       <MissionInfos
@@ -411,7 +395,7 @@ Mission.propTypes = {
   showNoteModal: PropTypes.func,
   hideNoteModal: PropTypes.func,
   filter: PropTypes.string,
-  set_filter: PropTypes.func,
+  setFilter: PropTypes.func,
 };
 
 const mapStateToProps = (state, { match: { params: { id } } }) => {
@@ -450,7 +434,7 @@ const mapStateToProps = (state, { match: { params: { id } } }) => {
   };
 };
 
-const actions = { set_filter };
+const actions = { setFilter };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(

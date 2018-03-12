@@ -23,6 +23,8 @@ const addSchema = Yup.object().shape({
   name: Yup.string()
     .trim()
     .required(),
+  startDate: Yup.date().nullable(),
+  endDate: Yup.date().nullable(),
   billedTarget: Yup.string()
     .oneOf(['client', 'partner'])
     .required(),
