@@ -38,3 +38,7 @@
   position: absolute;
   top: 0;
 }
+
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value {
+  background: #2d3b46;
+}

@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+.pt-datepicker {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 0px;
+}
+
+.pt-dark .pt-datepicker {
+  background: #394b59;
+}
+
+input.pt-input {
+  height: 36px;
+}
