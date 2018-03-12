@@ -8,13 +8,10 @@ import { format } from 'date-fns';
 import {
   Colors,
   Button,
-  ButtonGroup,
   Icon,
   Menu,
   MenuDivider,
   MenuItem,
-  Popover,
-  Position,
 } from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
@@ -35,11 +32,7 @@ import {
   Dates,
   ModalConfirmation,
 } from '../widgets';
-import {
-  ContextMenu,
-  ContextFilter,
-  ContextSort,
-} from '../widgets/ContextMenu';
+import { ContextMenu, ContextFilter } from '../widgets/ContextMenu';
 import { PreviewField } from '../widgets/ViewField';
 import { deleteMission } from '../../actions/missions';
 import { deleteCompany } from '../../actions/companies';
