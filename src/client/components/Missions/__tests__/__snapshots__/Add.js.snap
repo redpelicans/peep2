@@ -785,7 +785,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                 "abortEarly": true,
                                 "recursive": true,
                               },
-                              "_subType": undefined,
+                              "_subType": StringSchema {
+                                "_blacklist": Set {},
+                                "_conditions": Array [],
+                                "_deps": Array [],
+                                "_exclusive": Object {},
+                                "_mutate": false,
+                                "_options": Object {
+                                  "abortEarly": true,
+                                  "recursive": true,
+                                },
+                                "_type": "string",
+                                "_typeError": [Function],
+                                "_whitelist": Set {},
+                                "tests": Array [],
+                                "transforms": Array [
+                                  [Function],
+                                ],
+                              },
                               "_type": "array",
                               "_typeError": [Function],
                               "_whitelist": Set {},
@@ -831,7 +848,24 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   "abortEarly": true,
                                   "recursive": true,
                                 },
-                                "_subType": undefined,
+                                "_subType": StringSchema {
+                                  "_blacklist": Set {},
+                                  "_conditions": Array [],
+                                  "_deps": Array [],
+                                  "_exclusive": Object {},
+                                  "_mutate": false,
+                                  "_options": Object {
+                                    "abortEarly": true,
+                                    "recursive": true,
+                                  },
+                                  "_type": "string",
+                                  "_typeError": [Function],
+                                  "_whitelist": Set {},
+                                  "tests": Array [],
+                                  "transforms": Array [
+                                    [Function],
+                                  ],
+                                },
                                 "_type": "array",
                                 "_typeError": [Function],
                                 "_whitelist": Set {},
@@ -907,8 +941,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       error={null}
                                       format="YYYY-MM-DD"
                                       invalidDateMessage="Invalid date"
-                                      maxDate={2018-12-31T18:19:58.673Z}
-                                      minDate={1998-01-01T18:19:58.673Z}
+                                      maxDate={2018-12-31T10:58:12.907Z}
+                                      minDate={1998-01-01T10:58:12.907Z}
                                       name="dates"
                                       onChange={[Function]}
                                       outOfRangeMessage="Out of range"
@@ -942,8 +976,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                             error={null}
                                             format="YYYY-MM-DD"
                                             invalidDateMessage="Invalid date"
-                                            maxDate={2018-12-31T18:19:58.673Z}
-                                            minDate={1998-01-01T18:19:58.673Z}
+                                            maxDate={2018-12-31T10:58:12.907Z}
+                                            minDate={1998-01-01T10:58:12.907Z}
                                             name="dates"
                                             onChange={[Function]}
                                             onHoverChange={[Function]}

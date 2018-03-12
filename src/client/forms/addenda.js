@@ -2,7 +2,7 @@ import Yup from 'yup';
 import { getDefaultValues, getOneValidationSchema, getOneField } from './utils';
 import { InputField } from '../fields';
 import { SelectField, WorkerSelectField } from '../fields/SelectField';
-import { DateField, DatesFields } from '../fields/DateField';
+import { DatesFields } from '../fields/DateField';
 
 const fields = {
   workerId: {
