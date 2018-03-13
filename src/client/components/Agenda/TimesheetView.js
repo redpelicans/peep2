@@ -11,8 +11,13 @@ import { Spacer, Title } from '../widgets';
 
 const DialogStyled = styled(Dialog)`width: 70%;`;
 
-const ModalTimesheet = ({ values, isOpen, hideModal, exportFile }) => {
-  const { cols, data } = values;
+const ModalTimesheet = ({
+  date,
+  /* values,*/ isOpen,
+  hideModal,
+  exportFile,
+}) => {
+  // const { cols, data } = values;
 
   return (
     <DialogStyled isOpen={isOpen} className="pt-dark">
@@ -20,7 +25,7 @@ const ModalTimesheet = ({ values, isOpen, hideModal, exportFile }) => {
         <HeaderLeft>
           <div className="pt-icon-th" />
           <Spacer />
-          <Title>Timesheet</Title>
+          <Title>{`Timesheet ${format(date, 'MMMM')}`}</Title>
         </HeaderLeft>
         <HeaderRight>
           <Button
@@ -36,33 +41,28 @@ const ModalTimesheet = ({ values, isOpen, hideModal, exportFile }) => {
           />
         </HeaderRight>
       </Header>
-      <div className="table-responsive">
-        <table className="table table-striped">
-          <thead>
-            <tr>{cols.map(c => <th key={c.key}>{c.name}</th>)}</tr>
-          </thead>
-          <tbody>
-            {data.map((r, i) => (
-              <tr key={i}>{cols.map(c => <td key={c.key}>{r[c.key]}</td>)}</tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {/* <SheetJSApp /> */}
     </DialogStyled>
   );
 };
 
 ModalTimesheet.propTypes = {
+  date: PropTypes.object.isRequired,
   values: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
   hideModal: PropTypes.func.isRequired,
   exportFile: PropTypes.func.isRequired,
 };
 
-const TimesheetView = ({ values, isModalOpen, hideModal, exportFile }) => {
+const TimesheetView = ({
+  date,
+  values,
+  isModalOpen,
+  hideModal,
+  exportFile,
+}) => {
   return (
     <ModalTimesheet
+      date={date}
       values={values}
       isOpen={isModalOpen}
       hideModal={hideModal}
@@ -72,6 +72,7 @@ const TimesheetView = ({ values, isModalOpen, hideModal, exportFile }) => {
 };
 
 TimesheetView.propTypes = {
+  date: PropTypes.object.isRequired,
   values: PropTypes.object,
   isModalOpen: PropTypes.bool.isRequired,
   hideModal: PropTypes.func.isRequired,
