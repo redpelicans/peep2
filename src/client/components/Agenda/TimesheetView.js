@@ -13,7 +13,8 @@ const DialogStyled = styled(Dialog)`width: 70%;`;
 
 const ModalTimesheet = ({
   date,
-  /* values,*/ isOpen,
+  /* values,*/
+  isOpen,
   hideModal,
   exportFile,
 }) => {
