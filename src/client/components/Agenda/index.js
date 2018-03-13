@@ -86,6 +86,7 @@ const Agenda = ({
       user={user}
     />
     <TimesheetView
+      date={date}
       values={timesheet}
       isModalOpen={isModalOpen}
       hideModal={hideModal}
