@@ -4,7 +4,7 @@ import XLSX from 'xlsx';
 import { length, map, prepend, reduce, values } from 'ramda';
 import { getWorkingDaysInMonth } from '../../utils';
 
-const Leave = (events, workerId) => {
+export const Leave = (events, workerId) => {
   if (!events[workerId]) return { leave: '', paidLeave: '', nbLeave: 0 };
   return reduce(
     (acc, event) => {
