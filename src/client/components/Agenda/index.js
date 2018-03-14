@@ -22,16 +22,11 @@ import { loadEvents } from '../../actions/events';
 import { getCalendar } from '../../selectors/calendar';
 import { getCurrentDate } from '../../selectors/agenda';
 import { getUser } from '../../selectors/login';
-import Calendar /*, { WorkingDays }*/ from './Calendar/Workers';
+import Calendar from './Calendar/Workers';
 import Day from './Day';
 import ExportTimesheet from './Timesheet';
 
 const StyledContainer = styled(Container)`min-width: 1250px;`;
-
-const Section = styled.div`
-  display: flex;
-  justify-content: center;
-`;
 
 const Agenda = ({
   user,
@@ -61,27 +56,21 @@ const Agenda = ({
           <Button iconName="arrow-right" onClick={goNextMonth} />
           <Spacer />
           <Button
-            disabled={format(date, 'MM') >= format(new Date(), 'MM')}
             text="Timesheet"
             onClick={() => ExportTimesheet(calendar, date, events, workers)}
           />
         </HeaderRight>
       </Header>
-      <Section>
-        <Calendar
-          date={date}
-          events={events}
-          dayComponent={Day}
-          calendar={calendar}
-          onPeriodSelection={addEvent}
-          editEvent={editEvent}
-          workers={workers}
-          user={user}
-        />
-        {/* <WorkingDays
-          workers={workers}
-        /> */}
-      </Section>
+      <Calendar
+        date={date}
+        events={events}
+        dayComponent={Day}
+        calendar={calendar}
+        onPeriodSelection={addEvent}
+        editEvent={editEvent}
+        workers={workers}
+        user={user}
+      />
     </StyledContainer>
   );
 };
