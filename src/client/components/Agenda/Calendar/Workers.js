@@ -43,7 +43,7 @@ const StyledCalendar = styled.div`
   justify-content: center;
   display: grid;
   grid-template-columns: ${({ days }) =>
-    ['50px', ...times(() => '35px', days.length + 1)].join(' ')};
+    ['50px', ...times(() => '35px', days.length), '45px'].join(' ')};
   grid-auto-rows: 35px;
   grid-gap: 1px;
   text-align: center;
@@ -136,6 +136,8 @@ const StyledWorkerFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: ${workingDayBackground};
+  margin-left: 10px;
 `;
 
 const WorkerFooter = ({ nbWorkingDays }) => {
@@ -383,11 +385,7 @@ class WorkersCalendar extends Component {
     const monthHeader = (
       <MonthHeader key="MonthHeader" date={currentDate} calendar={calendar} />
     );
-    const daysRow = [
-      monthHeader,
-      ...daysheader,
-      <MonthHeader key="MonthHeader2" date={currentDate} calendar={calendar} />,
-    ];
+    const daysRow = [monthHeader, ...daysheader, <div key="emptyCell" />];
     const workersMonth = map(worker => {
       const workerHeader = <WorkerHeader key={worker._id} worker={worker} />;
       const workerMonth = map(d => {
