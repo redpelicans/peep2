@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import XLSX from 'xlsx';
@@ -15,12 +14,15 @@ const Leave = (events, workerId) => {
             paidLeave: `${acc.paidLeave} ${format(
               new Date(event[0].from),
               'DD',
-            )}`,
+            )}${event[0].period !== 'DAY' ? `(${event[0].period})` : ''}`,
             nbLeave: acc.nbLeave + event[0].value,
           }
         : {
             ...acc,
-            leave: `${acc.leave} ${format(new Date(event[0].from), 'DD')}`,
+            leave: `${acc.leave} ${format(
+              new Date(event[0].from),
+              'DD',
+            )}${event[0].period !== 'DAY' ? `(${event[0].period})` : ''}`,
             nbLeave: acc.nbLeave + event[0].value,
           };
     },
@@ -52,7 +54,7 @@ const newTimesheet = (calendar, date, events, workers) => {
       workingDays,
       leave,
       paidLeave,
-      nbLeave,
+      nbLeave ? nbLeave : '',
     ];
   }, workers);
 
