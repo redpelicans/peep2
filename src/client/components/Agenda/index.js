@@ -11,7 +11,7 @@ import {
   addMonths,
   format,
 } from 'date-fns';
-import { Button } from '@blueprintjs/core';
+import { Button, Menu, MenuItem } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Container, Title, Spacer } from '../widgets';
@@ -25,6 +25,7 @@ import { getUser } from '../../selectors/login';
 import Calendar from './Calendar/Workers';
 import Day from './Day';
 import ExportTimesheet from './Timesheet';
+import { ContextMenu } from '../widgets/ContextMenu';
 
 const StyledContainer = styled(Container)`min-width: 1250px;`;
 
@@ -55,9 +56,17 @@ const Agenda = ({
           <Spacer />
           <Button iconName="arrow-right" onClick={goNextMonth} />
           <Spacer />
-          <Button
-            text="Timesheet"
-            onClick={() => ExportTimesheet(calendar, date, events, workers)}
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuItem
+                  className="pt-icon-download"
+                  onClick={() =>
+                    ExportTimesheet(calendar, date, events, workers)}
+                  text="Timesheet"
+                />
+              </Menu>
+            }
           />
         </HeaderRight>
       </Header>
