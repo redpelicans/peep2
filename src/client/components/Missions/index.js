@@ -28,13 +28,13 @@ import {
 import { getPathByName } from '../../routes';
 import List from './List';
 
-export const FilterItems = [
+export const filterItems = [
   { label: 'all', text: 'All' },
   { label: 'current', text: 'Current' },
   { label: 'past', text: 'Past' },
 ];
 
-export const SortItems = [
+export const sortItems = [
   { label: 'name', text: 'Name' },
   { label: 'startDate', text: 'Start Date' },
   { label: 'endDate', text: 'End Date' },
@@ -71,7 +71,7 @@ export const Missions = ({
           <ContextMenu
             content={
               <Menu>
-                <MenuDivider title="Mission" />
+                <MenuDivider title="Missions" />
                 <LinkButton
                   className="pt-minimal"
                   to={getPathByName('addMission')}
@@ -80,12 +80,12 @@ export const Missions = ({
                 />
                 <ContextFilter
                   currentFilter={filter}
-                  filterItems={FilterItems}
+                  filterItems={filterItems}
                   setFilter={filterMissions}
                 />
                 <ContextSort
                   currentSort={sort}
-                  sortItems={SortItems}
+                  sortItems={sortItems}
                   setSort={sortMissions}
                 />
               </Menu>

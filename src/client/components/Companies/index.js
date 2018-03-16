@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
+import { Menu, MenuDivider } from '@blueprintjs/core';
+import { ContextMenu, ContextSort } from '../widgets/ContextMenu';
 import {
   getVisibleCompanies,
   getFilter,
@@ -29,10 +31,10 @@ import {
 } from '../../actions/companies';
 import { getPathByName } from '../../routes';
 
-const sortTypes = [
-  { key: 'name', label: 'Sort by name' },
-  { key: 'createdAt', label: 'Sort by creation date' },
-  { key: 'updatedAt', label: 'Sort by updated date' },
+const sortItems = [
+  { label: 'name', text: 'Name' },
+  { label: 'createdAt', text: 'Creation date' },
+  { label: 'updatedAt', text: 'Updated date' },
 ];
 
 export const Companies = ({
@@ -67,9 +69,24 @@ export const Companies = ({
           filter={filter}
         />
         <Spacer size="5" />
-        <SortMenu sortTypes={sortTypes} onClick={sortCompanyList} sort={sort} />
-        <Spacer size="5" />
-        <LinkButton to={getPathByName('addCompany')} iconName="plus" />
+        <ContextMenu
+          content={
+            <Menu>
+              <MenuDivider title="Companies" />
+              <LinkButton
+                className="pt-minimal"
+                to={getPathByName('addCompany')}
+                iconName="pt-icon-add"
+                text="Add"
+              />
+              <ContextSort
+                currentSort={sort}
+                sortItems={sortItems}
+                setSort={sortCompanyList}
+              />
+            </Menu>
+          }
+        />
       </HeaderRight>
     </Header>
     <List
