@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
+import { Menu, MenuDivider } from '@blueprintjs/core';
 import {
   filterNotesList,
   sortNotesList,
@@ -10,22 +11,16 @@ import {
   updateNote,
 } from '../../actions/notes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import {
-  Container,
-  Title,
-  Search,
-  Spacer,
-  LinkButton,
-  SortMenu,
-} from '../widgets';
+import { Container, Title, Search, Spacer, LinkButton } from '../widgets';
 import List from './List';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { getFilter, getVisibleNotes, getSort } from '../../selectors/notes';
+import { ContextMenu, ContextSort } from '../widgets/ContextMenu';
 
-const sortTypes = [
-  { key: 'createdAt', label: 'Sort by creation date' },
-  { key: 'updatedAt', label: 'Sort by updated date' },
+const sortItems = [
+  { label: 'createdAt', text: 'Creation date' },
+  { label: 'updatedAt', text: 'Updated date' },
 ];
 
 const Notes = ({
@@ -55,9 +50,24 @@ const Notes = ({
             resetValue={() => filterNotesList('')}
           />
           <Spacer />
-          <SortMenu sortTypes={sortTypes} onClick={sortNotesList} sort={sort} />
-          <Spacer />
-          <LinkButton to="/notes/add" iconName="plus" />
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="Notes" />
+                <LinkButton
+                  className="pt-minimal"
+                  to="/notes/add"
+                  iconName="pt-icon-add"
+                  text="Add"
+                />
+                <ContextSort
+                  currentSort={sort}
+                  sortItems={sortItems}
+                  setSort={sortNotesList}
+                />
+              </Menu>
+            }
+          />
         </HeaderRight>
       </Header>
       <List
