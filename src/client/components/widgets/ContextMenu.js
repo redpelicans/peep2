@@ -9,6 +9,37 @@ import {
   MenuItem,
 } from '@blueprintjs/core';
 
+export const ContextTag = ({ tagItems, setTag }) => {
+  return (
+    <Fragment>
+      <MenuItem className="pt-icon-tag" text="Tag" />
+      <ButtonGroup>
+        {map(({ label, identifier, items }) => {
+          return (
+            <MenuItem key={label} text={label}>
+              {map(
+                ({ label }) => (
+                  <MenuItem
+                    key={label}
+                    text={label}
+                    onClick={() => setTag(`${identifier}${label}`)}
+                  />
+                ),
+                items,
+              )}
+            </MenuItem>
+          );
+        }, tagItems)}
+      </ButtonGroup>
+    </Fragment>
+  );
+};
+
+ContextTag.propTypes = {
+  tagItems: PropTypes.array,
+  setTag: PropTypes.func,
+};
+
 export const ContextFilter = ({ currentFilter, filterItems, setFilter }) => {
   return (
     <Fragment>

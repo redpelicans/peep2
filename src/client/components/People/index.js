@@ -29,6 +29,7 @@ import {
   ContextMenu,
   ContextFilter,
   ContextSort,
+  ContextTag,
 } from '../widgets/ContextMenu';
 
 const sortItems = [
@@ -50,7 +51,12 @@ export const People = ({
   sortPeopleList,
   roles,
 }) => {
-  console.log(types);
+  const tagItems = [
+    { label: 'Roles', identifier: '&', items: roles },
+    { label: 'Tags', identifier: '#', items: tags },
+    { label: 'Types', identifier: '~', items: types },
+  ];
+
   return (
     <Container>
       <Header>
@@ -65,31 +71,7 @@ export const People = ({
             onChange={onFilterChange}
             resetValue={() => onTagClick('')}
           />
-          <Spacer size="5" />
-          <FilterMenu
-            items={roles}
-            identifier="&"
-            title="Roles"
-            onClick={onTagClick}
-            filter={filter}
-          />
-          <Spacer size="5" />
-          <FilterMenu
-            items={tags}
-            identifier="#"
-            title="Tags"
-            onClick={onTagClick}
-            filter={filter}
-          />
-          <Spacer size="5" />
-          <FilterMenu
-            items={types}
-            identifier="~"
-            title="Types"
-            onClick={onTagClick}
-            filter={filter}
-          />
-          <Spacer size="5" />
+          <Spacer />
           <ContextMenu
             content={
               <Menu>
@@ -100,26 +82,12 @@ export const People = ({
                   iconName="pt-icon-add"
                   text="Add"
                 />
-                {/* <ContextFilter
-                currentFilter={filter}
-                filterItems={filterItems}
-                setFilter={onTagClick}
-              /> */}
-                {/* <ContextFilter
-                currentFilter={filter}
-                filterItems={filterItems}
-                setFilter={filterMissions}
-              />
-              <ContextFilter
-                currentFilter={filter}
-                filterItems={filterItems}
-                setFilter={filterMissions}
-              /> */}
                 <ContextSort
                   currentSort={sort}
                   sortItems={sortItems}
                   setSort={sortPeopleList}
                 />
+                <ContextTag tagItems={tagItems} setTag={onTagClick} />
               </Menu>
             }
           />

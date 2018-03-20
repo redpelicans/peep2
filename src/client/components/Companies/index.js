@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
 import { Menu, MenuDivider } from '@blueprintjs/core';
-import { ContextMenu, ContextSort } from '../widgets/ContextMenu';
+import { ContextMenu, ContextSort, ContextTag } from '../widgets/ContextMenu';
 import {
   getVisibleCompanies,
   getFilter,
@@ -46,56 +46,53 @@ export const Companies = ({
   handleFilterChange,
   tags,
   deleteCompany,
-}) => (
-  <Container>
-    <Header>
-      <HeaderLeft>
-        <div className="pt-icon-standard pt-icon-home" />
-        <Spacer />
-        <Title title="Companies" />
-      </HeaderLeft>
-      <HeaderRight>
-        <Search
-          filter={filter}
-          onChange={handleFilterChange}
-          resetValue={() => filterCompanyList('')}
-        />
-        <Spacer />
-        <FilterMenu
-          items={tags}
-          title="Tags"
-          identifier="#"
-          onClick={filterCompanyList}
-          filter={filter}
-        />
-        <Spacer size="5" />
-        <ContextMenu
-          content={
-            <Menu>
-              <MenuDivider title="Companies" />
-              <LinkButton
-                className="pt-minimal"
-                to={getPathByName('addCompany')}
-                iconName="pt-icon-add"
-                text="Add"
-              />
-              <ContextSort
-                currentSort={sort}
-                sortItems={sortItems}
-                setSort={sortCompanyList}
-              />
-            </Menu>
-          }
-        />
-      </HeaderRight>
-    </Header>
-    <List
-      companies={companies}
-      filterCompanyList={filterCompanyList}
-      deleteCompany={deleteCompany}
-    />
-  </Container>
-);
+}) => {
+  const tagItems = [{ label: 'Tags', identifier: '#', items: tags }];
+
+  return (
+    <Container>
+      <Header>
+        <HeaderLeft>
+          <div className="pt-icon-standard pt-icon-home" />
+          <Spacer />
+          <Title title="Companies" />
+        </HeaderLeft>
+        <HeaderRight>
+          <Search
+            filter={filter}
+            onChange={handleFilterChange}
+            resetValue={() => filterCompanyList('')}
+          />
+          <Spacer />
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="Companies" />
+                <LinkButton
+                  className="pt-minimal"
+                  to={getPathByName('addCompany')}
+                  iconName="pt-icon-add"
+                  text="Add"
+                />
+                <ContextSort
+                  currentSort={sort}
+                  sortItems={sortItems}
+                  setSort={sortCompanyList}
+                />
+                <ContextTag tagItems={tagItems} setTag={filterCompanyList} />
+              </Menu>
+            }
+          />
+        </HeaderRight>
+      </Header>
+      <List
+        companies={companies}
+        filterCompanyList={filterCompanyList}
+        deleteCompany={deleteCompany}
+      />
+    </Container>
+  );
+};
 
 Companies.propTypes = {
   companies: PropTypes.array.isRequired,
