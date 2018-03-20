@@ -13,15 +13,7 @@ import {
 } from '../../selectors/companies';
 import { List } from './List';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import {
-  Container,
-  Search,
-  SortMenu,
-  Title,
-  Spacer,
-  LinkButton,
-  FilterMenu,
-} from '../widgets';
+import { Container, Search, Title, Spacer, LinkButton } from '../widgets';
 import {
   togglePreferredFilter,
   togglePreferred,
