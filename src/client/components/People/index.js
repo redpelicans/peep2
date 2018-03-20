@@ -15,22 +15,9 @@ import {
 import { getCompanies } from '../../selectors/companies';
 import List from './List';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import {
-  Container,
-  Search,
-  Spacer,
-  Title,
-  LinkButton,
-  SortMenu,
-  FilterMenu,
-} from '../widgets';
+import { Container, Search, Spacer, Title, LinkButton } from '../widgets';
 import { onTagClick, deletePeople, sortPeopleList } from '../../actions/people';
-import {
-  ContextMenu,
-  ContextFilter,
-  ContextSort,
-  ContextTag,
-} from '../widgets/ContextMenu';
+import { ContextMenu, ContextSort, ContextTag } from '../widgets/ContextMenu';
 
 const sortItems = [
   { label: 'name', text: 'Name' },
