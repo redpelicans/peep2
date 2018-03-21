@@ -11,7 +11,7 @@ import {
   addMonths,
   format,
 } from 'date-fns';
-import { Button } from '@blueprintjs/core';
+import { Button, Menu, MenuItem } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { Container, Title, Spacer } from '../widgets';
@@ -24,8 +24,10 @@ import { getCurrentDate } from '../../selectors/agenda';
 import { getUser } from '../../selectors/login';
 import Calendar from './Calendar/Workers';
 import Day from './Day';
+import ExportTimesheet from './Timesheet';
+import { ContextMenu } from '../widgets/ContextMenu';
 
-const StyledContainer = styled(Container)`min-width: 1200px;`;
+const StyledContainer = styled(Container)`min-width: 1250px;`;
 
 const Agenda = ({
   user,
@@ -38,34 +40,49 @@ const Agenda = ({
   goToday,
   addEvent,
   editEvent,
-}) => (
-  <StyledContainer>
-    <Header>
-      <HeaderLeft>
-        <div className="pt-icon-standard pt-icon-calendar" />
-        <Spacer />
-        <Title title={format(date, 'MMMM YYYY')} />
-      </HeaderLeft>
-      <HeaderRight>
-        <Button iconName="arrow-left" onClick={goPreviousMonth} />
-        <Spacer />
-        <Button iconName="stop" onClick={goToday} />
-        <Spacer />
-        <Button iconName="arrow-right" onClick={goNextMonth} />
-      </HeaderRight>
-    </Header>
-    <Calendar
-      date={date}
-      events={events}
-      dayComponent={Day}
-      calendar={calendar}
-      onPeriodSelection={addEvent}
-      editEvent={editEvent}
-      workers={workers}
-      user={user}
-    />
-  </StyledContainer>
-);
+}) => {
+  return (
+    <StyledContainer>
+      <Header>
+        <HeaderLeft>
+          <div className="pt-icon-standard pt-icon-calendar" />
+          <Spacer />
+          <Title title={format(date, 'MMMM YYYY')} />
+        </HeaderLeft>
+        <HeaderRight>
+          <Button iconName="arrow-left" onClick={goPreviousMonth} />
+          <Spacer />
+          <Button iconName="stop" onClick={goToday} />
+          <Spacer />
+          <Button iconName="arrow-right" onClick={goNextMonth} />
+          <Spacer />
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuItem
+                  className="pt-icon-download"
+                  onClick={() =>
+                    ExportTimesheet(calendar, date, events, workers)}
+                  text="Timesheet"
+                />
+              </Menu>
+            }
+          />
+        </HeaderRight>
+      </Header>
+      <Calendar
+        date={date}
+        events={events}
+        dayComponent={Day}
+        calendar={calendar}
+        onPeriodSelection={addEvent}
+        editEvent={editEvent}
+        workers={workers}
+        user={user}
+      />
+    </StyledContainer>
+  );
+};
 
 Agenda.propTypes = {
   date: PropTypes.object.isRequired,

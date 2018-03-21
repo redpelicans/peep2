@@ -11,7 +11,7 @@ import {
   compose,
   withHandlers,
 } from 'recompose';
-import { path, times, map } from 'ramda';
+import { length, path, times, map } from 'ramda';
 import {
   isToday,
   format,
@@ -37,12 +37,13 @@ import {
   spareDayBackground,
   workingDayBackground,
 } from './utils';
+import { Leave } from '../Timesheet';
 
 const StyledCalendar = styled.div`
   justify-content: center;
   display: grid;
   grid-template-columns: ${({ days }) =>
-    ['50px', ...times(() => '35px', days.length)].join(' ')};
+    ['50px', ...times(() => '35px', days.length), '45px'].join(' ')};
   grid-auto-rows: 35px;
   grid-gap: 1px;
   text-align: center;
@@ -129,6 +130,22 @@ export const WorkerHeader = shouldUpdate(() => false)(({ worker }) => (
 
 WorkerHeader.propTypes = {
   worker: PropTypes.object.isRequired,
+};
+
+const StyledWorkerFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${workingDayBackground};
+  margin-left: 10px;
+`;
+
+const WorkerFooter = ({ nbWorkingDays }) => {
+  return <StyledWorkerFooter>{nbWorkingDays}</StyledWorkerFooter>;
+};
+
+WorkerFooter.propTypes = {
+  nbWorkingDays: PropTypes.number,
 };
 
 const StyledDay = styled.div`
@@ -368,7 +385,7 @@ class WorkersCalendar extends Component {
     const monthHeader = (
       <MonthHeader key="MonthHeader" date={currentDate} calendar={calendar} />
     );
-    const daysRow = [monthHeader, ...daysheader];
+    const daysRow = [monthHeader, ...daysheader, <div key="emptyCell" />];
     const workersMonth = map(worker => {
       const workerHeader = <WorkerHeader key={worker._id} worker={worker} />;
       const workerMonth = map(d => {
@@ -391,7 +408,17 @@ class WorkersCalendar extends Component {
           />
         );
       }, days);
-      return [workerHeader, ...workerMonth];
+      const workerFooter = (
+        <WorkerFooter
+          key={`${worker._id}${worker._id}`}
+          nbWorkingDays={
+            length(getWorkingDaysInMonth(calendar, date)) -
+            Leave(events, worker._id).nbLeave
+          }
+        />
+      );
+
+      return [workerHeader, ...workerMonth, workerFooter];
     }, workers);
 
     return (
