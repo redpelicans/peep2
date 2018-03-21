@@ -12,16 +12,16 @@ import {
 export const ContextTag = ({ tagItems, setTag }) => {
   return (
     <Fragment>
-      <MenuItem className="pt-icon-tag" text="Tag" />
-      <ButtonGroup>
+      <MenuItem className="pt-icon-tag" text="Tag">
         {map(({ label, identifier, items }) => {
           return (
             <MenuItem key={label} text={label}>
               {map(
-                ({ label }) => (
+                ({ label, count }) => (
                   <MenuItem
                     key={label}
-                    text={label}
+                    shouldDismissPopover={false}
+                    text={`(${count}) ${label}`}
                     onClick={() => setTag(`${identifier}${label}`)}
                   />
                 ),
@@ -30,7 +30,7 @@ export const ContextTag = ({ tagItems, setTag }) => {
             </MenuItem>
           );
         }, tagItems)}
-      </ButtonGroup>
+      </MenuItem>
     </Fragment>
   );
 };

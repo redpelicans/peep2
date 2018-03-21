@@ -141,7 +141,11 @@ const StyledWorkerFooter = styled.div`
 `;
 
 const WorkerFooter = ({ nbWorkingDays }) => {
-  return <StyledWorkerFooter>{nbWorkingDays}</StyledWorkerFooter>;
+  return (
+    <StyledWorkerFooter>
+      <StyledDayHeader>{nbWorkingDays}</StyledDayHeader>
+    </StyledWorkerFooter>
+  );
 };
 
 WorkerFooter.propTypes = {
