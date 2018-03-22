@@ -12,7 +12,7 @@ import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { deleteNote } from '../../actions/notes';
-import { deletePeople } from '../../actions/people';
+import { updatePeople, deletePeople } from '../../actions/people';
 import { Auth } from '../../lib/kontrolo';
 import { getRouteAuthProps } from '../../routes';
 
@@ -286,6 +286,7 @@ const Person = ({
   history,
   match: { params: { id } },
   deleteNote,
+  updatePeople,
   deletePeople,
   isDeleteDialogOpen,
   showDialog,
@@ -330,6 +331,16 @@ const Person = ({
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
+          <Button
+            text="Leave Company"
+            onClick={() =>
+              updatePeople({
+                ...person,
+                company: '',
+                roles: [],
+                type: 'contact',
+              })}
+          />
         </HeaderRight>
       </Header>
       <PersonInfos person={person} deleteNote={deleteNote} />
@@ -343,6 +354,7 @@ Person.propTypes = {
   match: PropTypes.object,
   history: PropTypes.object,
   deleteNote: PropTypes.func.isRequired,
+  updatePeople: PropTypes.func.isRequired,
   deletePeople: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   showDialog: PropTypes.func.isRequired,
@@ -354,7 +366,7 @@ const mapStateToProps = state => ({
   companies: getCompanies(state),
 });
 
-const actions = { getPeople, deletePeople, deleteNote };
+const actions = { getPeople, updatePeople, deletePeople, deleteNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
