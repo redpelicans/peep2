@@ -17,9 +17,9 @@ const addSchema = Yup.object().shape({
   content: Yup.string().required(),
   entityId: new ObjectIdSchemaType(),
   entityType: Yup.string()
-    .nullable()
-    .oneOf(['person', 'company', 'mission'])
-    .required(),
+    // .oneOf(['person', 'company', 'mission'])
+    .nullable(),
+  // .required(),
   dueDate: Yup.date(),
   assigneesIds: Yup.array().of(new ObjectIdSchemaType()),
 });
