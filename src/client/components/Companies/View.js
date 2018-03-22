@@ -137,7 +137,13 @@ const CompanyInfos = ({ company = {}, people }) => {
         )}
         <StyledPreviewField
           name="notes"
-          value={<NotesView entityType="company" entityId={_id} />}
+          value={
+            <NotesView
+              entityType="company"
+              entityId={_id}
+              // deleteNote={deleteNote}
+            />
+          }
         />
       </StyledGrid>
     </StyledWrapper>
