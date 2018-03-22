@@ -56,7 +56,7 @@ const NotesView = ({
   updateNote,
   deleteNote,
 }) => {
-  if (notes === null || isEmpty(notes)) return null;
+  // if (notes === null || isEmpty(notes)) return null;
   return (
     <StyledWrapper>
       <ModalNote
