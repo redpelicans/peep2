@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { compose, lifecycle } from 'recompose';
+import { isNil } from 'ramda';
+import styled from 'styled-components';
 import { FormField } from '../../fields';
 import { getField } from '../../forms/people';
 import { ViewField } from '../widgets';
@@ -39,6 +40,7 @@ const AddOrEditForm = ({
   setFieldValue,
   type,
   redpelicans,
+  companyId,
 }) => {
   return (
     <PeopleForm id="peopleForm" onSubmit={handleSubmit}>
@@ -99,6 +101,7 @@ const AddOrEditForm = ({
       ) : (
         <StyledFormField
           field={getField('companyId')}
+          disabled={!isNil(companyId)}
           values={values}
           touched={touched}
           errors={errors}
@@ -157,6 +160,7 @@ AddOrEditForm.propTypes = {
   touched: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
   redpelicans: PropTypes.object,
+  companyId: PropTypes.string,
 };
 
 const componentLifecycle = {

@@ -48,70 +48,74 @@ export const Add = compose(
     showCancelDialog,
     cancel,
     requestCancel,
+    companyId,
     ...props
-  }) => (
-    <StyledContainer>
-      <Prompt
-        when={!isCancelDialogOpen && dirty && !isSubmitting}
-        message="Would you like to cancel this form ?"
-      />
-      <ModalConfirmation
-        isOpen={isCancelDialogOpen}
-        title="Would you like to cancel this form ?"
-        reject={() => showCancelDialog(false)}
-        accept={cancel}
-      />
-      <Header>
-        <HeaderLeft>
-          <Spacer size={15} />
-          <AvatarSelector
-            formId="peopleForm"
-            color={values.color}
-            name={values.firstName}
-            lastName={values.lastName}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-          <Spacer />
-          <Title title={'Add People'} />
-        </HeaderLeft>
-        <HeaderRight>
-          <Button
-            form="peopleForm"
-            type="submit"
-            disabled={isSubmitting || !isValid || !dirty}
-            className="pt-intent-success pt-large"
-          >
-            Create
-          </Button>
-          <Spacer />
-          <Button
-            onClick={requestCancel(dirty)}
-            className="pt-intent-warning pt-large"
-          >
-            Cancel
-          </Button>
-          <Spacer />
-          <Button
-            className="pt-intent-danger pt-large"
-            onClick={handleReset}
-            disabled={!dirty || isSubmitting}
-          >
-            Reset
-          </Button>
-          <Spacer size={20} />
-        </HeaderRight>
-      </Header>
-      <AddOrEdit
-        type="add"
-        handleSubmit={handleSubmit}
-        values={values}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
-        {...props}
-      />
-    </StyledContainer>
-  ),
+  }) => {
+    return (
+      <StyledContainer>
+        <Prompt
+          when={!isCancelDialogOpen && dirty && !isSubmitting}
+          message="Would you like to cancel this form ?"
+        />
+        <ModalConfirmation
+          isOpen={isCancelDialogOpen}
+          title="Would you like to cancel this form ?"
+          reject={() => showCancelDialog(false)}
+          accept={cancel}
+        />
+        <Header>
+          <HeaderLeft>
+            <Spacer size={15} />
+            <AvatarSelector
+              formId="peopleForm"
+              color={values.color}
+              name={values.firstName}
+              lastName={values.lastName}
+              setFieldTouched={setFieldTouched}
+              setFieldValue={setFieldValue}
+            />
+            <Spacer />
+            <Title title={'Add People'} />
+          </HeaderLeft>
+          <HeaderRight>
+            <Button
+              form="peopleForm"
+              type="submit"
+              disabled={isSubmitting || !isValid || !dirty}
+              className="pt-intent-success pt-large"
+            >
+              Create
+            </Button>
+            <Spacer />
+            <Button
+              onClick={requestCancel(dirty)}
+              className="pt-intent-warning pt-large"
+            >
+              Cancel
+            </Button>
+            <Spacer />
+            <Button
+              className="pt-intent-danger pt-large"
+              onClick={handleReset}
+              disabled={!dirty || isSubmitting}
+            >
+              Reset
+            </Button>
+            <Spacer size={20} />
+          </HeaderRight>
+        </Header>
+        <AddOrEdit
+          type="add"
+          handleSubmit={handleSubmit}
+          values={values}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+          companyId={companyId}
+          {...props}
+        />
+      </StyledContainer>
+    );
+  },
 );
 
 Add.propTypes = {
@@ -131,54 +135,62 @@ const mapDispatchToProps = dispatch => ({
   dispatch,
 });
 
-const FormikAdd = ({ dispatch, ...props }) => (
-  <Formik
-    initialValues={defaultValues}
-    validationSchema={getValidationSchema({
-      email: {
-        name: 'isUniq',
-        message: 'Email already exists',
-        test: email => dispatch(checkEmail({ next: email })),
-      },
-    })}
-    onSubmit={({
-      color,
-      firstName,
-      type,
-      lastName,
-      note,
-      phones = [],
-      prefix,
-      tags = [],
-      roles = [],
-      jobType,
-      email,
-      companyId,
-    }) => {
-      const { addPeople, history } = props;
-      const newPeople = {
-        avatar: { color },
+const FormikAdd = ({ dispatch, ...props }) => {
+  const { companyId } = props.history.location.state
+    ? props.history.location.state
+    : { companyId: undefined };
+
+  return (
+    <Formik
+      initialValues={{ ...defaultValues, companyId: companyId }}
+      validationSchema={getValidationSchema({
+        email: {
+          name: 'isUniq',
+          message: 'Email already exists',
+          test: email => dispatch(checkEmail({ next: email })),
+        },
+      })}
+      onSubmit={({
+        color,
         firstName,
         type,
         lastName,
-        email,
-        jobType,
         note,
-        phones: map(
-          phone => ({ label: phone.type, number: phone.number }),
-          phones,
-        ),
+        phones = [],
         prefix,
-        tags: map(tag => tag.value, tags),
-        roles: map(role => role.value, roles),
+        tags = [],
+        roles = [],
+        jobType,
+        email,
         companyId,
-      };
-      addPeople(newPeople);
-      history.goBack();
-    }}
-    render={({ ...others }) => <Add {...props} {...others} />}
-  />
-);
+      }) => {
+        const { addPeople, history } = props;
+        const newPeople = {
+          avatar: { color },
+          firstName,
+          type,
+          lastName,
+          email,
+          jobType,
+          note,
+          phones: map(
+            phone => ({ label: phone.type, number: phone.number }),
+            phones,
+          ),
+          prefix,
+          tags: map(tag => tag.value, tags),
+          roles: map(role => role.value, roles),
+          companyId,
+        };
+        addPeople(newPeople);
+        history.goBack();
+      }}
+      render={({ ...others }) => (
+        <Add {...props} {...others} companyId={companyId} />
+      )}
+    />
+  );
+};
 
 FormikAdd.propTypes = {
   addPeople: PropTypes.func.isRequired,

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { map, isEmpty } from 'ramda';
-import { compose, withStateHandlers } from 'recompose';
+import { compose, withStateHandlers, withHandlers } from 'recompose';
 import { Colors, Button } from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
@@ -163,6 +163,7 @@ const Company = ({
   people,
   companies = {},
   history,
+  addEvent,
   match: { params: { id } },
   isDeleteDialogOpen,
   showDialog,
@@ -211,6 +212,7 @@ const Company = ({
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
+          <Button text="Chips" onClick={() => addEvent(id)} />
         </HeaderRight>
       </Header>
       <CompanyInfos company={company} people={people} />
@@ -222,6 +224,7 @@ Company.propTypes = {
   companies: PropTypes.object,
   match: PropTypes.object,
   history: PropTypes.object,
+  addEvent: PropTypes.func,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,
@@ -248,6 +251,10 @@ const enhance = compose(
       hideDialog: () => () => ({ isDeleteDialogOpen: false }),
     },
   ),
+  withHandlers({
+    addEvent: ({ history }) => id =>
+      history.push(getPathByName('addPeople'), { companyId: id }),
+  }),
 );
 
 export default enhance(Company);
