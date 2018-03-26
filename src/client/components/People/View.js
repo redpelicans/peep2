@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { compose, withStateHandlers } from 'recompose';
 import { isEmpty, map, find, propEq } from 'ramda';
-import { Colors, Button } from '@blueprintjs/core';
+import { Button, Colors, Menu, MenuDivider } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
@@ -15,6 +15,7 @@ import { deleteNote } from '../../actions/notes';
 import { updatePeople, deletePeople } from '../../actions/people';
 import { Auth } from '../../lib/kontrolo';
 import { getRouteAuthProps } from '../../routes';
+import { ContextMenu } from '../widgets/ContextMenu';
 
 import {
   Title,
@@ -331,15 +332,24 @@ const Person = ({
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
-          <Button
-            text="Leave Company"
-            onClick={() =>
-              updatePeople({
-                ...person,
-                company: '',
-                roles: [],
-                type: 'contact',
-              })}
+          <Spacer />
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="People" />
+                <Button
+                  className="pt-minimal pt-icon-delete"
+                  text="Leave Company"
+                  onClick={() =>
+                    updatePeople({
+                      ...person,
+                      companyId: '',
+                      roles: [],
+                      type: 'contact',
+                    })}
+                />
+              </Menu>
+            }
           />
         </HeaderRight>
       </Header>
