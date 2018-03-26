@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
+import { Menu, MenuDivider } from '@blueprintjs/core';
 import {
   getVisiblePeople,
   getFilter,
@@ -14,21 +15,14 @@ import {
 import { getCompanies } from '../../selectors/companies';
 import List from './List';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
-import {
-  Container,
-  Search,
-  Spacer,
-  Title,
-  LinkButton,
-  SortMenu,
-  FilterMenu,
-} from '../widgets';
+import { Container, Search, Spacer, Title, LinkButton } from '../widgets';
 import { onTagClick, deletePeople, sortPeopleList } from '../../actions/people';
+import { ContextMenu, ContextSort, ContextTag } from '../widgets/ContextMenu';
 
-const sortTypes = [
-  { key: 'name', label: 'Sort by name' },
-  { key: 'createdAt', label: 'Sort by creation date' },
-  { key: 'updatedAt', label: 'Sort by updated date' },
+const sortItems = [
+  { label: 'name', text: 'Name' },
+  { label: 'createdAt', text: 'Creation date' },
+  { label: 'updatedAt', text: 'Updated date' },
 ];
 
 export const People = ({
@@ -43,58 +37,58 @@ export const People = ({
   types,
   sortPeopleList,
   roles,
-}) => (
-  <Container>
-    <Header>
-      <HeaderLeft>
-        <div className="pt-icon-standard pt-icon-people" />
-        <Spacer />
-        <Title title="People" />
-      </HeaderLeft>
-      <HeaderRight>
-        <Search
-          filter={filter}
-          onChange={onFilterChange}
-          resetValue={() => onTagClick('')}
-        />
-        <Spacer size="5" />
-        <FilterMenu
-          items={roles}
-          identifier="&"
-          title="Roles"
-          onClick={onTagClick}
-          filter={filter}
-        />
-        <Spacer size="5" />
-        <FilterMenu
-          items={tags}
-          identifier="#"
-          title="Tags"
-          onClick={onTagClick}
-          filter={filter}
-        />
-        <Spacer size="5" />
-        <FilterMenu
-          items={types}
-          identifier="~"
-          title="Types"
-          onClick={onTagClick}
-          filter={filter}
-        />
-        <Spacer size="5" />
-        <SortMenu sortTypes={sortTypes} onClick={sortPeopleList} sort={sort} />
-        <Spacer size="5" />
-        <LinkButton to="/people/add" iconName="plus" />
-      </HeaderRight>
-    </Header>
-    <List
-      people={people}
-      companies={companies}
-      onTagClick={onTagClick}
-      deletePeople={deletePeople}
-    />
-  </Container>
-);
+}) => {
+  const tagItems = [
+    { label: 'Roles', identifier: '&', items: roles },
+    { label: 'Tags', identifier: '#', items: tags },
+    { label: 'Types', identifier: '~', items: types },
+  ];
+
+  return (
+    <Container>
+      <Header>
+        <HeaderLeft>
+          <div className="pt-icon-standard pt-icon-people" />
+          <Spacer />
+          <Title title="People" />
+        </HeaderLeft>
+        <HeaderRight>
+          <Search
+            filter={filter}
+            onChange={onFilterChange}
+            resetValue={() => onTagClick('')}
+          />
+          <Spacer />
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="People" />
+                <LinkButton
+                  className="pt-minimal"
+                  to="/people/add"
+                  iconName="pt-icon-add"
+                  text="Add"
+                />
+                <ContextSort
+                  currentSort={sort}
+                  sortItems={sortItems}
+                  setSort={sortPeopleList}
+                />
+                <ContextTag tagItems={tagItems} setTag={onTagClick} />
+              </Menu>
+            }
+          />
+        </HeaderRight>
+      </Header>
+      <List
+        people={people}
+        companies={companies}
+        onTagClick={onTagClick}
+        deletePeople={deletePeople}
+      />
+    </Container>
+  );
+};
 
 People.propTypes = {
   people: PropTypes.array.isRequired,
