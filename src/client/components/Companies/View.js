@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { map, isEmpty } from 'ramda';
 import { compose, withStateHandlers, withHandlers } from 'recompose';
-import { Colors, Button } from '@blueprintjs/core';
+import { Button, Colors, Menu, MenuDivider } from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
 import { getPeopleFromCompany } from '../../selectors/people';
@@ -28,6 +28,7 @@ import { getPathByName } from '../../routes';
 import NotesView from './NotesView';
 import { Auth } from '../../lib/kontrolo';
 import { getRouteAuthProps } from '../../routes';
+import { ContextMenu } from '../widgets/ContextMenu';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -212,7 +213,20 @@ const Company = ({
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
-          <Button text="Chips" onClick={() => addEvent(id)} />
+          <Spacer />
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="Companies" />
+                <Button
+                  className="pt-minimal"
+                  iconName="pt-icon-add"
+                  text="New Worker"
+                  onClick={() => addEvent(id)}
+                />
+              </Menu>
+            }
+          />
         </HeaderRight>
       </Header>
       <CompanyInfos company={company} people={people} />
