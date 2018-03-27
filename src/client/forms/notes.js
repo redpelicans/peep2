@@ -29,7 +29,6 @@ const fields = {
       { id: 'person', value: 'Person' },
     ],
   },
-  entityId: {},
 };
 
 export const defaultValues = getDefaultValues(fields);
