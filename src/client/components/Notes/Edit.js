@@ -144,7 +144,15 @@ const FormikEdit = ({ updateNote, note = {}, history, ...props }) => (
     }}
     validationSchema={getValidationSchema()}
     onSubmit={({ _id, note, entityType, entityId, dueDate, assigneesIds }) => {
-      updateNote(_id, note, entityType, entityId, dueDate, assigneesIds);
+      console.log(entityType);
+      updateNote(
+        _id,
+        note,
+        entityType,
+        entityType === 'none' ? 'undefined' : entityId,
+        dueDate,
+        assigneesIds,
+      );
       history.goBack();
     }}
     render={({ ...others }) => (
