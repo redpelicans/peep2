@@ -5,16 +5,17 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { compose, withStateHandlers } from 'recompose';
 import { isEmpty, map, find, propEq } from 'ramda';
-import { Colors, Button } from '@blueprintjs/core';
+import { Button, Colors, Menu, MenuDivider } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
 import { deleteNote } from '../../actions/notes';
-import { deletePeople } from '../../actions/people';
+import { updatePeople, deletePeople } from '../../actions/people';
 import { Auth } from '../../lib/kontrolo';
 import { getRouteAuthProps } from '../../routes';
+import { ContextMenu } from '../widgets/ContextMenu';
 
 import {
   Title,
@@ -286,6 +287,7 @@ const Person = ({
   history,
   match: { params: { id } },
   deleteNote,
+  updatePeople,
   deletePeople,
   isDeleteDialogOpen,
   showDialog,
@@ -330,6 +332,25 @@ const Person = ({
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
+          <Spacer />
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="People" />
+                <Button
+                  className="pt-minimal pt-icon-delete"
+                  text="Leave Company"
+                  onClick={() =>
+                    updatePeople({
+                      ...person,
+                      companyId: '',
+                      roles: [],
+                      type: 'contact',
+                    })}
+                />
+              </Menu>
+            }
+          />
         </HeaderRight>
       </Header>
       <PersonInfos person={person} deleteNote={deleteNote} />
@@ -343,6 +364,7 @@ Person.propTypes = {
   match: PropTypes.object,
   history: PropTypes.object,
   deleteNote: PropTypes.func.isRequired,
+  updatePeople: PropTypes.func.isRequired,
   deletePeople: PropTypes.func.isRequired,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   showDialog: PropTypes.func.isRequired,
@@ -354,7 +376,7 @@ const mapStateToProps = state => ({
   companies: getCompanies(state),
 });
 
-const actions = { getPeople, deletePeople, deleteNote };
+const actions = { getPeople, updatePeople, deletePeople, deleteNote };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
