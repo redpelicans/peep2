@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { map, isEmpty } from 'ramda';
-import { compose, withStateHandlers } from 'recompose';
-import { Colors, Button } from '@blueprintjs/core';
+import { compose, withStateHandlers, withHandlers } from 'recompose';
+import { Button, Colors, Menu, MenuDivider } from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
 import { getPeopleFromCompany } from '../../selectors/people';
@@ -28,6 +28,7 @@ import { getPathByName } from '../../routes';
 import NotesView from './NotesView';
 import { Auth } from '../../lib/kontrolo';
 import { getRouteAuthProps } from '../../routes';
+import { ContextMenu } from '../widgets/ContextMenu';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -169,6 +170,7 @@ const Company = ({
   people,
   companies = {},
   history,
+  addEvent,
   match: { params: { id } },
   isDeleteDialogOpen,
   showDialog,
@@ -217,6 +219,20 @@ const Company = ({
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
+          <Spacer />
+          <ContextMenu
+            content={
+              <Menu>
+                <MenuDivider title="Companies" />
+                <Button
+                  className="pt-minimal"
+                  iconName="pt-icon-add"
+                  text="New Worker"
+                  onClick={() => addEvent(id)}
+                />
+              </Menu>
+            }
+          />
         </HeaderRight>
       </Header>
       <CompanyInfos company={company} people={people} />
@@ -228,6 +244,7 @@ Company.propTypes = {
   companies: PropTypes.object,
   match: PropTypes.object,
   history: PropTypes.object,
+  addEvent: PropTypes.func,
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,
@@ -254,6 +271,10 @@ const enhance = compose(
       hideDialog: () => () => ({ isDeleteDialogOpen: false }),
     },
   ),
+  withHandlers({
+    addEvent: ({ history }) => id =>
+      history.push(getPathByName('addPeople'), { companyId: id }),
+  }),
 );
 
 export default enhance(Company);
