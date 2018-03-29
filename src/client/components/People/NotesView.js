@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { map } from 'ramda';
+import { isEmpty, map } from 'ramda';
 import { Button } from '@blueprintjs/core';
-import { withHandlers, compose, withStateHandlers } from 'recompose';
+import { withHandlers, compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 import MasonryLayout from '../widgets/MasonryLayout';
@@ -14,8 +14,6 @@ import { getCompanies } from '../../selectors/companies';
 import { getMissions } from '../../selectors/missions';
 import ModalNote from '../widgets/ModalNote';
 import { addNote, updateNote } from '../../actions/notes';
-import { Auth } from '../../lib/kontrolo';
-import { getRouteAuthProps } from '../../routes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -51,7 +49,6 @@ const NotesView = ({
   entityId,
   deleteNote,
   isModalOpen,
-  showModal,
   hideModal,
   addNote,
   updateNote,
@@ -68,16 +65,11 @@ const NotesView = ({
         }}
         type="Add"
       />
-      <TitleContainer>
-        <span>Notes</span>
-        <Auth {...getRouteAuthProps('addNote')}>
-          <StyledButton
-            className="pt-small pt-button"
-            iconName="pt-icon-plus"
-            onClick={() => showModal()}
-          />
-        </Auth>
-      </TitleContainer>
+      {!isEmpty(notes) && (
+        <TitleContainer>
+          <span>Notes</span>
+        </TitleContainer>
+      )}
       <MasonryLayout id="notes" sizes={sizes}>
         {map(
           note => (
@@ -143,15 +135,6 @@ const enhance = compose(
       return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
     },
   }),
-  withStateHandlers(
-    {
-      isModalOpen: false,
-    },
-    {
-      showModal: () => () => ({ isModalOpen: true }),
-      hideModal: () => () => ({ isModalOpen: false }),
-    },
-  ),
 );
 
 export default enhance(NotesView);

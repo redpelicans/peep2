@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { compose, withStateHandlers } from 'recompose';
 import { isEmpty, map, find, propEq } from 'ramda';
-import { Button, Colors, Menu, MenuDivider } from '@blueprintjs/core';
+import { Button, Colors, Menu, MenuDivider, MenuItem } from '@blueprintjs/core';
 import { getPathByName } from '../../routes';
 import Avatar from '../Avatar';
 import { getPeople } from '../../selectors/people';
@@ -153,7 +153,12 @@ const StyledLink = styled.a`
   font-style: normal !important;
 `;
 
-const PersonInfos = ({ person = {}, deleteNote }) => {
+const PersonInfos = ({
+  person = {},
+  deleteNote,
+  isModalNote,
+  hideModalNote,
+}) => {
   const {
     _id,
     prefix,
@@ -257,6 +262,8 @@ const PersonInfos = ({ person = {}, deleteNote }) => {
             <NotesView
               entityType="person"
               entityId={_id}
+              isModalOpen={isModalNote}
+              hideModal={hideModalNote}
               deleteNote={deleteNote}
             />
           }
@@ -269,6 +276,8 @@ const PersonInfos = ({ person = {}, deleteNote }) => {
 PersonInfos.propTypes = {
   person: PropTypes.object,
   deleteNote: PropTypes.func.isRequired,
+  isModalNote: PropTypes.bool.isRequired,
+  hideModalNote: PropTypes.func.isRequired,
 };
 
 const GoBack = ({ history }) => (
@@ -292,6 +301,9 @@ const Person = ({
   isDeleteDialogOpen,
   showDialog,
   hideDialog,
+  isModalNote,
+  showModalNote,
+  hideModalNote,
 }) => {
   const person = people[id];
   if (!person || !companies) return null;
@@ -348,12 +360,23 @@ const Person = ({
                       type: 'contact',
                     })}
                 />
+                <MenuDivider title="Notes" />
+                <MenuItem
+                  className="pt-icon-add"
+                  onClick={() => showModalNote()}
+                  text="Add"
+                />
               </Menu>
             }
           />
         </HeaderRight>
       </Header>
-      <PersonInfos person={person} deleteNote={deleteNote} />
+      <PersonInfos
+        person={person}
+        deleteNote={deleteNote}
+        isModalNote={isModalNote}
+        hideModalNote={hideModalNote}
+      />
     </Container>
   );
 };
@@ -369,6 +392,9 @@ Person.propTypes = {
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,
+  isModalNote: PropTypes.bool.isRequired,
+  showModalNote: PropTypes.func.isRequired,
+  hideModalNote: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -384,8 +410,11 @@ const enhance = compose(
   withStateHandlers(
     {
       isDeleteDialogOpen: false,
+      isModalNote: false,
     },
     {
+      showModalNote: () => () => ({ isModalNote: true }),
+      hideModalNote: () => () => ({ isModalNote: false }),
       showDialog: () => () => ({ isDeleteDialogOpen: true }),
       hideDialog: () => () => ({ isDeleteDialogOpen: false }),
     },
