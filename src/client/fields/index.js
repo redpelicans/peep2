@@ -15,6 +15,7 @@ export const FormField = ({
     'domainValues' in field
       ? { ...props, domainValues: field.domainValues }
       : props;
+  // console.log(newProps)
   const value = 'value' in props ? props.value : values[field.name];
   return (
     <div className={className}>
