@@ -22,16 +22,27 @@ const fields = {
   entityType: {
     label: 'EntityType',
     component: SelectField,
-    defaultValue: 'none',
+    defaultValue: undefined,
     domainValues: [
-      { id: 'none', value: '<None>' },
+      // { id: 'none', value: '<None>' },
       { id: 'company', value: 'Company' },
       { id: 'person', value: 'Person' },
     ],
+    validate: Yup.string(),
+  },
+  entityId: {
+    validate: Yup.string()
+      .nullable()
+      .when(
+        'entityType',
+        (entityType, schema) =>
+          entityType !== undefined ? schema.required() : schema,
+      ),
   },
 };
 
 export const defaultValues = getDefaultValues(fields);
 export const getField = getOneField(fields);
-export const getValidationSchema = extend =>
-  Yup.object().shape(getOneValidationSchema(fields, extend));
+export const getValidationSchema = extend => {
+  return Yup.object().shape(getOneValidationSchema(fields, extend));
+};

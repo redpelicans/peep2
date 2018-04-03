@@ -41,7 +41,6 @@ export const validate = schema => ctx => {
     .validate(input, {
       strict: false,
       stripUnknown: true,
-      context: { entityType: input.entityType },
     })
     .then(request => ({ ...ctx, input: request }));
 };
