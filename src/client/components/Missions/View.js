@@ -345,6 +345,12 @@ const Mission = ({
                   filterItems={FilterItems}
                   setFilter={setFilter}
                 />
+                <MenuDivider title="Notes" />
+                <MenuItem
+                  className="pt-icon-add"
+                  onClick={() => showNoteModal()}
+                  text="Add"
+                />
               </Menu>
             }
           />

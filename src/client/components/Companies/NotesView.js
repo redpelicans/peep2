@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { map, isEmpty } from 'ramda';
 import { Button } from '@blueprintjs/core';
-import { withHandlers, compose, withStateHandlers } from 'recompose';
+import { withHandlers, compose } from 'recompose';
 import styled from 'styled-components';
 import MasonryLayout from '../widgets/MasonryLayout';
 import Preview from '../Notes/Preview';
@@ -49,8 +49,7 @@ const NotesView = ({
   people,
   entityType,
   entityId,
-  isModalOpen,
-  showModal,
+  isModal,
   hideModal,
   addNote,
   updateNote,
@@ -60,7 +59,7 @@ const NotesView = ({
   return (
     <StyledWrapper>
       <ModalNote
-        isOpen={isModalOpen}
+        isOpen={isModal}
         title="Add Note"
         reject={() => hideModal()}
         defaultValue=""
@@ -69,16 +68,11 @@ const NotesView = ({
         }}
         type="Add"
       />
-      <TitleContainer>
-        <span>Notes</span>
-        <Auth {...getRouteAuthProps('addNote')}>
-          <StyledButton
-            className="pt-small pt-button"
-            iconName="pt-icon-plus"
-            onClick={() => showModal()}
-          />
-        </Auth>
-      </TitleContainer>
+      {!isEmpty(notes) && (
+        <TitleContainer>
+          <span>Notes</span>
+        </TitleContainer>
+      )}
       <MasonryLayout id="entityNotes" sizes={sizes}>
         {map(
           note => (
@@ -107,7 +101,7 @@ NotesView.propTypes = {
   findEntity: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
   hideModal: PropTypes.func.isRequired,
-  isModalOpen: PropTypes.bool.isRequired,
+  isModal: PropTypes.bool.isRequired,
   addNote: PropTypes.func.isRequired,
   updateNote: PropTypes.func.isRequired,
   deleteNote: PropTypes.func.isRequired,
@@ -144,15 +138,6 @@ const enhance = compose(
       return entity ? entity : {}; // eslint-disable-line no-unneeded-ternary
     },
   }),
-  withStateHandlers(
-    {
-      isModalOpen: false,
-    },
-    {
-      showModal: () => () => ({ isModalOpen: true }),
-      hideModal: () => () => ({ isModalOpen: false }),
-    },
-  ),
 );
 
 export default enhance(NotesView);
