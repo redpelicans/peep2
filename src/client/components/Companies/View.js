@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { map, isEmpty } from 'ramda';
 import { compose, withStateHandlers, withHandlers } from 'recompose';
-import { Button, Colors, Menu, MenuDivider } from '@blueprintjs/core';
+import { Button, Colors, Menu, MenuDivider, MenuItem } from '@blueprintjs/core';
 import Avatar from '../Avatar';
 import { getCompanies } from '../../selectors/companies';
 import { getPeopleFromCompany } from '../../selectors/people';
@@ -86,7 +86,13 @@ const StyledPreviewField = styled(PreviewField)`
   grid-area: ${props => props.name};
 `;
 
-const CompanyInfos = ({ company = {}, people, deletePeople }) => {
+const CompanyInfos = ({
+  company = {},
+  people,
+  deletePeople,
+  isModalNote,
+  hideModalNote,
+}) => {
   const { type, website, address = {}, _id } = company;
   const { street, zipcode, city, country } = address;
   return (
@@ -142,6 +148,8 @@ const CompanyInfos = ({ company = {}, people, deletePeople }) => {
             <NotesView
               entityType="company"
               entityId={_id}
+              isModal={isModalNote}
+              hideModal={hideModalNote}
               // deleteNote={deleteNote}
             />
           }
@@ -155,6 +163,8 @@ CompanyInfos.propTypes = {
   company: PropTypes.object,
   people: PropTypes.array,
   deletePeople: PropTypes.func.isRequired,
+  isModalNote: PropTypes.bool.isRequired,
+  hideModalNote: PropTypes.func.isRequired,
 };
 
 const GoBack = ({ history }) => (
@@ -177,6 +187,9 @@ const Company = ({
   showDialog,
   hideDialog,
   deletePeople,
+  isModalNote,
+  showModalNote,
+  hideModalNote,
   deleteCompany,
 }) => {
   //eslint-disable-line
@@ -232,6 +245,12 @@ const Company = ({
                   text="New Worker"
                   onClick={() => addEvent(id)}
                 />
+                <MenuDivider title="Notes" />
+                <MenuItem
+                  className="pt-icon-add"
+                  onClick={() => showModalNote()}
+                  text="Add"
+                />
               </Menu>
             }
           />
@@ -241,6 +260,8 @@ const Company = ({
         company={company}
         people={people}
         deletePeople={deletePeople}
+        isModalNote={isModalNote}
+        hideModalNote={hideModalNote}
       />
     </Container>
   );
@@ -257,6 +278,9 @@ Company.propTypes = {
   deletePeople: PropTypes.func.isRequired,
   deleteCompany: PropTypes.func.isRequired,
   people: PropTypes.array,
+  isModalNote: PropTypes.bool.isRequired,
+  showModalNote: PropTypes.func.isRequired,
+  hideModalNote: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
@@ -272,10 +296,13 @@ const enhance = compose(
   withStateHandlers(
     {
       isDeleteDialogOpen: false,
+      isModalNote: false,
     },
     {
       showDialog: () => () => ({ isDeleteDialogOpen: true }),
       hideDialog: () => () => ({ isDeleteDialogOpen: false }),
+      showModalNote: () => () => ({ isModalNote: true }),
+      hideModalNote: () => () => ({ isModalNote: false }),
     },
   ),
   withHandlers({
