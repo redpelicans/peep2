@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { isEmpty } from 'ramda';
 import { FormField } from '../../fields';
 import { getField } from '../../forms/notes';
 import {
@@ -78,30 +77,33 @@ const AddOrEditForm = ({
         errors={errors}
         touched={touched}
         onChange={e => {
-          e
-            ? setFieldValue('entityType', e.value)
-            : setFieldValue('entityType', '');
-          if (values.entityId) setFieldValue('entityId', '');
-          setFieldTouched('entityType', true);
+          if (!e) {
+            setFieldValue('entityType', undefined);
+            setFieldValue('entityId', undefined);
+            setFieldTouched('entityType', true);
+          } else if (e.value !== values.entityType) {
+            setFieldValue('entityType', e.value);
+            setFieldValue('entityId', undefined);
+            setFieldTouched('entityType', true);
+          }
         }}
       />
-      {!isEmpty(values.entityType) &&
-        values.entityType !== undefined && (
-          <StyledFormField
-            field={{
-              ...getField('entityId'),
-              label: values.entityType,
-              component: getEntityIdComponent(values.entityType),
-              required: true,
-            }}
-            values={values}
-            errors={errors}
-            touched={touched}
-            disabled={values.entityType === 'none' ? true : false}
-            setFieldTouched={setFieldTouched}
-            setFieldValue={setFieldValue}
-          />
-        )}
+      {values.entityType && (
+        <StyledFormField
+          field={{
+            ...getField('entityId'),
+            label: values.entityType,
+            component: getEntityIdComponent(values.entityType),
+            required: true,
+          }}
+          values={values}
+          errors={errors}
+          touched={touched}
+          disabled={!values.entityType}
+          setFieldTouched={setFieldTouched}
+          setFieldValue={setFieldValue}
+        />
+      )}
     </CompagnyForm>
   );
 };

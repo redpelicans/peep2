@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { withState, withHandlers } from 'recompose';
 import { Button } from '@blueprintjs/core';
-import { compose, map } from 'ramda';
+import { compose } from 'ramda';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, HeaderLeft, HeaderRight } from '../Header';
@@ -135,7 +135,7 @@ const FormikEdit = ({ updateNote, note = {}, history, ...props }) => (
       // assignees: note.authorId,
       person: note.entityId,
       company: note.entityId,
-      dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
+      dueDate: note.dueDate,
       // assigneesIds: note.assigneesIds
       // ? map(
       //     assignee => ({ value: assignee, label: assignee }),
@@ -149,8 +149,8 @@ const FormikEdit = ({ updateNote, note = {}, history, ...props }) => (
       updateNote(
         _id,
         note,
-        entityType,
-        !entityType ? '' : entityId,
+        !entityType ? undefined : entityType,
+        !entityType ? undefined : entityId,
         dueDate,
         assigneesIds,
       );

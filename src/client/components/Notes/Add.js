@@ -114,7 +114,7 @@ export default compose(
     ) => {
       const { addNote, history } = props;
       addNote(
-        !entityType ? '' : entityId,
+        !entityType ? undefined : entityId,
         note,
         entityType,
         dueDate,
