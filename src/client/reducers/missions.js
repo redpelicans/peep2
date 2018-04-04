@@ -15,6 +15,8 @@ const make = mission => {
     ...mission,
     typeName: 'mission',
     createdAt: mission.createdAt ? mission.createdAt : undefined,
+    startDate: new Date(mission.startDate),
+    endDate: mission.endDate ? new Date(mission.endDate) : undefined,
   };
   if (mission.updatedAt) updatedMission.updatedAt = mission.updatedAt;
   return updatedMission;
