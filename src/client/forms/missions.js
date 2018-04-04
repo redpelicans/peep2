@@ -25,7 +25,7 @@ const fields = {
     validate: Yup.array().test(
       'startDate',
       '${path} do not contain startDate',
-      dates => is(Array, dates) && dates[0] && isDate(new Date(dates[0])),
+      dates => is(Array, dates) && dates[0] && isDate(dates[0]),
     ),
   },
   clientId: {
