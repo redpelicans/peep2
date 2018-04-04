@@ -86,7 +86,7 @@ const StyledPreviewField = styled(PreviewField)`
   grid-area: ${props => props.name};
 `;
 
-const CompanyInfos = ({ company = {}, people }) => {
+const CompanyInfos = ({ company = {}, people, deletePeople }) => {
   const { type, website, address = {}, _id } = company;
   const { street, zipcode, city, country } = address;
   return (
@@ -154,6 +154,7 @@ const CompanyInfos = ({ company = {}, people }) => {
 CompanyInfos.propTypes = {
   company: PropTypes.object,
   people: PropTypes.array,
+  deletePeople: PropTypes.func.isRequired,
 };
 
 const GoBack = ({ history }) => (
@@ -175,6 +176,7 @@ const Company = ({
   isDeleteDialogOpen,
   showDialog,
   hideDialog,
+  deletePeople,
   deleteCompany,
 }) => {
   //eslint-disable-line
@@ -235,7 +237,11 @@ const Company = ({
           />
         </HeaderRight>
       </Header>
-      <CompanyInfos company={company} people={people} />
+      <CompanyInfos
+        company={company}
+        people={people}
+        deletePeople={deletePeople}
+      />
     </Container>
   );
 };
@@ -248,6 +254,7 @@ Company.propTypes = {
   isDeleteDialogOpen: PropTypes.bool.isRequired,
   showDialog: PropTypes.func.isRequired,
   hideDialog: PropTypes.func.isRequired,
+  deletePeople: PropTypes.func.isRequired,
   deleteCompany: PropTypes.func.isRequired,
   people: PropTypes.array,
 };
@@ -257,7 +264,7 @@ const mapStateToProps = (state, props) => ({
   people: getPeopleFromCompany(state, props),
 });
 
-const actions = { getCompanies, onTagClick, deleteCompany };
+const actions = { getCompanies, onTagClick, deleteCompany, deletePeople };
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 const enhance = compose(
