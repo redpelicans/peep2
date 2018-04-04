@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { isEmpty } from 'ramda';
 import { FormField } from '../../fields';
 import { getField } from '../../forms/notes';
 import {
@@ -76,11 +77,16 @@ const AddOrEditForm = ({
         values={values}
         errors={errors}
         touched={touched}
-        setFieldTouched={setFieldTouched}
-        setFieldValue={setFieldValue}
+        onChange={e => {
+          e
+            ? setFieldValue('entityType', e.value)
+            : setFieldValue('entityType', '');
+          if (values.entityId) setFieldValue('entityId', '');
+          setFieldTouched('entityType', true);
+        }}
       />
-      {values.entityType &&
-        values.entityType !== 'none' && (
+      {!isEmpty(values.entityType) &&
+        values.entityType !== undefined && (
           <StyledFormField
             field={{
               ...getField('entityId'),

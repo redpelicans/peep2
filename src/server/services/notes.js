@@ -15,13 +15,10 @@ const SERVICE_NAME = 'notes';
 
 const addSchema = Yup.object().shape({
   content: Yup.string().required(),
-  entityId: new ObjectIdSchemaType(),
-  entityType: Yup.string()
-    .nullable()
-    .oneOf(['person', 'company', 'mission'])
-    .required(),
-  dueDate: Yup.date(),
-  assigneesIds: Yup.array().of(new ObjectIdSchemaType()),
+  entityId: new ObjectIdSchemaType().nullable(),
+  entityType: Yup.string().nullable(),
+  dueDate: Yup.date().nullable(),
+  assigneesIds: Yup.array(),
 });
 
 const updateSchema = addSchema.concat(

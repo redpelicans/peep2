@@ -33,6 +33,7 @@ export const Edit = compose(
   ({
     values,
     isSubmitting,
+    isValid,
     dirty,
     handleSubmit,
     handleReset,
@@ -64,7 +65,7 @@ export const Edit = compose(
           <Button
             form="addNote"
             type="submit"
-            disabled={isSubmitting || !dirty}
+            disabled={isSubmitting || !isValid || !dirty}
             className="pt-intent-success pt-large"
           >
             Update
@@ -131,20 +132,28 @@ const FormikEdit = ({ updateNote, note = {}, history, ...props }) => (
     initialValues={{
       ...note,
       note: note.content,
-      assignees: note.authorId,
+      // assignees: note.authorId,
       person: note.entityId,
       company: note.entityId,
-      dueDate: note.dueDate,
-      assigneesIds: note.assigneesIds
-        ? map(
-            assignee => ({ value: assignee, label: assignee }),
-            note.assigneesIds,
-          )
-        : [],
+      dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
+      // assigneesIds: note.assigneesIds
+      // ? map(
+      //     assignee => ({ value: assignee, label: assignee }),
+      //     note.assigneesIds,
+      //   )
+      // : [],
     }}
     validationSchema={getValidationSchema()}
     onSubmit={({ _id, note, entityType, entityId, dueDate, assigneesIds }) => {
-      updateNote(_id, note, entityType, entityId, dueDate, assigneesIds);
+      // console.log(entityType);
+      updateNote(
+        _id,
+        note,
+        entityType,
+        !entityType ? '' : entityId,
+        dueDate,
+        assigneesIds,
+      );
       history.goBack();
     }}
     render={({ ...others }) => (

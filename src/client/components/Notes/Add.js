@@ -30,59 +30,62 @@ export const Add = ({
   cancel,
   requestCancel,
   ...props
-}) => (
-  <StyledContainer>
-    <Prompt
-      when={!isCancelDialogOpen && dirty && !isSubmitting}
-      message="Would you like to cancel this form ?"
-    />
-    <ModalConfirmation
-      isOpen={isCancelDialogOpen}
-      title="Would you like to cancel this form ?"
-      reject={() => showCancelDialog(false)}
-      accept={cancel}
-    />
-    <Header>
-      <HeaderLeft>
-        <Spacer size={15} />
-        <Title title={'Add Note'} />
-      </HeaderLeft>
-      <HeaderRight>
-        <Button
-          form="addNote"
-          type="submit"
-          disabled={isSubmitting || !isValid || !dirty}
-          className="pt-intent-success pt-large"
-        >
-          Create
-        </Button>
-        <Spacer />
-        <Button
-          onClick={requestCancel(dirty)}
-          className="pt-intent-warning pt-large"
-        >
-          Cancel
-        </Button>
-        <Spacer />
-        <Button
-          className="pt-intent-danger pt-large"
-          onClick={handleReset}
-          disabled={!dirty || isSubmitting}
-        >
-          Reset
-        </Button>
-        <Spacer size={20} />
-      </HeaderRight>
-    </Header>
-    <AddOrEdit
-      handleSubmit={handleSubmit}
-      values={values}
-      setFieldTouched={setFieldTouched}
-      setFieldValue={setFieldValue}
-      {...props}
-    />
-  </StyledContainer>
-);
+}) => {
+  // console.log(values)
+  return (
+    <StyledContainer>
+      <Prompt
+        when={!isCancelDialogOpen && dirty && !isSubmitting}
+        message="Would you like to cancel this form ?"
+      />
+      <ModalConfirmation
+        isOpen={isCancelDialogOpen}
+        title="Would you like to cancel this form ?"
+        reject={() => showCancelDialog(false)}
+        accept={cancel}
+      />
+      <Header>
+        <HeaderLeft>
+          <Spacer size={15} />
+          <Title title={'Add Note'} />
+        </HeaderLeft>
+        <HeaderRight>
+          <Button
+            form="addNote"
+            type="submit"
+            disabled={isSubmitting || !isValid || !dirty}
+            className="pt-intent-success pt-large"
+          >
+            Create
+          </Button>
+          <Spacer />
+          <Button
+            onClick={requestCancel(dirty)}
+            className="pt-intent-warning pt-large"
+          >
+            Cancel
+          </Button>
+          <Spacer />
+          <Button
+            className="pt-intent-danger pt-large"
+            onClick={handleReset}
+            disabled={!dirty || isSubmitting}
+          >
+            Reset
+          </Button>
+          <Spacer size={20} />
+        </HeaderRight>
+      </Header>
+      <AddOrEdit
+        handleSubmit={handleSubmit}
+        values={values}
+        setFieldTouched={setFieldTouched}
+        setFieldValue={setFieldValue}
+        {...props}
+      />
+    </StyledContainer>
+  );
+};
 
 Add.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
@@ -110,7 +113,13 @@ export default compose(
       { props },
     ) => {
       const { addNote, history } = props;
-      addNote(entityId, note, entityType, dueDate, assigneesIds);
+      addNote(
+        !entityType ? '' : entityId,
+        note,
+        entityType,
+        dueDate,
+        assigneesIds,
+      );
       history.goBack();
     },
     validationSchema: getValidationSchema(),

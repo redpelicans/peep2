@@ -36,8 +36,12 @@ export const formatInput = maker => ctx => {
 
 export const validate = schema => ctx => {
   const { input } = ctx;
+
   return schema
-    .validate(input, { strict: false, stripUnknown: true })
+    .validate(input, {
+      strict: false,
+      stripUnknown: true,
+    })
     .then(request => ({ ...ctx, input: request }));
 };
 
