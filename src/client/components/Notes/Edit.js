@@ -132,25 +132,18 @@ const FormikEdit = ({ updateNote, note = {}, history, ...props }) => (
     initialValues={{
       ...note,
       note: note.content,
-      // assignees: note.authorId,
+      entityType: note.entityType === null ? undefined : note.entityType,
       person: note.entityId,
       company: note.entityId,
       dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
-      // assigneesIds: note.assigneesIds
-      // ? map(
-      //     assignee => ({ value: assignee, label: assignee }),
-      //     note.assigneesIds,
-      //   )
-      // : [],
     }}
     validationSchema={getValidationSchema()}
     onSubmit={({ _id, note, entityType, entityId, dueDate, assigneesIds }) => {
-      // console.log(entityType);
       updateNote(
         _id,
         note,
-        entityType,
-        !entityType ? '' : entityId,
+        entityType === undefined ? null : entityType,
+        !entityType ? null : entityId,
         dueDate,
         assigneesIds,
       );

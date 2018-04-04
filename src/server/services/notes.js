@@ -16,7 +16,9 @@ const SERVICE_NAME = 'notes';
 const addSchema = Yup.object().shape({
   content: Yup.string().required(),
   entityId: new ObjectIdSchemaType().nullable(),
-  entityType: Yup.string().nullable(),
+  entityType: Yup.string()
+    .oneOf(['person', 'company', 'mission', null])
+    .nullable(),
   dueDate: Yup.date().nullable(),
   assigneesIds: Yup.array(),
 });
