@@ -800,6 +800,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                             },
                           }
                         }
+                        maxDate={2018-12-31T22:59:59.999Z}
+                        minDate={1997-12-31T23:00:00.000Z}
                         setFieldTouched={[Function]}
                         setFieldValue={[Function]}
                         touched={Object {}}
@@ -850,6 +852,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                               },
                             }
                           }
+                          maxDate={2018-12-31T22:59:59.999Z}
+                          minDate={1997-12-31T23:00:00.000Z}
                           setFieldTouched={[Function]}
                           setFieldValue={[Function]}
                           touched={Object {}}
@@ -872,6 +876,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                             <DatesFields
                               error={null}
                               label="Dates"
+                              maxDate={2018-12-31T22:59:59.999Z}
+                              minDate={1997-12-31T23:00:00.000Z}
                               name="dates"
                               required={true}
                               setFieldTouched={[Function]}
@@ -915,8 +921,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       error={null}
                                       format="YYYY-MM-DD"
                                       invalidDateMessage="Invalid date"
-                                      maxDate={2018-12-31T10:36:03.756Z}
-                                      minDate={1998-01-01T10:36:03.756Z}
+                                      maxDate={2018-12-31T22:59:59.999Z}
+                                      minDate={1997-12-31T23:00:00.000Z}
                                       name="dates"
                                       onChange={[Function]}
                                       outOfRangeMessage="Out of range"
@@ -950,8 +956,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                             error={null}
                                             format="YYYY-MM-DD"
                                             invalidDateMessage="Invalid date"
-                                            maxDate={2018-12-31T10:36:03.756Z}
-                                            minDate={1998-01-01T10:36:03.756Z}
+                                            maxDate={2018-12-31T22:59:59.999Z}
+                                            minDate={1997-12-31T23:00:00.000Z}
                                             name="dates"
                                             onChange={[Function]}
                                             onHoverChange={[Function]}

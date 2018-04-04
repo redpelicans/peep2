@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormField } from '../../fields';
 import { getField } from '../../forms/missions';
+import { startOfYear, subYears, endOfYear } from 'date-fns';
 
 const MissionForm = styled.form`
   display: grid;
@@ -51,6 +52,8 @@ const AddOrEditForm = ({
         touched={touched}
         setFieldTouched={setFieldTouched}
         setFieldValue={setFieldValue}
+        maxDate={endOfYear(new Date())}
+        minDate={startOfYear(subYears(new Date(), 20))}
       />
       <StyledFormField
         field={getField('clientId')}
