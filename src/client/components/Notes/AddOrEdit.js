@@ -80,8 +80,8 @@ const AddOrEditForm = ({
         onChange={e => {
           e
             ? setFieldValue('entityType', e.value)
-            : setFieldValue('entityType', '');
-          if (values.entityId) setFieldValue('entityId', '');
+            : setFieldValue('entityType', undefined);
+          if (values.entityId) setFieldValue('entityId', undefined);
           setFieldTouched('entityType', true);
         }}
       />
@@ -97,7 +97,6 @@ const AddOrEditForm = ({
             values={values}
             errors={errors}
             touched={touched}
-            disabled={values.entityType === 'none' ? true : false}
             setFieldTouched={setFieldTouched}
             setFieldValue={setFieldValue}
           />

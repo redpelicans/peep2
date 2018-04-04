@@ -24,11 +24,10 @@ const fields = {
     component: SelectField,
     defaultValue: undefined,
     domainValues: [
-      // { id: 'none', value: '<None>' },
       { id: 'company', value: 'Company' },
       { id: 'person', value: 'Person' },
     ],
-    validate: Yup.string(),
+    validate: Yup.string().nullable(),
   },
   entityId: {
     validate: Yup.string()
