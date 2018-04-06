@@ -406,12 +406,12 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                   reject={[Function]}
                   title="Would you like to cancel this form ?"
                 >
-                  <Blueprint.Dialog
+                  <Blueprint2.Dialog
                     canOutsideClickClose={true}
                     className="pt-dark"
                     isOpen={false}
                   >
-                    <Blueprint.Overlay
+                    <Blueprint2.Overlay
                       autoFocus={true}
                       backdropProps={Object {}}
                       canEscapeKeyClose={true}
@@ -419,13 +419,13 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                       className="pt-overlay-scroll-container"
                       enforceFocus={true}
                       hasBackdrop={true}
-                      inline={false}
                       isOpen={false}
                       lazy={true}
                       transitionDuration={300}
                       transitionName="pt-overlay"
+                      usePortal={true}
                     />
-                  </Blueprint.Dialog>
+                  </Blueprint2.Dialog>
                 </ModalConfirmation>
                 <Header>
                   <div>
@@ -469,7 +469,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                             <div
                               className="c6"
                             >
-                              <Blueprint.Button
+                              <Blueprint2.Button
                                 className="submit pt-intent-success pt-large"
                                 disabled={true}
                                 form="missionForm"
@@ -483,23 +483,21 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   onKeyUp={[Function]}
                                   type="submit"
                                 >
+                                  <Blueprint2.Icon />
                                   <span
-                                    key="text-0/.0"
+                                    className="pt-button-text"
                                   >
                                     Create
                                   </span>
-                                  <Blueprint.Icon
-                                    className="pt-align-right"
-                                    key="icon"
-                                  />
+                                  <Blueprint2.Icon />
                                 </button>
-                              </Blueprint.Button>
+                              </Blueprint2.Button>
                               <styled.span>
                                 <span
                                   className="c7"
                                 />
                               </styled.span>
-                              <Blueprint.Button
+                              <Blueprint2.Button
                                 className="cancel pt-intent-warning pt-large"
                                 onClick={[Function]}
                               >
@@ -510,23 +508,21 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   onKeyUp={[Function]}
                                   type="button"
                                 >
+                                  <Blueprint2.Icon />
                                   <span
-                                    key="text-0/.0"
+                                    className="pt-button-text"
                                   >
                                     Cancel
                                   </span>
-                                  <Blueprint.Icon
-                                    className="pt-align-right"
-                                    key="icon"
-                                  />
+                                  <Blueprint2.Icon />
                                 </button>
-                              </Blueprint.Button>
+                              </Blueprint2.Button>
                               <styled.span>
                                 <span
                                   className="c7"
                                 />
                               </styled.span>
-                              <Blueprint.Button
+                              <Blueprint2.Button
                                 className="reset pt-intent-danger pt-large"
                                 disabled={true}
                                 onClick={[Function]}
@@ -538,17 +534,15 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                   onKeyUp={[Function]}
                                   type="button"
                                 >
+                                  <Blueprint2.Icon />
                                   <span
-                                    key="text-0/.0"
+                                    className="pt-button-text"
                                   >
                                     Reset
                                   </span>
-                                  <Blueprint.Icon
-                                    className="pt-align-right"
-                                    key="icon"
-                                  />
+                                  <Blueprint2.Icon />
                                 </button>
-                              </Blueprint.Button>
+                              </Blueprint2.Button>
                               <styled.span
                                 size={20}
                               >
@@ -987,8 +981,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                         inheritDarkTheme={true}
                                         inline={true}
                                         interactionKind={0}
-                                        disabled={false}
-                                        hasBackdrop={false}
+                                        isDisabled={false}
+                                        isModal={false}
                                         isOpen={false}
                                         onClose={[Function]}
                                         openOnTargetFocus={true}
