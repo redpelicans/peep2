@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Popover2 } from '@blueprintjs/labs';
 import { map } from 'ramda';
-import { Menu, MenuItem, PopoverInteractionKind } from '@blueprintjs/core';
+import {
+  Menu,
+  MenuItem,
+  Popover,
+  PopoverInteractionKind,
+} from '@blueprintjs/core';
 import { onlyUpdateForKeys } from 'recompose';
 
 const menuItemsIcon = {
@@ -20,7 +24,7 @@ const SortMenu = ({ sortTypes, handleClick, sort }) => (
             key={key}
             text={label}
             onClick={() => handleClick(key)}
-            iconName={menuItemsIcon[sort.order]}
+            icon={menuItemsIcon[sort.order]}
           />
         ) : (
           <MenuItem key={key} text={label} onClick={() => handleClick(key)} />
@@ -39,7 +43,7 @@ SortMenu.propTypes = {
 const StyledButton = styled.button`min-width: 80px;`;
 
 const SortMenuWrapper = ({ sortTypes, onClick, sort }) => (
-  <Popover2
+  <Popover
     placement="bottom"
     interactionKind={PopoverInteractionKind.CLICK}
     content={
@@ -50,7 +54,7 @@ const SortMenuWrapper = ({ sortTypes, onClick, sort }) => (
       Sort
       <span className="pt-icon-standard pt-icon-caret-down pt-align-right" />
     </StyledButton>
-  </Popover2>
+  </Popover>
 );
 
 SortMenuWrapper.propTypes = {

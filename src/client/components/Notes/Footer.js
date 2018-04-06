@@ -72,7 +72,7 @@ const Footer = ({ note, person, entity }) => {
       <StyledMain>
         <StyledName>
           <Icon
-            iconName={entityIcon[note.entityType]}
+            icon={entityIcon[note.entityType]}
             style={{ marginRight: '4px' }}
           />
           {entity && entity.typeName ? (

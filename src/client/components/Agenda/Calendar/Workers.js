@@ -3,8 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { Colors } from '@blueprintjs/core';
-import { Tooltip2 } from '@blueprintjs/labs';
+import { Colors, Tooltip } from '@blueprintjs/core';
 import {
   onlyUpdateForKeys,
   shouldUpdate,
@@ -72,9 +71,9 @@ export const DayHeader = shouldUpdate(dmyShouldUpdate)(({ date, calendar }) => {
   return (
     <StyledDayHeader today={isToday(date)}>
       <div>
-        <Tooltip2 className="pt-tooltip-indicator" content={TooltipContent}>
+        <Tooltip className="pt-tooltip-indicator" content={TooltipContent}>
           {getDate(date)}
-        </Tooltip2>
+        </Tooltip>
       </div>
     </StyledDayHeader>
   );
@@ -96,9 +95,9 @@ const MonthHeader = shouldUpdate(dmyShouldUpdate)(({ date, calendar }) => {
 
   return (
     <div>
-      <Tooltip2 className="pt-tooltip-indicator" content={TooltipContent}>
+      <Tooltip className="pt-tooltip-indicator" content={TooltipContent}>
         {`(${nbWorkingDays})`}
-      </Tooltip2>
+      </Tooltip>
     </div>
   );
 });

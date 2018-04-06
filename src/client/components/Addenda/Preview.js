@@ -120,12 +120,12 @@ export const Preview = ({
         <Actions>
           <StyledButton
             className="pt-small pt-button pt-intent-danger"
-            iconName="pt-icon-trash"
+            icon="pt-icon-trash"
             onClick={() => showDialog()}
           />
           <StyledButton
             className="pt-small pt-button pt-intent-warning"
-            iconName="pt-icon-edit"
+            icon="pt-icon-edit"
             onClick={() => {
               setEditForm(addendum);
               showModal();

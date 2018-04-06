@@ -75,7 +75,7 @@ export const Missions = ({
                 <LinkButton
                   className="pt-minimal"
                   to={getPathByName('addMission')}
-                  iconName="pt-icon-add"
+                  icon="pt-icon-add"
                   text="Add"
                 />
                 <ContextFilter

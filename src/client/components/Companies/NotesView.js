@@ -49,7 +49,7 @@ const NotesView = ({
   people,
   entityType,
   entityId,
-  isModal,
+  hasBackdrop,
   hideModal,
   addNote,
   updateNote,
@@ -59,7 +59,7 @@ const NotesView = ({
   return (
     <StyledWrapper>
       <ModalNote
-        isOpen={isModal}
+        isOpen={hasBackdrop}
         title="Add Note"
         reject={() => hideModal()}
         defaultValue=""
@@ -101,7 +101,7 @@ NotesView.propTypes = {
   findEntity: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
   hideModal: PropTypes.func.isRequired,
-  isModal: PropTypes.bool.isRequired,
+  hasBackdrop: PropTypes.bool.isRequired,
   addNote: PropTypes.func.isRequired,
   updateNote: PropTypes.func.isRequired,
   deleteNote: PropTypes.func.isRequired,

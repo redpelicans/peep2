@@ -50,11 +50,11 @@ const Agenda = ({
           <Title title={format(date, 'MMMM YYYY')} />
         </HeaderLeft>
         <HeaderRight>
-          <Button iconName="arrow-left" onClick={goPreviousMonth} />
+          <Button icon="arrow-left" onClick={goPreviousMonth} />
           <Spacer />
-          <Button iconName="stop" onClick={goToday} />
+          <Button icon="stop" onClick={goToday} />
           <Spacer />
-          <Button iconName="arrow-right" onClick={goNextMonth} />
+          <Button icon="arrow-right" onClick={goNextMonth} />
           <Spacer />
           <ContextMenu
             content={

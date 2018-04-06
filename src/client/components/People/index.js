@@ -66,7 +66,7 @@ export const People = ({
                 <LinkButton
                   className="pt-minimal"
                   to="/people/add"
-                  iconName="pt-icon-add"
+                  icon="pt-icon-add"
                   text="Add"
                 />
                 <ContextSort

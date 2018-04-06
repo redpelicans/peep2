@@ -107,7 +107,7 @@ const StyledField = styled.div`
 const FormattedMissionDate = ({ date }) => (
   <StyledField>
     {date && <span>{format(date, 'MM/DD/YYYY')}</span>}
-    {date && <Icon iconName="calendar" />}
+    {date && <Icon icon="calendar" />}
   </StyledField>
 );
 
@@ -317,7 +317,7 @@ const Mission = ({
         <HeaderRight>
           <Auth {...getRouteAuthProps('deleteMission')} context={{ mission }}>
             <Button
-              iconName="pt-icon-trash"
+              icon="trash"
               className="pt-button pt-large pt-intent-danger"
               onClick={() => showDialog()}
             />
@@ -326,7 +326,7 @@ const Mission = ({
           <Auth {...getRouteAuthProps('editMission')} context={{ mission }}>
             <LinkButton
               to={getPathByName('editMission', id)}
-              iconName="pt-icon-edit"
+              icon="edit"
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>

@@ -1365,8 +1365,8 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                               inheritDarkTheme={true}
                                               inline={true}
                                               interactionKind={0}
-                                              isDisabled={false}
-                                              isModal={false}
+                                              disabled={false}
+                                              hasBackdrop={false}
                                               isOpen={false}
                                               onClose={[Function]}
                                               openOnTargetFocus={true}

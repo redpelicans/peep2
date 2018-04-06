@@ -148,7 +148,7 @@ const CompanyInfos = ({
             <NotesView
               entityType="company"
               entityId={_id}
-              isModal={isModalNote}
+              hasBackdrop={isModalNote}
               hideModal={hideModalNote}
               // deleteNote={deleteNote}
             />
@@ -221,7 +221,7 @@ const Company = ({
         <HeaderRight>
           <Auth {...getRouteAuthProps('deleteCompany')} context={{ company }}>
             <Button
-              iconName="pt-icon-trash"
+              icon="trash"
               className="pt-button pt-large pt-intent-danger"
               onClick={() => showDialog()}
             />
@@ -230,7 +230,7 @@ const Company = ({
           <Auth {...getRouteAuthProps('editCompany')} context={{ company }}>
             <LinkButton
               to={getPathByName('editCompany', id)}
-              iconName="pt-icon-edit"
+              icon="edit"
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>
@@ -241,7 +241,7 @@ const Company = ({
                 <MenuDivider title="Companies" />
                 <Button
                   className="pt-minimal"
-                  iconName="pt-icon-add"
+                  icon="pt-icon-add"
                   text="New Worker"
                   onClick={() => addEvent(id)}
                 />

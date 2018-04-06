@@ -3,8 +3,13 @@ import { join } from 'ramda';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import classNames from 'classnames';
-import { Button, Menu, MenuItem, MenuDivider } from '@blueprintjs/core';
-import { Popover2 } from '@blueprintjs/labs';
+import {
+  Button,
+  Menu,
+  MenuItem,
+  MenuDivider,
+  Popover,
+} from '@blueprintjs/core';
 import Avatar from '../Avatar';
 
 const Layout = styled.div`
@@ -25,17 +30,17 @@ const UserButton = ({ user, logout }) => {
   if (!user) return <button className={btnClass} />;
   const fullName = join(' ', [user.firstName, user.lastName]);
   return (
-    <Popover2 placement="bottom">
+    <Popover placement="bottom">
       <Button className={btnClass} />
       <Layout>
         <StyledAvatar name={fullName} color={user.avatar.color} />
         <StyledEmail>{user.email}</StyledEmail>
         <Menu>
           <MenuDivider />
-          <MenuItem iconName="log-out" onClick={logout} text="Logout" />
+          <MenuItem icon="log-out" onClick={logout} text="Logout" />
         </Menu>
       </Layout>
-    </Popover2>
+    </Popover>
   );
 };
 

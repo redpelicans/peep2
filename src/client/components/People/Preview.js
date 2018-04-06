@@ -100,7 +100,7 @@ export const Preview = ({
             <Auth {...getRouteAuthProps('deletePerson')} context={{ person }}>
               <StyledButton
                 className="pt-small pt-button pt-intent-danger"
-                iconName="pt-icon-trash"
+                icon="trash"
                 onClick={() => showDialog()}
               />
             </Auth>
@@ -108,7 +108,7 @@ export const Preview = ({
               <StyledLinkButton
                 to={getPathByName('editPerson', _id)}
                 className="pt-small pt-button pt-intent-warning"
-                iconName="pt-icon-edit"
+                icon="edit"
               />
             </Auth>
           </Actions>

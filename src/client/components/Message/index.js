@@ -37,7 +37,7 @@ const ToasterCreator = (message, author, entity) => {
     case COMPANY_ADDED:
       return {
         toastIntent: SUCCESS,
-        iconName: ICON_COMPANY,
+        icon: ICON_COMPANY,
         authorAvatar: author.avatar ? author.avatar : undefined,
         entityAvatar: entity.avatar ? entity.avatar : undefined,
         entityPath: getPathByName(COMPANY, entityId),
@@ -49,7 +49,7 @@ const ToasterCreator = (message, author, entity) => {
     case COMPANY_UPDATED:
       return {
         toastIntent: SUCCESS,
-        iconName: ICON_COMPANY,
+        icon: ICON_COMPANY,
         authorAvatar: author.avatar ? author.avatar : undefined,
         entityAvatar: entity.avatar ? entity.avatar : undefined,
         entityPath: getPathByName(COMPANY, entityId),
@@ -61,7 +61,7 @@ const ToasterCreator = (message, author, entity) => {
     case COMPANY_DELETED:
       return {
         toastIntent: SUCCESS,
-        iconName: ICON_COMPANY,
+        icon: ICON_COMPANY,
         authorAvatar: author.avatar ? author.avatar : undefined,
         authorPath: getPathByName(PERSON, authorId),
         entityName: 'company',
@@ -71,7 +71,7 @@ const ToasterCreator = (message, author, entity) => {
     case PEOPLE_ADDED:
       return {
         toastIntent: SUCCESS,
-        iconName: ICON_PEOPLE,
+        icon: ICON_PEOPLE,
         authorAvatar: author.avatar ? author.avatar : undefined,
         entityAvatar: entity.avatar ? entity.avatar : undefined,
         author,
@@ -84,7 +84,7 @@ const ToasterCreator = (message, author, entity) => {
     case PEOPLE_UPDATED:
       return {
         toastIntent: SUCCESS,
-        iconName: ICON_PEOPLE,
+        icon: ICON_PEOPLE,
         authorAvatar: author.avatar ? author.avatar : undefined,
         entityAvatar: entity.avatar ? entity.avatar : undefined,
         entityPath: getPathByName(PERSON, entityId),
@@ -96,7 +96,7 @@ const ToasterCreator = (message, author, entity) => {
     case PEOPLE_DELETED:
       return {
         toastIntent: SUCCESS,
-        iconName: ICON_PEOPLE,
+        icon: ICON_PEOPLE,
         authorAvatar: author.avatar ? author.avatar : undefined,
         authorPath: getPathByName(PERSON, authorId),
         entityName: 'person',
@@ -109,14 +109,14 @@ const ToasterCreator = (message, author, entity) => {
         toastIntent: DANGER,
         label,
         description,
-        iconName: ICON_WARNING,
+        icon: ICON_WARNING,
       };
     }
     case EVTX_ERROR: {
       return {
         toastIntent: DANGER,
         message: message.message,
-        iconName: ICON_WARNING,
+        icon: ICON_WARNING,
       };
     }
     default:
@@ -190,7 +190,7 @@ const EntityMessage = ({
         )}
         <StyledMain>
           <StyledName>
-            <Icon iconName={ICON_PEOPLE} style={{ marginRight: '4px' }} />
+            <Icon icon={ICON_PEOPLE} style={{ marginRight: '4px' }} />
             {authorName}
           </StyledName>
         </StyledMain>
@@ -288,9 +288,9 @@ class Message extends React.Component {
       const { author, entity, message, history } = nextProps;
       const toastMessage = ToasterCreator(message, author, entity);
       const alert = ToastView(message.actionType, toastMessage, history);
-      const { iconName, toastIntent } = toastMessage;
+      const { icon, toastIntent } = toastMessage;
       const intent = Intent[toastIntent];
-      Toast.show({ iconName, message: alert, intent });
+      Toast.show({ icon, message: alert, intent });
     }
   }
 

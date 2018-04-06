@@ -57,7 +57,7 @@ const Notes = ({
                 <LinkButton
                   className="pt-minimal"
                   to="/notes/add"
-                  iconName="pt-icon-add"
+                  icon="pt-icon-add"
                   text="Add"
                 />
                 <ContextSort

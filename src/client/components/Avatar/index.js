@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Tooltip2 } from '@blueprintjs/labs';
+import { Tooltip } from '@blueprintjs/core';
 import styled from 'styled-components';
 import { compose, join, map, take, split } from 'ramda';
 
@@ -45,18 +45,18 @@ const Avatar = ({
   <div>
     {to ? (
       <Link to={to}>
-        <Tooltip2 content={name} disabled={!showTooltip}>
+        <Tooltip content={name} disabled={!showTooltip}>
           <Circle color={color} size={size} className={className}>
             {initials(name)}
           </Circle>
-        </Tooltip2>
+        </Tooltip>
       </Link>
     ) : (
-      <Tooltip2 content={name} disabled={!showTooltip}>
+      <Tooltip content={name} disabled={!showTooltip}>
         <Circle noPointer color={color} size={size} className={className}>
           {initials(name)}
         </Circle>
-      </Tooltip2>
+      </Tooltip>
     )}
   </div>
 );

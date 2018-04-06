@@ -70,13 +70,13 @@ ContextFilter.propTypes = {
 export const ContextSort = ({ currentSort, sortItems, setSort }) => {
   return (
     <Fragment>
-      <MenuItem iconName="pt-icon-double-caret-vertical" text="Sort" />
+      <MenuItem icon="pt-icon-double-caret-vertical" text="Sort" />
       <ButtonGroup className="pt-minimal">
         {map(
           ({ label, text }) => (
             <Button
               key={label}
-              iconName={
+              icon={
                 currentSort.by === label
                   ? currentSort.order === 'asc'
                     ? 'pt-icon-caret-up'
@@ -104,7 +104,7 @@ ContextSort.propTypes = {
 export const ContextMenu = ({ content }) => {
   return (
     <Popover position={Position.BOTTOM_RIGHT} content={content}>
-      <Button className="pt-minimal" iconName="pt-icon-menu" />
+      <Button className="pt-minimal" icon="menu" />
     </Popover>
   );
 };

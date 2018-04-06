@@ -105,16 +105,16 @@ const PhoneNumber = styled.div`
 `;
 
 const phoneIcons = [
-  { label: 'mobile', iconName: 'pt-icon-mobile-phone' },
-  { label: 'work', iconName: 'pt-icon-office' },
-  { label: 'home', iconName: 'pt-icon-home' },
+  { label: 'mobile', icon: 'pt-icon-mobile-phone' },
+  { label: 'work', icon: 'pt-icon-office' },
+  { label: 'home', icon: 'pt-icon-home' },
 ];
 
 const PhoneField = ({ label, number }) => {
   const icon = find(propEq('label', label), phoneIcons);
   return (
     <PhoneNumber>
-      <span className={icon ? icon.iconName : 'pt-icon-mobile-phone'} />
+      <span className={icon ? icon.icon : 'pt-icon-mobile-phone'} />
       <PhoneNumberText>{number}</PhoneNumberText>
     </PhoneNumber>
   );
@@ -331,7 +331,7 @@ const Person = ({
         <HeaderRight>
           <Auth {...getRouteAuthProps('deletePerson')} context={{ person }}>
             <Button
-              iconName="pt-icon-trash"
+              icon="trash"
               className="pt-button pt-large pt-intent-danger"
               onClick={() => showDialog()}
             />
@@ -340,7 +340,7 @@ const Person = ({
           <Auth {...getRouteAuthProps('editPerson')} context={{ person }}>
             <LinkButton
               to={getPathByName('editPerson', id)}
-              iconName="pt-icon-edit"
+              icon="edit"
               className="pt-button pt-large pt-intent-warning"
             />
           </Auth>

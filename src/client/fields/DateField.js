@@ -15,7 +15,7 @@ export const DateField = ({
   setFieldTouched,
   ...props
 }) => {
-  const icon = <StyledInputIcon iconName="calendar" />;
+  const icon = <StyledInputIcon icon="calendar" />;
   const handleChange = newValue => {
     setFieldTouched(name, !isEqual(newValue, value));
     setFieldValue(name, newValue);
@@ -92,7 +92,7 @@ export const PeriodField = ({
   setFieldTouched,
   ...props
 }) => {
-  const icon = <StyledInputIcon iconName="calendar" />;
+  const icon = <StyledInputIcon icon="calendar" />;
   const handleChange = newValue => {
     setFieldTouched(name, !isEqual(newValue, value));
     setFieldValue(name, newValue);

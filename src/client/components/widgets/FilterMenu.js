@@ -1,7 +1,11 @@
 import React from 'react';
 import { map } from 'ramda';
-import { Popover2 } from '@blueprintjs/labs';
-import { Menu, MenuItem, PopoverInteractionKind } from '@blueprintjs/core';
+import {
+  Menu,
+  MenuItem,
+  Popover,
+  PopoverInteractionKind,
+} from '@blueprintjs/core';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -33,7 +37,7 @@ const ItemsMenu = ({ items, identifier, onClick, filter }) => {
           filter === `${identifier}${item.label}` ? (
             <MenuItem
               key={item.label}
-              iconName="pt-icon-small-tick"
+              icon="pt-icon-small-tick"
               disabled
               text={
                 <StyledItem>
@@ -69,7 +73,7 @@ ItemsMenu.propTypes = {
 };
 
 const ItemsMenuWrapper = ({ identifier, title, items, onClick, filter }) => (
-  <Popover2
+  <Popover
     placement="auto"
     interactionKind={PopoverInteractionKind.CLICK}
     content={
@@ -85,7 +89,7 @@ const ItemsMenuWrapper = ({ identifier, title, items, onClick, filter }) => (
       {title}
       <span className="pt-icon-standard pt-icon-caret-down pt-align-right" />
     </StyledButton>
-  </Popover2>
+  </Popover>
 );
 
 ItemsMenuWrapper.propTypes = {

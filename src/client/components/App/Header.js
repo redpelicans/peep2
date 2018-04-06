@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withHandlers } from 'recompose';
 import styled from 'styled-components';
-import { Tabs2, Tab2 } from '@blueprintjs/core';
+import { Tabs, Tab } from '@blueprintjs/core';
 import { getRouteByName, getRouteByPath, defaultRoute } from '../../routes';
 import UserButton from './User';
 import { NavBar, NavBarLeft, NavBarRight } from './NavBar';
@@ -61,17 +61,17 @@ const Header = ({ handleTabChange, user, logout, className, history }) => {
           <span>Peep by redpelicans</span>
         </NavBarLeft>
         <NavBarRight>
-          <Tabs2
+          <Tabs
             id="header"
             onChange={handleTabChange}
             selectedTabId={selectedTab}
           >
-            <Tab2 id="agenda" title={Agenda} />
-            {isAdmin(user) && <Tab2 id="companies" title={Companies} />}
-            {isAdmin(user) && <Tab2 id="people" title={People} />}
-            {isAdmin(user) && <Tab2 id="notes" title={Notes} />}
-            {isAdmin(user) && <Tab2 id="missions" title={Missions} />}
-          </Tabs2>
+            <Tab id="agenda" title={Agenda} />
+            {isAdmin(user) && <Tab id="companies" title={Companies} />}
+            {isAdmin(user) && <Tab id="people" title={People} />}
+            {isAdmin(user) && <Tab id="notes" title={Notes} />}
+            {isAdmin(user) && <Tab id="missions" title={Missions} />}
+          </Tabs>
           <span className="pt-navbar-divider" />
           <UserButton user={user} logout={logout} />
           <Spacer />

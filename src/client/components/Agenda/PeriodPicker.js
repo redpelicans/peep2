@@ -68,23 +68,24 @@ const PeriodPicker = ({
     setFieldValue('period', [from, addDays(to, 0.5)]);
   };
 
-  const makeButton = ([name, iconName, fn, active]) => (
+  const makeButton = ([name, icon, fn, active]) => (
     <StyledIcon key={name} name={name}>
-      <Button iconName={iconName} onClick={fn} disabled={!active} />
+      <Button icon={icon} onClick={fn} disabled={!active} />
     </StyledIcon>
   );
+
   const buttons = [
-    ['addFrom', 'pt-icon-minus', addFrom, addDays(from, 0.5) < to],
+    ['addFrom', 'small-minus', addFrom, addDays(from, 0.5) < to],
     [
       'subFrom',
-      'pt-icon-plus',
+      'small-plus',
       subFrom,
       from > minDate && isPreviousHalfDayFree(events, from),
     ],
-    ['subTo', 'pt-icon-minus', subTo, to > addDays(from, 0.5)],
+    ['subTo', 'small-minus', subTo, to > addDays(from, 0.5)],
     [
       'addTo',
-      'pt-icon-plus',
+      'small-plus',
       addTo,
       to < maxDate && isNextHalfDayFree(events, to),
     ],

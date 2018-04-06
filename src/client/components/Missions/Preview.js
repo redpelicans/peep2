@@ -95,13 +95,13 @@ export const Preview = ({
         <Actions>
           <StyledButton
             className="pt-small pt-button pt-intent-danger"
-            iconName="pt-icon-trash"
+            icon="trash"
             onClick={() => showDialog()}
           />
           <StyledLinkButton
             to={getPathByName('editMission', _id)}
             className="pt-small pt-button pt-intent-warning"
-            iconName="pt-icon-edit"
+            icon="edit"
           />
         </Actions>
       )}
