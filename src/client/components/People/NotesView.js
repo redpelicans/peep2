@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isEmpty, map } from 'ramda';
-import { Button } from '@blueprintjs/core';
 import { withHandlers, compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
@@ -27,11 +26,6 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-`;
-
-const StyledButton = styled(Button)`
-  margin-left: 10px;
-  width: 35px;
 `;
 
 const TitleContainer = styled.div`

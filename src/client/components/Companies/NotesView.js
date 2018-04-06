@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { map, isEmpty } from 'ramda';
-import { Button } from '@blueprintjs/core';
 import { withHandlers, compose } from 'recompose';
 import styled from 'styled-components';
 import MasonryLayout from '../widgets/MasonryLayout';
@@ -14,8 +13,6 @@ import { getEntityNotes } from '../../selectors/notes';
 import { getMissions } from '../../selectors/missions';
 import ModalNote from '../widgets/ModalNote';
 import { addNote, updateNote, deleteNote } from '../../actions/notes';
-import { Auth } from '../../lib/kontrolo';
-import { getRouteAuthProps } from '../../routes';
 
 const sizes = [
   { columns: 1, gutter: 10 },
@@ -29,11 +26,6 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-`;
-
-const StyledButton = styled(Button)`
-  margin-left: 10px;
-  width: 35px;
 `;
 
 const TitleContainer = styled.div`
