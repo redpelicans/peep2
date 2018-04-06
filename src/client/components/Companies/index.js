@@ -63,7 +63,7 @@ export const Companies = ({
                 <LinkButton
                   className="pt-minimal"
                   to={getPathByName('addCompany')}
-                  icon="pt-icon-add"
+                  icon="add"
                   text="Add"
                 />
                 <ContextSort

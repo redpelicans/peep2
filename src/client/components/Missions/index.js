@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withHandlers } from 'recompose';
-import { Menu, MenuDivider } from '@blueprintjs/core';
+import { Menu, MenuDivider, Popover, Button } from '@blueprintjs/core';
 import { getPeople } from '../../selectors/people';
 import { getCompanies } from '../../selectors/companies';
 import {
@@ -75,7 +75,7 @@ export const Missions = ({
                 <LinkButton
                   className="pt-minimal"
                   to={getPathByName('addMission')}
-                  icon="pt-icon-add"
+                  icon="add"
                   text="Add"
                 />
                 <ContextFilter

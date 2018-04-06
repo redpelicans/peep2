@@ -70,7 +70,7 @@ ContextFilter.propTypes = {
 export const ContextSort = ({ currentSort, sortItems, setSort }) => {
   return (
     <Fragment>
-      <MenuItem icon="pt-icon-double-caret-vertical" text="Sort" />
+      <MenuItem icon="double-caret-vertical" text="Sort" />
       <ButtonGroup className="pt-minimal">
         {map(
           ({ label, text }) => (
@@ -78,9 +78,7 @@ export const ContextSort = ({ currentSort, sortItems, setSort }) => {
               key={label}
               icon={
                 currentSort.by === label
-                  ? currentSort.order === 'asc'
-                    ? 'pt-icon-caret-up'
-                    : 'pt-icon-caret-down'
+                  ? currentSort.order === 'asc' ? 'caret-up' : 'caret-down'
                   : null
               }
               active={currentSort === label}
