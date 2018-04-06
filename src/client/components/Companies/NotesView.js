@@ -99,7 +99,6 @@ NotesView.propTypes = {
   entityId: PropTypes.string,
   entityType: PropTypes.string,
   findEntity: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired,
   hideModal: PropTypes.func.isRequired,
   hasBackdrop: PropTypes.bool.isRequired,
   addNote: PropTypes.func.isRequired,
