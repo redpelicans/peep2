@@ -6,8 +6,9 @@
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^2.1.1",
-    "@blueprintjs/datetime": "^1.25.3",
+    "@blueprintjs/datetime": "^2.0.2",
     "@blueprintjs/labs": "^0.8.0",
+    "@types/moment": "^2.13.0",
     "@types/react-transition-group": "^2.0.7",
     "autoprefixer": "7.1.2",
     "axios": "^0.16.2",
@@ -54,6 +55,7 @@
     "ramda": "^0.24.1",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.0",
+    "react-day-picker": "^7.1.4",
     "react-dev-utils": "^5.0.0",
     "react-dom": "^16.2.0",
     "react-google-login": "^3.0.4",

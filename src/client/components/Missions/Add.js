@@ -132,7 +132,6 @@ const FormikAdd = props => (
       note,
     }) => {
       const { addMission, history } = props;
-      // console.log('dates', dates)
       const newMission = {
         name,
         startDate: dates[0],

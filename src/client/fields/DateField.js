@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEqual } from 'date-fns';
-import { DateRangeInput, DateInput } from '@blueprintjs/datetime';
-import '@blueprintjs/datetime/dist/blueprint-datetime.css';
+import { format, isEqual } from 'date-fns';
+import { DateInput, DateRangeInput } from '@blueprintjs/datetime';
+// import '@blueprintjs/datetime/dist/blueprint-datetime.css';
 import { Field, StyledInputIcon } from '../fields';
 import './date-overrride.css';
 
@@ -58,7 +58,6 @@ export const DatesFields = ({
     setFieldTouched(name, !isEqual(newValue, value));
     setFieldValue(name, newValue);
   };
-
   return (
     <Field label={label} required={required}>
       <DateRangeInput
@@ -67,6 +66,8 @@ export const DatesFields = ({
         name={name}
         value={value}
         onChange={handleChange}
+        formatDate={value => format(value, 'MMM Do YYYY')}
+        parseDate={value => new Date(value)}
         {...props}
       />
     </Field>

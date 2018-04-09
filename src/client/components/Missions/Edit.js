@@ -127,47 +127,52 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => (
-  <Formik
-    initialValues={{
-      ...mission,
-      dates: [mission.startDate, mission.endDate],
-      allowWeekends: mission.allowWeekends === true ? 'allow' : 'doNotAllow',
-    }}
-    validationSchema={getValidationSchema()}
-    onSubmit={({
-      name,
-      dates,
-      clientId,
-      partnerId,
-      billedTarget,
-      managerId,
-      allowWeekends,
-      timesheetUnit,
-      note,
-      _id,
-    }) => {
-      const newMission = {
+const FormikEdit = ({ updateMission, mission = {}, history, ...props }) => {
+  return (
+    <Formik
+      initialValues={{
+        ...mission,
+        dates: [
+          new Date(mission.startDate),
+          mission.endDate ? new Date(mission.endDate) : null,
+        ],
+        allowWeekends: mission.allowWeekends === true ? 'allow' : 'doNotAllow',
+      }}
+      validationSchema={getValidationSchema()}
+      onSubmit={({
         name,
-        startDate: dates[0],
-        endDate: dates[1],
+        dates,
         clientId,
         partnerId,
         billedTarget,
         managerId,
-        allowWeekends: allowWeekends === 'allow' ? true : false,
+        allowWeekends,
         timesheetUnit,
         note,
         _id,
-      };
-      updateMission(newMission);
-      history.goBack();
-    }}
-    render={({ ...others }) => (
-      <Edit history={history} {...props} {...others} />
-    )}
-  />
-);
+      }) => {
+        const newMission = {
+          name,
+          startDate: dates[0],
+          endDate: dates[1],
+          clientId,
+          partnerId,
+          billedTarget,
+          managerId,
+          allowWeekends: allowWeekends === 'allow' ? true : false,
+          timesheetUnit,
+          note,
+          _id,
+        };
+        updateMission(newMission);
+        history.goBack();
+      }}
+      render={({ ...others }) => (
+        <Edit history={history} {...props} {...others} />
+      )}
+    />
+  );
+};
 
 FormikEdit.propTypes = {
   updateMission: PropTypes.func.isRequired,

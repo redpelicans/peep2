@@ -901,7 +901,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                         </styled.span>
                                       </RequiredTag>
                                     </label>
-                                    <Blueprint.DateRangeInput
+                                    <Blueprint2.DateRangeInput
                                       allowSingleDayRange={false}
                                       closeOnSelection={true}
                                       contiguousCalendarMonths={true}
@@ -913,7 +913,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                         }
                                       }
                                       error={null}
-                                      format="YYYY-MM-DD"
+                                      formatDate={[Function]}
                                       invalidDateMessage="Invalid date"
                                       maxDate={2018-12-31T22:59:59.999Z}
                                       minDate={1997-12-31T23:00:00.000Z}
@@ -921,6 +921,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                       onChange={[Function]}
                                       outOfRangeMessage="Out of range"
                                       overlappingDatesMessage="Overlapping dates"
+                                      parseDate={[Function]}
                                       popoverProps={Object {}}
                                       selectAllOnFocus={false}
                                       shortcuts={true}
@@ -930,12 +931,11 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                         }
                                       }
                                     >
-                                      <Blueprint.Popover
-                                        arrowSize={30}
+                                      <Blueprint2.Popover
                                         autoFocus={false}
                                         className=""
                                         content={
-                                          <Blueprint.DateRangePicker
+                                          <Blueprint2.DateRangePicker
                                             allowSingleDayRange={false}
                                             boundaryToModify={undefined}
                                             closeOnSelection={true}
@@ -948,7 +948,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                               }
                                             }
                                             error={null}
-                                            format="YYYY-MM-DD"
+                                            formatDate={[Function]}
                                             invalidDateMessage="Invalid date"
                                             maxDate={2018-12-31T22:59:59.999Z}
                                             minDate={1997-12-31T23:00:00.000Z}
@@ -957,6 +957,7 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                             onHoverChange={[Function]}
                                             outOfRangeMessage="Out of range"
                                             overlappingDatesMessage="Overlapping dates"
+                                            parseDate={[Function]}
                                             popoverProps={Object {}}
                                             reverseMonthAndYearMenus={false}
                                             selectAllOnFocus={false}
@@ -975,134 +976,146 @@ exports[`app | components | Mission | component render should match snapshot 1`]
                                           />
                                         }
                                         defaultIsOpen={false}
+                                        disabled={false}
                                         enforceFocus={false}
+                                        hasBackdrop={false}
                                         hoverCloseDelay={300}
                                         hoverOpenDelay={150}
                                         inheritDarkTheme={true}
-                                        inline={true}
-                                        interactionKind={0}
-                                        isDisabled={false}
-                                        isModal={false}
+                                        interactionKind="click"
                                         isOpen={false}
+                                        minimal={false}
+                                        modifiers={Object {}}
                                         onClose={[Function]}
                                         openOnTargetFocus={true}
-                                        popoverClassName=""
-                                        position={8}
+                                        position="bottom-left"
                                         rootElementTag="span"
+                                        targetElementTag="div"
                                         transitionDuration={300}
-                                        useSmartArrowPositioning={true}
-                                        useSmartPositioning={false}
+                                        usePortal={false}
                                       >
-                                        <span
-                                          className="pt-popover-target"
-                                          onClick={[Function]}
+                                        <Manager
+                                          className="pt-popover-wrapper"
+                                          tag="span"
                                         >
-                                          <div
-                                            className="pt-control-group"
-                                            key=".0"
+                                          <span
+                                            className="pt-popover-wrapper"
                                           >
-                                            <Blueprint.InputGroup
-                                              autoComplete="off"
-                                              className="pt-datepicker pt-fill"
-                                              disabled={false}
-                                              inputRef={[Function]}
-                                              onBlur={[Function]}
-                                              onChange={[Function]}
+                                            <Target
+                                              className="pt-popover-target"
+                                              component="div"
+                                              innerRef={[Function]}
                                               onClick={[Function]}
-                                              onFocus={[Function]}
-                                              onKeyDown={[Function]}
-                                              onMouseDown={[Function]}
-                                              placeholder="Start date"
-                                              value=""
                                             >
                                               <div
-                                                className="pt-input-group pt-datepicker pt-fill"
+                                                className="pt-popover-target"
+                                                onClick={[Function]}
                                               >
-                                                <Blueprint.Icon
-                                                  iconSize="inherit"
-                                                />
-                                                <input
-                                                  autoComplete="off"
-                                                  className="pt-input"
-                                                  disabled={false}
-                                                  onBlur={[Function]}
-                                                  onChange={[Function]}
-                                                  onClick={[Function]}
-                                                  onFocus={[Function]}
-                                                  onKeyDown={[Function]}
-                                                  onMouseDown={[Function]}
-                                                  placeholder="Start date"
-                                                  style={
-                                                    Object {
-                                                      "paddingRight": 0,
-                                                    }
-                                                  }
-                                                  type="text"
-                                                  value=""
-                                                />
+                                                <div
+                                                  className="pt-control-group"
+                                                  key=".0"
+                                                >
+                                                  <Blueprint2.InputGroup
+                                                    autoComplete="off"
+                                                    className="pt-datepicker pt-fill"
+                                                    disabled={false}
+                                                    inputRef={[Function]}
+                                                    onBlur={[Function]}
+                                                    onChange={[Function]}
+                                                    onClick={[Function]}
+                                                    onFocus={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    placeholder="Start date"
+                                                    value=""
+                                                  >
+                                                    <div
+                                                      className="pt-input-group pt-datepicker pt-fill"
+                                                    >
+                                                      <Blueprint2.Icon />
+                                                      <input
+                                                        autoComplete="off"
+                                                        className="pt-input"
+                                                        disabled={false}
+                                                        onBlur={[Function]}
+                                                        onChange={[Function]}
+                                                        onClick={[Function]}
+                                                        onFocus={[Function]}
+                                                        onKeyDown={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        placeholder="Start date"
+                                                        style={
+                                                          Object {
+                                                            "paddingRight": 0,
+                                                          }
+                                                        }
+                                                        type="text"
+                                                        value=""
+                                                      />
+                                                    </div>
+                                                  </Blueprint2.InputGroup>
+                                                  <Blueprint2.InputGroup
+                                                    autoComplete="off"
+                                                    className="pt-datepicker pt-fill"
+                                                    disabled={false}
+                                                    inputRef={[Function]}
+                                                    onBlur={[Function]}
+                                                    onChange={[Function]}
+                                                    onClick={[Function]}
+                                                    onFocus={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    placeholder="End date"
+                                                    value=""
+                                                  >
+                                                    <div
+                                                      className="pt-input-group pt-datepicker pt-fill"
+                                                    >
+                                                      <Blueprint2.Icon />
+                                                      <input
+                                                        autoComplete="off"
+                                                        className="pt-input"
+                                                        disabled={false}
+                                                        onBlur={[Function]}
+                                                        onChange={[Function]}
+                                                        onClick={[Function]}
+                                                        onFocus={[Function]}
+                                                        onKeyDown={[Function]}
+                                                        onMouseDown={[Function]}
+                                                        placeholder="End date"
+                                                        style={
+                                                          Object {
+                                                            "paddingRight": 0,
+                                                          }
+                                                        }
+                                                        type="text"
+                                                        value=""
+                                                      />
+                                                    </div>
+                                                  </Blueprint2.InputGroup>
+                                                </div>
                                               </div>
-                                            </Blueprint.InputGroup>
-                                            <Blueprint.InputGroup
-                                              autoComplete="off"
-                                              className="pt-datepicker pt-fill"
-                                              disabled={false}
-                                              inputRef={[Function]}
-                                              onBlur={[Function]}
-                                              onChange={[Function]}
-                                              onClick={[Function]}
-                                              onFocus={[Function]}
-                                              onKeyDown={[Function]}
-                                              onMouseDown={[Function]}
-                                              placeholder="End date"
-                                              value=""
-                                            >
-                                              <div
-                                                className="pt-input-group pt-datepicker pt-fill"
-                                              >
-                                                <Blueprint.Icon
-                                                  iconSize="inherit"
-                                                />
-                                                <input
-                                                  autoComplete="off"
-                                                  className="pt-input"
-                                                  disabled={false}
-                                                  onBlur={[Function]}
-                                                  onChange={[Function]}
-                                                  onClick={[Function]}
-                                                  onFocus={[Function]}
-                                                  onKeyDown={[Function]}
-                                                  onMouseDown={[Function]}
-                                                  placeholder="End date"
-                                                  style={
-                                                    Object {
-                                                      "paddingRight": 0,
-                                                    }
-                                                  }
-                                                  type="text"
-                                                  value=""
-                                                />
-                                              </div>
-                                            </Blueprint.InputGroup>
-                                          </div>
-                                          <Blueprint.Overlay
-                                            autoFocus={false}
-                                            backdropClassName="pt-popover-backdrop"
-                                            backdropProps={Object {}}
-                                            canEscapeKeyClose={true}
-                                            canOutsideClickClose={true}
-                                            didOpen={[Function]}
-                                            enforceFocus={false}
-                                            hasBackdrop={false}
-                                            inline={true}
-                                            isOpen={false}
-                                            lazy={true}
-                                            onClose={[Function]}
-                                            transitionDuration={300}
-                                            transitionName="pt-popover"
-                                          />
-                                        </span>
-                                      </Blueprint.Popover>
-                                    </Blueprint.DateRangeInput>
+                                            </Target>
+                                            <Blueprint2.Overlay
+                                              autoFocus={false}
+                                              backdropClassName="pt-popover-backdrop"
+                                              backdropProps={Object {}}
+                                              canEscapeKeyClose={true}
+                                              canOutsideClickClose={true}
+                                              didOpen={[Function]}
+                                              enforceFocus={false}
+                                              hasBackdrop={false}
+                                              isOpen={false}
+                                              lazy={true}
+                                              onClose={[Function]}
+                                              transitionDuration={300}
+                                              transitionName="pt-popover"
+                                              usePortal={false}
+                                            />
+                                          </span>
+                                        </Manager>
+                                      </Blueprint2.Popover>
+                                    </Blueprint2.DateRangeInput>
                                     <styled.span>
                                       <span
                                         className="c14"
