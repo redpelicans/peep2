@@ -14,9 +14,9 @@ const make = company => {
   const updatedCompany = {
     ...company,
     typeName: 'company',
-    createdAt: company.createdAt ? company.createdAt : undefined,
   };
-  if (company.updatedAt) updatedCompany.updatedAt = company.updatedAt;
+  if (company.updatedAt) updatedCompany.updatedAt = new Date(company.updatedAt);
+  if (company.createdAt) updatedCompany.createdAt = new Date(company.createdAt);
   return updatedCompany;
 };
 const makeAll = compose(fromPairs, map(c => [c._id, make(c)]));

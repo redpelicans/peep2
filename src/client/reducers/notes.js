@@ -14,6 +14,9 @@ const make = note => {
     ...note,
     typeName: 'note',
   };
+  if (note.createdAt) updatedNote.createdAt = new Date(note.createdAt);
+  if (note.updatedAt) updatedNote.updatedAt = new Date(note.updatedAt);
+  if (note.dueDate) updatedNote.dueDate = new Date(note.dueDate);
   return updatedNote;
 };
 

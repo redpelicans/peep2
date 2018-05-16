@@ -9,11 +9,14 @@ import {
 } from '../actions/addenda';
 
 const make = addendum => {
-  return {
+  const updatedAddendum = {
+    typeName: 'addendum',
     ...addendum,
-    startDate: new Date(addendum.startDate),
-    endDate: addendum.endDate ? new Date(addendum.endDate) : undefined,
   };
+  if (addendum.startDate)
+    updatedAddendum.startDate = new Date(addendum.startDate);
+  if (addendum.endDate) updatedAddendum.endDate = new Date(addendum.endDate);
+  return updatedAddendum;
 };
 const makeAll = compose(
   fromPairs,

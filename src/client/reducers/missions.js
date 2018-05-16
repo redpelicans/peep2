@@ -14,9 +14,11 @@ const make = mission => {
   const updatedMission = {
     ...mission,
     typeName: 'mission',
-    createdAt: mission.createdAt ? mission.createdAt : undefined,
   };
   if (mission.updatedAt) updatedMission.updatedAt = mission.updatedAt;
+  if (mission.createdAt) updatedMission.createdAt = mission.createdAt;
+  if (mission.startDate) updatedMission.startDate = mission.startDate;
+  if (mission.endDate) updatedMission.endDate = mission.endDate;
   return updatedMission;
 };
 

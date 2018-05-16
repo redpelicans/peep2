@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "9.4"
 after_script:
-  - npm run-script test
+  - npm run-script test -- -u
 env:
   - NODE_ENV="travis"
 notifications:

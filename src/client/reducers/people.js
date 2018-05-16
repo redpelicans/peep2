@@ -16,9 +16,9 @@ const make = person => {
     ...person,
     name: `${firstName} ${lastName}`,
     typeName: 'person',
-    createdAt: person.createdAt ? person.createdAt : undefined,
   };
-  if (person.updatedAt) updatedPerson.updatedAt = person.updatedAt;
+  if (person.createdAt) updatedPerson.createdAt = new Date(person.createdAt);
+  if (person.updatedAt) updatedPerson.updatedAt = new Date(person.updatedAt);
   return updatedPerson;
 };
 

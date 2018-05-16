@@ -16,7 +16,9 @@ const SERVICE_NAME = 'notes';
 const addSchema = Yup.object().shape({
   content: Yup.string().required(),
   entityId: new ObjectIdSchemaType().nullable(),
-  entityType: Yup.string().nullable(),
+  entityType: Yup.string()
+    .oneOf(['person', 'company', 'mission'])
+    .nullable(),
   dueDate: Yup.date().nullable(),
   assigneesIds: Yup.array(),
 });
@@ -67,13 +69,18 @@ export const notes = {
     newVersion.authorId = this.locals.user._id;
     newVersion.updatedAt = new Date();
     const loadOne = ({ _id }) => Note.loadOne(_id);
-    const update = nextVersion => previousVersion =>
-      Note.collection
+    const update = nextVersion => previousVersion => {
+      if (!nextVersion.entityType) {
+        nextVersion.entityType = undefined;
+        nextVersion.entityId = undefined;
+      }
+      return Note.collection
         .updateOne(
           { _id: previousVersion._id },
           { $set: { ...nextVersion, updatedAt: new Date() } },
         )
         .then(() => ({ _id: previousVersion._id }));
+    };
 
     return loadOne(newVersion)
       .then(update(newVersion))
