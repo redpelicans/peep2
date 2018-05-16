@@ -2,6 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Component from '../AddOrEdit';
 import { defaultValues } from '../../../forms/missions';
+import { mockDate } from '../../../utils/date';
+
+mockDate();
 
 describe('app | components | Mission | component', () => {
   describe('render', () => {

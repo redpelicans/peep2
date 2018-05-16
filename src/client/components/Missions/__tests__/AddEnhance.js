@@ -7,7 +7,9 @@ import Component from '../Add';
 import configureStore from '../../../store/configureStore';
 import history from '../../../history';
 import { addMission } from '../../../actions/missions';
+import { mockDate } from '../../../utils/date';
 
+mockDate();
 expect.addSnapshotSerializer(serializer);
 
 jest.mock('../../../actions/missions', () => ({

@@ -6,6 +6,7 @@ import { Add as Component } from '../Add';
 import configureStore from '../../../store/configureStore';
 import { defaultValues } from '../../../forms/missions';
 import createHistory from 'history/createBrowserHistory';
+import { mockDate } from '../../../utils/date';
 
 const root = (props, history = createHistory()) => {
   const store = configureStore({});
@@ -17,6 +18,8 @@ const root = (props, history = createHistory()) => {
     </Provider>
   );
 };
+
+mockDate();
 
 describe('app | components | Mission | component', () => {
   const props = {
